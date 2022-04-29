@@ -18,13 +18,10 @@
 
 </template>
  
-<style>
+<style scoped>
 
-.navbara{
-      overflow: hidden;
-  position: fixed;
-  bottom: 0;
-  width: 100%;
+.bg-darkgreen{
+    background-color: #243326;
 }
 
 </style>

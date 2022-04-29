@@ -2,23 +2,8 @@
 </script>
  
 <template>
- <!-- <div>
- <nav>
-     <div class="container flex flex-wrap justify-between items-center mx-auto">
-         <ul class="flex">
-  <li class="">
-    <a class="text-blue-500 hover:text-blue-800" href="#">TimeUp</a>
-  </li>
-  <div>
-  <li class="">
-    <a class="text-blue-500 hover:text-blue-800" href="#">BookingList</a>
-  </li>
-  </div>
-</ul>
-     </div>
- </nav>
- </div> -->
 
+<div class="overflow-hidden fixed top-0 w-full">
 <nav class="bg-darkgreen px-2  py-2.5 ">
 <div class="container flex flex-wrap justify-between items-center mx-auto">
 <router-link to="/" class="flex items-center">
@@ -28,18 +13,7 @@
 
 <div class="md:block md:w-auto" >
 <ul class="flex flex-row md:space-x-8 text-sm font-medium">
-<!-- <li>
-<a href="#" class="block py-2 pr-4 pl-3 text-white bg-blue-700 rounded md:bg-transparent md:text-blue-700 " aria-current="page">Home</a>
-</li>
-<li>
-<a href="#" class="block py-2 pr-4 pl-3 text-gray-700 hover:bg-gray-50 ">About</a>
-</li>
-<li>
-<a href="#" class="block py-2 pr-4 pl-3 text-gray-700 hover:bg-gray-50 ">Services</a>
-</li>
-<li>
-<a href="#" class="block py-2 pr-4 pl-3 text-gray-700 hover:bg-gray-50 uppercase ">Booking-List</a>
-</li> -->
+
 <li>
 <router-link to="/bookingList" class="block py-2 pr-4 pl-3 text-white hover:bg-emerald-900 rounded uppercase ">Booking-List</router-link>
 </li>
@@ -47,10 +21,10 @@
 </div>
 </div>
 </nav>
-
+</div>
 </template>
  
-<style>
+<style scoped>
 .bg-darkgreen{
     background-color: #243326;
 }
