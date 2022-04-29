@@ -1,6 +1,6 @@
 FROM node:alpine as build
 WORKDIR /app
-COPY package*.json /app/
+COPY ./TimeupFrontend/package*.json /app/
 RUN ls
 RUN npm i
 COPY . .
