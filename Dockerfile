@@ -3,7 +3,7 @@ WORKDIR /app
 COPY ./TimeupFrontend/package*.json /app/
 RUN ls
 RUN npm i
-COPY . .
+COPY ./TimeupFrontend .
 RUN npm run build
 
 FROM nginx:1.20.2-alpine
