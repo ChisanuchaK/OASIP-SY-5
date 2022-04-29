@@ -32,7 +32,7 @@ public class BookingController {
     public List<BookingDTO> getAllBooking(){
         return bookingService.getAllBookingDTO();
     }
-    @GetMapping("/test1")
+    @GetMapping("/test")
     public List<Booking> getAllBookingTest(){
         return bookingRepository.findAll();
     }
