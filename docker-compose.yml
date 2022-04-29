@@ -25,7 +25,7 @@ services:
     image: quay.io/chisanuchakim/oasip-sy-5-fontend
     container_name: frontend
     volumes: 
-      - /home/student209/OASIP-SY-5/actions-runner/_work/OASIP-SY-5/OASIP-SY-5/TimeupFrontend/nginx.conf:/etc/nginx/conf.d/default.conf
+      - ./TimeupFrontend/nginx.conf:/etc/nginx/conf.d/default.conf
     ports:
       - "80:80"
       
