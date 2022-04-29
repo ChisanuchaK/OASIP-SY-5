@@ -28,4 +28,4 @@ jobs:
     - run: docker tag frontend quay.io/chisanuchakim/oasip-sy-5-fontend
     - run: docker push quay.io/chisanuchakim/oasip-sy-5-fontend
     - run: docker-compose up -d
-    - run: docker exec db mysql -u root -p < ./TimeUp.sql
+    - run: docker exec db mysql -u root -pabc123 < ./TimeUp.sql
