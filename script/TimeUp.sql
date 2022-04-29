@@ -20,7 +20,7 @@ USE `TimeUp` ;
 -- -----------------------------------------------------
 -- Table `TimeUp`.`eventCategory`
 -- -----------------------------------------------------
-DROP TABLE IF EXISTS `TimeUp`.`eventCategory` ;
+-- DROP TABLE IF EXISTS `TimeUp`.`eventCategory` ;
 
 CREATE TABLE IF NOT EXISTS `TimeUp`.`eventCategory` (
   `eventCategoryName` VARCHAR(100) NOT NULL,
@@ -34,7 +34,7 @@ ENGINE = InnoDB;
 -- -----------------------------------------------------
 -- Table `TimeUp`.`booking`
 -- -----------------------------------------------------
-DROP TABLE IF EXISTS `TimeUp`.`booking` ;
+-- DROP TABLE IF EXISTS `TimeUp`.`booking` ;
 
 CREATE TABLE IF NOT EXISTS `TimeUp`.`booking` (
   `idbooking` INT NOT NULL AUTO_INCREMENT,
