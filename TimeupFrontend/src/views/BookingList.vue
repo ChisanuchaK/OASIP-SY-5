@@ -22,7 +22,7 @@ const removeBooking = async (deleteBookingId)=>{
 //Get
 const getBookings = async () => {
   // const res = await fetch('http://localhost:3001/BookingLists')
-  const res = await fetch('http://10.4.84.23/api/booking')
+  const res = await fetch('http://BackendServer/api/booking')
   if (res.status === 200) {
     bookings.value = await res.json()
     console.log(bookings.value)
