@@ -20,8 +20,6 @@ services:
       - "8080:8080"
     depends_on:
       - mysql
-    links:
-      - mysql
 
   frontend:
     image: quay.io/chisanuchakim/oasip-sy-5-fontend
