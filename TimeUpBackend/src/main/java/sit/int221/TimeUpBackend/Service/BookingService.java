@@ -3,7 +3,9 @@ package sit.int221.TimeUpBackend.Service;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import org.springframework.web.server.ResponseStatusException;
 import sit.int221.TimeUpBackend.DTO.BookingDTO;
 import sit.int221.TimeUpBackend.DTO.BookingMoreDetailDTO;
 import sit.int221.TimeUpBackend.Entity.Booking;
@@ -28,6 +30,10 @@ public class BookingService {
     public List<BookingMoreDetailDTO> getAllBookingDetailDTO(){
         List<Booking> bookings= bookingRepository.findAll();
         return bookings.stream().map(e -> modelMapper.map(e, BookingMoreDetailDTO.class)).collect(Collectors.toList());
+    }
+    public BookingMoreDetailDTO getAllBookingDetailDTOById(int id){
+        Booking bookings= bookingRepository.findById(id).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
+        return modelMapper.map(bookings , BookingMoreDetailDTO.class);
     }
     public Booking create(Booking newBooking){
         return bookingRepository.saveAndFlush(newBooking);
