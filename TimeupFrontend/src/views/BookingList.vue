@@ -3,7 +3,10 @@ import { ref, onBeforeMount } from 'vue'
 import NavbarTop from "../components/navbarTop.vue";
 import NavbarBottom from "../components/navbarBottom.vue";
 import LoopBookingList from "../components/LoopBookingList.vue";
-const bookings = ref([])
+const bookings = ref([]);
+// const startTime = 
+
+
 
 
 // Delete method
@@ -21,8 +24,7 @@ const removeBooking = async (deleteBookingId)=>{
 
 //Get
 const getBookings = async () => {
-  const res = await fetch(`${ import.meta.env.VITE_BASE_URL}/booking`)
-  // const res = await fetch('http://10.4.84.23:8080/api/booking')
+  const res = await fetch(`${import.meta.env.VITE_BASE_URL}/booking`)
   if (res.status === 200) {
     bookings.value = await res.json()
     console.log(bookings.value)

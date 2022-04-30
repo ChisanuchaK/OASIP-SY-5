@@ -1,14 +1,31 @@
 <script setup>
-import {ref} from 'vue'
-import DialogDetails from './DialogDetails.vue';
+import {ref , onBeforeMount} from 'vue'
+import DialogDetails from '../views/DialogDetails.vue';
 
 defineEmits(['deleteBooking'])
-defineProps({
+const props = defineProps({
     bookings: {
         type: Array,
         require: true
     }
-    
+})
+
+const bookingsArray = ref([]);
+
+// console.log(" Show Bookings "+ props.bookings);
+
+const getBookingId = async (bookingId)=>{
+ const res = await fetch(`${import.meta.env.VITE_BASE_URL}/booking/${bookingId}`);
+ if(res.status === 200){
+ bookingsArray.value = await res.json();
+ }else{
+ console.log('not found');
+ }
+}
+
+onBeforeMount(async () => {
+ await getBookingId();
+ console.log(bookingsArray.value);
 })
 
 const dialogs = ref(false);
@@ -26,10 +43,9 @@ const changeDialog = () => {
             <div class="text-center text-xl mt-20 mb-10">
                 <h1 class="uppercase font-bold">Booking Lists</h1>
             </div>
-            <DialogDetails v-if="dialogs" @close="dialogs = false"/>
 
             <div v-if="bookings == '' " class="flex flex-warp justify-center bg-emerald-800 text-white text-xl">
-                    No schedule Evets
+                    No scheduled Events
             </div>
 
             <div v-else class="grid grid-flow-row grid-cols-2">
@@ -47,11 +63,11 @@ const changeDialog = () => {
 
                         <div class="row-start-3 col-start-1 col-end-2 p-1 mb-1.5 bg-white rounded-lg">Duration</div>
                         <div class="row-start-3 col-start-3 col-end-9 p-1 mb-1.5 bg-white rounded-lg">{{
-                                booking.duration
-                        }}</div>
+                                booking.eventDuration
+                        }} min </div>
 
-                        <div class="row-start-4 col-start-1 col-end-2 p-1 mb-1.5 bg-white rounded-lg">Category</div>
-                        <div class="row-start-4 col-start-3 col-end-9 p-1 mb-1.5 bg-white rounded-lg ">{{ booking.categoryName
+                        <div class="row-start-4 col-start-1 col-end-2 p-1 mb-1.5 bg-white rounded-lg">CategoryName</div>
+                        <div class="row-start-4 col-start-3 col-end-9 p-1 mb-1.5 bg-white rounded-lg ">{{ booking.eventCategoryName.eventCategoryName
                         }}</div>
 
                         <div class="row-start-5 col-start-1 col-end-2 p-1 mb-1.5 bg-white rounded-lg">BookingName</div>
@@ -59,14 +75,14 @@ const changeDialog = () => {
                         }}</div>
 
                         <div
-                            class="col-start-2 row-start-1 row-end-6 border rounded-full bg-white  2xl:ml-4 xl:ml-1 -mr-6 w-3/12 mb-1">
+                            class="col-start-2 row-start-1 row-end-6  2xl:ml-4 xl:ml-1 -mr-6 w-3/12 mb-1">
                         </div>
 
-                        <button class="mt-5" @click="changeDialog">See Details</button>
+                      <button class="mt-5" @click="changeDialog">See Details</button>
                     <!-- <button class="mt-5 col-start-5">edit</button> -->
                     <button class="mt-5 col-start-7" @click="$emit('deleteBooking', booking.id)">delete</button>
-
-
+                    <DialogDetails v-if="dialogs" @close="changeDialog" :bookings="booking"/>
+                        
                         <!-- <div class="grid grid-flow-row grid-cols-5 flex p-1 bg-white rounded-lg ">
                             <p class="col-start-1">Date </p>
                             <div class="col-start-2"> </div>
@@ -78,6 +94,7 @@ const changeDialog = () => {
                         <div class="p-1 bg-white rounded-lg my-2"> CategoryName : {{ booking.cName }} </div>
                         <div class="p-1 bg-white rounded-lg my-2"> BookingName : {{ booking.bName }} </div> -->
                     </div>
+                    
                 </div>
             </div>
         </div>
