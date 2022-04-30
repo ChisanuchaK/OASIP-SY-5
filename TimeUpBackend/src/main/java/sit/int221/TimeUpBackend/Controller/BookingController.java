@@ -33,7 +33,10 @@ public class BookingController {
         return bookingService.getAllBookingDTO();
     }
 
-
+    @GetMapping("/{id}")
+    public BookingMoreDetailDTO getBookingById(@PathVariable Integer id){
+        return bookingService.getBookingDetailDTOById(id);
+    }
 
     @PostMapping("")
     @ResponseStatus(HttpStatus.CREATED)

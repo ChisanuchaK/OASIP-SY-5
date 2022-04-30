@@ -9,7 +9,7 @@ const props = defineProps({
         require: true
     }
 })
-
+console.log(props.bookings.idbooking)
 const bookingsArray = ref([]);
 
 // console.log(" Show Bookings "+ props.bookings);
