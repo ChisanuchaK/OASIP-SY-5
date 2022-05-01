@@ -1,9 +1,3 @@
-Kim.12345678
-
- git clone https://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@github.com/ChisanuchaK/OASIP-SY-5.git
-
-
-
 name: timeup-runner
 
 on:
