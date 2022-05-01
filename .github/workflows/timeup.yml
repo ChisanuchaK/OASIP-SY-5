@@ -18,9 +18,9 @@ jobs:
     - uses: actions/checkout@v2
     - run: docker-compose rm -svf frontend backend
     - run: docker ps
-    - run: pwd
+    - run: pwd/home/spadmin/OASIP-SY-5/actions-runner/_work/OASIP-SY-5/OASIP-SY-5
     - run: docker image rmi quay.io/chisanuchakim/oasip-sy-5-backend  quay.io/chisanuchakim/oasip-sy-5-fontend frontend backend
-    - run: cd /home/student209/OASIP-SY-5/actions-runner/_work/OASIP-SY-5/OASIP-SY-5
+    - run: cd 
     - run: docker build -t backend -f backend.Dockerfile .
     - run: docker tag backend quay.io/chisanuchakim/oasip-sy-5-backend
     - run: docker push quay.io/chisanuchakim/oasip-sy-5-backend
