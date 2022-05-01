@@ -24,7 +24,7 @@ public class BookingMoreDetailDTO {
     private String eventCategoryName;
     private String bookingName;
     private String bookingEmail;
-    private String EventNote;
+    private String eventNotes;
     public String  getEventCategoryName(){
         return eventCategory.getEventCategoryName();
     }
