@@ -18,6 +18,6 @@ public class BookingDTO {
     @JsonFormat(pattern="yyyy-MM-dd HH:mm")
     private Date eventStartTime;
     private Integer eventDuration;
-    private EventCategory eventCategoryName;
+    private EventCategory eventCategory;
     private String bookingName;
     }
