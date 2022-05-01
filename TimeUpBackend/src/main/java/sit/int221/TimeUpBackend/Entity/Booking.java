@@ -28,7 +28,7 @@ public class Booking {
 
     @ManyToOne
     @JoinColumn(name = "eventCategory"  , nullable = false)
-    private EventCategory eventCategory;
+    private EventCategory eventCategoryName;
 
 
     @Column(name = "eventStartTime" ,nullable = false )
