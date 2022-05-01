@@ -1,36 +1,30 @@
 <script setup>
-import {ref , onBeforeMount} from 'vue'
+import {ref , onBeforeMount,computed} from 'vue'
 import DialogDetails from '../views/DialogDetails.vue';
+import moment from 'moment'
 
 defineEmits(['deleteBooking'])
 const props = defineProps({
     bookings: {
         type: Array,
         require: true
-    }
+    },
 })
 
-const bookingsArray = ref([]);
+const superList = computed(()=> props.bookings)  ;
+
+onBeforeMount(async () => {
+console.log(superList);
+})
+
+// setTimeout(1,()=>console.log("aa"+superList))
 
 // console.log(" Show Bookings "+ props.bookings);
 
-const getBookingId = async (bookingId)=>{
- const res = await fetch(`${import.meta.env.VITE_BASE_URL}/booking/${bookingId}`);
- if(res.status === 200){
- bookingsArray.value = await res.json();
- }else{
- console.log('not found');
- }
-}
-
-onBeforeMount(async () => {
- await getBookingId();
- console.log(bookingsArray.value);
-})
-
 const dialogs = ref(false);
 
-const changeDialog = () => { 
+const changeDialog = (booking) => {
+    booking.status = !booking.status 
     dialogs.value = !dialogs.value
     console.log(dialogs.value);  }
 
@@ -49,16 +43,18 @@ const changeDialog = () => {
             </div>
 
             <div v-else class="grid grid-flow-row grid-cols-2">
-                <div v-for="(booking, index) in bookings" :key="index"
+                <div v-for="(booking, index) in superList" :key="index"
                     class="mx-24 my-10 bg-greentea border-2 border-black rounded-lg text-xl p-5">
                     <div class="grid grid-flow-row grid-cols9 flex p-1">
 
                         <div class="row-start-1 col-start-1 col-end-2 p-1 mb-1.5 bg-white rounded-lg">Date</div>
-                        <div class="row-start-1 col-start-3 col-end-9 p-1 mb-1.5 bg-white rounded-lg">{{ booking.date }}
+                        <div class="row-start-1 col-start-3 col-end-9 p-1 mb-1.5 bg-white rounded-lg">{{ moment.utc(booking.eventStartTime).format("DD MMMM YYYY") }}
+                        <!-- <div class="row-start-1 col-start-3 col-end-9 p-1 mb-1.5 bg-white rounded-lg">{{ booking.eventStartTime.split(" ")[0] }} -->
                         </div>
 
                         <div class="row-start-2 col-start-1 col-end-2 p-1 mb-1.5 bg-white rounded-lg">StartTime</div>
-                        <div class="row-start-2 col-start-3 col-end-9 p-1 mb-1.5 bg-white rounded-lg">{{ booking.time }}
+                        <div class="row-start-2 col-start-3 col-end-9 p-1 mb-1.5 bg-white rounded-lg">{{ moment.utc(booking.eventStartTime).format("h:mm") }}
+                        <!-- <div class="row-start-2 col-start-3 col-end-9 p-1 mb-1.5 bg-white rounded-lg">{{  booking.eventStartTime.split(" ")[1] }} -->
                         </div>
 
                         <div class="row-start-3 col-start-1 col-end-2 p-1 mb-1.5 bg-white rounded-lg">Duration</div>
@@ -67,7 +63,7 @@ const changeDialog = () => {
                         }} min </div>
 
                         <div class="row-start-4 col-start-1 col-end-2 p-1 mb-1.5 bg-white rounded-lg">CategoryName</div>
-                        <div class="row-start-4 col-start-3 col-end-9 p-1 mb-1.5 bg-white rounded-lg ">{{ booking.eventCategoryName.eventCategoryName
+                        <div class="row-start-4 col-start-3 col-end-9 p-1 mb-1.5 bg-white rounded-lg ">{{ booking.eventCategoryName
                         }}</div>
 
                         <div class="row-start-5 col-start-1 col-end-2 p-1 mb-1.5 bg-white rounded-lg">BookingName</div>
@@ -77,11 +73,16 @@ const changeDialog = () => {
                         <div
                             class="col-start-2 row-start-1 row-end-6  2xl:ml-4 xl:ml-1 -mr-6 w-3/12 mb-1">
                         </div>
+                            
+                     <button class="mt-5" @click="changeDialog(booking)">See Details</button>
 
-                      <button class="mt-5" @click="changeDialog">See Details</button>
+                       <!-- <router-link :to="{ name: 'Details', params: { bookingId: booking.idBooking } }"> <button class="ml-5 mt-5">See Details</button> </router-link> -->
+
+                    <!-- <router-link :to="{name: 'DialogDetails',param: { BookingId: booking.idBooking }}"> </router-link> -->
                     <!-- <button class="mt-5 col-start-5">edit</button> -->
                     <button class="mt-5 col-start-7" @click="$emit('deleteBooking', booking.id)">delete</button>
-                    <DialogDetails v-if="dialogs" @close="changeDialog" :bookings="booking"/>
+                    
+                    <DialogDetails v-if="booking.status" @close="changeDialog(booking)" :bookings="booking"/>
                         
                         <!-- <div class="grid grid-flow-row grid-cols-5 flex p-1 bg-white rounded-lg ">
                             <p class="col-start-1">Date </p>
