@@ -22,6 +22,7 @@ public class BookingService {
     private BookingRepository bookingRepository;
     private ModelMapper modelMapper = new ModelMapper();
 
+//    get
     public List<BookingDTO> getAllBookingDTO(){
         List<Booking>bookings= bookingRepository.findAll();
         return bookings.stream().map(e -> modelMapper.map(e, BookingDTO.class)).collect(Collectors.toList());
@@ -35,8 +36,19 @@ public class BookingService {
         Booking bookings= bookingRepository.findById(id).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
         return modelMapper.map(bookings , BookingMoreDetailDTO.class);
     }
+
+
+// post
     public Booking create(Booking newBooking){
+
         return bookingRepository.saveAndFlush(newBooking);
     }
 
+// delete
+    public void deleteById(Integer idBooking){
+        bookingRepository.deleteById(idBooking);
+    }
+    public void deleteAll(){
+        bookingRepository.deleteAll();
+    }
 }

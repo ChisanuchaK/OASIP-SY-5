@@ -22,4 +22,8 @@ public class EventCategory {
 
     @Column(name = "eventDuration" , nullable = false)
     private Integer eventDuration;
+
+    public String getEventCategoryName() {
+        return eventCategoryName;
+    }
 }

@@ -43,6 +43,16 @@ public class BookingController {
     public Booking createBooking(@RequestBody Booking newBooking){
         return bookingService.create(newBooking);
     }
+
+    @DeleteMapping("/{idBooking}")
+    public  void DeleteBookingById(@PathVariable Integer idBooking){
+        bookingService.deleteById(idBooking);
+    }
+    @DeleteMapping("")
+    public  void DeleteAllBooking(){
+        bookingService.deleteAll();
+    }
+
 }
 
 
