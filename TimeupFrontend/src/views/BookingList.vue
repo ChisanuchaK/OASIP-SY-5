@@ -1,41 +1,31 @@
 <script setup>
-import { ref, onBeforeMount } from 'vue'
+import { ref, onBeforeMount, onMounted } from 'vue'
+import moment from 'moment';
 import NavbarTop from "../components/navbarTop.vue";
 import NavbarBottom from "../components/navbarBottom.vue";
 import LoopBookingList from "../components/LoopBookingList.vue";
+import { getBookings } from '../stores/book.js';
 const bookings = ref([]);
-// const startTime = 
+
+const dates = ref([]);
 
 
-
-
-// Delete method
-const removeBooking = async (deleteBookingId)=>{
-  const res = await fetch(`http://localhost:3001/BookingLists/${deleteBookingId}`,{
-    method: 'DELETE'
-  })
-  if(res.status === 200){
-    bookings.value = bookings.value.filter((BookingInBookings)=> (BookingInBookings.id != deleteBookingId) )
-    console.log('deleted success');
-  }else{
-    console.log('error , cannot delete');
-  }
-}
-
-//Get
-const getBookings = async () => {
-  const res = await fetch(`${import.meta.env.VITE_BASE_URL}/booking`)
-  if (res.status === 200) {
-    bookings.value = await res.json()
-    console.log(bookings.value)
-    return bookings.value
-  } else  console.log('error to getBookings');
-}
+// const eventStartTime = "2022-06-27 02:30";
+// const dates = moment.utc(eventStartTime).format("DD MMMM YYYY");
+// const startTimes = moment.utc(eventStartTime).format("h:mm");
+// console.log(dates);
+// console.log(startTimes);
 
 onBeforeMount(async () => {
-  await getBookings();
-  console.log(bookings.value);
+ bookings.value = await getBookings();
+ bookings.value.map((s)=>{
+ s.status = ref(false)
 })
+  console.log(bookings.value);
+  // dates.value = await bookings.value.idBooking
+  // console.log(dates.value);
+})
+
 
 </script>
  
@@ -43,7 +33,8 @@ onBeforeMount(async () => {
 
 <div>
 <NavbarTop/>
-       <LoopBookingList :bookings="bookings" @deleteBooking="removeBooking"/>
+       <!-- <LoopBookingList :bookings="bookings" @deleteBooking="removeBooking"/> -->
+       <LoopBookingList :bookings="bookings" />
 <NavbarBottom/>
 </div>
 

@@ -1,4 +1,7 @@
 <script setup>
+import {ref,onBeforeMount} from 'vue'
+import { getBookingId } from "../stores/book.js";
+import moment from 'moment';
 
 defineEmits(["close"])
 const props = defineProps({
@@ -10,7 +13,30 @@ const props = defineProps({
 })
 console.log(props.bookings);
 
+const bookingsDetails = ref([]);
+
+
+// const getCatagoryName = async ()=> {
+//     let s = "kuy";
+//     setTimeout(()  => {
+//   s = bookingsDetails.value.eventCategory.eventCategoryName
+// }, "100")
+//     console.log(s);
+//     return s;
+ 
+// }
+
+onBeforeMount(async () => {
+   bookingsDetails.value = await getBookingId(props.bookings.idBooking);
+    console.log(bookingsDetails.value);
+    // Time.value = bookingsArray.value.eventStartTime
+    // console.log(Time.value);
+    // date.value = moment.utc(Time.value).format("DD MMMM YYYY")
+    // startTime.value = moment.utc(Time.value).format("h:mm")
+})
+
 // @click.self="$emit('closeAll')"
+//  v-if="booking.idBooking == bookings.idBooking"
 </script>
  
 <template>
@@ -26,38 +52,38 @@ console.log(props.bookings);
                     <div class="grid grid-flow-row grid-cols9 flex p-1">
 
                         <div class="row-start-1 col-start-1 col-end-2 p-1 mb-1.5 bg-white rounded-lg">Date</div>
-                        <div class="row-start-1 col-start-3 col-end-9 p-1 mb-1.5 bg-white rounded-lg ">{{ bookings.date }}
+                        <div class="row-start-1 col-start-3 col-end-9 p-1 mb-1.5 bg-white rounded-lg ">{{ moment.utc(bookingsDetails.eventStartTime).format("DD MMMM YYYY") }}
                         </div>
 
                         <div class="row-start-2 col-start-1 col-end-2 p-1 mb-1.5 bg-white rounded-lg">StartTime</div>
-                        <div class="row-start-2 col-start-3 col-end-9 p-1 mb-1.5 bg-white rounded-lg">{{ bookings.time }}
+                        <div class="row-start-2 col-start-3 col-end-9 p-1 mb-1.5 bg-white rounded-lg">{{moment.utc(bookingsDetails.eventStartTime).format("h:mm") }}
                         </div>
 
                         <div class="row-start-3 col-start-1 col-end-2 p-1 mb-1.5 bg-white rounded-lg">Duration</div>
                         <div class="row-start-3 col-start-3 col-end-9 p-1 mb-1.5 bg-white rounded-lg">{{
-                                bookings.eventDuration
+                                bookingsDetails.eventDuration
                         }}</div>
 
                         <div class="row-start-4 col-start-1 col-end-2 p-1 mb-1.5 bg-white rounded-lg">Category</div>
-                        <div class="row-start-4 col-start-3 col-end-9 p-1 mb-1.5 bg-white rounded-lg ">{{ bookings.eventCategoryName.eventCategoryName
+                        <div class="row-start-4 col-start-3 col-end-9 p-1 mb-1.5 bg-white rounded-lg ">{{ bookingsDetails.eventCategoryName
                         }}</div>
 
                         <div class="row-start-5 col-start-1 col-end-2 p-1 mb-1.5 bg-white rounded-lg">BookingName</div>
-                        <div class="row-start-5 col-start-3 col-end-9 p-1 mb-1.5 bg-white rounded-lg">{{ bookings.bookingName
+                        <div class="row-start-5 col-start-3 col-end-9 p-1 mb-1.5 bg-white rounded-lg">{{ bookingsDetails.bookingName
                         }}</div>
                         
                         <div class="row-start-6 col-start-1 col-end-2 p-1 mb-1.5 bg-white rounded-lg">Email</div>
-                        <div class="row-start-6 col-start-3 col-end-9 p-1 mb-1.5 bg-white rounded-lg">{{ bookings.email
+                        <div class="row-start-6 col-start-3 col-end-9 p-1 mb-1.5 bg-white rounded-lg">{{ bookingsDetails.bookingEmail
                         }}</div>
 
                         <div class="row-start-7 col-start-1 col-end-2 p-1 mb-1.5 bg-white rounded-lg">EventNotes</div>
-                        <div class="row-start-7 col-start-3 col-end-9 p-1 mb-1.5 bg-white rounded-lg">{{ bookings.eventNote
+                        <div class="row-start-7 col-start-3 col-end-9 p-1 mb-1.5 bg-white rounded-lg">{{ bookingsDetails.eventNote ? bookingsDetails.eventNote : "-"
                         }}</div>
 
                         <div class="row-start-8 col-start-1 col-end-2 p-1 mb-1.5 bg-white rounded-lg">Id</div>
-                        <div class="row-start-8 col-start-3 col-end-9 p-1 mb-1.5 bg-white rounded-lg">{{ bookings.idBooking
+                        <div class="row-start-8 col-start-3 col-end-9 p-1 mb-1.5 bg-white rounded-lg">{{ bookingsDetails.idBooking
                         }}</div>
-
+                        
 
                         <div
                             class="col-start-2 ml-4 mr-4 w-3/12">

@@ -2,6 +2,7 @@ import {createRouter, createWebHistory} from 'vue-router';
 import Home from "../views/Home.vue";
 import BookingList from "../views/BookingList.vue"
 import DialogDetails from "../views/DialogDetails.vue"
+import Details from "../views/Details.vue";
 const history = createWebHistory();
 const routes = [
     {
@@ -13,9 +14,13 @@ const routes = [
         name: "BookingList",
         component:BookingList
     },{
-        path:"/bookingList/:BookingId",
+        path:"/bookingList/d",
         name: 'DialogDetails',
         component: DialogDetails
+    },,{
+        path:"/bookingList/details/:bookingId",
+        name: 'Details',
+        component: Details
     }
 ];
 

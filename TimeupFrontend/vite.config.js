@@ -7,7 +7,7 @@ export default defineConfig({
   server: {
     proxy: {
       "/api": {
-        target: "http://ip21sy5.sit.kmutt.ac.th/",
+        target: "http://ip21sy5.sit.kmutt.ac.th",
         changeOrigin: true,
         secure: false,
         // rewrite: (path) => path.replace(/^\/api/, ""),
