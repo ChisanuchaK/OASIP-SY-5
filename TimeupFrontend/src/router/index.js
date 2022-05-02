@@ -17,11 +17,7 @@ const routes = [
         path:"/bookingList/d",
         name: 'DialogDetails',
         component: DialogDetails
-<<<<<<< HEAD
     },{
-=======
-    },,{
->>>>>>> 8ab1cd4033f6bafe8429f3ed98b3dda711ee5860
         path:"/bookingList/details/:bookingId",
         name: 'Details',
         component: Details

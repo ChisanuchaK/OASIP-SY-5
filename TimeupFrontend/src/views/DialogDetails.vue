@@ -77,11 +77,7 @@ onBeforeMount(async () => {
                         }}</div>
 
                         <div class="row-start-7 col-start-1 col-end-2 p-1 mb-1.5 bg-white rounded-lg">EventNotes</div>
-<<<<<<< HEAD
                         <div class="row-start-7 col-start-3 col-end-9 p-1 mb-1.5 bg-white rounded-lg">{{ bookingsDetails.eventNotes == null ? "-" : bookingsDetails.eventNotes
-=======
-                        <div class="row-start-7 col-start-3 col-end-9 p-1 mb-1.5 bg-white rounded-lg">{{ bookingsDetails.eventNote ? bookingsDetails.eventNote : "-"
->>>>>>> 8ab1cd4033f6bafe8429f3ed98b3dda711ee5860
                         }}</div>
 
                         <div class="row-start-8 col-start-1 col-end-2 p-1 mb-1.5 bg-white rounded-lg">Id</div>
