@@ -70,7 +70,7 @@ onBeforeMount(async () => {
                         <div class="row-start-7 col-start-3">{{ bookingsArray.bookingEmail }}</div>
 
                         <div class="row-start-8 col-start-1">EventNote</div>
-                        <div class="row-start-8 col-start-3">{{ bookingsArray.eventNote }}</div>
+                        <div class="row-start-8 col-start-3">{{ bookingsArray.eventNotes }}</div>
                         <!-- <div v-else class="row-start-8 col-start-3"> - </div> -->
 
 

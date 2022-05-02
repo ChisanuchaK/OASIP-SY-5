@@ -54,8 +54,9 @@ SET SQL_MODE=@OLD_SQL_MODE;
 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS;
 SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS;
 
-create user 'admin'@'10.4.56.122' IDENTIFIED  by 'admin123';
-create user 'dev'@'10.4.56.122' IDENTIFIED  by 'dev123';
+create user 'admin'@'%' IDENTIFIED  by 'admin123';
+create user 'dev'@'%' IDENTIFIED  by 'dev123';
 
- GRANT ALL PRIVILEGES on *.* to 'admin'@'10.4.56.122';
- grant ALL PRIVILEGES on TimeUp.* to 'dev'@'10.4.56.122';
+ GRANT ALL PRIVILEGES on *.* to 'admin'@'%';
+ grant ALL PRIVILEGES on TimeUp.booking to 'dev'@'%';
+  
