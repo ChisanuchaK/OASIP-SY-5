@@ -21,7 +21,9 @@ onBeforeMount(async () => {
  bookings.value.map((s)=>{
  s.status = ref(false)
 })
+
   console.log(bookings.value);
+  console.log(bookings.value[0].eventStartTime);
   // dates.value = await bookings.value.idBooking
   // console.log(dates.value);
 })
@@ -34,7 +36,10 @@ onBeforeMount(async () => {
 <div>
 <NavbarTop/>
        <!-- <LoopBookingList :bookings="bookings" @deleteBooking="removeBooking"/> -->
-       <LoopBookingList :bookings="bookings" />
+       <!-- <LoopBookingList :bookings="bookings" /> -->
+       <LoopBookingList :bookings="bookings.sort(
+         (a,b)=> new Date(b.eventStartTime) - new Date(a.eventStartTime) 
+       )" />
 <NavbarBottom/>
 </div>
 

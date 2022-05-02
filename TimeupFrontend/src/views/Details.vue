@@ -27,8 +27,7 @@ const goBack = () => appRouter.go(-1);
 //    }
 
 onBeforeMount(async () => {
-    const res = await getBookingId(params.bookingId);
-    bookingsArray.value = res
+    bookingsArray.value = await getBookingId(params.bookingId);
     console.log(bookingsArray.value);
     Time.value = bookingsArray.value.eventStartTime
     console.log(Time.value);
@@ -70,7 +69,7 @@ onBeforeMount(async () => {
                         <div class="row-start-7 col-start-3">{{ bookingsArray.bookingEmail }}</div>
 
                         <div class="row-start-8 col-start-1">EventNote</div>
-                        <div class="row-start-8 col-start-3">{{ bookingsArray.eventNote }}</div>
+                        <div class="row-start-8 col-start-3">{{ bookingsArray.eventNotes }}</div>
                         <!-- <div v-else class="row-start-8 col-start-3"> - </div> -->
 
 
