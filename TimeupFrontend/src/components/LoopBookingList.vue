@@ -76,7 +76,12 @@ const changeDialog = (booking) => {
                             
                      <button class="mt-5" @click="changeDialog(booking)">See Details</button>
 
+<<<<<<< HEAD
                     <!-- <router-link :to="{ name: 'Details', params: { bookingId: booking.idBooking } }"> <button class="ml-5 mt-5">See Details</button> </router-link> -->
+=======
+                       <!-- <router-link :to="{ name: 'Details', params: { bookingId: booking.idBooking } }"> <button class="ml-5 mt-5">See Details</button> </router-link> -->
+
+>>>>>>> 8ab1cd4033f6bafe8429f3ed98b3dda711ee5860
                     <!-- <router-link :to="{name: 'DialogDetails',param: { BookingId: booking.idBooking }}"> </router-link> -->
                     <!-- <button class="mt-5 col-start-5">edit</button> -->
                     <button class="mt-5 col-start-7" @click="$emit('deleteBooking', booking.id)">delete</button>

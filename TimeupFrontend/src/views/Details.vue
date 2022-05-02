@@ -27,7 +27,12 @@ const goBack = () => appRouter.go(-1);
 //    }
 
 onBeforeMount(async () => {
+<<<<<<< HEAD
     bookingsArray.value = await getBookingId(params.bookingId);
+=======
+    const res = await getBookingId(params.bookingId);
+    bookingsArray.value = res
+>>>>>>> 8ab1cd4033f6bafe8429f3ed98b3dda711ee5860
     console.log(bookingsArray.value);
     Time.value = bookingsArray.value.eventStartTime
     console.log(Time.value);

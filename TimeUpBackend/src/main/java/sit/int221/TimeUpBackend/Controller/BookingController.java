@@ -32,18 +32,27 @@ public class BookingController {
     public List<BookingDTO> getAllBooking(){
         return bookingService.getAllBookingDTO();
     }
-    @GetMapping("/test")
-    public List<Booking> getAllBookingTest(){
-        return bookingRepository.findAll();
+
+    @GetMapping("/{id}")
+    public BookingMoreDetailDTO getBookingById(@PathVariable Integer id){
+        return bookingService.getBookingDetailDTOById(id);
     }
-
-
 
     @PostMapping("")
     @ResponseStatus(HttpStatus.CREATED)
     public Booking createBooking(@RequestBody Booking newBooking){
         return bookingService.create(newBooking);
     }
+
+    @DeleteMapping("/{idBooking}")
+    public  void DeleteBookingById(@PathVariable Integer idBooking){
+        bookingService.deleteById(idBooking);
+    }
+    @DeleteMapping("")
+    public  void DeleteAllBooking(){
+        bookingService.deleteAll();
+    }
+
 }
 
 
