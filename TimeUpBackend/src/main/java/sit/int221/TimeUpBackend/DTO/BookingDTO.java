@@ -21,9 +21,11 @@ public class BookingDTO {
     private Integer eventDuration;
     @JsonIgnore
     private EventCategory eventCategory;
-    private String eventCategoryName;
     private String bookingName;
     public String  getEventCategoryName(){
         return eventCategory.getEventCategoryName();
     }
+    public Integer getEventCategoryDuration(){return eventCategory.getEventDuration();}
     }
+
+
