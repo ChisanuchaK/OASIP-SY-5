@@ -35,9 +35,6 @@ public class Booking {
     @JsonFormat(pattern="yyyy-MM-dd HH:mm")
     private Date eventStartTime;
 
-    @Column(name = "eventEndTime" ,nullable = false )
-    @JsonFormat(pattern="yyyy-MM-dd HH:mm")
-    private Date eventEndTime;
 
     @Column(name = "eventDuration" , nullable = false)
     private Integer eventDuration;
