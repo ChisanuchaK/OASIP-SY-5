@@ -54,10 +54,3 @@ ENGINE = InnoDB;
 SET SQL_MODE=@OLD_SQL_MODE;
 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS;
 SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS;
-
-create user 'admin'@'%' IDENTIFIED  by 'admin123';
-create user 'dev'@'%' IDENTIFIED  by 'dev123';
-
- GRANT ALL PRIVILEGES on *.* to 'admin'@'%';
- grant ALL PRIVILEGES on TimeUp.booking to 'dev'@'%';
-  

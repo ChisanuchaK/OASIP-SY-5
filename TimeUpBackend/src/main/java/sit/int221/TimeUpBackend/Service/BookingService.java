@@ -40,7 +40,7 @@ public class BookingService {
 
 // post
     public Booking create(Booking newBooking){
-
+        
         return bookingRepository.saveAndFlush(newBooking);
     }
 
