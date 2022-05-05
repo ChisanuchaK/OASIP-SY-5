@@ -53,7 +53,7 @@ onBeforeMount(async () => {
             <div class="">
                 <div
                     class="relative bg-white border-8 border-gray rounded-lg text-xl p-5">
-                     <img class="absolute top-0 right-0 h-16 w-16 text-4xl text-lg font-normal h-[30px] w-[30px] mt-3 mr-7 cursor-pointer" @click="$emit('onCloseDetails')" src="images/cancel.png" alt="cancel"> 
+                     <img class="absolute top-0 right-0 h-16 w-16 text-4xl text-lg font-normal h-[30px] w-[30px] mt-3 mr-7 cursor-pointer" @click="$emit('onCloseDetails')" src="/images/cancel.png" alt="cancel"> 
                     <div class="grid grid-flow-row grid-cols-6 flex p-1 gap-3 py-10">
                         
                         <div class="row-start-1 col-start-1 col-end-2 p-1  bg-gray rounded-lg">BookingName</div>
