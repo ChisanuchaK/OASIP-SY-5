@@ -8,5 +8,5 @@ import sit.int221.TimeUpBackend.Entity.EventCategory;
 import java.util.List;
 
 public interface BookingRepository extends JpaRepository<Booking , Integer> {
-
+    List<Booking> findBookingByEventCategoryEventCategoryName(String CategoryName);
 }

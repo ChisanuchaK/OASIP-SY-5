@@ -17,7 +17,6 @@ import java.util.Date;
 @AllArgsConstructor
 public class BookingMoreDetailDTO {
     private Integer idBooking;
-    @JsonFormat(pattern="yyyy-MM-dd HH:mm")
     private Instant eventStartTime;
     private Integer eventDuration;
     @JsonIgnore

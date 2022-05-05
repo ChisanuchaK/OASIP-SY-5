@@ -34,7 +34,6 @@ public class Booking {
 
 
     @Column(name = "eventStartTime" ,nullable = false )
-    @JsonFormat(pattern="yyyy-MM-dd HH:mm")
     private Instant eventStartTime;
 
 
@@ -43,6 +42,7 @@ public class Booking {
 
     @Column(name = "eventNotes", length = 500)
     private String eventNotes;
+
 
 
 }
