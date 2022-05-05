@@ -7,6 +7,8 @@ import lombok.Setter;
 
 import javax.persistence.*;
 import java.sql.Time;
+import java.sql.Timestamp;
+import java.time.Instant;
 import java.util.Date;
 
 @Entity
@@ -33,7 +35,7 @@ public class Booking {
 
     @Column(name = "eventStartTime" ,nullable = false )
     @JsonFormat(pattern="yyyy-MM-dd HH:mm")
-    private Date eventStartTime;
+    private Instant eventStartTime;
 
 
     @Column(name = "eventDuration" , nullable = false)
