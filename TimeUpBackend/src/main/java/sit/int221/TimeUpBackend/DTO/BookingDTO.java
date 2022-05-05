@@ -8,6 +8,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import sit.int221.TimeUpBackend.Entity.EventCategory;
 
+import java.time.Instant;
 import java.util.Date;
 
 @Getter
@@ -17,7 +18,7 @@ import java.util.Date;
 public class BookingDTO {
     private Integer idBooking;
     @JsonFormat(pattern="yyyy-MM-dd HH:mm")
-    private Date eventStartTime;
+    private Instant eventStartTime;
     private Integer eventDuration;
     @JsonIgnore
     private EventCategory eventCategory;
