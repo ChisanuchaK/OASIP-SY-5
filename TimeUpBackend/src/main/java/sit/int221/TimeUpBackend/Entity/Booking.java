@@ -15,6 +15,7 @@ import java.util.Date;
 @Setter
 @Getter
 @Table(name = "booking")
+
 public class Booking {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

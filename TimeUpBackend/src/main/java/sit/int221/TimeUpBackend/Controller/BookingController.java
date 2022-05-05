@@ -3,6 +3,7 @@ package sit.int221.TimeUpBackend.Controller;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import sit.int221.TimeUpBackend.DTO.BookingDTO;
 import sit.int221.TimeUpBackend.DTO.BookingMoreDetailDTO;
@@ -40,7 +41,7 @@ public class BookingController {
 
     @PostMapping("")
     @ResponseStatus(HttpStatus.CREATED)
-    public Booking createBooking(@RequestBody Booking newBooking){
+    public ResponseEntity createBooking(@RequestBody Booking newBooking){
         return bookingService.create(newBooking);
     }
 

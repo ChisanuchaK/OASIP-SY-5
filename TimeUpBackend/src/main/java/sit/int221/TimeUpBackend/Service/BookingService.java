@@ -2,8 +2,8 @@ package sit.int221.TimeUpBackend.Service;
 
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 import sit.int221.TimeUpBackend.DTO.BookingDTO;
@@ -11,7 +11,6 @@ import sit.int221.TimeUpBackend.DTO.BookingMoreDetailDTO;
 import sit.int221.TimeUpBackend.Entity.Booking;
 import sit.int221.TimeUpBackend.Repository.BookingRepository;
 
-import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -39,15 +38,43 @@ public class BookingService {
 
 
 // post
-    public Booking create(Booking newBooking){
-        return bookingRepository.saveAndFlush(newBooking);
+
+    public ResponseEntity create(Booking newBooking) {
+        Booking booking = newBooking;
+        List<Booking> checkCompare = bookingRepository.findBookingByEventCategoryEventCategoryName(booking.getEventCategory().getEventCategoryName());
+        if (checkCompare.stream().count() == 0 ){
+                 bookingRepository.save(newBooking);
+                 return ResponseEntity.ok(HttpStatus.OK);
+        }
+//       return ResponseEntity.status(400).body(checkTimeOverLap2(checkCompare , newBooking));
+        if (!checkTimeOverLap(checkCompare , newBooking)){
+            bookingRepository.save(newBooking);
+            return ResponseEntity.status(201).body("Inserted Successfully!");
+        }
+        else {
+            return ResponseEntity.status(400).body("Can't Insert Date is Overlap!!");
+        }
     }
 
+    public boolean checkTimeOverLap(List<Booking> allBooking , Booking booking ){
+        for(Booking book : allBooking){
+            if ((booking.getEventStartTime().toEpochMilli() >= book.getEventStartTime().toEpochMilli() && booking.getEventStartTime().toEpochMilli() <= endTimeMs(book))){
+                return true;
+            }
+        }
+       return false;
+    }
+
+    public long endTimeMs(Booking time){
+        return (time.getEventStartTime().toEpochMilli() + (time.getEventCategory().getEventDuration() * 60000));
+    }
+
+
 // delete
-    public void deleteById(Integer idBooking){
-        bookingRepository.deleteById(idBooking);
+        public void deleteById (Integer idBooking){
+            bookingRepository.deleteById(idBooking);
+        }
+        public void deleteAll () {
+            bookingRepository.deleteAll();
+        }
     }
-    public void deleteAll(){
-        bookingRepository.deleteAll();
-    }
-}
