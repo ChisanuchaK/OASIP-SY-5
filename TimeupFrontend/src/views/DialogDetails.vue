@@ -56,7 +56,7 @@ onBeforeMount(async () => {
                         </div>
 
                         <div class="row-start-2 col-start-1 col-end-2 p-1 mb-1.5 bg-white rounded-lg">StartTime</div>
-                        <div class="row-start-2 col-start-3 col-end-9 p-1 mb-1.5 bg-white rounded-lg">{{moment.utc(bookingsDetails.eventStartTime).format("h:mm") }}
+                        <div class="row-start-2 col-start-3 col-end-9 p-1 mb-1.5 bg-white rounded-lg">{{moment.utc(bookingsDetails.eventStartTime).format("h:mm a") }}
                         </div>
 
                         <div class="row-start-3 col-start-1 col-end-2 p-1 mb-1.5 bg-white rounded-lg">Duration</div>
