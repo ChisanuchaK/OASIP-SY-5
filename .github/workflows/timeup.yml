@@ -28,3 +28,4 @@ jobs:
     - run: docker tag frontend quay.io/chisanuchakim/oasip-sy-5-fontend
     - run: docker push quay.io/chisanuchakim/oasip-sy-5-fontend
     - run: docker-compose up -d backend frontend
+    - run: chmod 766 mysql-data
