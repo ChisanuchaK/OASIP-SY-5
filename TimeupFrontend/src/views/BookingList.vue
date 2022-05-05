@@ -19,7 +19,15 @@ const dates = ref([]);
 onBeforeMount(async () => {
  bookings.value = await getBookings();
  bookings.value.map((s)=>{
- s.status = ref(false)
+ s.statusClickSeeDetails = ref(false)
+ 
+ s.statusClickEdit = ref(false)
+ s.statusCancelEdit = ref(false)
+ s.statusConfirmEdit = ref(false)
+
+ s.statusClickDelete = ref(false)
+ s.statusCancelEdit = ref(false)
+ s.statusConfirmEdit = ref(false)
 })
 
   console.log(bookings.value);

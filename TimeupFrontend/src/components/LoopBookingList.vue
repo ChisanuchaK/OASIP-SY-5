@@ -1,7 +1,8 @@
 <script setup>
 import {ref , onBeforeMount,computed} from 'vue'
-import DialogDetails from '../views/DialogDetails.vue';
 import moment from 'moment'
+import DialogDetails from '../views/DialogDetails.vue';
+
 
 defineEmits(['deleteBooking'])
 const props = defineProps({
@@ -15,18 +16,19 @@ const superList = computed(()=> props.bookings)  ;
 
 onBeforeMount(async () => {
 console.log(superList);
+console.log(props.bookings);
+// setTimeout(1,()=>console.log("aa"+superList))
+// console.log(" Show Bookings "+ props.bookings);
 })
 
-// setTimeout(1,()=>console.log("aa"+superList))
+// const dialogs = ref(false);
 
-// console.log(" Show Bookings "+ props.bookings);
-
-const dialogs = ref(false);
-
-const changeDialog = (booking) => {
-    booking.status = !booking.status 
-    dialogs.value = !dialogs.value
-    console.log(dialogs.value);  }
+const changeSeeDetailsDialog = (booking) => {
+    booking.statusClickSeeDetails = !booking.statusClickSeeDetails
+    console.log(booking.statusClickSeeDetails);
+    // dialogs.value = !dialogs.value
+    // console.log(dialogs.value);
+      }
 
 </script>
  
@@ -35,55 +37,58 @@ const changeDialog = (booking) => {
     <div>
         <div>
             <div class="text-center text-xl mt-20 mb-10">
-                <h1 class="uppercase font-bold">Booking Lists</h1>
+                <h1 class="uppercase font-bold text-[#ffffff]">Booking Lists</h1>
             </div>
 
             <div v-if="bookings == '' " class="flex flex-warp justify-center bg-emerald-800 text-white text-xl">
                     No scheduled Events
             </div>
 
-            <div v-else class="grid grid-flow-row grid-cols-2">
+            <div v-else class="grid grid-flow-row grid-cols-3">
                 <div v-for="(booking, index) in superList" :key="index"
-                    class="mx-24 my-10 bg-greentea border-2 border-black rounded-lg text-xl p-5">
-                    <div class="grid grid-flow-row grid-cols9 flex p-1">
+                    class="mx-24 my-10 bg-white border-8 border-[#6D6D6D] rounded-lg text-xl p-5">
+                    <div class="grid grid-flow-row grid-cols-8 flex p-1 ">
 
-                        <div class="row-start-1 col-start-1 col-end-2 p-1 mb-1.5 bg-white rounded-lg">Date</div>
-                        <div class="row-start-1 col-start-3 col-end-9 p-1 mb-1.5 bg-white rounded-lg">{{ moment.utc(booking.eventStartTime).format("DD MMMM YYYY") }}
+                        <div class="row-start-1 col-start-1 col-end-3 p-1 mb-1.5 bg-[#E2DDDD] rounded-lg -mr-12">Date</div>
+                        <div class="row-start-1 col-start-3 col-end-9 p-1 mb-1.5 bg-[#E2DDDD] rounded-lg ml-16">{{ moment.utc(booking.eventStartTime).format("DD MMMM YYYY") }}
                         <!-- <div class="row-start-1 col-start-3 col-end-9 p-1 mb-1.5 bg-white rounded-lg">{{ booking.eventStartTime.split(" ")[0] }} -->
                         </div>
 
-                        <div class="row-start-2 col-start-1 col-end-2 p-1 mb-1.5 bg-white rounded-lg">StartTime</div>
-                        <div class="row-start-2 col-start-3 col-end-9 p-1 mb-1.5 bg-white rounded-lg">{{ moment.utc(booking.eventStartTime).format("h:mm") }}
+                        <div class="row-start-2 col-start-1 col-end-3 p-1 mb-1.5 bg-[#E2DDDD] rounded-lg -mr-12">StartTime</div>
+                        <div class="row-start-2 col-start-3 col-end-9 p-1 mb-1.5 bg-[#E2DDDD] rounded-lg ml-16">{{ moment.utc(booking.eventStartTime).format("h:mm A")  }}
                         <!-- <div class="row-start-2 col-start-3 col-end-9 p-1 mb-1.5 bg-white rounded-lg">{{  booking.eventStartTime.split(" ")[1] }} -->
                         </div>
 
-                        <div class="row-start-3 col-start-1 col-end-2 p-1 mb-1.5 bg-white rounded-lg">Duration</div>
-                        <div class="row-start-3 col-start-3 col-end-9 p-1 mb-1.5 bg-white rounded-lg">{{
+                        <div class="row-start-3 col-start-1 col-end-3 p-1 mb-1.5 bg-[#E2DDDD] rounded-lg -mr-12">Duration</div>
+                        <div class="row-start-3 col-start-3 col-end-9 p-1 mb-1.5 bg-[#E2DDDD] rounded-lg ml-16">{{
                                 booking.eventDuration
                         }} min </div>
 
-                        <div class="row-start-4 col-start-1 col-end-2 p-1 mb-1.5 bg-white rounded-lg">CategoryName</div>
-                        <div class="row-start-4 col-start-3 col-end-9 p-1 mb-1.5 bg-white rounded-lg ">{{ booking.eventCategoryName
+                        <div class="row-start-4 col-start-1 col-end-3 p-1 mb-1.5 bg-[#E2DDDD] rounded-lg -mr-12">CategoryName</div>
+                        <div class="row-start-4 col-start-3 col-end-9 p-1 mb-1.5 bg-[#E2DDDD] rounded-lg ml-16">{{ booking.eventCategoryName
                         }}</div>
 
-                        <div class="row-start-5 col-start-1 col-end-2 p-1 mb-1.5 bg-white rounded-lg">BookingName</div>
-                        <div class="row-start-5 col-start-3 col-end-9 p-1 mb-1.5 bg-white rounded-lg">{{ booking.bookingName
+                        <div class="row-start-5 col-start-1 col-end-3 p-1 mb-1.5 bg-[#E2DDDD] rounded-lg -mr-12">BookingName</div>
+                        <div class="row-start-5 col-start-3 col-end-9 p-1 mb-1.5 bg-[#E2DDDD] rounded-lg ml-16">{{ booking.bookingName
                         }}</div>
 
-                        <div
-                            class="col-start-2 row-start-1 row-end-6  2xl:ml-4 xl:ml-1 -mr-6 w-3/12 mb-1">
-                        </div>
-                            
-                     <button class="mt-5" @click="changeDialog(booking)">See Details</button>
-
+                        <!-- <div
+                            class="col-start-2 row-start-1 row-end-6   -mr-6 w-3/12 mb-1 mx-10"> a
+                        </div> -->
+                          
+                          
+                     <button class="row-start-6 col-start-1 col-end-9  mt-5 bg-[#74ABFF] text-white p-3 rounded-lg" @click="changeSeeDetailsDialog(booking)">See Details</button>
                        <!-- <router-link :to="{ name: 'Details', params: { bookingId: booking.idBooking } }"> <button class="ml-5 mt-5">See Details</button> </router-link> -->
-
                     <!-- <router-link :to="{name: 'DialogDetails',param: { BookingId: booking.idBooking }}"> </router-link> -->
-                    <!-- <button class="mt-5 col-start-5">edit</button> -->
-                    <button class="mt-5 col-start-7" @click="$emit('deleteBooking', booking.id)">delete</button>
+                    <!-- <button class="row-start-6 mt-5 col-start-8 btn-colorRed text-white rounded-lg" @click="$emit('deleteBooking', booking.id)">delete</button> -->
                     
-                    <DialogDetails v-if="booking.status" @close="changeDialog(booking)" :bookings="booking"/>
-                        
+                    <!-- <button class="row-start-6 mt-5 col-start-6 bg-[#499D6B] text-white rounded-lg">edit</button>
+                    <button class="row-start-6 mt-5 col-start-8 bg-[#F97473] text-white rounded-lg" >delete</button> -->
+                    
+                    <DialogDetails v-if="booking.statusClickSeeDetails" @onCloseDetails="changeSeeDetailsDialog(booking)" :bookings="booking"/>
+                     
+                     
+
                         <!-- <div class="grid grid-flow-row grid-cols-5 flex p-1 bg-white rounded-lg ">
                             <p class="col-start-1">Date </p>
                             <div class="col-start-2"> </div>
@@ -116,7 +121,8 @@ const changeDialog = (booking) => {
 </template>
  
 <style scoped>
-.bg-greentea {
-    background-color: #D3E4CD;
-}
+
+
+
+
 </style>
