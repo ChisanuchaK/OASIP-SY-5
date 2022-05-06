@@ -49,10 +49,7 @@ public class BookingController {
     public  void DeleteBookingById(@PathVariable Integer idBooking){
         bookingService.deleteById(idBooking);
     }
-    @DeleteMapping("")
-    public  void DeleteAllBooking(){
-        bookingService.deleteAll();
-    }
+
 
     @PutMapping("/{id}")
     public ResponseEntity editBooking(@RequestBody Booking editBooking , @PathVariable Integer id){
