@@ -3,6 +3,7 @@ import Home from "../views/Home.vue";
 import BookingList from "../views/BookingList.vue"
 import DialogDetails from "../views/DialogDetails.vue"
 import Details from "../views/Details.vue";
+import category from "../views/Category.vue"
 const history = createWebHistory();
 const routes = [
     {
@@ -21,6 +22,11 @@ const routes = [
         path:"/bookingList/details/:bookingId",
         name: 'Details',
         component: Details
+    },
+    {
+        path:"/category",
+        name: 'Category',
+        component: category
     }
 ];
 

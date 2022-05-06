@@ -39,6 +39,7 @@ public class BookingController {
         return bookingService.getBookingDetailDTOById(id);
     }
 
+
     @PostMapping("")
     @ResponseStatus(HttpStatus.CREATED)
     public ResponseEntity createBooking(@RequestBody Booking newBooking){
