@@ -42,6 +42,18 @@ onBeforeMount(async () => {
 
 // @click.self="$emit('closeAll')"
 //  v-if="booking.idBooking == bookings.idBooking"
+
+const removeBooking = async (deleteBookingId)=>{
+    const res = await fetch(`${import.meta.env.VITE_BASE_URL}/booking/${deleteBookingId}`,{
+      method: 'DELETE'
+    })
+    if(res.status === 200){
+      bookingsDetails.value = bookingsDetails.value.filter((BookingInBookings)=> (BookingInBookings.idBooking != deleteBookingId) )
+      console.log('deleted success');
+    }else{
+      console.log('error , cannot delete');
+    }
+  }
 </script>
  
 <template>
@@ -84,6 +96,7 @@ onBeforeMount(async () => {
                         <div class="row-start-7 col-start-1 col-end-2 p-1  bg-gray rounded-lg">EventNotes</div>
                         <div class="row-start-7 col-start-2 col-end-7 p-1  bg-gray rounded-lg ml-10">{{ bookingsDetails.eventNotes == null ? "-" : bookingsDetails.eventNotes
                         }}</div>
+                          <button @click="removeBooking( bookingsDetails.idBooking)" class="row-start-8 mt-5 col-start-1 bg-[#F97473] text-white rounded-lg" >delete</button>
 
                         <!-- <div class="row-start-8 col-start-1 col-end-2 p-1 mb-1.5 bg-gray rounded-lg">Id</div>
                         <div class="row-start-8 col-start-3 col-end-9 p-1 mb-1.5 bg-gray rounded-lg">{{ bookingsDetails.idBooking

@@ -67,7 +67,8 @@ public class BookingService {
             if (((booking.getEventStartTime().toEpochMilli() >= book.getEventStartTime().toEpochMilli())
                     && ((booking.getEventStartTime().toEpochMilli() <= endTimeMs(book))))
                     || (( (endTimeMs(booking)) >= book.getEventStartTime().toEpochMilli())
-                    && ((endTimeMs(booking))<= endTimeMs(book))) ) {
+                    && ((endTimeMs(booking))<= endTimeMs(book)))
+           ) {
                 return true;
             }
         }
@@ -75,7 +76,7 @@ public class BookingService {
     }
 
     public long endTimeMs(Booking time){
-        return (time.getEventStartTime().toEpochMilli() + (time.getEventDuration() * 60000));
+        return (time.getEventStartTime().toEpochMilli() + ((time.getEventDuration() * 60000) - 1));
     }
 
 
