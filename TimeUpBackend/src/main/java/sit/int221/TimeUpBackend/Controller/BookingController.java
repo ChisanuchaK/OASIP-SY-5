@@ -54,6 +54,10 @@ public class BookingController {
         bookingService.deleteAll();
     }
 
+    @PutMapping("/{id}")
+    public ResponseEntity editBooking(@RequestBody Booking editBooking , @PathVariable Integer id){
+        return bookingService.editBooking(editBooking , id);
+    }
 }
 
 
