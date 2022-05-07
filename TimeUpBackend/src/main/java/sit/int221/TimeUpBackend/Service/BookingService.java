@@ -2,8 +2,9 @@ package sit.int221.TimeUpBackend.Service;
 
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Sort;
+import org.springframework.data.jpa.repository.Query;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 import sit.int221.TimeUpBackend.DTO.BookingDTO;
@@ -11,7 +12,6 @@ import sit.int221.TimeUpBackend.DTO.BookingMoreDetailDTO;
 import sit.int221.TimeUpBackend.Entity.Booking;
 import sit.int221.TimeUpBackend.Repository.BookingRepository;
 
-import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -38,17 +38,70 @@ public class BookingService {
     }
 
 
-// post
-    public Booking create(Booking newBooking){
-        
-        return bookingRepository.saveAndFlush(newBooking);
+
+    // post
+    public ResponseEntity create(Booking newBooking) {
+        Booking booking = newBooking;
+        List<Booking> checkCompare = bookingRepository.findBookingByEventCategoryEventCategoryName(booking.getEventCategory().getEventCategoryName());
+
+//        return ResponseEntity.status(400).body(booking.getEventCategory().getEventDuration());
+
+
+        if (checkCompare.stream().count() == 0 ){
+            bookingRepository.save(newBooking);
+            return ResponseEntity.ok(HttpStatus.OK);
+        }
+//       return ResponseEntity.status(400).body(checkTimeOverLap2(checkCompare , newBooking));
+        if (!checkTimeOverLap(checkCompare , newBooking)){
+            bookingRepository.save(newBooking);
+            return ResponseEntity.status(201).body("Inserted Successfully!");
+        }
+        else {
+            return ResponseEntity.status(400).body("Can't Insert Date is Overlap!!");
+        }
     }
 
-// delete
-    public void deleteById(Integer idBooking){
+    public boolean checkTimeOverLap(List<Booking> allBooking , Booking booking ) {
+
+        for (Booking book : allBooking) {
+            if (((booking.getEventStartTime().toEpochMilli() >= book.getEventStartTime().toEpochMilli())
+                    && ((booking.getEventStartTime().toEpochMilli() <= endTimeMs(book))))
+                    || (( (endTimeMs(booking)) >= book.getEventStartTime().toEpochMilli())
+                    && ((endTimeMs(booking))<= endTimeMs(book)))
+           ) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public long endTimeMs(Booking time){
+        return (time.getEventStartTime().toEpochMilli() + ((time.getEventDuration() * 60000) - 1));
+    }
+
+
+
+    // delete
+    public void deleteById (Integer idBooking){
         bookingRepository.deleteById(idBooking);
     }
-    public void deleteAll(){
-        bookingRepository.deleteAll();
+
+
+    //put
+    public ResponseEntity editBooking(Booking editBooking, Integer id) {
+        Booking booking = bookingRepository.findById(id).orElseThrow(
+                () -> new ResponseStatusException(HttpStatus.NOT_FOUND)
+        );
+        List<Booking> checkCompare = bookingRepository.findBookingByEventCategoryEventCategoryName(booking.getEventCategory().getEventCategoryName());
+        if (!checkTimeOverLap(checkCompare , editBooking)){
+            modelMapper.map(editBooking , Booking.class);
+            bookingRepository.saveAndFlush(editBooking);
+            return ResponseEntity.status(201).body("Edit Successfully!");
+        }
+        else {
+            return ResponseEntity.status(400).body("Can't Edit Date is Overlap!!");
+        }
     }
+
+
 }

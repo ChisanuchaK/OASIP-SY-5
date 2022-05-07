@@ -3,7 +3,7 @@ import {ref , onBeforeMount} from 'vue'
 
 // // Delete method
 const removeBooking = async (deleteBookingId)=>{
-    const res = await fetch(`http://localhost:3001/BookingLists/${deleteBookingId}`,{
+    const res = await fetch(`${import.meta.env.VITE_BASE_URL}/booking/${deleteBookingId}`,{
       method: 'DELETE'
     })
     if(res.status === 200){

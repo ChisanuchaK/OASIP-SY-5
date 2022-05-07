@@ -14,16 +14,12 @@ import javax.persistence.Table;
 @Table(name = "eventCategory")
 public class EventCategory {
     @Id
-    @Column(name = "eventCategoryName" , length = 100 , unique = true , nullable = false )
+    @Column(name = "eventCategoryName", length = 100, unique = true, nullable = false)
     private String eventCategoryName;
 
-    @Column(name = "eventCategoryDescription" , length = 500)
+    @Column(name = "eventCategoryDescription", length = 500)
     private String eventCategoryDescription;
 
-    @Column(name = "eventDuration" , nullable = false)
+    @Column(name = "eventDuration", nullable = false)
     private Integer eventDuration;
-
-    public String getEventCategoryName() {
-        return eventCategoryName;
-    }
 }

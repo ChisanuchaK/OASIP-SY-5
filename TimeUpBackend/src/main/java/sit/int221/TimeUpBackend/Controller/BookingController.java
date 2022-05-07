@@ -3,6 +3,7 @@ package sit.int221.TimeUpBackend.Controller;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import sit.int221.TimeUpBackend.DTO.BookingDTO;
 import sit.int221.TimeUpBackend.DTO.BookingMoreDetailDTO;
@@ -38,9 +39,10 @@ public class BookingController {
         return bookingService.getBookingDetailDTOById(id);
     }
 
+
     @PostMapping("")
     @ResponseStatus(HttpStatus.CREATED)
-    public Booking createBooking(@RequestBody Booking newBooking){
+    public ResponseEntity createBooking(@RequestBody Booking newBooking){
         return bookingService.create(newBooking);
     }
 
@@ -48,11 +50,12 @@ public class BookingController {
     public  void DeleteBookingById(@PathVariable Integer idBooking){
         bookingService.deleteById(idBooking);
     }
-    @DeleteMapping("")
-    public  void DeleteAllBooking(){
-        bookingService.deleteAll();
-    }
 
+
+    @PutMapping("/{id}")
+    public ResponseEntity editBooking(@RequestBody Booking editBooking , @PathVariable Integer id){
+        return bookingService.editBooking(editBooking , id);
+    }
 }
 
 

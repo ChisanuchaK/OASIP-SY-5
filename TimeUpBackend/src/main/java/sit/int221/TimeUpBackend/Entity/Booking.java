@@ -7,12 +7,15 @@ import lombok.Setter;
 
 import javax.persistence.*;
 import java.sql.Time;
+import java.sql.Timestamp;
+import java.time.Instant;
 import java.util.Date;
 
 @Entity
 @Setter
 @Getter
 @Table(name = "booking")
+
 public class Booking {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -32,18 +35,15 @@ public class Booking {
 
 
     @Column(name = "eventStartTime" ,nullable = false )
-    @JsonFormat(pattern="yyyy-MM-dd HH:mm")
-    private Date eventStartTime;
+    private Instant eventStartTime;
 
-    @Column(name = "eventEndTime" ,nullable = false )
-    @JsonFormat(pattern="yyyy-MM-dd HH:mm")
-    private Date eventEndTime;
 
     @Column(name = "eventDuration" , nullable = false)
-    private Integer eventDuration;
+    private Integer eventDuration ;
 
     @Column(name = "eventNotes", length = 500)
     private String eventNotes;
+
 
 
 }

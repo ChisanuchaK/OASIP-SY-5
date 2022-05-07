@@ -44,13 +44,6 @@ onBeforeMount(async () => {
     // startTime.value = moment.utc(Time.value).format("h:mm")
 })
 
-// onMounted(async ()=> {
-//     bookingsDetails.value.map((status)=>{
-//  status.statusClickDelete = ref(false)
-// })
-// console.log(bookingsDetails.value);
-// })
-
 
 const closeDetails = (event) => {
     if (event.target.id == "modalDetails") {
