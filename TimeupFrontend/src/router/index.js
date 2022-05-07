@@ -4,27 +4,27 @@ import BookingList from "../views/BookingList.vue"
 import DialogDetails from "../views/DialogDetails.vue"
 import Details from "../views/Details.vue";
 import category from "../views/Category.vue"
-const history = createWebHistory();
+const history = createWebHistory("/sy5");
 const routes = [
     {
-        path: "/sy5/",
+        path: "/",
         name: "Home",
         component: Home 
     },{
-        path: "/sy5/bookingList",
+        path: "/bookingList",
         name: "BookingList",
         component:BookingList
     },{
-        path:"/sy5/bookingList/d",
+        path:"/bookingList/d",
         name: 'DialogDetails',
         component: DialogDetails
     },{
-        path:"/sy5/bookingList/details/:bookingId",
+        path:"/bookingList/details/:bookingId",
         name: 'Details',
         component: Details
     },
     {
-        path:"/sy5/category",
+        path:"/category",
         name: 'Category',
         component: category
     }
