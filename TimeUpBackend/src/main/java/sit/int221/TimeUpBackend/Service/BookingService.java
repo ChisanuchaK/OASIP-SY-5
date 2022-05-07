@@ -37,6 +37,8 @@ public class BookingService {
         return modelMapper.map(bookings , BookingMoreDetailDTO.class);
     }
 
+
+
     // post
     public ResponseEntity create(Booking newBooking) {
         Booking booking = newBooking;
@@ -58,8 +60,6 @@ public class BookingService {
             return ResponseEntity.status(400).body("Can't Insert Date is Overlap!!");
         }
     }
-
-
 
     public boolean checkTimeOverLap(List<Booking> allBooking , Booking booking ) {
 

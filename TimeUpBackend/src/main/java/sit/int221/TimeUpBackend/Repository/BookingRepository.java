@@ -10,5 +10,4 @@ import java.util.List;
 
 public interface BookingRepository extends JpaRepository<Booking , Integer> {
     List<Booking> findBookingByEventCategoryEventCategoryName(String CategoryName);
-    Booking findByEventStartTimeBetween(Instant startTime , Instant endTime);
 }

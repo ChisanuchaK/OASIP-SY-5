@@ -39,7 +39,7 @@ public class Booking {
 
 
     @Column(name = "eventDuration" , nullable = false)
-    private Integer eventDuration;
+    private Integer eventDuration ;
 
     @Column(name = "eventNotes", length = 500)
     private String eventNotes;
