@@ -4,18 +4,18 @@ import moment from 'moment'
 import DialogDetails from '../views/DialogDetails.vue';
 
 
-defineEmits(['deleteBooking'])
+const emits = defineEmits(['idDialogDetails'])
 const props = defineProps({
     bookings: {
-        type: Array,
+        type: Object,
         require: true
     },
 })
 
-const superList = computed(()=> props.bookings)  ;
+const bookingList = computed(()=> props.bookings)  ;
 
 onBeforeMount(async () => {
-console.log(superList);
+console.log(bookingList);
 console.log(props.bookings);
 // setTimeout(1,()=>console.log("aa"+superList))
 // console.log(" Show Bookings "+ props.bookings);
@@ -29,6 +29,10 @@ const changeSeeDetailsDialog = (booking) => {
     // dialogs.value = !dialogs.value
     // console.log(dialogs.value);
       }
+
+const getIdFromDialog = (idDelete)=>{
+ emits('idDialogDetails',idDelete)
+}      
 
 </script>
  
@@ -45,24 +49,26 @@ const changeSeeDetailsDialog = (booking) => {
             </div>
 
             <div v-else class="grid grid-flow-row grid-cols-3">
-                <div v-for="(booking, index) in superList" :key="index"
+                <div v-for="(booking, index) in bookingList" :key="index"
                     class="mx-24 my-10 bg-white border-8 border-[#6D6D6D] rounded-lg text-xl p-5">
                     <div class="grid grid-flow-row grid-cols-8 flex p-1 ">
 
                         <div class="row-start-1 col-start-1 col-end-3 p-1 mb-1.5 bg-[#E2DDDD] rounded-lg -mr-12">Date</div>
-                        <div class="row-start-1 col-start-3 col-end-9 p-1 mb-1.5 bg-[#E2DDDD] rounded-lg ml-16">{{ moment.utc(booking.eventStartTime).format("DD MMMM YYYY") }}
+                        <!-- <div class="row-start-1 col-start-3 col-end-9 p-1 mb-1.5 bg-[#E2DDDD] rounded-lg ml-16">{{ moment.utc(booking.eventStartTime).format("DD MMMM YYYY") }} -->
+                        <div class="row-start-1 col-start-3 col-end-9 p-1 mb-1.5 bg-[#E2DDDD] rounded-lg ml-16">{{ moment.utc(moment.utc(booking.eventStartTime).format()).local().format("DD MMMM YYYY") }}
                         <!-- <div class="row-start-1 col-start-3 col-end-9 p-1 mb-1.5 bg-white rounded-lg">{{ booking.eventStartTime.split(" ")[0] }} -->
                         </div>
 
                         <div class="row-start-2 col-start-1 col-end-3 p-1 mb-1.5 bg-[#E2DDDD] rounded-lg -mr-12">StartTime</div>
-                        <div class="row-start-2 col-start-3 col-end-9 p-1 mb-1.5 bg-[#E2DDDD] rounded-lg ml-16">{{ moment.utc(booking.eventStartTime).format("h:mm A")  }}
+                        <!-- <div class="row-start-2 col-start-3 col-end-9 p-1 mb-1.5 bg-[#E2DDDD] rounded-lg ml-16">{{  moment.utc(booking.eventStartTime).format("h:mm A")  }} -->
+                        <div class="row-start-2 col-start-3 col-end-9 p-1 mb-1.5 bg-[#E2DDDD] rounded-lg ml-16">{{  moment.utc(moment.utc(booking.eventStartTime).format()).local().format("h:mm A") }}
                         <!-- <div class="row-start-2 col-start-3 col-end-9 p-1 mb-1.5 bg-white rounded-lg">{{  booking.eventStartTime.split(" ")[1] }} -->
                         </div>
 
                         <div class="row-start-3 col-start-1 col-end-3 p-1 mb-1.5 bg-[#E2DDDD] rounded-lg -mr-12">Duration</div>
                         <div class="row-start-3 col-start-3 col-end-9 p-1 mb-1.5 bg-[#E2DDDD] rounded-lg ml-16">{{
                                 booking.eventDuration
-                        }} min </div>
+                        }} minute </div>
 
                         <div class="row-start-4 col-start-1 col-end-3 p-1 mb-1.5 bg-[#E2DDDD] rounded-lg -mr-12">CategoryName</div>
                         <div class="row-start-4 col-start-3 col-end-9 p-1 mb-1.5 bg-[#E2DDDD] rounded-lg ml-16">{{ booking.eventCategoryName
@@ -85,7 +91,8 @@ const changeSeeDetailsDialog = (booking) => {
                     <!-- <button class="row-start-6 mt-5 col-start-6 bg-[#499D6B] text-white rounded-lg">edit</button>
                     <button class="row-start-6 mt-5 col-start-8 bg-[#F97473] text-white rounded-lg" >delete</button> -->
                     
-                    <DialogDetails v-if="booking.statusClickSeeDetails" @onCloseDetails="changeSeeDetailsDialog(booking)" :bookings="booking"/>
+                    <!-- <DialogDetails v-if="booking.statusClickSeeDetails" @onCloseDetails="changeSeeDetailsDialog(booking)" :bookings="booking"/> -->
+                    <DialogDetails v-if="booking.statusClickSeeDetails" @onCloseDetails="changeSeeDetailsDialog(booking)" :bookings="booking" @idConfirmDelete="getIdFromDialog"/>
                      
                      
 
