@@ -3,7 +3,7 @@ import {ref , onBeforeMount} from 'vue'
 
 // // Delete method
 const removeBooking = async (deleteBookingId)=>{
-    const res = await fetch(`${import.meta.env.VITE_BASE_URL}/sy5/booking/${deleteBookingId}`,{
+    const res = await fetch(`${import.meta.env.VITE_BASE_URL}/booking/${deleteBookingId}`,{
       method: 'DELETE'
     })
     if(res.status === 200){
@@ -16,7 +16,7 @@ const removeBooking = async (deleteBookingId)=>{
   
 //   //Get All
 export const getBookings = async () => {
-    const res = await fetch(`${import.meta.env.VITE_BASE_URL}/sy5/booking`)
+    const res = await fetch(`${import.meta.env.VITE_BASE_URL}/booking`)
     if (res.status === 200) {
       console.log(res)
       return await res.json()
@@ -25,7 +25,7 @@ export const getBookings = async () => {
 
   //Getby Id
 export const getBookingId = async (bookingId)=>{
-    const res = await fetch(`${import.meta.env.VITE_BASE_URL}/sy5/booking/${bookingId}`);
+    const res = await fetch(`${import.meta.env.VITE_BASE_URL}/booking/${bookingId}`);
     if(res.status === 200){
     console.log(res)
     return await res.json();
