@@ -6,7 +6,7 @@ import ConfirmDelete from './ConfirmDelete.vue';
 import moment from 'moment';
 
 
-const emits = defineEmits(["onCloseDetails","idConfirmDelete"])
+const emits = defineEmits(["onCloseDetails", "idConfirmDelete"])
 const props = defineProps({
     bookings: {
         type: [Object],
@@ -75,7 +75,7 @@ const removeBooking = async (deleteBookingId, booking, loopBooking) => {
         // bookingAll.value = bookingAll.value.filter((BookingInBookings) => (BookingInBookings.idBooking != deleteBookingId))
         booking.statusClickDelete = !booking.statusClickDelete
         loopBooking.statusClickSeeDetails = !loopBooking.statusClickSeeDetails
-        emits('idConfirmDelete',deleteBookingId)
+        emits('idConfirmDelete', deleteBookingId)
         // location.reload();
         console.log('deleted success');
     } else {
@@ -116,16 +116,15 @@ const removeBooking = async (deleteBookingId, booking, loopBooking) => {
                     }}</div>
 
                     <div class="row-start-4 col-start-1 col-end-2 p-1  bg-gray rounded-lg">Date</div>
-                    <div class="row-start-4 col-start-2 col-end-6 p-1  bg-gray rounded-lg ml-10 ">{{
-                            moment.utc(bookingsDetails.eventStartTime).format("DD MMMM YYYY")
-                    }}
-                    <!-- {{ moment.utc(moment.utc(bookingsDetails.eventStartTime).format()).local().format("DD MMMM YYYY") }} -->
+                    <div class="row-start-4 col-start-2 col-end-6 p-1  bg-gray rounded-lg ml-10 ">
+                        <!-- {{moment.utc(bookingsDetails.eventStartTime).format("DD MMMM YYYY")}} -->
+                        {{ moment.utc(moment.utc(bookingsDetails.eventStartTime).format()).local().format("DD MMMM YYYY") }}
 
                     </div>
 
                     <div class="row-start-5 col-start-1 col-end-2 p-1  bg-gray rounded-lg">StartTime</div>
                     <div class="row-start-5 col-start-2 col-end-6 p-1  bg-gray rounded-lg ml-10">
-                        <!-- {{  moment.utc(moment.utc(bookingsDetails.eventStartTime).format()).local().format("h:mm A") }} -->
+                        {{  moment.utc(moment.utc(bookingsDetails.eventStartTime).format()).local().format("h:mm A") }}
                         <!-- {{moment.utc(bookingsDetails.eventStartTime).format("h:mm A")}} -->
                     </div>
 
@@ -144,7 +143,7 @@ const removeBooking = async (deleteBookingId, booking, loopBooking) => {
                         @click="changeDeleteDialog(bookingsDetails)">delete</button>
 
                     <!-- <ConfirmDelete v-if="bookingsDetails.statusClickDelete" :bookingsFromDetails="bookingsDetails" @onCancelDelete="changeDeleteDialog(bookingsDetails)" @onConfirmDelete="confirmDelete(bookingsDetails,loopBooking)"/> -->
-                    
+
                     <ConfirmDelete v-if="bookingsDetails.statusClickDelete" :bookingsFromDetails="bookingsDetails"
                         :bookingsFromLoopBookings="loopBooking" @onCancelDelete="changeDeleteDialog(bookingsDetails)"
                         @onConfirmDelete="removeBooking" />
