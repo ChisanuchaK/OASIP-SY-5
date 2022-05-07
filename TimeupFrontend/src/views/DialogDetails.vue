@@ -44,7 +44,7 @@ onBeforeMount(async () => {
 //  v-if="booking.idBooking == bookings.idBooking"
 
 const removeBooking = async (deleteBookingId)=>{
-    const res = await fetch(`${import.meta.env.VITE_BASE_URL}/booking/${deleteBookingId}`,{
+    const res = await fetch(`/sy5${import.meta.env.VITE_BASE_URL}/booking/${deleteBookingId}`,{
       method: 'DELETE'
     })
     if(res.status === 200){
