@@ -7,24 +7,24 @@ import category from "../views/Category.vue"
 const history = createWebHistory();
 const routes = [
     {
-        path: "/",
+        path: "http://intproj21.sit.kmutt.ac.th/sy5/",
         name: "Home",
         component: Home 
     },{
-        path: "/bookingList",
+        path: "http://intproj21.sit.kmutt.ac.th/sy5/bookingList",
         name: "BookingList",
         component:BookingList
     },{
-        path:"/bookingList/d",
+        path:"http://intproj21.sit.kmutt.ac.th/sy5/bookingList/d",
         name: 'DialogDetails',
         component: DialogDetails
     },{
-        path:"/bookingList/details/:bookingId",
+        path:"http://intproj21.sit.kmutt.ac.th/sy5/bookingList/details/:bookingId",
         name: 'Details',
         component: Details
     },
     {
-        path:"/category",
+        path:"http://intproj21.sit.kmutt.ac.th/sy5/category",
         name: 'Category',
         component: category
     }
