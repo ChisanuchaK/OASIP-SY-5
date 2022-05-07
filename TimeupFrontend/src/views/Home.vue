@@ -6,7 +6,7 @@ import {ref , onBeforeMount} from 'vue';
 let arrLists = ref()
 
 const getEventCategory = async () =>{
- const res = await fetch(`${import.meta.env.VITE_BASE_URL}/sy5/admin/event-category`);
+ const res = await fetch(`${import.meta.env.VITE_BASE_URL}/admin/event-category`);
   if(res.status === 200 ){
     arrLists.value = await res.json()
   }
