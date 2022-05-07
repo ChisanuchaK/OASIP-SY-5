@@ -7,24 +7,24 @@ import category from "../views/Category.vue"
 const history = createWebHistory();
 const routes = [
     {
-        path: "/",
+        path: "/sy5/",
         name: "Home",
         component: Home 
     },{
-        path: "/bookingList",
+        path: "/sy5/bookingList",
         name: "BookingList",
         component:BookingList
     },{
-        path:"/bookingList/d",
+        path:"/sy5/bookingList/d",
         name: 'DialogDetails',
         component: DialogDetails
     },{
-        path:"/bookingList/details/:bookingId",
+        path:"/sy5/bookingList/details/:bookingId",
         name: 'Details',
         component: Details
     },
     {
-        path:"/category",
+        path:"/sy5/category",
         name: 'Category',
         component: category
     }
