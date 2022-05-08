@@ -1,10 +1,12 @@
 import {createRouter, createWebHistory} from 'vue-router';
 import Home from "../views/Home.vue";
-import BookingList from "../views/BookingList.vue"
-import DialogDetails from "../views/DialogDetails.vue"
+import BookingList from "../views/BookingList.vue";
+import DialogDetails from "../views/DialogDetails.vue";
 import Details from "../views/Details.vue";
-import category from "../views/Category.vue"
-const history = createWebHistory("/sy5");
+import About from "../views/About.vue";
+import Reserve from "../views/Reserve.vue";
+
+const history = createWebHistory("sy5/");
 const routes = [
     {
         path: "/",
@@ -22,11 +24,14 @@ const routes = [
         path:"/bookingList/details/:bookingId",
         name: 'Details',
         component: Details
-    },
-    {
-        path:"/category",
-        name: 'Category',
-        component: category
+    },{
+        path:"/About",
+        name: 'About',
+        component: About
+    },{
+        path:"/Reserve",
+        name: 'Reserve',
+        component: Reserve
     }
 ];
 

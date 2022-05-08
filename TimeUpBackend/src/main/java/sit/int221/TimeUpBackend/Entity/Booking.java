@@ -6,6 +6,8 @@ import lombok.Getter;
 import lombok.Setter;
 
 import javax.persistence.*;
+import javax.validation.constraints.Email;
+import javax.validation.constraints.Pattern;
 import java.sql.Time;
 import java.sql.Timestamp;
 import java.time.Instant;
@@ -25,6 +27,8 @@ public class Booking {
     @Column(name = "bookingName" , length = 100 , nullable = false)
     private String bookingName;
 
+//    @Email(regexp = "[a-z0-9._%+-]+@[a-z0-9.-]+\\.[a-z]{2,3}",
+//            flags =  Pattern.Flag.CASE_INSENSITIVE)
     @Column(name = "bookingEmail" , length = 100 , nullable = false)
     private String bookingEmail;
 

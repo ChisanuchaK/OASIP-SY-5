@@ -1,7 +1,6 @@
 <script setup>
 import NavbarTop from "../components/navbarTop.vue";
 import NavbarBottom from "../components/navbarBottom.vue";
-import CategoryListVue from "../components/CategoryList.vue";
 import {ref , onBeforeMount} from 'vue';
 let arrLists = ref()
 
@@ -22,9 +21,7 @@ onBeforeMount(async ()=>{
 <template>
     <div>
         <NavbarTop/>
-        <CategoryListVue :listEventCatgorys="arrLists"/>
     <NavbarBottom/>
-
     </div>
 
 </template>
