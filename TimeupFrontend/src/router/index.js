@@ -3,7 +3,6 @@ import Home from "../views/Home.vue";
 import BookingList from "../views/BookingList.vue";
 import DialogDetails from "../views/DialogDetails.vue";
 import Details from "../views/Details.vue";
-import categoryTest from "../views/CategoryTest.vue";
 import About from "../views/About.vue";
 import Reserve from "../views/Reserve.vue";
 
@@ -25,11 +24,6 @@ const routes = [
         path:"/bookingList/details/:bookingId",
         name: 'Details',
         component: Details
-    },
-    {
-        path:"/categoryTest",
-        name: 'CategoryTest',
-        component: categoryTest
     },{
         path:"/About",
         name: 'About',
