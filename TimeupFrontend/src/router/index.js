@@ -4,7 +4,7 @@ import BookingList from "../views/BookingList.vue"
 import DialogDetails from "../views/DialogDetails.vue"
 import Details from "../views/Details.vue";
 import category from "../views/Category.vue"
-const history = createWebHistory();
+const history = createWebHistory("/sy5");
 const routes = [
     {
         path: "/",
