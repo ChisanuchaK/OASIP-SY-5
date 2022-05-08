@@ -22,7 +22,6 @@ onBeforeMount(async ()=>{
 <template>
     <div>
         <NavbarTop/>
-        <CategoryListVue :listEventCatgorys="arrLists"/>
     <NavbarBottom/>
 
     </div>

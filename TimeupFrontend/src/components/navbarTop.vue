@@ -7,7 +7,7 @@
 <nav class="px-2  py-2.5 bg-[#E5E5E5] ">
 <div class="container flex flex-wrap justify-between items-center mx-auto">
 <router-link to="/" class="flex items-center">
-<img src="../../public/images/icon.png" class="mr-3 h-12" alt="TimeUp-Logo">
+<img src="../../public/images/logo.png" class="mr-3 h-12" alt="TimeUp-Logo">
 <span class="self-center text-xl font-semibold whitespace-nowrap text-black uppercase">Time-Up</span>
 </router-link>
 
