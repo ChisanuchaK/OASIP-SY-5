@@ -1,5 +1,6 @@
 <script setup>
 import { ref, computed, onBeforeMount, reactive } from 'vue'
+import moment from "moment";
 import NavbarTop from '../components/navbarTop.vue';
 import NavbarBottom from '../components/navbarBottom.vue';
 import { getEventCategory } from "../stores/book.js";
@@ -34,7 +35,7 @@ const handleSelect = () =>{
 
 const handleTime = () =>{
 
-    localData.eventStartTime = dateIndexSelect.value+':00Z'
+    localData.eventStartTime = new Date(dateIndexSelect.value).toISOString()
     console.log(localData.eventStartTime);
 }
 

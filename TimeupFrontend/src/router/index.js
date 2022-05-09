@@ -6,7 +6,7 @@ import Details from "../views/Details.vue";
 import About from "../views/About.vue";
 import Reserve from "../views/Reserve.vue";
 
-const history = createWebHistory("/sy5");
+const history = createWebHistory();
 const routes = [
     {
         path: "/",

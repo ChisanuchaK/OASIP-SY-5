@@ -22,10 +22,6 @@ const getBg = (name)=>{
             break;
         case "Server-side Clinic":
             return "background-color:#FF7777;"
-            break;
-        default:
-              return "background-color:#FFA0A0;"
-            break;
     }
 }
 
@@ -48,10 +44,6 @@ const getSeeMoreDetail = (name)=>{
             break;
         case "Server-side Clinic":
             return "background-color:#FE5050;"
-            break;
-        default:
-              return "background-color:#FFA0A0;"
-            break;
     }
 }
 const emits = defineEmits(["idDialogDetails"]);
