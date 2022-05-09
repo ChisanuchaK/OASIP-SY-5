@@ -12,8 +12,6 @@ import sit.int221.TimeUpBackend.Entity.Booking;
 import sit.int221.TimeUpBackend.Repository.BookingRepository;
 
 import java.util.List;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
 @Service
@@ -42,15 +40,8 @@ public class BookingService {
     // post
     public ResponseEntity create(Booking newBooking) {
         Booking booking = newBooking;
-        List<Booking> checkCompare = bookingRepository.findBookingByEventCategoryEventCategoryName(booking.getEventCategory().getEventCategoryName());
+        List<Booking> checkCompare = bookingRepository.findAllByEventCategoryEventCategoryId(booking.getEventCategory().getEventCategoryId());
 
-        String regex = "[a-z0-9._%+-]+@[a-z0-9.-]+\\.[a-z]{2,3}";
-        Pattern pattern = Pattern.compile(regex);
-        Matcher matcher = pattern.matcher(newBooking.getBookingEmail());
-
-        if(!matcher.matches()){
-            return ResponseEntity.status(403).body("email not validate");
-        }
         if (checkCompare.stream().count() == 0 ){
             bookingRepository.save(newBooking);
             return ResponseEntity.ok(HttpStatus.OK);
@@ -64,26 +55,6 @@ public class BookingService {
         }
     }
 
-    // delete
-    public void deleteById (Integer idBooking){
-        bookingRepository.deleteById(idBooking);
-    }
-
-    //put
-    public ResponseEntity editBooking(Booking editBooking, Integer id) {
-        Booking booking = bookingRepository.findById(id).orElseThrow(
-                () -> new ResponseStatusException(HttpStatus.NOT_FOUND)
-        );
-        List<Booking> checkCompare = bookingRepository.findBookingByEventCategoryEventCategoryName(booking.getEventCategory().getEventCategoryName());
-        if (!checkTimeOverLap(checkCompare , editBooking)){
-            modelMapper.map(editBooking , Booking.class);
-            bookingRepository.saveAndFlush(editBooking);
-            return ResponseEntity.status(201).body("Edit Successfully!");
-        }
-        else {
-            return ResponseEntity.status(400).body("Can't Edit Date is Overlap!!");
-        }
-    }
 
     public boolean checkTimeOverLap(List<Booking> allBooking , Booking booking ) {
 
@@ -104,4 +75,25 @@ public class BookingService {
     }
 
 
+
+    // delete
+    public void deleteById (Integer idBooking){
+        bookingRepository.deleteById(idBooking);
+    }
+
+    //put
+    public ResponseEntity editBooking(Booking editBooking, Integer id) {
+        Booking booking = bookingRepository.findById(id).orElseThrow(
+                () -> new ResponseStatusException(HttpStatus.NOT_FOUND)
+        );
+        List<Booking> checkCompare = bookingRepository.findAllByEventCategoryEventCategoryId(booking.getEventCategory().getEventCategoryId());
+        if (!checkTimeOverLap(checkCompare , editBooking)){
+            modelMapper.map(editBooking , Booking.class);
+            bookingRepository.save(editBooking);
+            return ResponseEntity.status(201).body("Edit Successfully!");
+        }
+        else {
+            return ResponseEntity.status(400).body("Can't Edit Date is Overlap!!");
+        }
+    }
 }

@@ -9,5 +9,5 @@ import java.time.Instant;
 import java.util.List;
 
 public interface BookingRepository extends JpaRepository<Booking , Integer> {
-    List<Booking> findBookingByEventCategoryEventCategoryName(String CategoryName);
+   List<Booking> findAllByEventCategoryEventCategoryId(Integer eventCategoryId);
 }
