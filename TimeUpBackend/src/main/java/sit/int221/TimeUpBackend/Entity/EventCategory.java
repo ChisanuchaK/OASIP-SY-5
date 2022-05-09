@@ -14,8 +14,8 @@ import javax.persistence.Table;
 @Table(name = "eventCategory")
 public class EventCategory {
     @Id
-    @Column(name = "eventId" , nullable = false)
-    private  Integer eventId;
+    @Column(name = "eventCategoryId" , nullable = false)
+    private  Integer eventCategoryId;
     @Column(name = "eventCategoryName", length = 100, unique = true, nullable = false)
     private String eventCategoryName;
     @Column(name = "eventDuration", nullable = false)
