@@ -34,6 +34,50 @@ const getIdFromDialog = (idDelete)=>{
  emits('idDialogDetails',idDelete)
 }      
 
+const getBg = (name)=>{
+    switch (name) {
+        case "Client-side Clinic":
+            return "background-color:#82D294;"
+            break;
+        case "Database Clinic":
+            return "background-color:#AFC8F9;"
+            break;
+        case "DevOps/Infra Clinic":
+            return "background-color:#FAC94E;"
+            break;
+        case "Other":
+            return "background-color:#AAA4A4;"
+            break;
+        case "Project Management Clinic":
+            return "background-color:#B5A0E2;"
+            break;
+        case "Server-side Clinic":
+            return "background-color:#FF7777;"
+    }
+}
+
+const getSeeMoreDetail = (name)=>{
+    switch (name) {
+        case "Client-side Clinic":
+            return "background-color:#4CA861;"
+            break;
+        case "Database Clinic":
+            return "background-color:#3365C6;"
+            break;
+        case "DevOps/Infra Clinic":
+            return "background-color:#BB9636;"
+            break;
+        case "Other":
+            return "background-color:#847F7F;"
+            break;
+        case "Project Management Clinic":
+            return "background-color:#844FF9;"
+            break;
+        case "Server-side Clinic":
+            return "background-color:#FE5050;"
+    }
+}
+
 </script>
  
 <template>
@@ -49,7 +93,7 @@ const getIdFromDialog = (idDelete)=>{
             </div>
 
             <div v-else class="grid grid-flow-row grid-cols-3">
-                <div v-for="(booking, index) in bookingList" :key="index"
+                <div v-for="(booking, index) in bookingList" :key="index" :style="getBg(booking.eventCategoryName)"
                     class="mx-24 my-10 bg-white border-8 border-[#6D6D6D] rounded-lg text-xl p-5">
                     <div class="grid grid-flow-row grid-cols-8 flex p-1 ">
 
@@ -83,9 +127,8 @@ const getIdFromDialog = (idDelete)=>{
                        <!-- <div
                             class="col-start-2 row-start-1 row-end-6   -mr-6 w-3/12 mb-1 mx-10"> a
                         </div> -->
-                          
-                          
-                     <button class="row-start-6 col-start-1 col-end-9  mt-5 bg-[#74ABFF] text-white p-3 rounded-lg" @click="changeSeeDetailsDialog(booking)">See Details</button>
+                                
+                     <button :style="getSeeMoreDetail(booking.eventCategoryName)" class="row-start-6 col-start-1 col-end-9  mt-5 bg-[#74ABFF] text-white p-3 rounded-lg" @click="changeSeeDetailsDialog(booking)">See Details</button>
                        <!-- <router-link :to="{ name: 'Details', params: { bookingId: booking.idBooking } }"> <button class="ml-5 mt-5">See Details</button> </router-link> -->
                     <!-- <router-link :to="{name: 'DialogDetails',param: { BookingId: booking.idBooking }}"> </router-link> -->
                     <!-- <button class="row-start-6 mt-5 col-start-8 btn-colorRed text-white rounded-lg" @click="$emit('deleteBooking', booking.id)">delete</button> -->
