@@ -1,6 +1,6 @@
 <script setup>
 import {ref , onBeforeMount,computed} from 'vue'
-import moment from 'moment'
+import moment from 'moment';
 import DialogDetails from '../views/DialogDetails.vue';
 
 
@@ -56,12 +56,14 @@ const getIdFromDialog = (idDelete)=>{
                         <div class="row-start-1 col-start-1 col-end-3 p-1 mb-1.5 bg-[#E2DDDD] rounded-lg -mr-12">Date</div>
                         <!-- <div class="row-start-1 col-start-3 col-end-9 p-1 mb-1.5 bg-[#E2DDDD] rounded-lg ml-16">{{ moment.utc(booking.eventStartTime).format("DD MMMM YYYY") }} -->
                         <div class="row-start-1 col-start-3 col-end-9 p-1 mb-1.5 bg-[#E2DDDD] rounded-lg ml-16">{{ moment.utc(moment.utc(booking.eventStartTime).format()).local().format("DD MMMM YYYY") }}
+                        <!-- <div class="row-start-1 col-start-3 col-end-9 p-1 mb-1.5 bg-[#E2DDDD] rounded-lg ml-16">{{ new Date(booking.eventStartTime).toLocaleDateString('th-TH', {   year: 'numeric',   month: 'long',   day: 'numeric', }) }} -->
                         <!-- <div class="row-start-1 col-start-3 col-end-9 p-1 mb-1.5 bg-white rounded-lg">{{ booking.eventStartTime.split(" ")[0] }} -->
                         </div>
 
                         <div class="row-start-2 col-start-1 col-end-3 p-1 mb-1.5 bg-[#E2DDDD] rounded-lg -mr-12">StartTime</div>
                         <!-- <div class="row-start-2 col-start-3 col-end-9 p-1 mb-1.5 bg-[#E2DDDD] rounded-lg ml-16">{{  moment.utc(booking.eventStartTime).format("h:mm A")  }} -->
-                        <div class="row-start-2 col-start-3 col-end-9 p-1 mb-1.5 bg-[#E2DDDD] rounded-lg ml-16">{{  moment.utc(moment.utc(booking.eventStartTime).format()).local().format("h:mm A") }}
+                        <div class="row-start-2 col-start-3 col-end-9 p-1 mb-1.5 bg-[#E2DDDD] rounded-lg ml-16">{{  moment.utc(moment.utc(booking.eventStartTime).format()).local().format("hh:mm A") }}
+                        <!-- <div class="row-start-2 col-start-3 col-end-9 p-1 mb-1.5 bg-[#E2DDDD] rounded-lg ml-16">{{   new Date(booking.eventStartTime).toLocaleString('th-TH', {   hour: 'numeric',   minute: 'numeric' }) }} น. -->
                         <!-- <div class="row-start-2 col-start-3 col-end-9 p-1 mb-1.5 bg-white rounded-lg">{{  booking.eventStartTime.split(" ")[1] }} -->
                         </div>
 

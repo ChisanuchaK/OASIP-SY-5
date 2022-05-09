@@ -19,14 +19,14 @@ const createDialog = ref(false)
 let localData = reactive({
     bookingName: "",
     bookingEmail: "",
-    eventCategory: { eventCategoryName: "" },
+    eventCategory: { eventCategoryId: "" },
     eventStartTime: "",
     eventDuration: "",
     eventNotes: "",
 })
 
 const handleSelect = () =>{
-    localData.eventCategory.eventCategoryName = categoryList.value[categoryIndexSelect.value].eventCategoryName
+    localData.eventCategory.eventCategoryId = categoryList.value[categoryIndexSelect.value].eventCategoryId
     localData.eventDuration = categoryList.value[categoryIndexSelect.value].eventDuration
     // alert(CategorySelect)
     console.log( localData )
@@ -34,7 +34,8 @@ const handleSelect = () =>{
 
 const handleTime = () =>{
 
-    localData.eventStartTime = dateIndexSelect.value+':00Z'
+    // localData.eventStartTime = new Date().toISOString()
+    localData.eventStartTime = new Date(dateIndexSelect.value).toISOString()
     console.log(localData.eventStartTime);
 }
 

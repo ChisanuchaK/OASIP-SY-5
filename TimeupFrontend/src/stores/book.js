@@ -64,7 +64,7 @@ export const createBooking = async (localData) => {
       bookingName: localData.bookingName,
       bookingEmail: localData.bookingEmail,
       eventCategory: {
-        eventCategoryName: localData.eventCategory.eventCategoryName,
+        eventCategoryId: localData.eventCategory.eventCategoryId,
       },
       eventStartTime: localData.eventStartTime,
       eventDuration: localData.eventDuration,
