@@ -74,9 +74,7 @@ export const createBooking = async (localData) => {
   if (res.status === 201) {
     // const addBooking = await res.json()
     // bookingsList.value.push(addBooking)
-    console.log(
-      `added successfully${localData.bookingName},${localData.eventStartTime}`
-    );
+    alert(`Create successfully \n Category :  ${localData.eventCategory.eventCategoryName} \n Date : ${localData.eventStartTime} \n Booking name :  ${localData.bookingName}`)
   } else {
     console.log("error , failed to created");
   }

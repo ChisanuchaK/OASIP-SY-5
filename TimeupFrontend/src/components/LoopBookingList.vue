@@ -79,8 +79,8 @@ const getIdFromDialog = (idDelete)=>{
                         <div class="row-start-5 col-start-1 col-end-3 p-1 mb-1.5 bg-[#E2DDDD] rounded-lg -mr-12">BookingName</div>
                         <div class="row-start-5 col-start-3 col-end-9 p-1 mb-1.5 bg-[#E2DDDD] rounded-lg ml-16">{{ booking.bookingName
                         }}</div>
-
-                        <!-- <div
+        
+                       <!-- <div
                             class="col-start-2 row-start-1 row-end-6   -mr-6 w-3/12 mb-1 mx-10"> a
                         </div> -->
                           
