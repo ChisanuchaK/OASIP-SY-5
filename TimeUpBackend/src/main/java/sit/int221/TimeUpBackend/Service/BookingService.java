@@ -75,8 +75,6 @@ public class BookingService {
     }
 
 
-
-
     // delete
     public void deleteById (Integer idBooking){
         bookingRepository.deleteById(idBooking);
