@@ -25,7 +25,7 @@ services:
     image: quay.io/chisanuchakim/oasip-sy-5-fontend
     container_name: frontend
     ports:
-      - "80:80"
+      - "3000:3000"
     depends_on:
       - mysql
       - backend
