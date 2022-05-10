@@ -40,7 +40,7 @@ public class BookingService {
     // post
     public ResponseEntity create(Booking newBooking) {
         Booking booking = newBooking;
-        List<Booking> checkCompare = bookingRepository.findAllByEventCategoryEventCategoryId(booking.getEventCategory().getEventCategoryId());
+        List<Booking> checkCompare = bookingRepository.findAll();
 
         if (checkCompare.stream().count() == 0 ){
             bookingRepository.save(newBooking);
@@ -63,7 +63,7 @@ public class BookingService {
                     && ((booking.getEventStartTime().toEpochMilli() <= endTimeMs(book))))
                     || (( (endTimeMs(booking)) >= book.getEventStartTime().toEpochMilli())
                     && ((endTimeMs(booking))<= endTimeMs(book)))
-            ) {
+            ){
                 return true;
             }
         }
@@ -76,6 +76,7 @@ public class BookingService {
 
 
 
+
     // delete
     public void deleteById (Integer idBooking){
         bookingRepository.deleteById(idBooking);
@@ -83,14 +84,16 @@ public class BookingService {
 
     //put
     public ResponseEntity editBooking(Booking editBooking, Integer id) {
+
         Booking booking = bookingRepository.findById(id).orElseThrow(
                 () -> new ResponseStatusException(HttpStatus.NOT_FOUND)
         );
-        List<Booking> checkCompare = bookingRepository.findAllByEventCategoryEventCategoryId(booking.getEventCategory().getEventCategoryId());
+        List<Booking> checkCompare = bookingRepository.findAll();
         if (!checkTimeOverLap(checkCompare , editBooking)){
-            modelMapper.map(editBooking , Booking.class);
-            bookingRepository.save(editBooking);
-            return ResponseEntity.status(201).body("Edit Successfully!");
+            modelMapper.map(editBooking , booking);
+          bookingRepository.save(booking);
+
+            return ResponseEntity.status(200).body("Edit Successfully!");
         }
         else {
             return ResponseEntity.status(400).body("Can't Edit Date is Overlap!!");
