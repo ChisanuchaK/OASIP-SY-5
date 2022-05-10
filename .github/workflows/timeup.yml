@@ -16,7 +16,7 @@ jobs:
 
     steps:
     - uses: actions/checkout@v2
-    - run: docker-compose rm -svf frontend backend
+    - run: docker-compose rm -svf frontend backend reverse_proxy
     - run: docker ps
     - run: pwd
     - run: docker image rmi quay.io/chisanuchakim/oasip-sy-5-backend  quay.io/chisanuchakim/oasip-sy-5-fontend frontend backend
@@ -27,4 +27,4 @@ jobs:
     - run: docker build -t frontend .
     - run: docker tag frontend quay.io/chisanuchakim/oasip-sy-5-fontend
     - run: docker push quay.io/chisanuchakim/oasip-sy-5-fontend
-    - run: docker-compose up -d backend frontend 
+    - run: docker-compose up -d backend frontend reverse_proxy
