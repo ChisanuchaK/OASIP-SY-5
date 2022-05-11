@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 import sit.int221.TimeUpBackend.DTO.BookingDTO;
 import sit.int221.TimeUpBackend.DTO.BookingMoreDetailDTO;
+import sit.int221.TimeUpBackend.DTO.BookingPUTDTO;
 import sit.int221.TimeUpBackend.Entity.Booking;
 import sit.int221.TimeUpBackend.Repository.BookingRepository;
 
@@ -39,13 +40,7 @@ public class BookingService {
 
     // post
     public ResponseEntity create(Booking newBooking) {
-        Booking booking = newBooking;
         List<Booking> checkCompare = bookingRepository.findAll();
-
-        if (checkCompare.stream().count() == 0 ){
-            bookingRepository.save(newBooking);
-            return ResponseEntity.ok(HttpStatus.OK);
-        }
         if (!checkTimeOverLap(checkCompare , newBooking)){
             bookingRepository.save(newBooking);
             return ResponseEntity.status(201).body("Inserted Successfully!");
@@ -55,15 +50,14 @@ public class BookingService {
         }
     }
 
-
     public boolean checkTimeOverLap(List<Booking> allBooking , Booking booking ) {
 
         for (Booking book : allBooking) {
             if (((booking.getEventStartTime().toEpochMilli() >= book.getEventStartTime().toEpochMilli())
                     && ((booking.getEventStartTime().toEpochMilli() <= endTimeMs(book))))
                     || (( (endTimeMs(booking)) >= book.getEventStartTime().toEpochMilli())
-                    && ((endTimeMs(booking))<= endTimeMs(book)))
-            ){
+                    && ((endTimeMs(booking))<= endTimeMs(book))
+            )){
                 return true;
             }
         }
@@ -71,7 +65,7 @@ public class BookingService {
     }
 
     public long endTimeMs(Booking time){
-        return (time.getEventStartTime().toEpochMilli() + ((time.getEventDuration() * 60000) - 1));
+        return (time.getEventStartTime().toEpochMilli() + ((time.getEventDuration() * 60000)));
     }
 
 
@@ -83,18 +77,24 @@ public class BookingService {
     //put
     public ResponseEntity editBooking(Booking editBooking, Integer id) {
 
-        Booking booking = bookingRepository.findById(id).orElseThrow(
-                () -> new ResponseStatusException(HttpStatus.NOT_FOUND)
-        );
-        List<Booking> checkCompare = bookingRepository.findAll();
-        if (!checkTimeOverLap(checkCompare , editBooking)){
+        Booking booking = bookingRepository.findById(id).orElseThrow( ()->{
+           return new ResponseStatusException(HttpStatus.NOT_FOUND);
+        });
+        List<Booking> checkCompare = bookingRepository.findAllByEventCategoryEventCategoryId(editBooking.getEventCategory().getEventCategoryId());
+            for (Booking book : checkCompare) {
+               if (book.getIdBooking().compareTo(editBooking.getIdBooking()) == 0){
+                   int i = checkCompare.indexOf(book);
+                   checkCompare.remove(i);
+               }
+            }
+        if ((!checkTimeOverLap(checkCompare , editBooking))){
             modelMapper.map(editBooking , booking);
-          bookingRepository.save(booking);
-
-            return ResponseEntity.status(200).body("Edit Successfully!");
+            bookingRepository.saveAndFlush(booking);
+            return ResponseEntity.status(201).body("Edited Successfully!");
         }
         else {
-            return ResponseEntity.status(400).body("Can't Edit Date is Overlap!!");
+            return ResponseEntity.status(400).body("HAHA");
         }
+
     }
 }
