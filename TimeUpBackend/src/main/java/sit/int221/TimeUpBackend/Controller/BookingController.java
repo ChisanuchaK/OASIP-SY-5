@@ -51,7 +51,7 @@ public class BookingController {
 
 
     @PutMapping("/{id}")
-    public ResponseEntity editBooking(@RequestBody Booking editBooking , @PathVariable Integer id){
+    public ResponseEntity editBooking(@RequestBody Booking editBooking , @PathVariable int id){
         return bookingService.editBooking(editBooking , id);
     }
 }
