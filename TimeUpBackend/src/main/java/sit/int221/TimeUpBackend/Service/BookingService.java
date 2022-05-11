@@ -97,12 +97,11 @@ public class BookingService {
         if ((!checkTimeOverLap(checkCompare , editBooking))){
             booking.setEventStartTime(editBooking.getEventStartTime());
             booking.setEventNotes(editBooking.getEventNotes());
-            //modelMapper.map(editBooking , booking);
             bookingRepository.saveAndFlush(booking);
             return ResponseEntity.status(200).body("Edited Successfully");
         }
         else {
-            return ResponseEntity.status(400).body("OverLab !!");
+            return ResponseEntity.status(400).body("Edited is overLab !!");
         }
 
     }
