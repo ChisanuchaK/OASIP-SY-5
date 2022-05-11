@@ -6,13 +6,13 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import java.time.Instant;
-
 @Getter
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class BookingPUTDTO {
-    private Instant eventStartTime;
-    private String eventNotes;
+public class EventCategoryDTO {
+    private  Integer eventCategoryId;
+    private String eventCategoryName;
+    private Integer eventDuration;
+    private String eventCategoryDescription;
 }

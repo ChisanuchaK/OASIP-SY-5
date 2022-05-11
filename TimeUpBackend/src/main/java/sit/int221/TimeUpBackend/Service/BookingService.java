@@ -8,7 +8,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 import sit.int221.TimeUpBackend.DTO.BookingDTO;
 import sit.int221.TimeUpBackend.DTO.BookingMoreDetailDTO;
-import sit.int221.TimeUpBackend.DTO.BookingPUTDTO;
 import sit.int221.TimeUpBackend.Entity.Booking;
 import sit.int221.TimeUpBackend.Repository.BookingRepository;
 
@@ -42,12 +41,16 @@ public class BookingService {
     public ResponseEntity create(Booking newBooking) {
         List<Booking> checkCompare = bookingRepository.findAll();
         if (!checkTimeOverLap(checkCompare , newBooking)){
-            bookingRepository.save(newBooking);
-            return ResponseEntity.status(201).body("Inserted Successfully!");
+           if ((newBooking.getBookingName().length() > 0 && newBooking.getBookingName().length() <= 100)
+           && (newBooking.getBookingEmail().length() > 0 )){
+               bookingRepository.save(newBooking);
+               return ResponseEntity.status(201).body("Inserted Successfully!");
+           }
         }
         else {
             return ResponseEntity.status(400).body("Can't Insert Date is Overlap!!");
         }
+        return ResponseEntity.badRequest().body("Name or Email invalid !!");
     }
 
     public boolean checkTimeOverLap(List<Booking> allBooking , Booking booking ) {
@@ -90,10 +93,10 @@ public class BookingService {
         if ((!checkTimeOverLap(checkCompare , editBooking))){
             modelMapper.map(editBooking , booking);
             bookingRepository.saveAndFlush(booking);
-            return ResponseEntity.status(201).body("Edited Successfully!");
+            return ResponseEntity.status(200).body("Edited Successfully");
         }
         else {
-            return ResponseEntity.status(400).body("HAHA");
+            return ResponseEntity.status(400).body("Can't Edit !!");
         }
 
     }

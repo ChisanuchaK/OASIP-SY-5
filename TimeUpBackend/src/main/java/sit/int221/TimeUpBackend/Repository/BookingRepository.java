@@ -10,6 +10,5 @@ import java.util.List;
 
 public interface BookingRepository extends JpaRepository<Booking , Integer> {
    List<Booking> findAllByEventCategoryEventCategoryId(Integer eventCategoryId);
-   List<Booking> findByBookingName(String name);
 
 }
