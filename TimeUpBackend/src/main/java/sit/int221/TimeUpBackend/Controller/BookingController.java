@@ -1,7 +1,6 @@
 package sit.int221.TimeUpBackend.Controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -11,7 +10,6 @@ import sit.int221.TimeUpBackend.Entity.Booking;
 import sit.int221.TimeUpBackend.Repository.BookingRepository;
 import sit.int221.TimeUpBackend.Service.BookingService;
 
-import javax.servlet.annotation.HttpConstraint;
 import java.util.List;
 
 @RestController
@@ -53,7 +51,7 @@ public class BookingController {
 
 
     @PutMapping("/{id}")
-    public ResponseEntity editBooking(@RequestBody Booking editBooking , @PathVariable Integer id){
+    public ResponseEntity editBooking(@RequestBody Booking editBooking , @PathVariable int id){
         return bookingService.editBooking(editBooking , id);
     }
 }

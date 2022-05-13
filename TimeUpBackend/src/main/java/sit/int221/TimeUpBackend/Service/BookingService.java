@@ -11,6 +11,8 @@ import sit.int221.TimeUpBackend.DTO.BookingMoreDetailDTO;
 import sit.int221.TimeUpBackend.Entity.Booking;
 import sit.int221.TimeUpBackend.Repository.BookingRepository;
 
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -21,7 +23,7 @@ public class BookingService {
     private BookingRepository bookingRepository;
     private ModelMapper modelMapper = new ModelMapper();
 
-//    get
+    //    get
     public List<BookingDTO> getAllBookingDTO(){
         List<Booking>bookings= bookingRepository.findAll();
         return bookings.stream().map(e -> modelMapper.map(e, BookingDTO.class)).collect(Collectors.toList());
@@ -39,31 +41,40 @@ public class BookingService {
 
     // post
     public ResponseEntity create(Booking newBooking) {
-        Booking booking = newBooking;
-        List<Booking> checkCompare = bookingRepository.findAllByEventCategoryEventCategoryId(booking.getEventCategory().getEventCategoryId());
 
-        if (checkCompare.stream().count() == 0 ){
-            bookingRepository.save(newBooking);
-            return ResponseEntity.ok(HttpStatus.OK);
-        }
+        List<Booking> checkCompare = bookingRepository.findAllByEventCategoryEventCategoryId(newBooking.getEventCategory().getEventCategoryId());
         if (!checkTimeOverLap(checkCompare , newBooking)){
-            bookingRepository.save(newBooking);
-            return ResponseEntity.status(201).body("Inserted Successfully!");
+            if ((newBooking.getBookingName().length() > 0 && newBooking.getBookingName().length() <= 100)
+                    && (newBooking.getBookingEmail().length() > 0 )){
+                if((newBooking.getEventStartTime().toEpochMilli() <= getDateMonthsAgo().toInstant().toEpochMilli())
+                && (newBooking.getEventStartTime().toEpochMilli() >= System.currentTimeMillis()))
+                    {
+                    bookingRepository.save(newBooking);
+                    return ResponseEntity.status(201).body("Inserted Successfully!");
+                }
+            }
         }
         else {
             return ResponseEntity.status(400).body("Can't Insert Date is Overlap!!");
         }
+        return ResponseEntity.badRequest().body("Name or Email invalid or DateTime over 3 month !!");
     }
 
-
+    public static Date getDateMonthsAgo()
+    {
+        Calendar c = Calendar.getInstance();
+        c.setTime(new Date());
+        c.add(Calendar.MONTH,  3);
+        return c.getTime();
+    }
     public boolean checkTimeOverLap(List<Booking> allBooking , Booking booking ) {
 
         for (Booking book : allBooking) {
             if (((booking.getEventStartTime().toEpochMilli() >= book.getEventStartTime().toEpochMilli())
                     && ((booking.getEventStartTime().toEpochMilli() <= endTimeMs(book))))
                     || (( (endTimeMs(booking)) >= book.getEventStartTime().toEpochMilli())
-                    && ((endTimeMs(booking))<= endTimeMs(book)))
-            ) {
+                    && ((endTimeMs(booking))<= endTimeMs(book))
+            )){
                 return true;
             }
         }
@@ -71,9 +82,8 @@ public class BookingService {
     }
 
     public long endTimeMs(Booking time){
-        return (time.getEventStartTime().toEpochMilli() + ((time.getEventDuration() * 60000) - 1));
+        return (time.getEventStartTime().toEpochMilli() + ((time.getEventDuration() * 60000)));
     }
-
 
 
     // delete
@@ -82,18 +92,34 @@ public class BookingService {
     }
 
     //put
-    public ResponseEntity editBooking(Booking editBooking, Integer id) {
-        Booking booking = bookingRepository.findById(id).orElseThrow(
-                () -> new ResponseStatusException(HttpStatus.NOT_FOUND)
-        );
-        List<Booking> checkCompare = bookingRepository.findAllByEventCategoryEventCategoryId(booking.getEventCategory().getEventCategoryId());
-        if (!checkTimeOverLap(checkCompare , editBooking)){
-            modelMapper.map(editBooking , Booking.class);
-            bookingRepository.save(editBooking);
-            return ResponseEntity.status(201).body("Edit Successfully!");
+    public ResponseEntity editBooking(Booking editBooking, int id) {
+
+        Booking booking = bookingRepository.findById(id).orElseThrow( ()->{
+            return new ResponseStatusException(HttpStatus.NOT_FOUND);
+        });
+        List<Booking> checkCompare = bookingRepository.findAllByEventCategoryEventCategoryId(editBooking.getEventCategory().getEventCategoryId());
+        int i = 0;
+        int index = 0;
+        for(Booking b: checkCompare){
+            if(b.getIdBooking() == id){
+                index = i;
+            }
+            i++;
+        }
+        checkCompare.remove(index);
+
+        if ((!checkTimeOverLap(checkCompare , editBooking))){
+            if((editBooking.getEventStartTime().toEpochMilli() <= getDateMonthsAgo().toInstant().toEpochMilli())
+                    && (editBooking.getEventStartTime().toEpochMilli() >= System.currentTimeMillis())) {
+                booking.setEventStartTime(editBooking.getEventStartTime());
+                booking.setEventNotes(editBooking.getEventNotes());
+                bookingRepository.saveAndFlush(booking);
+                return ResponseEntity.status(200).body("Edited Successfully");
+            }
         }
         else {
-            return ResponseEntity.status(400).body("Can't Edit Date is Overlap!!");
+            return ResponseEntity.status(400).body("Edited is overLab !!");
         }
+        return ResponseEntity.badRequest().body("DateTime over 3 month !!");
     }
 }

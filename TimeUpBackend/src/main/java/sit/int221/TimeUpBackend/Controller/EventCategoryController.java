@@ -2,7 +2,9 @@ package sit.int221.TimeUpBackend.Controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import sit.int221.TimeUpBackend.DTO.EventCategoryDTO;
 import sit.int221.TimeUpBackend.Entity.EventCategory;
 import sit.int221.TimeUpBackend.Service.EventCategoryService;
 
@@ -22,5 +24,9 @@ public class EventCategoryController {
     @ResponseStatus(HttpStatus.CREATED)
     public EventCategory createEventCategory(@RequestBody EventCategory newEventCategory){
         return  eventCategoryService.create(newEventCategory); 
+    }
+    @PutMapping("/{id}")
+    public ResponseEntity editEventCategory(@RequestBody EventCategoryDTO editEventCategory , @PathVariable Integer id){
+        return eventCategoryService.editEventCategory(editEventCategory , id);
     }
 }
