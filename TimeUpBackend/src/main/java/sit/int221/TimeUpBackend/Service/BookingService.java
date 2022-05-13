@@ -64,7 +64,7 @@ public class BookingService {
     {
         Calendar c = Calendar.getInstance();
         c.setTime(new Date());
-        c.add(Calendar.MONTH,  3);
+        c.add(Calendar.MONTH,  2);
         return c.getTime();
     }
     public boolean checkTimeOverLap(List<Booking> allBooking , Booking booking ) {
