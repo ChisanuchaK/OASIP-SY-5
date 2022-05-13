@@ -11,6 +11,8 @@ import sit.int221.TimeUpBackend.DTO.BookingMoreDetailDTO;
 import sit.int221.TimeUpBackend.Entity.Booking;
 import sit.int221.TimeUpBackend.Repository.BookingRepository;
 
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -39,20 +41,32 @@ public class BookingService {
 
     // post
     public ResponseEntity create(Booking newBooking) {
-        List<Booking> checkCompare = bookingRepository.findAll();
+
+        List<Booking> checkCompare = bookingRepository.findAllByEventCategoryEventCategoryId(newBooking.getEventCategory().getEventCategoryId());
         if (!checkTimeOverLap(checkCompare , newBooking)){
             if ((newBooking.getBookingName().length() > 0 && newBooking.getBookingName().length() <= 100)
                     && (newBooking.getBookingEmail().length() > 0 )){
-                bookingRepository.save(newBooking);
-                return ResponseEntity.status(201).body("Inserted Successfully!");
+                if((newBooking.getEventStartTime().toEpochMilli() <= getDateMonthsAgo().toInstant().toEpochMilli())
+                && (newBooking.getEventStartTime().toEpochMilli() >= System.currentTimeMillis()))
+                    {
+                    bookingRepository.save(newBooking);
+                    return ResponseEntity.status(201).body("Inserted Successfully!");
+                }
             }
         }
         else {
             return ResponseEntity.status(400).body("Can't Insert Date is Overlap!!");
         }
-        return ResponseEntity.badRequest().body("Name or Email invalid !!");
+        return ResponseEntity.badRequest().body("Name or Email invalid or DateTime over 3 month !!");
     }
 
+    public static Date getDateMonthsAgo()
+    {
+        Calendar c = Calendar.getInstance();
+        c.setTime(new Date());
+        c.add(Calendar.MONTH,  3);
+        return c.getTime();
+    }
     public boolean checkTimeOverLap(List<Booking> allBooking , Booking booking ) {
 
         for (Booking book : allBooking) {
@@ -95,14 +109,17 @@ public class BookingService {
         checkCompare.remove(index);
 
         if ((!checkTimeOverLap(checkCompare , editBooking))){
-            booking.setEventStartTime(editBooking.getEventStartTime());
-            booking.setEventNotes(editBooking.getEventNotes());
-            bookingRepository.saveAndFlush(booking);
-            return ResponseEntity.status(200).body("Edited Successfully");
+            if((editBooking.getEventStartTime().toEpochMilli() <= getDateMonthsAgo().toInstant().toEpochMilli())
+                    && (editBooking.getEventStartTime().toEpochMilli() >= System.currentTimeMillis())) {
+                booking.setEventStartTime(editBooking.getEventStartTime());
+                booking.setEventNotes(editBooking.getEventNotes());
+                bookingRepository.saveAndFlush(booking);
+                return ResponseEntity.status(200).body("Edited Successfully");
+            }
         }
         else {
             return ResponseEntity.status(400).body("Edited is overLab !!");
         }
-
+        return ResponseEntity.badRequest().body("DateTime over 3 month !!");
     }
 }

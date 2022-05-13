@@ -51,6 +51,11 @@ CREATE TABLE IF NOT EXISTS `TimeUp`.`booking` (
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;
 
+CREATE user 'admin'@'%' IDENTIFIED  by 'admin123';
+CREATE user 'dev'@'%' IDENTIFIED  by 'dev123';
+GRANT ALL PRIVILEGES ON *.* TO 'admin'@'%';
+GRANT insert update delete create on TimeUp.* to 'dev'@'%';
+FLUSH PRIVILEGES ;
 
 SET SQL_MODE=@OLD_SQL_MODE;
 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS;
