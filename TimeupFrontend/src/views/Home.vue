@@ -2,6 +2,7 @@
 import NavbarTop from "../components/navbarTop.vue";
 import NavbarBottom from "../components/navbarBottom.vue";
 import {ref , onBeforeMount} from 'vue';
+import moment from "moment"
 let arrLists = ref()
 
 const getEventCategory = async () =>{
@@ -15,6 +16,15 @@ const getEventCategory = async () =>{
 }
 onBeforeMount(async ()=>{
   await getEventCategory()
+  // var testDateUtc = moment.utc("2015-01-30 10:00:00");
+  // var localDate = moment(testDateUtc).local('TH');
+  // console.log(testDateUtc);
+  // console.log(localDate);
+var oldDateObj = moment.utc("2015-01-30 10:00:00");
+var newDateObj = moment(oldDateObj).add(50, 'm').toDate();
+
+console.log(oldDateObj);
+console.log(newDateObj);
 })
 </script>
  

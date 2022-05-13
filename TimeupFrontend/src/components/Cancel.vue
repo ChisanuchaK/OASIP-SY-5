@@ -16,11 +16,14 @@ const closeCancel = (event) => {
             <div class="text-center bg-white p-10 rounded-lg">
                 <div class="p-20 ">
                   <p class="text-4xl mb-5">Cancel ?</p> 
-             your want to cancel Scheduled ?
+             You want to cancel this ?
                 </div>
                 <div class="grid grid-flow-row grid-cols-4 ">
-                  <router-link to="/" class="col-start-1 p-3 bg-[#499D6B] text-white rounded-lg justify-start"> <button class="" @click="$emit('onClickCancelYes')"> Yes
-                    </button></router-link> 
+
+                  <!-- <router-link to="/" class="col-start-1 p-3 bg-[#499D6B] text-white rounded-lg justify-start"> <button class="" @click="$emit('onClickCancelYes')"> Yes
+                    </button></router-link>  -->
+                    <button class="col-start-1 p-3 bg-[#499D6B] text-white rounded-lg justify-start" @click="$emit('onClickCancelYes')"> Yes
+                    </button>
                     <button class="col-start-4 p-3 bg-[#F97473] text-white rounded-lg" @click="$emit('onClickCancelNo')">No</button>
 
                 </div>
