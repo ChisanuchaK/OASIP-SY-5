@@ -54,7 +54,7 @@ ENGINE = InnoDB;
 CREATE user 'admin'@'%' IDENTIFIED  by 'admin123';
 CREATE user 'dev'@'%' IDENTIFIED  by 'dev123';
 GRANT ALL PRIVILEGES ON *.* TO 'admin'@'%';
-GRANT insert update delete create on TimeUp.* to 'dev'@'%';
+GRANT insert , update , delete , select on TimeUp.* to 'dev'@'%';
 FLUSH PRIVILEGES ;
 
 SET SQL_MODE=@OLD_SQL_MODE;
