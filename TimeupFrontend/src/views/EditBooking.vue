@@ -1,5 +1,5 @@
 <script setup>
-import { ref, reactive, onBeforeMount, computed, onMounted } from "vue";
+import { ref, reactive, onBeforeMount, computed , onBeforeUpdate  } from "vue";
 import moment from "moment";
 import Cancel from "../components/Cancel.vue";
 import Confirm from "../components/Confirm.vue";
@@ -29,9 +29,21 @@ console.log(note.value);
 
 // categoryList.value.forEach(categoryId => { categoryIndexSelect.value.push(categoryId.eventCategoryId) })
 // console.log(categoryIndexSelect.value.eventCategoryId);
+let index = ref(0)
 let arr = ["Project Management Clinic" , "DevOps/Infra Clinic" , "Database Clinic" , "Client-side Clinic" , "Server-side Clinic" , "Other"]
-let index = ref(1)
+let check = ()=>{
 
+           for(let i = 0 ; i < arr.length ; i ++){
+             if(arr.includes(someBooking.value.eventCategoryName)){
+                 if(arr[i] === someBooking.value.eventCategoryName){
+                     index.value = i + 1
+                 }
+             }
+           }    
+}
+
+console.log(arr.includes(someBooking.value.eventCategoryName ))
+console.log(someBooking.value.eventCategoryName)
 console.log(index.value)
 let editData = reactive({
     idBooking: someBooking.value.idBooking,
@@ -89,7 +101,13 @@ const editNotes = () => {
 
 onBeforeMount(async () => {
     categoryList.value = await getEventCategory();
+ 
     console.log(categoryList.value);
+})
+
+onBeforeUpdate(async ()=>{
+   check()
+    console.log(index.value)
 })
 
 // const categorySelect = () => {
@@ -222,8 +240,8 @@ const editBooking = async (editNoteId,editData, bookingEdit, loopEdit) => {
 
                     <!-- <Confirm v-if="bookingToEdit.createDialog" @onClickCreateNo="changeCreateDialog(bookingToEdit)"
                         @onClickCreateYes="putEditDialog(editData.idBooking, bookingToEdit, loopEdit)" /> -->
-                    <Confirm v-if="bookingToEdit.createDialog"  @onClickCreateNo="changeCreateDialog(bookingToEdit)"
-                        @onClickCreateYes="editBooking(editData.idBooking,editData, bookingToEdit, loopEdit , check)" />
+                    <Confirm v-if="bookingToEdit.createDialog" @onClickCreateNo="changeCreateDialog(bookingToEdit)"
+                        @onClickCreateYes="editBooking(editData.idBooking,editData, bookingToEdit, loopEdit )" />
 
                 </div>
             </div>

@@ -8,14 +8,14 @@ import { createBooking } from "../stores/book.js";
 import Cancel from "../components/Cancel.vue";
 import Confirm from "../components/Confirm.vue";
 
-const localPresentTime =  moment.utc().local().format("YYYY-MM-DDThh:mm")
+const localPresentTime =  moment.utc().local().format("YYYY-MM-DDTHH:mm")
 const categoryList = ref([]);
 const categoryIndexSelect = ref();
 const dateIndexSelect = ref(localPresentTime);
 
 let date = new Date();
 date.setMonth(date.getMonth() + 3);
-let maxlocalPresentTime = moment(date).format("YYYY-MM-DDThh:mm")
+let maxlocalPresentTime = moment(date).format("YYYY-MM-DDTHH:mm")
 let maxdateIndexSelect = ref(maxlocalPresentTime)
 
 
