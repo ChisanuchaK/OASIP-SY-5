@@ -47,11 +47,11 @@ console.log(someBooking.value.eventCategoryName)
 console.log(index.value)
 let editData = reactive({
     idBooking: someBooking.value.idBooking,
-    bookingName: someBooking.value.bookingName,
-    bookingEmail: someBooking.value.bookingEmail,
-    eventCategory: { eventCategoryId: index },
+    // bookingName: someBooking.value.bookingName,
+    // bookingEmail: someBooking.value.bookingEmail,
+    // eventCategory: { eventCategoryId: index },
     eventStartTime: someBooking.value.eventStartTime,
-    eventDuration: someBooking.value.eventDuration,
+    // eventDuration: someBooking.value.eventDuration,
     eventNotes: someBooking.value.eventNotes,
 })
 
@@ -132,11 +132,11 @@ const editBooking = async (editNoteId,editData, bookingEdit, loopEdit) => {
         },
         body: JSON.stringify({
             idBooking: editData.idBooking,
-            bookingName: editData.bookingName,
-            bookingEmail: editData.bookingEmail,
-            eventCategory: { eventCategoryId: editData.eventCategory.eventCategoryId },
+            // bookingName: editData.bookingName,
+            // bookingEmail: editData.bookingEmail,
+            // eventCategory: { eventCategoryId: editData.eventCategory.eventCategoryId },
             eventStartTime: editData.eventStartTime,
-            eventDuration: editData.eventDuration,
+            // eventDuration: editData.eventDuration,
             eventNotes: editData.eventNotes,
         })
     })

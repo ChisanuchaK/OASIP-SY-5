@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 import sit.int221.TimeUpBackend.DTO.BookingDTO;
 import sit.int221.TimeUpBackend.DTO.BookingMoreDetailDTO;
+import sit.int221.TimeUpBackend.DTO.BookingPUTDTO;
 import sit.int221.TimeUpBackend.Entity.Booking;
 import sit.int221.TimeUpBackend.Repository.BookingRepository;
 
@@ -92,12 +93,12 @@ public class BookingService {
     }
 
     //put
-    public ResponseEntity editBooking(Booking editBooking, int id) {
+    public ResponseEntity editBooking(BookingPUTDTO editBooking, int id) {
 
         Booking booking = bookingRepository.findById(id).orElseThrow( ()->{
             return new ResponseStatusException(HttpStatus.NOT_FOUND);
         });
-        List<Booking> checkCompare = bookingRepository.findAllByEventCategoryEventCategoryId(editBooking.getEventCategory().getEventCategoryId());
+        List<Booking> checkCompare = bookingRepository.findAll();
         int i = 0;
         int index = 0;
         for(Booking b: checkCompare){
@@ -107,13 +108,11 @@ public class BookingService {
             i++;
         }
         checkCompare.remove(index);
-
-        if ((!checkTimeOverLap(checkCompare , editBooking))){
+                modelMapper.map(editBooking , booking);
+        if ((!checkTimeOverLap(checkCompare , booking))){
             if((editBooking.getEventStartTime().toEpochMilli() <= getDateMonthsAgo().toInstant().toEpochMilli())
                     && (editBooking.getEventStartTime().toEpochMilli() >= System.currentTimeMillis())) {
                if (editBooking.getEventNotes().length() <= 500 ){
-                   booking.setEventStartTime(editBooking.getEventStartTime());
-                   booking.setEventNotes(editBooking.getEventNotes());
                    bookingRepository.saveAndFlush(booking);
                    return ResponseEntity.status(200).body("Edited Successfully");
                }

@@ -6,6 +6,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import sit.int221.TimeUpBackend.DTO.BookingDTO;
 import sit.int221.TimeUpBackend.DTO.BookingMoreDetailDTO;
+import sit.int221.TimeUpBackend.DTO.BookingPUTDTO;
 import sit.int221.TimeUpBackend.Entity.Booking;
 import sit.int221.TimeUpBackend.Service.BookingService;
 
@@ -48,7 +49,7 @@ public class BookingController {
 
 
     @PutMapping("/{id}")
-    public ResponseEntity editBooking(@RequestBody Booking editBooking , @PathVariable int id){
+    public ResponseEntity editBooking(@RequestBody BookingPUTDTO editBooking , @PathVariable int id){
         return bookingService.editBooking(editBooking , id);
     }
 }
