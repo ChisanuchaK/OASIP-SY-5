@@ -50,15 +50,14 @@ public class BookingService {
                 && (newBooking.getEventStartTime().toEpochMilli() >= System.currentTimeMillis()))
                     {
                     bookingRepository.save(newBooking);
-                        throw new ResponseStatusException(HttpStatus.BAD_REQUEST , "Date over 3 month or under present time");
+                    return ResponseEntity.status(201).body("Inserted Successfully!");
                 }
-                throw  new ResponseStatusException(HttpStatus.BAD_REQUEST , "event name or event email invalid");
             }
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST , "Time overlap !! ");
         }
         else {
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST , "Time overlap !!");
+            return ResponseEntity.status(400).body("Can't Insert Date is Overlap!!");
         }
+        return ResponseEntity.badRequest().body("Name or Email invalid or DateTime over 3 month !!");
     }
 
     public static Date getDateMonthsAgo()
@@ -116,14 +115,13 @@ public class BookingService {
                    booking.setEventStartTime(editBooking.getEventStartTime());
                    booking.setEventNotes(editBooking.getEventNotes());
                    bookingRepository.saveAndFlush(booking);
-                  throw  new ResponseStatusException(HttpStatus.BAD_REQUEST , "event note or eventStart time invalid");
+                   return ResponseEntity.status(200).body("Edited Successfully");
                }
-                throw new ResponseStatusException(HttpStatus.BAD_REQUEST , "Date over 3 month or under present time");
             }
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST , "Time overlap !! ");
         }
         else {
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST , "Time overlap !!");
+            return ResponseEntity.status(400).body("Edited is overLab !!");
         }
+        return ResponseEntity.badRequest().body("DateTime over 3 month  or under present time!!");
     }
 }
