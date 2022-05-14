@@ -14,7 +14,7 @@ import java.time.Instant;
 @AllArgsConstructor
 public class BookingPUTDTO {
 
-    private Integer idBooking;
+//    private Integer idBooking;
     private Instant eventStartTime;
     private String eventNotes;
 }

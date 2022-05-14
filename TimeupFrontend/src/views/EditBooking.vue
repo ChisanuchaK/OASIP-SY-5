@@ -35,7 +35,7 @@ console.log(arr.includes(someBooking.value.eventCategoryName ))
 console.log(someBooking.value.eventCategoryName)
 console.log(index.value)
 let editData = reactive({
-    idBooking: someBooking.value.idBooking,
+    // idBooking: someBooking.value.idBooking,
     // bookingName: someBooking.value.bookingName,
     // bookingEmail: someBooking.value.bookingEmail,
     // eventCategory: { eventCategoryId: index },
@@ -120,7 +120,7 @@ const editBooking = async (editNoteId,editData, bookingEdit, loopEdit) => {
             'content-type': 'application/json'
         },
         body: JSON.stringify({
-            idBooking: editData.idBooking,
+            // idBooking: editData.idBooking,
             // bookingName: editData.bookingName,
             // bookingEmail: editData.bookingEmail,
             // eventCategory: { eventCategoryId: editData.eventCategory.eventCategoryId },
