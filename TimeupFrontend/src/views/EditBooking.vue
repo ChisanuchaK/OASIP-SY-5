@@ -29,15 +29,18 @@ console.log(note.value);
 
 // categoryList.value.forEach(categoryId => { categoryIndexSelect.value.push(categoryId.eventCategoryId) })
 // console.log(categoryIndexSelect.value.eventCategoryId);
+let arr = ["Project Management Clinic" , "DevOps/Infra Clinic" , "Database Clinic" , "Client-side Clinic" , "Server-side Clinic" , "Other"]
+let index = ref(1)
 
+console.log(index.value)
 let editData = reactive({
     idBooking: someBooking.value.idBooking,
     bookingName: someBooking.value.bookingName,
     bookingEmail: someBooking.value.bookingEmail,
-    eventCategory: { eventCategoryId: "1" },
-    eventStartTime: "",
+    eventCategory: { eventCategoryId: index },
+    eventStartTime: someBooking.value.eventStartTime,
     eventDuration: someBooking.value.eventDuration,
-    eventNotes: "",
+    eventNotes: someBooking.value.eventNotes,
 })
 
 console.log(editData);
@@ -219,8 +222,8 @@ const editBooking = async (editNoteId,editData, bookingEdit, loopEdit) => {
 
                     <!-- <Confirm v-if="bookingToEdit.createDialog" @onClickCreateNo="changeCreateDialog(bookingToEdit)"
                         @onClickCreateYes="putEditDialog(editData.idBooking, bookingToEdit, loopEdit)" /> -->
-                    <Confirm v-if="bookingToEdit.createDialog" @onClickCreateNo="changeCreateDialog(bookingToEdit)"
-                        @onClickCreateYes="editBooking(editData.idBooking,editData, bookingToEdit, loopEdit)" />
+                    <Confirm v-if="bookingToEdit.createDialog"  @onClickCreateNo="changeCreateDialog(bookingToEdit)"
+                        @onClickCreateYes="editBooking(editData.idBooking,editData, bookingToEdit, loopEdit , check)" />
 
                 </div>
             </div>
