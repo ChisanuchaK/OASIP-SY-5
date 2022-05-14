@@ -6,8 +6,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import sit.int221.TimeUpBackend.DTO.BookingDTO;
 import sit.int221.TimeUpBackend.DTO.BookingMoreDetailDTO;
+import sit.int221.TimeUpBackend.DTO.BookingPUTDTO;
 import sit.int221.TimeUpBackend.Entity.Booking;
-import sit.int221.TimeUpBackend.Repository.BookingRepository;
 import sit.int221.TimeUpBackend.Service.BookingService;
 
 import java.util.List;
@@ -19,8 +19,6 @@ public class BookingController {
     @Autowired
     private BookingService bookingService;
 
-    @Autowired
-    private BookingRepository bookingRepository;
 
     @GetMapping("/more-detail")
     public List<BookingMoreDetailDTO> getAllBookingDetail(){
@@ -51,7 +49,7 @@ public class BookingController {
 
 
     @PutMapping("/{id}")
-    public ResponseEntity editBooking(@RequestBody Booking editBooking , @PathVariable int id){
+    public ResponseEntity editBooking(@RequestBody BookingPUTDTO editBooking , @PathVariable int id){
         return bookingService.editBooking(editBooking , id);
     }
 }

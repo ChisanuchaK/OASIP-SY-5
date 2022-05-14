@@ -124,9 +124,9 @@ const getBg = (name) => {
                         }}</div>
 
                         <div class="row-start-1 col-start-3 col-end-5 p-1 mb-1.5 rounded-lg ">{{
-                                moment(booking.eventStartTime).local().format('HH:mm A')
+                                moment(booking.eventStartTime).local().format('hh:mm A')
                         }}
-                            - {{ moment(booking.eventStartTime).local().add(booking.eventDuration, 'm').format('HH:mm A')}}
+                            - {{ moment(booking.eventStartTime).local().add(booking.eventDuration, 'm').format('hh:mm A')}}
                         </div>
 
                         <div class="row-start-1 col-start-5 col-end-7 p-1 mb-1.5 rounded-lg "

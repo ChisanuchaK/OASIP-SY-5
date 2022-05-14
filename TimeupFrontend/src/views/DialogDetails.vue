@@ -115,14 +115,14 @@ const changeEditDialog = (booking)=>{
                         {{
                                 moment(bookingsDetails.eventStartTime)
                                     .local()
-                                    .format("DD MMMM YYYY HH:mm A")
+                                    .format("DD MMMM YYYY hh:mm A")
                         }}
                         -
                         {{
                                 moment(bookingsDetails.eventStartTime)
                                     .local()
                                     .add(bookingsDetails.eventDuration, "m")
-                                    .format("HH:mm A")
+                                    .format("hh:mm A")
                         }}
                     </div>
                     <!-- <div class="row-start-5 col-start-1 p-1  bg-gray rounded-lg "> -->

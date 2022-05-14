@@ -1,5 +1,5 @@
 <script setup>
-import { ref, reactive, onBeforeMount, computed, onMounted } from "vue";
+import { ref, reactive, onBeforeMount, computed , onBeforeUpdate  } from "vue";
 import moment from "moment";
 import Cancel from "../components/Cancel.vue";
 import Confirm from "../components/Confirm.vue";
@@ -29,15 +29,30 @@ console.log(note.value);
 
 // categoryList.value.forEach(categoryId => { categoryIndexSelect.value.push(categoryId.eventCategoryId) })
 // console.log(categoryIndexSelect.value.eventCategoryId);
+// let index = ref(0)
+// let arr = ["Project Management Clinic" , "DevOps/Infra Clinic" , "Database Clinic" , "Client-side Clinic" , "Server-side Clinic" , "Other"]
+// let check = ()=>{
 
+//            for(let i = 0 ; i < arr.length ; i ++){
+//              if(arr.includes(someBooking.value.eventCategoryName)){
+//                  if(arr[i] === someBooking.value.eventCategoryName){
+//                      index.value = i + 1
+//                  }
+//              }
+//            }    
+// }
+
+// console.log(arr.includes(someBooking.value.eventCategoryName ))
+// console.log(someBooking.value.eventCategoryName)
+// console.log(index.value)
 let editData = reactive({
     idBooking: someBooking.value.idBooking,
-    bookingName: someBooking.value.bookingName,
-    bookingEmail: someBooking.value.bookingEmail,
-    eventCategory: { eventCategoryId: "1" },
-    eventStartTime: "",
-    eventDuration: someBooking.value.eventDuration,
-    eventNotes: "",
+    // bookingName: someBooking.value.bookingName,
+    // bookingEmail: someBooking.value.bookingEmail,
+    // eventCategory: { eventCategoryId: index },
+    eventStartTime: someBooking.value.eventStartTime,
+    // eventDuration: someBooking.value.eventDuration,
+    eventNotes: someBooking.value.eventNotes,
 })
 
 console.log(editData);
@@ -86,8 +101,14 @@ const editNotes = () => {
 
 onBeforeMount(async () => {
     categoryList.value = await getEventCategory();
+ 
     console.log(categoryList.value);
 })
+
+// onBeforeUpdate(async ()=>{
+//    check()
+//     console.log(index.value)
+// })
 
 // const categorySelect = () => {
 //     editData.eventCategory.eventCategoryId = categoryList.value[categoryIndexSelect.value].eventCategoryId
@@ -110,12 +131,12 @@ const editBooking = async (editNoteId,editData, bookingEdit, loopEdit) => {
             'content-type': 'application/json'
         },
         body: JSON.stringify({
-            idBooking: editData.idBooking,
-            bookingName: editData.bookingName,
-            bookingEmail: editData.bookingEmail,
-            eventCategory: { eventCategoryId: editData.eventCategory.eventCategoryId },
+            // idBooking: editData.idBooking,
+            // bookingName: editData.bookingName,
+            // bookingEmail: editData.bookingEmail,
+            // eventCategory: { eventCategoryId: editData.eventCategory.eventCategoryId },
             eventStartTime: editData.eventStartTime,
-            eventDuration: editData.eventDuration,
+            // eventDuration: editData.eventDuration,
             eventNotes: editData.eventNotes,
         })
     })
@@ -221,7 +242,7 @@ const editBooking = async (editNoteId,editData, bookingEdit, loopEdit) => {
                     <!-- <Confirm v-if="bookingToEdit.createDialog" @onClickCreateNo="changeCreateDialog(bookingToEdit)"
                         @onClickCreateYes="putEditDialog(editData.idBooking, bookingToEdit, loopEdit)" /> -->
                     <Confirm v-if="bookingToEdit.createDialog" @onClickCreateNo="changeCreateDialog(bookingToEdit)"
-                        @onClickCreateYes="editBooking(editData.idBooking,editData, bookingToEdit, loopEdit)" />
+                        @onClickCreateYes="editBooking(editData.idBooking,editData, bookingToEdit, loopEdit )" />
 
                 </div>
             </div>
