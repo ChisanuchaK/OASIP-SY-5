@@ -119,6 +119,7 @@ const editBooking = async (editNoteId,editData, bookingEdit, loopEdit) => {
             eventNotes: editData.eventNotes,
         })
     })
+    // console.log(editData.eventStartTime);
     if (res.status === 200) {
         bookingEdit.createDialog = !bookingEdit.createDialog;
         bookingEdit.statusClickEdit = !bookingEdit.statusClickEdit;
