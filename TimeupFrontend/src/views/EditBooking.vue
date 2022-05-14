@@ -45,12 +45,13 @@ console.log(note.value);
 // console.log(arr.includes(someBooking.value.eventCategoryName ))
 // console.log(someBooking.value.eventCategoryName)
 // console.log(index.value)
+
 let editData = reactive({
     idBooking: someBooking.value.idBooking,
     // bookingName: someBooking.value.bookingName,
     // bookingEmail: someBooking.value.bookingEmail,
     // eventCategory: { eventCategoryId: index },
-    eventStartTime: someBooking.value.eventStartTime,
+    eventStartTime: "",
     // eventDuration: someBooking.value.eventDuration,
     eventNotes: someBooking.value.eventNotes,
 })
@@ -94,9 +95,10 @@ const selectTime = () => {
     // console.log(editData.eventCategory.eventCategoryId);
 }
 
-const editNotes = () => {
+const sentEditData = () => {
+    editData.eventStartTime = new Date(bookingPresentTime.value).toISOString()
     editData.eventNotes = note.value
-    console.log(editData.eventNotes);
+    console.log(editData);
 }
 
 onBeforeMount(async () => {
@@ -140,6 +142,7 @@ const editBooking = async (editNoteId,editData, bookingEdit, loopEdit) => {
             eventNotes: editData.eventNotes,
         })
     })
+    // console.log(editData.eventStartTime);
     if (res.status === 200) {
         bookingEdit.createDialog = !bookingEdit.createDialog;
         bookingEdit.statusClickEdit = !bookingEdit.statusClickEdit;
@@ -228,7 +231,7 @@ const editBooking = async (editNoteId,editData, bookingEdit, loopEdit) => {
 
                     <div class="row-start-9 mt-5 col-start-1">
                         <button class="bg-[#499D6B] text-white rounded-lg w-6/12 h-full m-auto py-2"
-                            @click="[changeCreateDialog(bookingToEdit), editNotes()]">confirm</button>
+                            @click="[changeCreateDialog(bookingToEdit), sentEditData()]">confirm</button>
                     </div>
                     <div class="row-start-9 mt-5 col-start-2">
                         <button class="bg-[#F97473] text-white rounded-lg w-6/12 h-full m-auto py-2"
