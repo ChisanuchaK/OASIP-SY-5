@@ -11,7 +11,7 @@ import Confirm from "../components/Confirm.vue";
 const localPresentTime = moment.utc().local().format("YYYY-MM-DDTHH:mm") 
 const categoryList = ref([]);
 const categoryIndexSelect = ref();
-const dateIndexSelect = setInterval(ref(localPresentTime) , 1000);
+const dateIndexSelect = ref(localPresentTime);
 
 let date = new Date();
 date.setMonth(date.getMonth() + 3);
