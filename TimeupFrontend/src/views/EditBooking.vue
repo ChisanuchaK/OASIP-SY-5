@@ -29,18 +29,7 @@ console.log(note.value);
 
 // categoryList.value.forEach(categoryId => { categoryIndexSelect.value.push(categoryId.eventCategoryId) })
 // console.log(categoryIndexSelect.value.eventCategoryId);
-let index = ref(0)
-let arr = ["Project Management Clinic" , "DevOps/Infra Clinic" , "Database Clinic" , "Client-side Clinic" , "Server-side Clinic" , "Other"]
-let check = ()=>{
 
-           for(let i = 0 ; i < arr.length ; i ++){
-             if(arr.includes(someBooking.value.eventCategoryName)){
-                 if(arr[i] === someBooking.value.eventCategoryName){
-                     index.value = i + 1
-                 }
-             }
-           }    
-}
 
 console.log(arr.includes(someBooking.value.eventCategoryName ))
 console.log(someBooking.value.eventCategoryName)
