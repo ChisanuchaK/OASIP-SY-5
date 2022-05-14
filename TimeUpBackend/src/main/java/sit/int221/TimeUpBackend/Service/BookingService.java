@@ -48,16 +48,16 @@ public class BookingService {
         List<Booking> checkCompare = bookingRepository.findAllByEventCategoryEventCategoryId(newBooking.getEventCategory().getEventCategoryId());
         if (!(newBooking.getBookingName().length() > 0 && newBooking.getBookingName().length() <= 100)
                 && (newBooking.getBookingEmail().length() > 0 )){
-            throw  new ResponseStatusException(HttpStatus.BAD_REQUEST , "Event name invalid !! character limit 100");
+            return ResponseEntity.status(400).body("Event name invalid !! character limit 100");
         }
         Pattern pattern = Pattern.compile("[a-z0-9._%+-]+@[a-z0-9.-]+\\.[a-z]{2,3}");
         Matcher mat = pattern.matcher(newBooking.getBookingEmail());
         if (!mat.matches()){
-            throw  new ResponseStatusException(HttpStatus.BAD_REQUEST , "Event email invalid !! character limit 100 and Ex pattern test@test.ts ");
+            return ResponseEntity.status(400).body("Event email invalid !! character limit 100 and Ex pattern test@test.ts ");
         }
         if(!((newBooking.getEventStartTime().toEpochMilli() <= getDateMonthsAgo().toInstant().toEpochMilli())
                 && (newBooking.getEventStartTime().toEpochMilli() >= System.currentTimeMillis()))) {
-            throw  new ResponseStatusException(HttpStatus.BAD_REQUEST , "Event StartTime over 3 month or EventStartTime under present time !! ");
+            return ResponseEntity.status(400).body("Event StartTime over 3 month or EventStartTime under present time !! ");
         }
         if (!checkTimeOverLap(checkCompare , newBooking)){
                     bookingRepository.save(newBooking);
@@ -119,10 +119,10 @@ public class BookingService {
                 modelMapper.map(editBooking , booking);
         if(!((editBooking.getEventStartTime().toEpochMilli() <= getDateMonthsAgo().toInstant().toEpochMilli())
                 && (editBooking.getEventStartTime().toEpochMilli() >= System.currentTimeMillis()))) {
-            throw  new ResponseStatusException(HttpStatus.BAD_REQUEST , "Event StartTime over 3 month or EventStartTime under present time !! ");
+            return ResponseEntity.status(400).body("vent StartTime over 3 month or EventStartTime under present time !! ");
         }
         if (editBooking.getEventNotes().length() > 500 ){
-            throw  new ResponseStatusException(HttpStatus.BAD_REQUEST , "Event Note invalid !! character limit 500 ");
+            return ResponseEntity.status(400).body("Event Note invalid !! character limit 500 ");
         }
         if ((!checkTimeOverLap(checkCompare , booking))){
                    bookingRepository.saveAndFlush(booking);
