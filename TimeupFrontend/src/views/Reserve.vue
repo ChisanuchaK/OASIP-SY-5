@@ -8,10 +8,15 @@ import { createBooking } from "../stores/book.js";
 import Cancel from "../components/Cancel.vue";
 import Confirm from "../components/Confirm.vue";
 
-const localPresentTime =  moment.utc().local().format("YYYY-MM-DDTHH:mm")
+const localPresentTime =  moment.utc().local().format("YYYY-MM-DDThh:mm")
 const categoryList = ref([]);
 const categoryIndexSelect = ref();
 const dateIndexSelect = ref(localPresentTime);
+
+let date = new Date();
+date.setMonth(date.getMonth() + 3);
+let maxlocalPresentTime = moment(date).format("YYYY-MM-DDThh:mm")
+let maxdateIndexSelect = ref(maxlocalPresentTime)
 
 
 
@@ -110,7 +115,7 @@ const changeConfirmDialog = () => {
 
                     <div class="row-start-3 col-start-1 col-span-1 ">Time :</div>
                     <div class="row-start-4 col-start-1 col-end-4 col-span-3 "><input class="bg-gray-200 rounded w-full"
-                          :min="localPresentTime"  @change="handleTime()" type="datetime-local" v-model="dateIndexSelect" /></div>
+                         :max="maxdateIndexSelect" :min="localPresentTime"  @change="handleTime()" type="datetime-local" v-model="dateIndexSelect" /></div>
 
                     <div class="row-start-3 col-start-4 col-span-1 text-center">Duration</div>
                     <div class="row-start-4 col-start-4 col-span-1 "><input
