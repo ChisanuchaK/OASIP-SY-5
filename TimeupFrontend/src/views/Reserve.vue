@@ -8,10 +8,10 @@ import { createBooking } from "../stores/book.js";
 import Cancel from "../components/Cancel.vue";
 import Confirm from "../components/Confirm.vue";
 
-const localPresentTime =  moment.utc().local().format("YYYY-MM-DDTHH:mm")
+const localPresentTime = moment.utc().local().format("YYYY-MM-DDTHH:mm") 
 const categoryList = ref([]);
 const categoryIndexSelect = ref();
-const dateIndexSelect = ref(localPresentTime);
+const dateIndexSelect = setInterval(ref(localPresentTime) , 1000);
 
 let date = new Date();
 date.setMonth(date.getMonth() + 3);

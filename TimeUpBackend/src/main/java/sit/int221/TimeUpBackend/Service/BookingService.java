@@ -111,10 +111,12 @@ public class BookingService {
         if ((!checkTimeOverLap(checkCompare , editBooking))){
             if((editBooking.getEventStartTime().toEpochMilli() <= getDateMonthsAgo().toInstant().toEpochMilli())
                     && (editBooking.getEventStartTime().toEpochMilli() >= System.currentTimeMillis())) {
-                booking.setEventStartTime(editBooking.getEventStartTime());
-                booking.setEventNotes(editBooking.getEventNotes());
-                bookingRepository.saveAndFlush(booking);
-                return ResponseEntity.status(200).body("Edited Successfully");
+               if (editBooking.getEventNotes().length() <= 500 ){
+                   booking.setEventStartTime(editBooking.getEventStartTime());
+                   booking.setEventNotes(editBooking.getEventNotes());
+                   bookingRepository.saveAndFlush(booking);
+                   return ResponseEntity.status(200).body("Edited Successfully");
+               }
             }
         }
         else {
