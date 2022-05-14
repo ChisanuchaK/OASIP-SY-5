@@ -108,7 +108,7 @@ public class BookingService {
         Booking booking = bookingRepository.findById(id).orElseThrow( ()->{
             return new ResponseStatusException(HttpStatus.NOT_FOUND);
         });
-        List<Booking> checkCompare = bookingRepository.findAll();
+        List<Booking> checkCompare = bookingRepository.findAllByEventCategoryEventCategoryId(booking.getEventCategory().getEventCategoryId());
         int i = 0;
         int index = 0;
         for(Booking b: checkCompare){
