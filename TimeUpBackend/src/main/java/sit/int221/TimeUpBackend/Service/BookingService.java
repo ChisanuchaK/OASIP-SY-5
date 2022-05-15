@@ -47,15 +47,15 @@ public class BookingService {
 
         List<Booking> checkCompare = bookingRepository.findAllByEventCategoryEventCategoryId(newBooking.getEventCategory().getEventCategoryId());
         if (!(newBooking.getBookingName().length() > 0 && newBooking.getBookingName().length() <= 100)){
-            throw  new ResponseStatusException(HttpStatus.BAD_GATEWAY , "must not blank");
+            throw  new ResponseStatusException(HttpStatus.BAD_REQUEST , "must not blank");
         }
         Pattern pattern = Pattern.compile("[a-z0-9._%+-]+@[a-z0-9.-]+\\.[a-z]{2,3}");
         Matcher mat = pattern.matcher(newBooking.getBookingEmail());
         if (!mat.matches()){
-            throw  new ResponseStatusException(HttpStatus.BAD_GATEWAY , "must be a well-formed email address");
+            throw  new ResponseStatusException(HttpStatus.BAD_REQUEST , "must be a well-formed email address");
         }
         if (newBooking.getEventNotes().length() > 500 ){
-            throw  new ResponseStatusException(HttpStatus.BAD_GATEWAY , "size must be between 0 and 500");
+            throw  new ResponseStatusException(HttpStatus.BAD_REQUEST , "size must be between 0 and 500");
         }
         if(!((newBooking.getEventStartTime().toEpochMilli() <= getDateMonthsAgo().toInstant().toEpochMilli())
                 && (newBooking.getEventStartTime().toEpochMilli() >= System.currentTimeMillis()))) {
@@ -124,7 +124,7 @@ public class BookingService {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST , "must be a future date ");
         }
         if (editBooking.getEventNotes().length() > 500 ){
-            throw  new ResponseStatusException(HttpStatus.BAD_GATEWAY , "size must be between 0 and 500");
+            throw  new ResponseStatusException(HttpStatus.BAD_REQUEST , "size must be between 0 and 500");
         }
         if ((!checkTimeOverLap(checkCompare , booking))){
                    bookingRepository.saveAndFlush(booking);
