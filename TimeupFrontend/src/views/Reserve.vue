@@ -7,28 +7,18 @@ import { getEventCategory } from "../stores/book.js";
 import { createBooking } from "../stores/book.js";
 import Cancel from "../components/Cancel.vue";
 import Confirm from "../components/Confirm.vue";
-
-let presentDate = moment.utc()
-const localPresentTime = moment.utc(presentDate).local().format("YYYY-MM-DDTHH:mm");
-console.log(presentDate);
-
+const localPresentTime = moment.utc().local().format("YYYY-MM-DDTHH:mm")
 const categoryList = ref([]);
 const categoryIndexSelect = ref();
 const dateIndexSelect = ref(localPresentTime);
-
 let date = new Date();
-console.log(date);
 date.setMonth(date.getMonth() + 3);
 let maxlocalPresentTime = moment(date).format("YYYY-MM-DDTHH:mm")
 let maxdateIndexSelect = ref(maxlocalPresentTime)
-
 let isInvalid = ref(false);
-
 // console.log(moment.utc().local().format("YYYY-MM-DDTHH:mm"));
-
 const cancelDialog = ref(false)
 const createDialog = ref(false)
-
 let localData = reactive({
     bookingName: "",
     bookingEmail: "",
@@ -37,7 +27,6 @@ let localData = reactive({
     eventDuration: "",
     eventNotes: "",
 })
-
 const handleSelect = () => {
     localData.eventCategory.eventCategoryId = categoryList.value[categoryIndexSelect.value].eventCategoryId
     localData.eventDuration = categoryList.value[categoryIndexSelect.value].eventDuration
@@ -45,23 +34,17 @@ const handleSelect = () => {
     console.log(localData)
     console.log(categoryIndexSelect.value);
 }
-
 const handleTime = () => {
     // localData.eventStartTime = new Date().toISOString()
     localData.eventStartTime = new Date(dateIndexSelect.value).toISOString()
     console.log(localData.eventStartTime);
 }
-
 onBeforeMount(async () => {
     categoryList.value = await getEventCategory();
+    console.log(categoryIndexSelect.value);
 })
-
 const createBookingEvent = async (localDataInput) => {
     await createBooking(localDataInput)
-    console.log(localData);
-    console.log(categoryIndexSelect.value);
-    console.log(dateIndexSelect.value);
-    console.log(localPresentTime);
     localData.bookingName = ""
     localData.bookingEmail = ""
     categoryIndexSelect.value = ""
@@ -70,23 +53,20 @@ const createBookingEvent = async (localDataInput) => {
     localData.eventNotes = ""
     createDialog.value = !createDialog.value
 }
-
 const changeCancelDialog = () => {
     cancelDialog.value = !cancelDialog.value
 }
-
 const reset = () => {
     localData.bookingName = ""
     localData.bookingEmail = ""
     categoryIndexSelect.value = ""
     localData.eventDuration = ""
-    dateIndexSelect.value = localPresentTime
+    dateIndexSelect.value = ""
     localData.eventNotes = ""
     cancelDialog.value = !cancelDialog.value
 }
-
 const changeConfirmDialog = () => {
-    if (localData.bookingName.trim() === "" || localData.bookingEmail.trim() === "" || categoryIndexSelect.value === undefined) {
+    if (localData.bookingName.trim() === "" || localData.bookingEmail.trim() === "" || dateIndexSelect.value === undefined) {
         isInvalid.value = true
     }
     else {
@@ -95,25 +75,18 @@ const changeConfirmDialog = () => {
     }
     console.log(isInvalid.value);
 }
-
 const isInputName = computed(() => {
     return isInvalid.value && localData.bookingName.trim() === "";
 });
-
 const isInputEmail = computed(() => {
     return isInvalid.value && localData.bookingEmail.trim() === "";
 });
-
 const isInputCategory = computed(() => {
     return isInvalid.value && categoryIndexSelect.value === undefined ;
 });
-
 const isInputNotes = computed(() => {
     return isInvalid.value && localData.eventNotes.length > 500 ;
 });
-
-
-
 </script>
  
 <template>

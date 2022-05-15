@@ -4,7 +4,6 @@ import NavbarBottom from "../components/navbarBottom.vue";
 import {ref , onBeforeMount} from 'vue';
 import moment from "moment"
 let arrLists = ref()
-
 const getEventCategory = async () =>{
  const res = await fetch(`${import.meta.env.VITE_BASE_URL}/admin/event-category`);
   if(res.status === 200 ){
@@ -22,7 +21,6 @@ onBeforeMount(async ()=>{
   // console.log(localDate);
 var oldDateObj = moment.utc("2015-01-30 10:00:00");
 var newDateObj = moment(oldDateObj).add(50, 'm').toDate();
-
 console.log(oldDateObj);
 console.log(newDateObj);
 })
@@ -30,12 +28,31 @@ console.log(newDateObj);
  
 <template>
     <div>
-        <NavbarTop/>
-    <NavbarBottom/>
+      <NavbarTop/>
+      <NavbarBottom/>
+        <div class = "text-left text-[52px] text-white fixed top-1/3 left-1/4 ">
+          T I M E - U P<br>
+          <p class="text-[26px]">At your fingertips, <br>
+          consulting is simple and convenient.</p>
+         <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px; padding-top: 25px;">
+            <button class="bg-white border-3 text-black rounded-full font-bold p-2 hover: transform transition ease-in-out delay-150 hover:-translate-y-3 text-[16px]">
+            <a href="./Reserve">
+             <p> reserve</p>
+            </a>
+          </button>
+           <button class="bg-white border-3 text-black rounded-full font-bold p-2 hover: transform transition ease-in-out delay-150 hover:-translate-y-3 text-[16px]" >
+            <a href="./BookingList">
+             <p> booking list</p>
+            </a>
+          </button>
+         </div>
+        </div>
+        <div class="animate-bounce w-700 h-20 md:shrink-0 object-cove  fixed right-20 top-1/4 w-1/4 ">
+          <img src="../../public/images/icon.png">
+        </div>
     </div>
-
 </template>
  
-<style>
-
+<style scoped>
+  
 </style>
