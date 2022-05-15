@@ -32,15 +32,22 @@ console.log(newDateObj);
     <div>
       <NavbarTop/>
       <NavbarBottom/>
-        <div class = "text-left text-[52px] text-white fixed top-1/4 left-1/4 ">
-          T I M E - U P<br><br>
-          <p class="text-[30px]">At your fingertips, <br>
+        <div class = "text-left text-[52px] text-white fixed top-1/3 left-1/4 ">
+          T I M E - U P<br>
+          <p class="text-[26px]">At your fingertips, <br>
           consulting is simple and convenient.</p>
-          <button class="bg-white border-4 text-black rounded-full font-bold p-2 hover: transform transition ease-in-out delay-150 hover:-translate-y-3 text-[22px]">
+         <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px; padding-top: 25px;">
+            <button class="bg-white border-3 text-black rounded-full font-bold p-2 hover: transform transition ease-in-out delay-150 hover:-translate-y-3 text-[16px]">
             <a href="./Reserve">
-              reserve
+             <p> reserve</p>
             </a>
           </button>
+           <button class="bg-white border-3 text-black rounded-full font-bold p-2 hover: transform transition ease-in-out delay-150 hover:-translate-y-3 text-[16px]" >
+            <a href="./BookingList">
+             <p> booking list</p>
+            </a>
+          </button>
+         </div>
         </div>
         <div class="animate-bounce w-700 h-20 md:shrink-0 object-cove  fixed right-20 top-1/4 w-1/4 ">
           <img src="../../public/images/icon.png">
@@ -49,6 +56,6 @@ console.log(newDateObj);
 
 </template>
  
-<style>
-
+<style scoped>
+  
 </style>
