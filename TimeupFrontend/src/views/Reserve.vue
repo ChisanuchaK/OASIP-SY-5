@@ -113,10 +113,10 @@ const isInputNotes = computed(() => {
     <div>
         <NavbarTop />
         <NavbarBottom />
-        <div class="mt-16 mb-10 uppercase w-3/4 m-auto text-center text-[52px] text-white"> select scheduled</div>
+        <div class=" pt-4 mt-16 mb-3 uppercase w-3/4 m-auto text-center text-[40px] text-white"> select scheduled</div>
         <div class="w-[80%] m-auto h-auto">
-            <div class="bg-white text-2xl rounded-xl">
-                <div class="m-auto w-1/2 text-center pt-5">Enter Your Details</div>
+            <div class="bg-white text-xl rounded-xl">
+                <div class="m-auto w-1/2 text-center pt-4">Enter Your Details</div>
                 <div class="grid grid-flow-row grid-cols-9 p-10 gap-3">
 
                     <div class="row-start-1 col-start-1 col-span-3 ">Scheduled Category :</div>

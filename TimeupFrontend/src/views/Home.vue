@@ -39,12 +39,12 @@ console.log(newDateObj);
          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px; padding-top: 25px;">
             <button class="bg-white border-3 text-black rounded-full font-bold p-2 hover: transform transition ease-in-out delay-150 hover:-translate-y-3 text-[16px]">
             <a href="./Reserve">
-             <p> reserve</p>
+             <p> New Booking</p>
             </a>
           </button>
            <button class="bg-white border-3 text-black rounded-full font-bold p-2 hover: transform transition ease-in-out delay-150 hover:-translate-y-3 text-[16px]" >
             <a href="./BookingList">
-             <p> booking list</p>
+             <p> Booking List</p>
             </a>
           </button>
          </div>
