@@ -92,10 +92,10 @@ const isInputNotes = computed(() => {
 <template>
     <div>
         <NavbarTop />
-        <NavbarBottom />
-        <div class="mt-16 mb-10 uppercase w-3/4 m-auto text-center text-[52px] text-white"> select scheduled</div>
+      
+        <div class="mt-20 mb-8 uppercase w-3/4 m-auto text-center text-[46px] text-white"> select scheduled</div>
         <div class="w-[80%] m-auto h-auto">
-            <div class="bg-white text-2xl rounded-xl">
+            <div class="bg-white text-1xl rounded-xl">
                 <div class="m-auto w-1/2 text-center pt-5">Enter Your Details</div>
                 <div class="grid grid-flow-row grid-cols-9 p-10 gap-3">
 
@@ -168,7 +168,9 @@ const isInputNotes = computed(() => {
                     @onClickCreateYes="createBookingEvent(localData)" />
             </div>
         </div>
+          <NavbarBottom />
     </div>
+
 </template>
  
 <style>
