@@ -66,7 +66,7 @@ public class BookingService {
                     return ResponseEntity.status(201).body("Inserted Successfully!");
         }
         else {
-            return ResponseEntity.status(400).body("Can't Insert Date is Overlap!!");
+            throw  new ResponseStatusException(HttpStatus.BAD_REQUEST , "Can't Insert Date is Overlap!!");
         }
 
     }
@@ -131,7 +131,7 @@ public class BookingService {
                    return ResponseEntity.status(200).body("Edited Successfully");
         }
         else {
-            return ResponseEntity.status(400).body("Edited is overLab !!");
+            throw  new ResponseStatusException(HttpStatus.BAD_REQUEST , "Can't Insert Date is Overlap!!");
         }
 
     }
