@@ -15,16 +15,16 @@
 <ul class="flex flex-row md:space-x-8 text-sm font-medium">
 
 <li class="">
-<router-link to="/" class="block py-2 pr-4 pl-3 hover:bg-gray-300 uppercase hover:underline-offset-4 hover:underline ">Home</router-link>
+<router-link to="/" class="block py-2 pr-4 pl-3 hover:bg-gray-300 uppercase  hover:underline-offset-4 hover:underline " :disabled="disabled" :class="{'focus:bg-emerald-500 focus:text-white': !disabled}">Home</router-link>
 </li>
 <li>
-<router-link to="/About" class="block py-2 pr-4 pl-3 hover:bg-gray-300 uppercase hover:underline-offset-4 hover:underline  ">About</router-link>
+<router-link to="/About" class="block py-2 pr-4 pl-3 hover:bg-gray-300 uppercase hover:underline-offset-4 hover:underline  " :disabled="disabled" :class="{'focus:bg-emerald-500 focus:text-white': !disabled}">About</router-link>
 </li>
 <li>
-<router-link to="/Reserve" class="block py-2 pr-4 pl-3 hover:bg-gray-300 uppercase hover:underline-offset-4 hover:underline ">Reserve</router-link>
+<router-link to="/Reserve" class="block py-2 pr-4 pl-3 hover:bg-gray-300 uppercase hover:underline-offset-4 hover:underline " :disabled="disabled" :class="{'focus:bg-emerald-500 focus:text-white': !disabled}">Reserve</router-link>
 </li>
 <li>
-<router-link to="/bookingList" class="block py-2 pr-4 pl-3 hover:bg-gray-300 uppercase hover:underline-offset-4 hover:underline ">Booking-List</router-link>
+<router-link to="/bookingList" class="block py-2 pr-4 pl-3 hover:bg-gray-300 uppercase hover:underline-offset-4 hover:underline " :disabled="disabled" :class="{'focus:bg-emerald-500 focus:text-white': !disabled}">Booking-List</router-link>
 </li>
 </ul>
 </div>
