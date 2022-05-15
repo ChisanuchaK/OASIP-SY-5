@@ -1,7 +1,5 @@
 <script setup>
-
 import { ref, onBeforeMount, onMounted } from 'vue'
-import moment from 'moment';
 import NavbarTop from "../components/navbarTop.vue";
 import NavbarBottom from "../components/navbarBottom.vue";
 import LoopBookingList from "../components/LoopBookingList.vue";
@@ -15,10 +13,12 @@ const bookings = ref([]);
 // console.log(dates);
 // console.log(startTimes);
 
+
 onBeforeMount(async () => {
  bookings.value = await getBookings();
  bookings.value.map((s)=>{
  s.statusClickSeeDetails = ref(false)
+//  s.statusClickDelete = ref(false)
  
 //  s.statusClickEdit = ref(false)
 //  s.statusCancelEdit = ref(false)

@@ -21,15 +21,6 @@ services:
     depends_on:
       - mysql
 
-  frontend:
-    image: quay.io/chisanuchakim/oasip-sy-5-fontend
-    container_name: frontend
-    ports:
-      - "3000:3000"
-    depends_on:
-      - mysql
-      - backend
-      - reverse_proxy
   reverse_proxy:
     image: nginx:1.20.2-alpine
     container_name: reverse_proxy
@@ -40,5 +31,14 @@ services:
     depends_on:
       - mysql
       - backend
+  frontend:
+    image: quay.io/chisanuchakim/oasip-sy-5-fontend
+    container_name: frontend
+    ports:
+      - "3000:3000"
+    depends_on:
+      - mysql
+      - backend
+      - reverse_proxy    
       
 

@@ -2,22 +2,21 @@ import { ref, onBeforeMount } from "vue";
 // const bookings = ref([]);
 
 // // Delete method
-const removeBooking = async (deleteBookingId) => {
-  const res = await fetch(
-    `${import.meta.env.VITE_BASE_URL}/booking/${deleteBookingId}`,
-    {
-      method: "DELETE",
-    }
-  );
+export const removeBooking = async (deleteBookingId, booking, loopBooking) => {
+  const res = await fetch(`${import.meta.env.VITE_BASE_URL}/booking/${deleteBookingId}`, {
+      method: 'DELETE'
+  })
   if (res.status === 200) {
-    bookings.value = bookings.value.filter(
-      (BookingInBookings) => BookingInBookings.id != deleteBookingId
-    );
-    console.log("deleted success");
+      // bookingAll.value = bookingAll.value.filter((BookingInBookings) => (BookingInBookings.idBooking != deleteBookingId))
+      booking.statusClickDelete = !booking.statusClickDelete
+      loopBooking.statusClickSeeDetails = !loopBooking.statusClickSeeDetails
+      // emits('idConfirmDelete', deleteBookingId)
+      // location.reload();
+      console.log('deleted success');
   } else {
-    console.log("error , cannot delete");
+      console.log('error , cannot delete');
   }
-};
+}
 
 //   //Get All
 export const getBookings = async () => {
@@ -74,7 +73,8 @@ export const createBooking = async (localData) => {
   if (res.status === 201) {
     // const addBooking = await res.json()
     // bookingsList.value.push(addBooking)
-    alert(`Create successfully \n Category :  ${localData.eventCategory.eventCategoryName} \n Date : ${localData.eventStartTime} \n Booking name :  ${localData.bookingName}`)
+    // alert(`Create successfully \n Category ID :  ${localData.eventCategory.eventCategoryId} \n Date : ${localData.eventStartTime} \n Booking name :  ${localData.bookingName}`)
+    console.log(`Create successfully \n Category ID :  ${localData.eventCategory.eventCategoryId} \n Date : ${localData.eventStartTime} \n Booking name :  ${localData.bookingName}`)
   } else {
     console.log("error , failed to created");
   }
