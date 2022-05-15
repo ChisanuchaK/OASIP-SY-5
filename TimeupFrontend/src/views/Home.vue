@@ -4,7 +4,6 @@ import NavbarBottom from "../components/navbarBottom.vue";
 import {ref , onBeforeMount} from 'vue';
 import moment from "moment"
 let arrLists = ref()
-
 const getEventCategory = async () =>{
  const res = await fetch(`${import.meta.env.VITE_BASE_URL}/admin/event-category`);
   if(res.status === 200 ){
@@ -22,7 +21,6 @@ onBeforeMount(async ()=>{
   // console.log(localDate);
 var oldDateObj = moment.utc("2015-01-30 10:00:00");
 var newDateObj = moment(oldDateObj).add(50, 'm').toDate();
-
 console.log(oldDateObj);
 console.log(newDateObj);
 })
@@ -39,12 +37,12 @@ console.log(newDateObj);
          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px; padding-top: 25px;">
             <button class="bg-white border-3 text-black rounded-full font-bold p-2 hover: transform transition ease-in-out delay-150 hover:-translate-y-3 text-[16px]">
             <a href="./Reserve">
-             <p> New Booking</p>
+             <p> reserve</p>
             </a>
           </button>
            <button class="bg-white border-3 text-black rounded-full font-bold p-2 hover: transform transition ease-in-out delay-150 hover:-translate-y-3 text-[16px]" >
             <a href="./BookingList">
-             <p> Booking List</p>
+             <p> booking list</p>
             </a>
           </button>
          </div>
@@ -53,7 +51,6 @@ console.log(newDateObj);
           <img src="../../public/images/icon.png">
         </div>
     </div>
-
 </template>
  
 <style scoped>

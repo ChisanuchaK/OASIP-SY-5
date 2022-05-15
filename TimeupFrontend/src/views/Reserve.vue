@@ -7,24 +7,18 @@ import { getEventCategory } from "../stores/book.js";
 import { createBooking } from "../stores/book.js";
 import Cancel from "../components/Cancel.vue";
 import Confirm from "../components/Confirm.vue";
-
 const localPresentTime = moment.utc().local().format("YYYY-MM-DDTHH:mm")
 const categoryList = ref([]);
 const categoryIndexSelect = ref();
 const dateIndexSelect = ref(localPresentTime);
-
 let date = new Date();
 date.setMonth(date.getMonth() + 3);
 let maxlocalPresentTime = moment(date).format("YYYY-MM-DDTHH:mm")
 let maxdateIndexSelect = ref(maxlocalPresentTime)
-
 let isInvalid = ref(false);
-
 // console.log(moment.utc().local().format("YYYY-MM-DDTHH:mm"));
-
 const cancelDialog = ref(false)
 const createDialog = ref(false)
-
 let localData = reactive({
     bookingName: "",
     bookingEmail: "",
@@ -33,7 +27,6 @@ let localData = reactive({
     eventDuration: "",
     eventNotes: "",
 })
-
 const handleSelect = () => {
     localData.eventCategory.eventCategoryId = categoryList.value[categoryIndexSelect.value].eventCategoryId
     localData.eventDuration = categoryList.value[categoryIndexSelect.value].eventDuration
@@ -41,18 +34,15 @@ const handleSelect = () => {
     console.log(localData)
     console.log(categoryIndexSelect.value);
 }
-
 const handleTime = () => {
     // localData.eventStartTime = new Date().toISOString()
     localData.eventStartTime = new Date(dateIndexSelect.value).toISOString()
     console.log(localData.eventStartTime);
 }
-
 onBeforeMount(async () => {
     categoryList.value = await getEventCategory();
     console.log(categoryIndexSelect.value);
 })
-
 const createBookingEvent = async (localDataInput) => {
     await createBooking(localDataInput)
     localData.bookingName = ""
@@ -63,11 +53,9 @@ const createBookingEvent = async (localDataInput) => {
     localData.eventNotes = ""
     createDialog.value = !createDialog.value
 }
-
 const changeCancelDialog = () => {
     cancelDialog.value = !cancelDialog.value
 }
-
 const reset = () => {
     localData.bookingName = ""
     localData.bookingEmail = ""
@@ -77,7 +65,6 @@ const reset = () => {
     localData.eventNotes = ""
     cancelDialog.value = !cancelDialog.value
 }
-
 const changeConfirmDialog = () => {
     if (localData.bookingName.trim() === "" || localData.bookingEmail.trim() === "" || dateIndexSelect.value === undefined) {
         isInvalid.value = true
@@ -88,35 +75,28 @@ const changeConfirmDialog = () => {
     }
     console.log(isInvalid.value);
 }
-
 const isInputName = computed(() => {
     return isInvalid.value && localData.bookingName.trim() === "";
 });
-
 const isInputEmail = computed(() => {
     return isInvalid.value && localData.bookingEmail.trim() === "";
 });
-
 const isInputCategory = computed(() => {
     return isInvalid.value && categoryIndexSelect.value === undefined ;
 });
-
 const isInputNotes = computed(() => {
     return isInvalid.value && localData.eventNotes.length > 500 ;
 });
-
-
-
 </script>
  
 <template>
     <div>
         <NavbarTop />
         <NavbarBottom />
-        <div class=" pt-4 mt-16 mb-3 uppercase w-3/4 m-auto text-center text-[40px] text-white"> select scheduled</div>
+        <div class="mt-16 mb-10 uppercase w-3/4 m-auto text-center text-[52px] text-white"> select scheduled</div>
         <div class="w-[80%] m-auto h-auto">
-            <div class="bg-white text-xl rounded-xl">
-                <div class="m-auto w-1/2 text-center pt-4">Enter Your Details</div>
+            <div class="bg-white text-2xl rounded-xl">
+                <div class="m-auto w-1/2 text-center pt-5">Enter Your Details</div>
                 <div class="grid grid-flow-row grid-cols-9 p-10 gap-3">
 
                     <div class="row-start-1 col-start-1 col-span-3 ">Scheduled Category :</div>
