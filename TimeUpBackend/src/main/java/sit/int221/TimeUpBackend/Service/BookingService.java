@@ -48,7 +48,7 @@ public class BookingService {
         List<Booking> checkCompare = bookingRepository.findAllByEventCategoryEventCategoryId(newBooking.getEventCategory().getEventCategoryId());
         if (!checkTimeOverLap(checkCompare , newBooking)){
                     bookingRepository.save(newBooking);
-            return ResponseEntity.status(200).body("Edited Successfully");
+            return ResponseEntity.status(201).body("Edited Successfully");
         }
         else {
             throw  new ResponseStatusException(HttpStatus.BAD_REQUEST , "Can't Insert Date is Overlap!!");
