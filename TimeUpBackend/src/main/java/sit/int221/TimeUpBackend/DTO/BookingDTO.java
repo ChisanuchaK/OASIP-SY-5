@@ -27,6 +27,7 @@ public class BookingDTO {
     }
     public Integer getEventCategoryDuration(){return eventCategory.getEventDuration();}
     public Integer getEventCategoryId(){return  eventCategory.getEventCategoryId();}
+    public Instant endTime(){return  eventStartTime.plusMillis(eventDuration * 60000);}
     }
 
 
