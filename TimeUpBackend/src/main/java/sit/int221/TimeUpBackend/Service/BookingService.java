@@ -5,6 +5,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+
 import org.springframework.web.server.ResponseStatusException;
 import sit.int221.TimeUpBackend.DTO.BookingDTO;
 import sit.int221.TimeUpBackend.DTO.BookingMoreDetailDTO;
@@ -12,9 +13,7 @@ import sit.int221.TimeUpBackend.DTO.BookingPUTDTO;
 import sit.int221.TimeUpBackend.Entity.Booking;
 import sit.int221.TimeUpBackend.Repository.BookingRepository;
 
-import java.util.Calendar;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
@@ -42,28 +41,14 @@ public class BookingService {
     }
 
 
+
     // post
-    public ResponseEntity create(Booking newBooking) {
+    public ResponseEntity create(  Booking newBooking) {
 
         List<Booking> checkCompare = bookingRepository.findAllByEventCategoryEventCategoryId(newBooking.getEventCategory().getEventCategoryId());
-        if (!(newBooking.getBookingName().length() > 0 && newBooking.getBookingName().length() <= 100)){
-            throw  new ResponseStatusException(HttpStatus.BAD_REQUEST , "must not blank");
-        }
-        Pattern pattern = Pattern.compile("[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,3}");
-        Matcher mat = pattern.matcher(newBooking.getBookingEmail());
-        if (!mat.matches()){
-            throw  new ResponseStatusException(HttpStatus.BAD_REQUEST , "must be a well-formed email address");
-        }
-        if (newBooking.getEventNotes().length() > 500 ){
-            throw  new ResponseStatusException(HttpStatus.BAD_REQUEST , "size must be between 0 and 500");
-        }
-        if(!((newBooking.getEventStartTime().toEpochMilli() <= getDateMonthsAgo().toInstant().toEpochMilli())
-                && (newBooking.getEventStartTime().toEpochMilli() >= System.currentTimeMillis()))) {
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST , "must be a future date ");
-        }
         if (!checkTimeOverLap(checkCompare , newBooking)){
                     bookingRepository.save(newBooking);
-                    return ResponseEntity.status(201).body("Inserted Successfully!");
+            return ResponseEntity.status(200).body("Edited Successfully");
         }
         else {
             throw  new ResponseStatusException(HttpStatus.BAD_REQUEST , "Can't Insert Date is Overlap!!");
@@ -71,13 +56,7 @@ public class BookingService {
 
     }
 
-    public static Date getDateMonthsAgo()
-    {
-        Calendar c = Calendar.getInstance();
-        c.setTime(new Date());
-        c.add(Calendar.MONTH,  3);
-        return c.getTime();
-    }
+
     public boolean checkTimeOverLap(List<Booking> allBooking , Booking booking ) {
 
         for (Booking book : allBooking) {
@@ -119,13 +98,7 @@ public class BookingService {
         }
         checkCompare.remove(index);
                 modelMapper.map(editBooking , booking);
-        if(!((editBooking.getEventStartTime().toEpochMilli() <= getDateMonthsAgo().toInstant().toEpochMilli())
-                && (editBooking.getEventStartTime().toEpochMilli() >= System.currentTimeMillis()))) {
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST , "must be a future date ");
-        }
-        if (editBooking.getEventNotes().length() > 500 ){
-            throw  new ResponseStatusException(HttpStatus.BAD_REQUEST , "size must be between 0 and 500");
-        }
+
         if ((!checkTimeOverLap(checkCompare , booking))){
                    bookingRepository.saveAndFlush(booking);
                    return ResponseEntity.status(200).body("Edited Successfully");
@@ -135,4 +108,6 @@ public class BookingService {
         }
 
     }
+
+
 }
