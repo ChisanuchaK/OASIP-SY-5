@@ -24,7 +24,7 @@ public class Booking {
     private Integer idBooking;
 
     @NotEmpty
-    @Size(min = 1 , max = 100 )
+    @Size(min = 1 , max = 100 , message = "size must be between 1 and 100")
     @Column(name = "bookingName" , length = 100 , nullable = false)
     private String bookingName;
 
