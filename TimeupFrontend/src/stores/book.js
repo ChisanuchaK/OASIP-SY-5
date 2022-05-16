@@ -53,6 +53,7 @@ export const getEventCategory = async () => {
 };
 
 // create Booking
+// export const createBooking = async (localData,categoryIndexSelect,dateIndexSelect,localPresentTime) => {
 export const createBooking = async (localData) => {
   const res = await fetch(`${import.meta.env.VITE_BASE_URL}/booking`, {
     method: "POST",
@@ -71,6 +72,11 @@ export const createBooking = async (localData) => {
     }),
   });
   if (res.status === 201) {
+    localData.bookingName = ""
+    localData.bookingEmail = ""
+    localData.eventDuration = ""
+    localData.eventNotes = ""
+
     // const addBooking = await res.json()
     // bookingsList.value.push(addBooking)
     // alert(`Create successfully \n Category ID :  ${localData.eventCategory.eventCategoryId} \n Date : ${localData.eventStartTime} \n Booking name :  ${localData.bookingName}`)

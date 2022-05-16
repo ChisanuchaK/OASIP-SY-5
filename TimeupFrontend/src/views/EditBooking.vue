@@ -4,7 +4,7 @@ import moment from "moment";
 import Cancel from "../components/Cancel.vue";
 import Confirm from "../components/Confirm.vue";
 import { getEventCategory } from "../stores/book.js";
-const emits = defineEmits(["onClickCancelEdit"]);
+const emits = defineEmits(["onClickCancelEdit","EditbookingId"]);
 const props = defineProps({
     bookingsDetailsEdit: {
         type: [Object],
@@ -147,6 +147,7 @@ const editBooking = async (editNoteId,editData, bookingEdit, loopEdit) => {
         bookingEdit.createDialog = !bookingEdit.createDialog;
         bookingEdit.statusClickEdit = !bookingEdit.statusClickEdit;
         loopEdit.statusClickSeeDetails = !loopEdit.statusClickSeeDetails;
+        emits('EditbookingId',editData)
         // const editedNote = await res.json()
         // notes.value = notes.value.map((note) =>
         //   note.id === editedNote.id

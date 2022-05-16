@@ -39,6 +39,19 @@ const filterList = (idDeleteFromLoop)=>{
   bookings.value = bookings.value.filter((BookingInBookings) => (BookingInBookings.idBooking != idDeleteFromLoop))
 }
 
+const filterEdit = (editId)=>{
+  // bookings.value = bookings.value.map((booking)=>{
+  //   booking.idBooking === editId 
+  //   ? {...booking, }
+    
+  // })
+  console.log(editId);
+  // notes.value = notes.value.map((note) =>
+        //   note.id === editedNote.id
+        //     ? { ...note, noteDetail: editedNote.noteDetail }
+        //     : note
+        // )
+}
 
 </script>
  
@@ -50,7 +63,7 @@ const filterList = (idDeleteFromLoop)=>{
        <!-- <LoopBookingList :bookings="bookings" /> -->
        <LoopBookingList :bookings="bookings.sort(
          (a,b)=> new Date(b.eventStartTime) - new Date(a.eventStartTime) 
-       )" @idDialogDetails="filterList"/>
+       )" @idDialogDetails="filterList" @EditIdFromDialog="filterEdit"/>
 <NavbarBottom/>
 </div>
 
