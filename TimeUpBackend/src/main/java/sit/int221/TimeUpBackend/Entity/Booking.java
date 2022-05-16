@@ -28,7 +28,7 @@ public class Booking {
     @Column(name = "bookingName" , length = 100 , nullable = false)
     private String bookingName;
 
-    @Email(regexp = "[a-z0-9._%+-]+@[a-z0-9.-]+\\.[a-z]{2,3}",
+    @Email(regexp = "[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,3}",
             flags =  Pattern.Flag.CASE_INSENSITIVE)
     @Column(name = "bookingEmail" , length = 100 , nullable = false)
     private String bookingEmail;
