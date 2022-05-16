@@ -4,20 +4,21 @@ import moment from "moment";
 import NavbarTop from '../components/navbarTop.vue';
 import NavbarBottom from '../components/navbarBottom.vue';
 import { getEventCategory } from "../stores/book.js";
-import { createBooking } from "../stores/book.js";
+import { getBookings } from "../stores/book.js";
 import Cancel from "../components/Cancel.vue";
 import Confirm from "../components/Confirm.vue";
+
 const localPresentTime = moment.utc().local().format("YYYY-MM-DDTHH:mm")
 const categoryList = ref([]);
 const categoryIndexSelect = ref();
 const dateIndexSelect = ref(localPresentTime);
+
 let date = new Date();
+console.log(date);
 date.setMonth(date.getMonth() + 3);
 let maxlocalPresentTime = moment(date).format("YYYY-MM-DDTHH:mm")
 let maxdateIndexSelect = ref(maxlocalPresentTime)
 let isInvalid = ref(false);
-
-
 
 // console.log(moment.utc().local().format("YYYY-MM-DDTHH:mm"));
 const cancelDialog = ref(false)
@@ -44,18 +45,54 @@ const handleTime = () => {
 }
 onBeforeMount(async () => {
     categoryList.value = await getEventCategory();
-    console.log(categoryIndexSelect.value);
 })
-const createBookingEvent = async (localDataInput) => {
-    await createBooking(localDataInput)
-    localData.bookingName = ""
-    localData.bookingEmail = ""
-    categoryIndexSelect.value = ""
-    localData.eventDuration = ""
-    dateIndexSelect.value = localPresentTime
-    localData.eventNotes = ""
+
+// const createBookingEvent = async (localDataInput) => {
+//     await createBooking(localDataInput)
+
+//     // localData.bookingName = ""
+//     // localData.bookingEmail = ""
+//     // categoryIndexSelect.value = ""
+//     // localData.eventDuration = ""
+//     // dateIndexSelect.value = localPresentTime
+//     // localData.eventNotes = ""
+//     createDialog.value = !createDialog.value
+// }
+
+const createBooking = async (localDataInput) => {
+    // export const createBooking = async (localData) => {
+    const res = await fetch(`${import.meta.env.VITE_BASE_URL}/booking`, {
+        method: "POST",
+        headers: {
+            "content-type": "application/json",
+        },
+        body: JSON.stringify({
+            bookingName: localDataInput.bookingName,
+            bookingEmail: localDataInput.bookingEmail,
+            eventCategory: {
+                eventCategoryId: localDataInput.eventCategory.eventCategoryId,
+            },
+            eventStartTime: localDataInput.eventStartTime,
+            eventDuration: localDataInput.eventDuration,
+            eventNotes: localDataInput.eventNotes,
+        }),
+    });
+    if (res.status === 201) {
+        console.log(`Create successfully \n Category ID :  ${localDataInput.eventCategory.eventCategoryId} \n Date : ${localDataInput.eventStartTime} \n Booking name :  ${localDataInput.bookingName}`)
+        localDataInput.bookingName = ""
+        localDataInput.bookingEmail = ""
+        categoryIndexSelect.value = ""
+        localDataInput.eventDuration = ""
+        dateIndexSelect.value = localPresentTime
+        localDataInput.eventNotes = ""
+
+        // alert(`Create successfully \n Category ID :  ${localData.eventCategory.eventCategoryId} \n Date : ${localData.eventStartTime} \n Booking name :  ${localData.bookingName}`)
+    } else {
+        console.log("error , failed to created");
+    }
     createDialog.value = !createDialog.value
-}
+};
+
 const changeCancelDialog = () => {
     cancelDialog.value = !cancelDialog.value
 }
@@ -64,31 +101,37 @@ const reset = () => {
     localData.bookingEmail = ""
     categoryIndexSelect.value = ""
     localData.eventDuration = ""
-    dateIndexSelect.value = ""
+    dateIndexSelect.value = localPresentTime
     localData.eventNotes = ""
     cancelDialog.value = !cancelDialog.value
 }
 const changeConfirmDialog = () => {
-    if (localData.bookingName.trim() === "" || localData.bookingEmail.trim() === "" || dateIndexSelect.value === undefined) {
+    if (localData.bookingName.trim() === "" || (localData.bookingEmail.trim() === "" ) || categoryIndexSelect.value === undefined) {
         isInvalid.value = true
     }
     else {
         createDialog.value = !createDialog.value
-         isInvalid.value = false
+        isInvalid.value = false
     }
     console.log(isInvalid.value);
 }
 const isInputName = computed(() => {
-    return isInvalid.value && localData.bookingName.trim() === "";
+    if(localData.bookingName.trim() === ""){
+    return (isInvalid.value && localData.bookingName.trim() === "");
+    }
+});
+
+const isInputNameOver = computed(() => {
+    return(isInvalid.value && localData.bookingName.length > 100);
 });
 const isInputEmail = computed(() => {
     return isInvalid.value && localData.bookingEmail.trim() === "";
 });
 const isInputCategory = computed(() => {
-    return isInvalid.value && categoryIndexSelect.value === undefined ;
+    return isInvalid.value && categoryIndexSelect.value === undefined;
 });
 const isInputNotes = computed(() => {
-    return isInvalid.value && localData.eventNotes.length > 500 ;
+    return (isInvalid.value && localData.eventNotes.length > 500);
 });
 </script>
  
@@ -105,7 +148,8 @@ const isInputNotes = computed(() => {
                     <div class="row-start-1 col-start-1 col-span-3 ">Scheduled Category :</div>
                     <div class="row-start-2 col-start-1 col-end-4 col-span-3">
                         <!-- <select class="bg-gray-200 rounded w-full" v-model="CategorySelect" @change="hanleSelcet()"> -->
-                        <select class="bg-gray-200 rounded w-full border" v-model="categoryIndexSelect" :style="{ 'border-color': categoryIndexSelect == undefined && isInvalid ? 'red' : 'white' }"
+                        <select class="bg-gray-200 rounded w-full border" v-model="categoryIndexSelect"
+                            :style="{ 'border-color': categoryIndexSelect == undefined && isInvalid ? 'red' : 'white' }"
                             @change="handleSelect()">
                             <option v-for="(res, indexs) in categoryList" :value="indexs" v-bind:key="indexs">{{
                                     res.eventCategoryName
@@ -120,12 +164,18 @@ const isInputNotes = computed(() => {
                         <!-- <div v-if="">Name is null</div>  -->
                         Name :
                     </div>
+                    <div class="row-start-1 col-start-9 col-span-1 text-right text-gray-400">
+                        {{localData.bookingName.length}}/100
+                    </div>
                     <div class="row-start-2 col-start-7 col-end-10 col-span-3 "><input
                             class="bg-gray-200 rounded w-full pb-0.5 pl-1 border" type="text"
                             v-model="localData.bookingName"
                             :style="{ 'border-color': localData.bookingName.trim() === '' && isInvalid ? 'red' : 'white' }" />
                         <label for="name-with-label" class="text-red-500" v-if="isInputName">
-                            Please enter Name
+                            Please enter Name!
+                        </label>
+                        <label for="name-with-label" class="text-red-500" v-if="isInputNameOver">
+                            over limit of input Name!
                         </label>
                     </div>
 
@@ -140,19 +190,27 @@ const isInputNotes = computed(() => {
                             v-model="localData.eventDuration" /></div>
 
                     <div class="row-start-3 col-start-7 col-span-1 ">Email :</div>
-                    <div class="row-start-4 col-start-7 col-end-10 col-span-3 "><input   
+                    <div class="row-start-3 col-start-9 col-span-1 text-right text-gray-400">
+                        {{localData.bookingEmail.length}}/100
+                    </div>
+                    <div class="row-start-4 col-start-7 col-end-10 col-span-3 "><input
                             class="bg-gray-200 rounded w-full pb-0.5 pl-1 border" type="email"
-                            v-model="localData.bookingEmail" :style="{ 'border-color': localData.bookingEmail.trim() === '' && isInvalid ? 'red' : 'white' }"/>
-                            <label for="name-with-label" class="text-red-500" v-if="isInputEmail">
-                            Please enter Email
+                            v-model="localData.bookingEmail"
+                            :style="{ 'border-color': localData.bookingEmail.trim() === '' && isInvalid ? 'red' : 'white' }" />
+                        <label for="name-with-label" class="text-red-500" v-if="isInputEmail">
+                            Please enter Email!
                         </label>
-                            </div>
+                    </div>
 
                     <div class="row-start-5 col-start-1 col-span-1 ">Notes :</div>
+                    <div class="row-start-5 col-start-9 col-span-1 text-right text-gray-400">
+                        {{localData.eventNotes.length}}/500
+                    </div>
                     <div class="row-start-6 col-start-1 col-end-10 span-9"> <textarea
-                            class="bg-gray-200 w-full resize-none rounded border" name="" id="" cols="100" rows="5" placeholder="enter your message(limit 500 text)"
-                            v-model="localData.eventNotes" :style="{ 'border-color': localData.eventNotes.length > 500 && isInvalid ? 'red' : 'white' }"></textarea>
-                             <label for="name-with-label" class="text-red-500" v-if="isInputNotes">
+                            class="bg-gray-200 w-full resize-none rounded border" name="" id="" cols="100" rows="5"
+                            placeholder="enter your message(limit 500 text)" v-model="localData.eventNotes"
+                            :style="{ 'border-color': localData.eventNotes.length > 500 && isInvalid ? 'red' : 'white' }"></textarea>
+                        <label for="name-with-label" class="text-red-500" v-if="isInputNotes">
                             over limit of input message!!
                         </label>
                     </div>
@@ -168,7 +226,7 @@ const isInputNotes = computed(() => {
                 <Cancel v-if="cancelDialog" @onClickCancelNo="changeCancelDialog" @onClickCancelYes="reset" />
 
                 <Confirm v-if="createDialog" @onClickCreateNo="changeConfirmDialog"
-                    @onClickCreateYes="createBookingEvent(localData)" />
+                    @onClickCreateYes="createBooking(localData)" />
             </div>
         </div>
           <NavbarBottom />

@@ -6,7 +6,7 @@ import { removeBooking } from "../stores/book.js";
 import EditBooking from './EditBooking.vue';
 import moment from "moment";
 
-const emits = defineEmits(["onCloseDetails", "idConfirmDelete"]);
+const emits = defineEmits(["onCloseDetails", "idConfirmDelete","EditIdFromEdit"]);
 const props = defineProps({
     bookings: {
         type: [Object],
@@ -72,6 +72,10 @@ const removeBookingEvent = async (deleteBookingId, booking, loopBooking) => {
     emits("idConfirmDelete", deleteBookingId);
     await removeBooking(deleteBookingId, booking, loopBooking);
 };
+
+const getEditIdFromEdit = (EditId) => {
+    emits('EditIdFromEdit', EditId)
+}
 
 const changeEditDialog = (booking)=>{
     booking.statusClickEdit = !booking.statusClickEdit;
@@ -172,7 +176,7 @@ const changeEditDialog = (booking)=>{
                         :bookingsFromLoopBookings="loopBooking" @onCancelDelete="changeDeleteDialog(bookingsDetails)"
                         @onConfirmDelete="removeBookingEvent" />
 
-                    <EditBooking v-if="bookingsDetails.statusClickEdit" :loopEdit="loopBooking" :bookingsDetailsEdit="bookingsDetails" @onClickCancelEdit="changeEditDialog(bookingsDetails)" />
+                    <EditBooking v-if="bookingsDetails.statusClickEdit" :loopEdit="loopBooking" :bookingsDetailsEdit="bookingsDetails" @onClickCancelEdit="changeEditDialog(bookingsDetails)"  @EditbookingId="getEditIdFromEdit"/>
                     <!-- <EditBooking v-if="bookingsDetails.statusClickEdit"  :bookingsEdit="bookingsDetails" /> -->
                     
                     <!-- <DialogDetails v-if="booking.statusClickSeeDetails" @onCloseDetails="changeSeeDetailsDialog(booking)" :bookings="booking"/> -->

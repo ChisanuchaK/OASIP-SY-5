@@ -5,9 +5,10 @@ import DialogDetails from '../views/DialogDetails.vue';
 import ConfirmDelete from '../views/ConfirmDelete.vue';
 // import { getBookingId } from "../stores/book.js";
 // import { getBookings } from "../stores/book.js";
+import { getEventCategory } from "../stores/book.js";
 import { removeBooking } from '../stores/book.js';
 
-const emits = defineEmits(['idDialogDetails'])
+const emits = defineEmits(["idDialogDetails","EditIdFromDialog"])
 const props = defineProps({
     bookings: {
         type: [Object],
@@ -16,14 +17,32 @@ const props = defineProps({
 })
 
 const bookingList = computed(() => props.bookings);
-
-
+console.log(bookingList);
+const categorys = ref([]);
+const indexSelect = ref();
+// const categoryColors = ref([])
+// const categoryNames = ref([])
 
 // const bookId = ref([]);
 // const bookingsDetails = ref([]);
 
 onBeforeMount(async () => {
     console.log(bookingList);
+    categorys.value = await getEventCategory();
+    console.log(categorys.value[0].eventCategoryName);
+    
+    // categorys.forEach(category => { 
+    //     categoryColors.value.push(category.eventColor) 
+    // });
+    // console.log(categoryColors.value);
+
+    // categorys.forEach(category => { 
+    //     categoryNames.value.push(category.eventCategoryName) 
+    // });
+    // console.log(categoryNames.value);
+
+    // const getColor = (()=>{})
+
     // bookingList.value.forEach(bookId => { bookingsDetails.value.push(getBookingId(bookId.idBooking))    
     // });
 
@@ -39,6 +58,26 @@ onBeforeMount(async () => {
     // console.log(" Show Bookings "+ props.bookings);
 })
 
+const colorBg = (booking)=> {
+    // for(let i = 0;i<categorys.value.length;i++){
+    //     if(booking == categorys.value[i].eventCategoryName){
+    //         // console.log(categorys.value[i].eventColor);
+    //       return categorys.value[i].eventColor
+    //     }
+    // }
+    for(let category of categorys.value){
+        if(booking == category.eventCategoryName){
+            return  category.eventColor
+        }
+    }
+//    if(booking == categorys.value.eventCategoryName){
+        // console.log(booking.eventCategoryName);
+        // console.log(categorys.value.eventColor+"aaaaaa");
+        
+    // } 
+    // console.log(booking);
+    // console.log(categoryName);
+}
 
 const changeSeeDetailsDialog = (booking) => {
     booking.statusClickSeeDetails = !booking.statusClickSeeDetails
@@ -58,33 +97,14 @@ const getIdFromDialog = (idDelete) => {
     emits('idDialogDetails', idDelete)
 }
 
+const getEditIdFromDialog = (EditId) => {
+    emits('EditIdFromDialog', EditId)
+}
+
 const removeBookingEvent = async (deleteBookingId, booking, loopBooking) => {
     emits('idDialogDetails', deleteBookingId)
     await removeBooking(deleteBookingId, booking, loopBooking)
 }
-
-const getBg = (name) => {
-    switch (name) {
-        case "Client-side Clinic":
-            return "background-color:#82D294;"
-            break;
-        case "Database Clinic":
-            return "background-color:#AFC8F9;"
-            break;
-        case "DevOps/Infra Clinic":
-            return "background-color:#FAC94E;"
-            break;
-        case "Other":
-            return "background-color:#AAA4A4;"
-            break;
-        case "Project Management Clinic":
-            return "background-color:#B5A0E2;"
-            break;
-        case "Server-side Clinic":
-            return "background-color:#FF7777;"
-    }
-}
-
 
 </script>
  
@@ -133,8 +153,8 @@ const getBg = (name) => {
                         </div>
 
                         <div class="row-start-1 col-start-5 col-end-7 p-1 mb-1.5 rounded-lg "
-                            :style="getBg(booking.eventCategoryName)">{{ booking.eventCategoryName
-                            }}</div>
+                         :style="[`background-color:${colorBg(booking.eventCategoryName)};`]"  >{{ booking.eventCategoryName
+                            }} </div>
 
                         <div class="row-start-1 col-start-7 col-end-9 p-1 mb-1.5 rounded-lg ">{{
                                 booking.eventDuration
@@ -154,12 +174,11 @@ const getBg = (name) => {
                         <!-- <DialogDetails v-if="booking.statusClickSeeDetails" @onCloseDetails="changeSeeDetailsDialog(booking)" :bookings="booking"/> -->
                         <DialogDetails v-if="booking.statusClickSeeDetails"
                             @onCloseDetails="changeSeeDetailsDialog(booking)" :bookings="booking"
-                            @idConfirmDelete="getIdFromDialog" />
+                            @idConfirmDelete="getIdFromDialog" @EditIdFromEdit="getEditIdFromDialog"/>
 
                         <ConfirmDelete v-if="booking.statusClickDelete" :bookingsFromDetails="booking"
                             :bookingsFromLoopBookings="booking" @onCancelDelete="changeDeleteDialog(booking)"
                             @onConfirmDelete="removeBookingEvent" />
-
                     </div>
 
                 </div>
