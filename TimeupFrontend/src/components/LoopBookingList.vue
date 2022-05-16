@@ -110,7 +110,7 @@ const removeBookingEvent = async (deleteBookingId, booking, loopBooking) => {
  
 <template>
 
-    <div>
+    <div >
         <div>
             <div class="text-center text-xl mt-24 mb-10">
                 <h1 class="uppercase font-bold text-[#ffffff] text-4xl">Booking Lists</h1>
@@ -135,8 +135,9 @@ const removeBookingEvent = async (deleteBookingId, booking, loopBooking) => {
                         </div>
                     </div>
                 </div>
-                <div v-for="(booking, index) in bookingList" :key="index"
-                    class="mx-24 my-1 bg-white rounded-lg text-xl  ">
+                    <div class="overflow-y-auto overflow-x-hidden" style="height: 460px; margin-right: 95px;">
+                           <div v-for="(booking, index) in bookingList" :key="index"
+                    class="mx-24 my-1 bg-white rounded-lg text-xl  " style="width: 93% ;">
                     <div class="grid grid-flow-row grid-cols-12 flex py-3 text-center px-2">
 
                         <div class="row-start-1 col-start-1 col-end-3 p-1 mb-1.5 rounded-lg ">{{
@@ -181,6 +182,7 @@ const removeBookingEvent = async (deleteBookingId, booking, loopBooking) => {
                     </div>
 
                 </div>
+                    </div>
             </div>
         </div>
     </div>
@@ -188,4 +190,23 @@ const removeBookingEvent = async (deleteBookingId, booking, loopBooking) => {
 </template>
  
 <style scoped>
+/* width */
+::-webkit-scrollbar {
+  width: 10px;
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+  background: #f1f1f1;
+}
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+  background: #888;
+}
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+  background: #555;
+}
 </style>

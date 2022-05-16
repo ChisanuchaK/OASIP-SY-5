@@ -168,7 +168,7 @@ const editBooking = async (editNoteId,editData, bookingEdit, loopEdit) => {
     </div> -->
         <div class="">
             <div class="relative bg-white rounded-lg text-xl p-5 px-12">
-                <div class="w-36 m-auto text-2xl text-center">
+                <div class="w-36 m-auto text-1xl text-center">
                     ID : {{ bookingToEdit.idBooking }}
                     <!-- {{bookingToEdit}} -->
                 </div>
@@ -184,14 +184,14 @@ const editBooking = async (editNoteId,editData, bookingEdit, loopEdit) => {
                     <div class="row-start-3 col-start-1 col-span-2 p-1 rounded-lg">
                         Email : {{ bookingToEdit.bookingEmail }}
                     </div>
-                    <div class="row-start-4 col-start-1 col-span-2 p-1 rounded-lg">
+                    <div class="row-start-4 col-start-1 col-span-2 p-1 rounded-lg" >
                         StartTime :
                     </div>
                     <!-- {{moment.utc(bookingsDetails.eventStartTime).format("DD MMMM YYYY")}} -->
                     <!-- {{ moment.utc(moment.utc(bookingsDetails.eventStartTime).format()).local().format("DD MMMM YYYY") }} -->
                     <!-- {{  moment(bookingsDetails.eventStartTime).local().format("DD MMMM YYYY HH:mm A") }} -->
-                    <div class="row-start-5 col-start-1 col-span-2 p-1 rounded-lg">
-                        <input type="datetime-local" v-model="bookingPresentTime" @change="selectTime()">
+                    <div class="row-start-5 col-start-1 col-span-2 p-1 rounded-lg " >
+                        <input class="bg-gray-200" type="datetime-local" v-model="bookingPresentTime" @change="selectTime()">
                         <!-- {{
                                 moment(bookingToEdit.eventStartTime)
                                     .local()

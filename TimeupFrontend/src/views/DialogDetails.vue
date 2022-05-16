@@ -94,7 +94,7 @@ const changeEditDialog = (booking)=>{
     </div> -->
         <div class="">
             <div class="relative bg-white rounded-lg text-xl p-5 px-12">
-                <div class="w-36 m-auto text-2xl text-center">
+                <div class="w-36 m-auto text-1xl text-center">
                     ID : {{ bookingsDetails.idBooking }}
                 </div>
                 <img class="absolute top-0 right-0 h-16 w-16 text-4xl text-lg font-normal h-[30px] w-[30px] mt-3 mr-7 cursor-pointer"
@@ -146,7 +146,7 @@ const changeEditDialog = (booking)=>{
                     }}</div> -->
 
                     <div class="row-start-8 col-start-1 col-end-3 col-span-2">
-                        <textarea class="bg-gray-200 w-full resize-none rounded text-center" readonly
+                        <textarea class=" w-full resize-none rounded text-center" readonly
                             v-model="bookingsDetails.eventNotes" name="" id="" cols="90" rows="5">{{
                                     bookingsDetails.eventNotes == null
                                         ? "-"

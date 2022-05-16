@@ -47,26 +47,26 @@ public class BookingService {
 
         List<Booking> checkCompare = bookingRepository.findAllByEventCategoryEventCategoryId(newBooking.getEventCategory().getEventCategoryId());
         if (!(newBooking.getBookingName().length() > 0 && newBooking.getBookingName().length() <= 100)){
-            return ResponseEntity.status(400).body("Event name invalid !! character limit 100");
+            throw  new ResponseStatusException(HttpStatus.BAD_REQUEST , "must not blank");
         }
-        Pattern pattern = Pattern.compile("[a-z0-9._%+-]+@[a-z0-9.-]+\\.[a-z]{2,3}");
+        Pattern pattern = Pattern.compile("[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,3}");
         Matcher mat = pattern.matcher(newBooking.getBookingEmail());
         if (!mat.matches()){
-            return ResponseEntity.status(400).body("Event email invalid !! character limit 100 and Ex pattern test@test.ts ");
+            throw  new ResponseStatusException(HttpStatus.BAD_REQUEST , "must be a well-formed email address");
         }
         if (newBooking.getEventNotes().length() > 500 ){
-            return ResponseEntity.status(400).body("Event Note invalid !! character limit 500 ");
+            throw  new ResponseStatusException(HttpStatus.BAD_REQUEST , "size must be between 0 and 500");
         }
         if(!((newBooking.getEventStartTime().toEpochMilli() <= getDateMonthsAgo().toInstant().toEpochMilli())
                 && (newBooking.getEventStartTime().toEpochMilli() >= System.currentTimeMillis()))) {
-            return ResponseEntity.status(400).body("Event StartTime over 3 month or EventStartTime under present time !! ");
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST , "must be a future date ");
         }
         if (!checkTimeOverLap(checkCompare , newBooking)){
                     bookingRepository.save(newBooking);
                     return ResponseEntity.status(201).body("Inserted Successfully!");
         }
         else {
-            return ResponseEntity.status(400).body("Can't Insert Date is Overlap!!");
+            throw  new ResponseStatusException(HttpStatus.BAD_REQUEST , "Can't Insert Date is Overlap!!");
         }
 
     }
@@ -108,7 +108,7 @@ public class BookingService {
         Booking booking = bookingRepository.findById(id).orElseThrow( ()->{
             return new ResponseStatusException(HttpStatus.NOT_FOUND);
         });
-        List<Booking> checkCompare = bookingRepository.findAll();
+        List<Booking> checkCompare = bookingRepository.findAllByEventCategoryEventCategoryId(booking.getEventCategory().getEventCategoryId());
         int i = 0;
         int index = 0;
         for(Booking b: checkCompare){
@@ -121,17 +121,17 @@ public class BookingService {
                 modelMapper.map(editBooking , booking);
         if(!((editBooking.getEventStartTime().toEpochMilli() <= getDateMonthsAgo().toInstant().toEpochMilli())
                 && (editBooking.getEventStartTime().toEpochMilli() >= System.currentTimeMillis()))) {
-            return ResponseEntity.status(400).body("Event StartTime over 3 month or EventStartTime under present time !! ");
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST , "must be a future date ");
         }
         if (editBooking.getEventNotes().length() > 500 ){
-            return ResponseEntity.status(400).body("Event Note invalid !! character limit 500 ");
+            throw  new ResponseStatusException(HttpStatus.BAD_REQUEST , "size must be between 0 and 500");
         }
         if ((!checkTimeOverLap(checkCompare , booking))){
                    bookingRepository.saveAndFlush(booking);
                    return ResponseEntity.status(200).body("Edited Successfully");
         }
         else {
-            return ResponseEntity.status(400).body("Edited is overLab !!");
+            throw  new ResponseStatusException(HttpStatus.BAD_REQUEST , "Can't Insert Date is Overlap!!");
         }
 
     }
