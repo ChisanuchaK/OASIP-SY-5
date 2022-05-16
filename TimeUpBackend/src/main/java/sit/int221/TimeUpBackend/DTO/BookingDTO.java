@@ -26,6 +26,7 @@ public class BookingDTO {
         return eventCategory.getEventCategoryName();
     }
     public Integer getEventCategoryDuration(){return eventCategory.getEventDuration();}
+    public Integer getEventCategoryId(){return  eventCategory.getEventCategoryId();}
     }
 
 
