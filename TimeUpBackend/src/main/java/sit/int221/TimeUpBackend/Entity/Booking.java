@@ -30,7 +30,6 @@ public class Booking {
 
     @Email(regexp = "[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,3}",
             flags =  Pattern.Flag.CASE_INSENSITIVE)
-    @NotEmpty
     @Column(name = "bookingEmail" , length = 100 , nullable = false)
     private String bookingEmail;
 
@@ -40,7 +39,6 @@ public class Booking {
     private EventCategory eventCategory;
 
     @FutureOrPresent(message = "must be a future date" )
-    @NotEmpty
     @Column(name = "eventStartTime" ,nullable = false )
     private Instant eventStartTime;
 
