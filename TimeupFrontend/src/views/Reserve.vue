@@ -132,7 +132,7 @@ const isInputNotes = computed(() => {
                     <div class="row-start-3 col-start-1 col-span-1 ">Time :</div>
                     <div class="row-start-4 col-start-1 col-end-4 col-span-3 "><input class="bg-gray-200 rounded w-full"
                             :max="maxdateIndexSelect" :min="localPresentTime" @change="handleTime()"
-                            type="datetime-local" v-model="dateIndexSelect" /></div>
+                            type="datetime-local" v-model="dateIndexSelect"  /></div>
 
                     <div class="row-start-3 col-start-4 col-span-1 text-center">Duration</div>
                     <div class="row-start-4 col-start-4 col-span-1 "><input
@@ -140,7 +140,7 @@ const isInputNotes = computed(() => {
                             v-model="localData.eventDuration" /></div>
 
                     <div class="row-start-3 col-start-7 col-span-1 ">Email :</div>
-                    <div class="row-start-4 col-start-7 col-end-10 col-span-3 "><input
+                    <div class="row-start-4 col-start-7 col-end-10 col-span-3 "><input   
                             class="bg-gray-200 rounded w-full pb-0.5 pl-1 border" type="email"
                             v-model="localData.bookingEmail" :style="{ 'border-color': localData.bookingEmail.trim() === '' && isInvalid ? 'red' : 'white' }"/>
                             <label for="name-with-label" class="text-red-500" v-if="isInputEmail">

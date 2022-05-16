@@ -49,7 +49,7 @@ public class BookingService {
         if (!(newBooking.getBookingName().length() > 0 && newBooking.getBookingName().length() <= 100)){
             throw  new ResponseStatusException(HttpStatus.BAD_REQUEST , "must not blank");
         }
-        Pattern pattern = Pattern.compile("[A-Za-z0-9._%+-]+@[a-z0-9.-]+\\.[a-z]{2,3}");
+        Pattern pattern = Pattern.compile("[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,3}");
         Matcher mat = pattern.matcher(newBooking.getBookingEmail());
         if (!mat.matches()){
             throw  new ResponseStatusException(HttpStatus.BAD_REQUEST , "must be a well-formed email address");

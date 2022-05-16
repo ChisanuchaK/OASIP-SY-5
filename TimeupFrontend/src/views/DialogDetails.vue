@@ -88,8 +88,8 @@ const changeEditDialog = (booking)=>{
         <!-- <div class=" ">
         {{bookings.bookings}}
     </div> -->
-        <div class="" style="width: 44.5%;">
-            <div class="relative bg-white rounded-lg text-xl p-5 px-12" >
+        <div class="">
+            <div class="relative bg-white rounded-lg text-xl p-5 px-12">
                 <div class="w-36 m-auto text-1xl text-center">
                     ID : {{ bookingsDetails.idBooking }}
                 </div>
@@ -142,9 +142,12 @@ const changeEditDialog = (booking)=>{
                     }}</div> -->
 
                     <div class="row-start-8 col-start-1 col-end-3 col-span-2">
-                        <p   :v-model="bookingsDetails.eventNotes">
-                            {{bookingsDetails.eventNotes}}
-                        </p>
+                        <textarea class=" w-full resize-none rounded text-center" readonly
+                            v-model="bookingsDetails.eventNotes" name="" id="" cols="90" rows="5">{{
+                                    bookingsDetails.eventNotes == null
+                                        ? "-"
+                                        : bookingsDetails.eventNotes
+                            }}</textarea>
                     </div>
 
                     <!-- template -->
