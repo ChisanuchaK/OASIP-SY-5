@@ -42,6 +42,7 @@ const handleTime = () => {
     // localData.eventStartTime = new Date().toISOString()
     localData.eventStartTime = new Date(dateIndexSelect.value).toISOString()
     console.log(localData.eventStartTime);
+    console.log(dateIndexSelect.value);
 }
 onBeforeMount(async () => {
     categoryList.value = await getEventCategory();
@@ -78,6 +79,7 @@ const createBooking = async (localDataInput) => {
         }),
     });
     if (res.status === 201) {
+        alert(`Create successfully \n Category ID :  ${localData.eventCategory.eventCategoryId} \n Date : ${localData.eventStartTime} \n Booking name :  ${localData.bookingName}`)
         console.log(`Create successfully \n Category ID :  ${localDataInput.eventCategory.eventCategoryId} \n Date : ${localDataInput.eventStartTime} \n Booking name :  ${localDataInput.bookingName}`)
         localDataInput.bookingName = ""
         localDataInput.bookingEmail = ""
@@ -86,7 +88,6 @@ const createBooking = async (localDataInput) => {
         dateIndexSelect.value = localPresentTime
         localDataInput.eventNotes = ""
 
-        // alert(`Create successfully \n Category ID :  ${localData.eventCategory.eventCategoryId} \n Date : ${localData.eventStartTime} \n Booking name :  ${localData.bookingName}`)
     } else {
         console.log("error , failed to created");
     }
@@ -105,6 +106,7 @@ const reset = () => {
     localData.eventNotes = ""
     cancelDialog.value = !cancelDialog.value
 }
+
 const changeConfirmDialog = () => {
     if (localData.bookingName.trim() === "" || (localData.bookingEmail.trim() === "" ) || categoryIndexSelect.value === undefined) {
         isInvalid.value = true
@@ -141,7 +143,7 @@ const isInputNotes = computed(() => {
       
         <div class="mt-20 mb-8 uppercase w-3/4 m-auto text-center text-[46px] text-white"> select scheduled</div>
         <div class="w-[80%] m-auto h-auto">
-            <div class="bg-white text-1xl rounded-xl">
+            <div class="bg-white text-[100%] rounded-xl font-bold">
                 <div class="m-auto w-1/2 text-center pt-5">Enter Your Details</div>
                 <div class="grid grid-flow-row grid-cols-9 p-10 gap-3">
 
@@ -169,8 +171,8 @@ const isInputNotes = computed(() => {
                     </div>
                     <div class="row-start-2 col-start-7 col-end-10 col-span-3 "><input
                             class="bg-gray-200 rounded w-full pb-0.5 pl-1 border" type="text"
-                            v-model="localData.bookingName"
-                            :style="{ 'border-color': localData.bookingName.trim() === '' && isInvalid ? 'red' : 'white' }" />
+                            v-model="localData.bookingName" 
+                            :style="{ 'border-color': (localData.bookingName.trim() === '' && isInvalid) || (localData.bookingName.length > 100 && isInvalid) ? 'red' : 'white' }" />
                         <label for="name-with-label" class="text-red-500" v-if="isInputName">
                             Please enter Name!
                         </label>
@@ -180,9 +182,12 @@ const isInputNotes = computed(() => {
                     </div>
 
                     <div class="row-start-3 col-start-1 col-span-1 ">Time :</div>
-                    <div class="row-start-4 col-start-1 col-end-4 col-span-3 "><input class="bg-gray-200 rounded w-full"
+                    <div class="row-start-4 col-start-1 col-end-4 col-span-3 ">
+                        <form action=""> <input class="bg-gray-200 rounded w-full"
                             :max="maxdateIndexSelect" :min="localPresentTime" @change="handleTime()"
-                            type="datetime-local" v-model="dateIndexSelect"  /></div>
+                            type="datetime-local" v-model="dateIndexSelect"  />
+                            </form>
+                            </div>
 
                     <div class="row-start-3 col-start-4 col-span-1 text-center">Duration</div>
                     <div class="row-start-4 col-start-4 col-span-1 "><input
@@ -193,6 +198,7 @@ const isInputNotes = computed(() => {
                     <div class="row-start-3 col-start-9 col-span-1 text-right text-gray-400">
                         {{localData.bookingEmail.length}}/100
                     </div>
+                    
                     <div class="row-start-4 col-start-7 col-end-10 col-span-3 "><input
                             class="bg-gray-200 rounded w-full pb-0.5 pl-1 border" type="email"
                             v-model="localData.bookingEmail"
@@ -206,6 +212,7 @@ const isInputNotes = computed(() => {
                     <div class="row-start-5 col-start-9 col-span-1 text-right text-gray-400">
                         {{localData.eventNotes.length}}/500
                     </div>
+
                     <div class="row-start-6 col-start-1 col-end-10 span-9"> <textarea
                             class="bg-gray-200 w-full resize-none rounded border" name="" id="" cols="100" rows="5"
                             placeholder="enter your message(limit 500 text)" v-model="localData.eventNotes"

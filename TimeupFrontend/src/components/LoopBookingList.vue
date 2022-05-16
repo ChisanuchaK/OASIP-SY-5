@@ -27,7 +27,7 @@ const indexSelect = ref();
 // const bookingsDetails = ref([]);
 
 onBeforeMount(async () => {
-    console.log(bookingList);
+    // console.log(bookingList);
     categorys.value = await getEventCategory();
     console.log(categorys.value[0].eventCategoryName);
     
@@ -59,17 +59,18 @@ onBeforeMount(async () => {
 })
 
 const colorBg = (booking)=> {
+        for(let category of categorys.value){
+        if(booking.eventCategoryId == category.eventCategoryId){
+            return  category.eventColor
+        }
+    }
     // for(let i = 0;i<categorys.value.length;i++){
     //     if(booking == categorys.value[i].eventCategoryName){
     //         // console.log(categorys.value[i].eventColor);
     //       return categorys.value[i].eventColor
     //     }
     // }
-    for(let category of categorys.value){
-        if(booking == category.eventCategoryName){
-            return  category.eventColor
-        }
-    }
+
 //    if(booking == categorys.value.eventCategoryName){
         // console.log(booking.eventCategoryName);
         // console.log(categorys.value.eventColor+"aaaaaa");
@@ -153,7 +154,7 @@ const removeBookingEvent = async (deleteBookingId, booking, loopBooking) => {
                         </div>
 
                         <div class="row-start-1 col-start-5 col-end-7 p-1 mb-1.5 rounded-lg "
-                         :style="[`background-color:${colorBg(booking.eventCategoryName)};`]"  >{{ booking.eventCategoryName
+                         :style="[`background-color:${colorBg(booking)};`]"  >{{ booking.eventCategoryName
                             }} </div>
 
                         <div class="row-start-1 col-start-7 col-end-9 p-1 mb-1.5 rounded-lg ">{{

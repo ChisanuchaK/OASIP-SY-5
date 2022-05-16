@@ -190,8 +190,8 @@ const editBooking = async (editNoteId,editData, bookingEdit, loopEdit) => {
                     <!-- {{moment.utc(bookingsDetails.eventStartTime).format("DD MMMM YYYY")}} -->
                     <!-- {{ moment.utc(moment.utc(bookingsDetails.eventStartTime).format()).local().format("DD MMMM YYYY") }} -->
                     <!-- {{  moment(bookingsDetails.eventStartTime).local().format("DD MMMM YYYY HH:mm A") }} -->
-                    <div class="row-start-5 col-start-1 col-span-2 p-1 rounded-lg " >
-                        <input class="bg-gray-200" type="datetime-local" v-model="bookingPresentTime" @change="selectTime()">
+                    <div class="row-start-5 col-start-1 col-span-2 p-1 " >
+                        <input class="bg-gray-200 rounded-lg " type="datetime-local" v-model="bookingPresentTime" @change="selectTime()">
                         <!-- {{
                                 moment(bookingToEdit.eventStartTime)
                                     .local()

@@ -146,10 +146,10 @@ const changeEditDialog = (booking)=>{
                     }}</div> -->
 
                     <div class="row-start-8 col-start-1 col-end-3 col-span-2">
-                        <textarea class=" w-full resize-none rounded text-center" readonly
+                        <textarea class="bg-gray-200 w-full resize-none rounded text-center bg-" placeholder="No Message" disabled
                             v-model="bookingsDetails.eventNotes" name="" id="" cols="90" rows="5">{{
-                                    bookingsDetails.eventNotes == null
-                                        ? "-"
+                                    bookingsDetails.eventNotes == null || bookingsDetails.eventNotes.trim() === ''
+                                        ? ""
                                         : bookingsDetails.eventNotes
                             }}</textarea>
                     </div>

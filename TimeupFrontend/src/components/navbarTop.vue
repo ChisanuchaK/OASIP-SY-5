@@ -15,16 +15,16 @@
 <ul class="flex flex-row md:space-x-8 text-sm font-medium">
 
 <li class="">
-<router-link to="/" class="block py-2 pr-4 pl-3 menu">Home</router-link>
+<router-link to="/" class="block py-2 pr-4 pl-3 hover:bg-[#6b6b6b] hover:rounded-lg hover:text-white hover:underline-offset-2 hover:underline uppercase menu">Home</router-link>
 </li>
 <li>
-<router-link to="/About" class="block py-2 pr-4 pl-3 menu" >About</router-link>
+<router-link to="/About" class="block py-2 pr-4 pl-3 hover:bg-[#6b6b6b] hover:rounded-lg hover:text-white hover:text-white hover:underline-offset-2 hover:underline uppercase menu" >About</router-link>
 </li>
 <li>
-<router-link to="/Reserve" class="block py-2 pr-4 pl-3 menu ">New booking</router-link>
+<router-link to="/Reserve" class="block py-2 pr-4 pl-3 hover:bg-[#6b6b6b] hover:rounded-lg hover:text-white hover:text-white hover:underline-offset-2 hover:underline uppercase menu ">New booking</router-link>
 </li>
 <li>
-<router-link to="/bookingList" class="block py-2 pr-4 pl-3 menu ">Booking-List</router-link>
+<router-link to="/bookingList" class="block py-2 pr-4 pl-3 hover:bg-[#6b6b6b] hover:rounded-lg hover:text-white hover:text-white hover:underline-offset-2 hover:underline uppercase menu ">Booking-List</router-link>
 </li>
 </ul>
 </div>
@@ -37,9 +37,9 @@
 .router-link-active.menu{
   color: rgb(255, 255, 255);
   text-decoration: underline;
-  background-color: #499D6B;
-  border-radius: 10px ;
- 
+  background-color: #6b6b6b;
+  border-radius: 8.5px ;
+  
 }
 
 </style>
