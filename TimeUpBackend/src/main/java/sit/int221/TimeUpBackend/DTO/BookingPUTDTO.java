@@ -18,7 +18,6 @@ import java.time.Instant;
 @AllArgsConstructor
 public class BookingPUTDTO {
 
-//    private Integer idBooking;
     @Future(message = "must be a future date" )
     @NotNull
     private Instant eventStartTime;

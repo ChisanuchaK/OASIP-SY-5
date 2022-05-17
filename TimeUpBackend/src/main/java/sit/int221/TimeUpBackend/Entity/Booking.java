@@ -31,10 +31,8 @@ public class Booking {
     @Email(regexp = "[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,3}",
             flags =  Pattern.Flag.CASE_INSENSITIVE)
     @NotNull
-//    @Size(min = 1 , max = 100 , message = "size must be between 6 and 100")
     @Column(name = "bookingEmail" , length = 100 , nullable = false)
     private String bookingEmail;
-
 
     @ManyToOne
     @JoinColumn(name = "eventCategory"  , nullable = false)
@@ -44,7 +42,6 @@ public class Booking {
     @NotNull
     @Column(name = "eventStartTime" ,nullable = false )
     private Instant eventStartTime;
-
 
     @Column(name = "eventDuration" , nullable = false)
     private Integer eventDuration ;

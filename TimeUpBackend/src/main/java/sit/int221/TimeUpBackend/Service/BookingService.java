@@ -14,8 +14,6 @@ import sit.int221.TimeUpBackend.Entity.Booking;
 import sit.int221.TimeUpBackend.Repository.BookingRepository;
 
 import java.util.*;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
 @Service
@@ -40,8 +38,6 @@ public class BookingService {
         return modelMapper.map(bookings , BookingMoreDetailDTO.class);
     }
 
-
-
     // post
     public ResponseEntity create(  Booking newBooking) {
 
@@ -55,16 +51,14 @@ public class BookingService {
         }
 
     }
-
-
     public boolean checkTimeOverLap(List<Booking> allBooking , Booking booking ) {
 
         for (Booking book : allBooking) {
             if (((booking.getEventStartTime().toEpochMilli() >= book.getEventStartTime().toEpochMilli())
                     && ((booking.getEventStartTime().toEpochMilli() <= endTimeMs(book))))
                     || (( (endTimeMs(booking)) >= book.getEventStartTime().toEpochMilli())
-                    && ((endTimeMs(booking))<= endTimeMs(book))
-            )){
+                    && ((endTimeMs(booking))<= endTimeMs(book)))
+                    || ((booking.getEventStartTime().toEpochMilli() <= book.getEventStartTime().toEpochMilli()) && (endTimeMs(booking) >= endTimeMs(book)))) {
                 return true;
             }
         }
@@ -74,7 +68,6 @@ public class BookingService {
     public long endTimeMs(Booking time){
         return (time.getEventStartTime().toEpochMilli() + ((time.getEventDuration() * 60000)));
     }
-
 
     // delete
     public void deleteById (Integer idBooking){
@@ -106,8 +99,5 @@ public class BookingService {
         else {
             throw  new ResponseStatusException(HttpStatus.BAD_REQUEST , "overlapped with other events");
         }
-
     }
-
-
 }

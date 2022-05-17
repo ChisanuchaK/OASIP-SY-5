@@ -17,13 +17,14 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import static sit.int221.TimeUpBackend.Controller.EventCategoryController.getStringStringMap;
+
 @RestController
 @RequestMapping("/api/booking")
 public class BookingController {
 
     @Autowired
     private BookingService bookingService;
-
 
     @GetMapping("/more-detail")
     public List<BookingMoreDetailDTO> getAllBookingDetail(){
@@ -39,7 +40,6 @@ public class BookingController {
     public BookingMoreDetailDTO getBookingById(@PathVariable Integer id){
         return bookingService.getBookingDetailDTOById(id);
     }
-
 
     @PostMapping("")
     @ResponseStatus(HttpStatus.CREATED)
@@ -62,13 +62,7 @@ public class BookingController {
     @ExceptionHandler(MethodArgumentNotValidException.class)
     public Map<String, String> handleValidationExceptions(
             MethodArgumentNotValidException ex) {
-        Map<String, String> errors = new HashMap<>();
-        ex.getBindingResult().getAllErrors().forEach((error) -> {
-            String fieldName = ((FieldError) error).getField();
-            String errorMessage = error.getDefaultMessage();
-            errors.put(fieldName, errorMessage);
-        });
-        return errors;
+        return getStringStringMap(ex);
     }
 }
 

@@ -4,8 +4,8 @@ services:
     container_name: db
     image: docker.io/mysql:8.0
     restart: always
-    ports:
-      - "3306:3306"
+    # ports:
+    #   - "3306:3306"
     volumes:
       - ./script:/docker-entrypoint-initdb.d/
       - ./mysql-data:/var/lib/mysql
@@ -16,8 +16,8 @@ services:
     container_name: backend
     image: quay.io/chisanuchakim/oasip-sy-5-backend
     restart: on-failure
-    ports:
-      - "8080:8080"
+    # ports:
+    #   - "8080:8080"
     depends_on:
       - mysql
 
@@ -34,8 +34,8 @@ services:
   frontend:
     image: quay.io/chisanuchakim/oasip-sy-5-fontend
     container_name: frontend
-    ports:
-      - "3000:3000"
+    # ports:
+    #   - "3000:3000"
     depends_on:
       - mysql
       - backend
