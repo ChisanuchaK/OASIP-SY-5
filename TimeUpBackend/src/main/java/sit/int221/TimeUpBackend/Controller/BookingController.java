@@ -3,18 +3,15 @@ package sit.int221.TimeUpBackend.Controller;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.*;
 import sit.int221.TimeUpBackend.DTO.BookingDTO;
 import sit.int221.TimeUpBackend.DTO.BookingMoreDetailDTO;
-import sit.int221.TimeUpBackend.DTO.BookingPOSTDTO;
 import sit.int221.TimeUpBackend.DTO.BookingPUTDTO;
 import sit.int221.TimeUpBackend.Entity.Booking;
 import sit.int221.TimeUpBackend.Service.BookingService;
 
 import javax.validation.Valid;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -44,7 +41,7 @@ public class BookingController {
 
     @PostMapping("")
     @ResponseStatus(HttpStatus.CREATED)
-    public ResponseEntity createBooking(@Valid @RequestBody BookingPOSTDTO newBooking){
+    public ResponseEntity createBooking(@Valid @RequestBody Booking newBooking){
         return bookingService.create(newBooking);
     }
 

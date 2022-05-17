@@ -9,12 +9,10 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 import sit.int221.TimeUpBackend.DTO.BookingDTO;
 import sit.int221.TimeUpBackend.DTO.BookingMoreDetailDTO;
-import sit.int221.TimeUpBackend.DTO.BookingPOSTDTO;
 import sit.int221.TimeUpBackend.DTO.BookingPUTDTO;
 import sit.int221.TimeUpBackend.Entity.Booking;
 import sit.int221.TimeUpBackend.Repository.BookingRepository;
 
-import java.awt.print.Book;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -41,11 +39,11 @@ public class BookingService {
     }
 
     // post
-    public ResponseEntity create(  BookingPOSTDTO newBookingDTO) {
-        Booking newBooking = modelMapper.map(newBookingDTO , Booking.class);
+    public ResponseEntity create(  Booking newBooking) {
+
         List<Booking> checkCompare = bookingRepository.findAllByEventCategoryEventCategoryId(newBooking.getEventCategory().getEventCategoryId());
         if (!checkTimeOverLap(checkCompare , newBooking)){
-                    bookingRepository.save(newBooking);
+            bookingRepository.save(newBooking);
             return ResponseEntity.status(201).body("Edited Successfully");
         }
         else {
