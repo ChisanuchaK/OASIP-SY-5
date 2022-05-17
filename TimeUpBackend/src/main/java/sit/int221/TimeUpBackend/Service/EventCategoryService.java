@@ -22,13 +22,19 @@ public class EventCategoryService {
         return eventCategoryRepository.findAll();
     }
 
+    public EventCategory create(EventCategory newEventCategory){
+        return eventCategoryRepository.saveAndFlush(newEventCategory);
+    }
+
     public ResponseEntity editEventCategory(EventCategoryDTO editEventCategory , Integer id){
         EventCategory eventCategory = eventCategoryRepository.findById(id).orElseThrow( ()->{
-            return  new ResponseStatusException(HttpStatus.NOT_FOUND);
+            return new ResponseStatusException(HttpStatus.NOT_FOUND);
         });
+
             modelMapper.map(editEventCategory , eventCategory);
             eventCategoryRepository.saveAndFlush(eventCategory);
             return ResponseEntity.status(200).body("Edited Successfully");
         }
+
     }
 

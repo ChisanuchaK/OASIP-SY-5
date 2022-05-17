@@ -26,16 +26,24 @@ public class EventCategoryController {
         return eventCategoryService.getAllCategory();
     }
 
+    @PostMapping("")
+    @ResponseStatus(HttpStatus.CREATED)
+    public EventCategory createEventCategory(@Valid  EventCategory newEventCategory){
+        return  eventCategoryService.create(newEventCategory);
+    }
+
     @PutMapping("/{id}")
     public ResponseEntity editEventCategory(@Valid  @RequestBody EventCategoryDTO editEventCategory , @PathVariable Integer id){
         return eventCategoryService.editEventCategory(editEventCategory , id);
     }
+
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     @ExceptionHandler(MethodArgumentNotValidException.class)
     public Map<String, String> handleValidationExceptions(
             MethodArgumentNotValidException ex) {
         return getStringStringMap(ex);
     }
+
     static Map<String, String> getStringStringMap(MethodArgumentNotValidException ex) {
         Map<String, String> errors = new HashMap<>();
         ex.getBindingResult().getAllErrors().forEach((error) -> {
