@@ -17,4 +17,6 @@ public class PageBookingDTO {
     private  int size;
     private int totalPages;
     private  int totalElements;
+    private boolean first;
+    private boolean last;
 }
