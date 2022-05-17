@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.*;
 import sit.int221.TimeUpBackend.DTO.BookingDTO;
 import sit.int221.TimeUpBackend.DTO.BookingMoreDetailDTO;
 import sit.int221.TimeUpBackend.DTO.BookingPUTDTO;
+import sit.int221.TimeUpBackend.DTO.PageBookingDTO;
 import sit.int221.TimeUpBackend.Entity.Booking;
 import sit.int221.TimeUpBackend.Service.BookingService;
 
@@ -30,8 +31,12 @@ public class BookingController {
     }
 
     @GetMapping("")
-    public List<BookingDTO> getAllBooking(){
-        return bookingService.getAllBookingDTO();
+    public PageBookingDTO getAllBooking(
+            @RequestParam(defaultValue= "eventStartTime") String sortBy,
+            @RequestParam(defaultValue= "0") Integer page,
+            @RequestParam(defaultValue= "5") Integer pageSize)
+    {
+        return  bookingService.getAllBooking(page , pageSize , sortBy);
     }
 
     @GetMapping("/{id}")

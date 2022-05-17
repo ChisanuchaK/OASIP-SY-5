@@ -2,6 +2,8 @@ package sit.int221.TimeUpBackend.Service;
 
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -10,6 +12,7 @@ import org.springframework.web.server.ResponseStatusException;
 import sit.int221.TimeUpBackend.DTO.BookingDTO;
 import sit.int221.TimeUpBackend.DTO.BookingMoreDetailDTO;
 import sit.int221.TimeUpBackend.DTO.BookingPUTDTO;
+import sit.int221.TimeUpBackend.DTO.PageBookingDTO;
 import sit.int221.TimeUpBackend.Entity.Booking;
 import sit.int221.TimeUpBackend.Repository.BookingRepository;
 
@@ -24,9 +27,9 @@ public class BookingService {
     private ModelMapper modelMapper = new ModelMapper();
 
     //    get
-    public List<BookingDTO> getAllBookingDTO(){
-        List<Booking>bookings= bookingRepository.findAll();
-        return bookings.stream().map(e -> modelMapper.map(e, BookingDTO.class)).collect(Collectors.toList());
+    public PageBookingDTO getAllBooking(int page , int pageSize , String sortBy){
+        Sort  sort  =  Sort.by(Sort.Direction.DESC , sortBy);
+        return modelMapper.map(bookingRepository.findAll(PageRequest.of(page , pageSize , sort)) , PageBookingDTO.class);
     }
 
     public List<BookingMoreDetailDTO> getAllBookingDetailDTO(){
