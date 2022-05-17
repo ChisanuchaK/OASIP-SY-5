@@ -4,6 +4,8 @@ services:
     container_name: db
     image: docker.io/mysql:8.0
     restart: always
+    ports:
+      -"3306:3306"
     volumes:
       - ./script:/docker-entrypoint-initdb.d/
       - ./mysql-data:/var/lib/mysql
