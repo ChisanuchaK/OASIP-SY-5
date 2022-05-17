@@ -28,7 +28,7 @@ public class EventCategoryController {
 
     @PostMapping("")
     @ResponseStatus(HttpStatus.CREATED)
-    public EventCategory createEventCategory(@Valid  EventCategory newEventCategory){
+    public EventCategory createEventCategory(@Valid  @RequestBody EventCategory newEventCategory){
         return  eventCategoryService.create(newEventCategory);
     }
 
