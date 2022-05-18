@@ -25,7 +25,7 @@ let localData = reactive({
     bookingEmail: "",
     eventCategory: { eventCategoryId: "" },
     eventStartTime: "",
-    eventDuration: "",
+    // eventDuration: "",
     eventNotes: "",
 })
 const handleSelect = () => {

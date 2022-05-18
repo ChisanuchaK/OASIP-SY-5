@@ -47,18 +47,6 @@ public class BookingService {
     }
 
     // post
-//    public ResponseEntity create(  Booking newBooking) {
-//
-//        List<Booking> checkCompare = bookingRepository.findAllByEventCategoryEventCategoryId(newBooking.getEventCategory().getEventCategoryId());
-//        if (!checkTimeOverLap(checkCompare , newBooking)){
-//            bookingRepository.save(newBooking);
-//            return ResponseEntity.status(201).body("Edited Successfully");
-//        }
-//        else {
-//            throw  new ResponseStatusException(HttpStatus.BAD_REQUEST , "overlapped with other events");
-//        }
-//
-//    }
 
     public ResponseEntity create( BookingPOSTDTO newBooking) {
         Booking booking = modelMapper.map(newBooking , Booking.class);
