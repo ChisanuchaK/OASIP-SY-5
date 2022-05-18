@@ -28,5 +28,6 @@ public class BookingMoreDetailDTO {
     public String  getEventCategoryName(){
         return eventCategory.getEventCategoryName();
     }
+    public Integer getEventCategoryId(){return  eventCategory.getEventCategoryId();}
     public Integer getEventCategoryDuration(){return eventCategory.getEventDuration();}
 }

@@ -14,7 +14,7 @@ import java.time.Instant;
 @NoArgsConstructor
 @AllArgsConstructor
 public class BookingPOSTDTO {
-    @Future(message = "must be a future date" )
+    @Future(message = "must be a future date and not present time !!" )
     @NotNull
     private Instant eventStartTime;
     @Size(min = 0 , max = 500 , message = "size must be between 0 and 500")
