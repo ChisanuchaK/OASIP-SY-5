@@ -32,6 +32,7 @@ public class EventCategoryController {
         return  eventCategoryService.create(newEventCategory);
     }
 
+
     @PutMapping("/{id}")
     public ResponseEntity editEventCategory(@Valid  @RequestBody EventCategoryDTO editEventCategory , @PathVariable Integer id){
         return eventCategoryService.editEventCategory(editEventCategory , id);
