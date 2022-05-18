@@ -30,13 +30,18 @@ public class BookingController {
         return bookingService.getAllBookingDetailDTO();
     }
 
-    @GetMapping("")
-    public PageBookingDTO getAllBooking(
+    @GetMapping("/test")
+    public PageBookingDTO getAllBookingTest(
             @RequestParam(defaultValue= "eventStartTime") String sortBy,
             @RequestParam(defaultValue= "0") Integer page,
             @RequestParam(defaultValue= "5") Integer pageSize)
     {
-        return  bookingService.getAllBooking(page , pageSize , sortBy);
+        return  bookingService.getAllBookingTest(page , pageSize , sortBy);
+    }
+
+    @GetMapping("")
+    public List<BookingDTO> getAllBooking(){
+        return bookingService.getAllBooking();
     }
 
     @GetMapping("/{id}")

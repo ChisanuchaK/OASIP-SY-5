@@ -27,8 +27,12 @@ public class BookingService {
     private ModelMapper modelMapper = new ModelMapper();
 
     //    get
-    public PageBookingDTO getAllBooking(int page , int pageSize , String sortBy){
-        Sort  sort  =  Sort.by(Sort.Direction.DESC , sortBy);
+    public List<BookingDTO> getAllBooking(){
+        List<Booking>bookings= bookingRepository.findAll();
+        return bookings.stream().map(e -> modelMapper.map(e, BookingDTO.class)).collect(Collectors.toList());
+    }
+    public PageBookingDTO getAllBookingTest(int page , int pageSize , String sortBy){
+        Sort sort  =  Sort.by(Sort.Direction.DESC , sortBy);
         return modelMapper.map(bookingRepository.findAll(PageRequest.of(page , pageSize , sort)) , PageBookingDTO.class);
     }
 
