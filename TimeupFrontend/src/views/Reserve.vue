@@ -67,7 +67,6 @@ onBeforeMount(async () => {
     bookingLists.value = await getAllBooks.json();
     categoryList.value = await getEventCategory();
 })
-
 const createBooking = async (localDataInput) => {
     // export const createBooking = async (localData) => {
     const res = await fetch(`${import.meta.env.VITE_BASE_URL}/booking`, {
@@ -95,7 +94,6 @@ const createBooking = async (localDataInput) => {
         localDataInput.eventDuration = ""
         dateIndexSelect.value = localPresentTime
         localDataInput.eventNotes = ""
-
     } else {
         console.log("error , failed to created");
     }
@@ -183,7 +181,6 @@ const isInputName = computed(() => {
     return (isInvalid.value && localData.bookingName.trim() == "");
 
 });
-
 const isInputNameOver = computed(() => {
     return (isInvalid.value && localData.bookingName.length > 100);
 });
@@ -266,7 +263,6 @@ const isInputTime = computed(() => {
                     <button @click="clickCheck"> sssssssssssssssssss </button> -->
                 </div>
                 <div class="grid grid-flow-row grid-cols-9 p-10 gap-3">
-
                     <div class="row-start-1 col-start-1 col-span-3 ">Scheduled Category :</div>
                     <div class="row-start-2 col-start-1 col-end-4 col-span-3">
                         <!-- <select class="bg-gray-200 rounded w-full" v-model="CategorySelect" @change="hanleSelcet()"> -->
@@ -280,7 +276,6 @@ const isInputTime = computed(() => {
                             Please choose category
                         </label>
                     </div>
-
                     <div class="row-start-1 col-start-7 col-span-1 ">
                         <!-- <div v-if="">Name is null</div>  -->
                         Name :
@@ -299,7 +294,6 @@ const isInputTime = computed(() => {
                             over limit of input name!
                         </label>
                     </div>
-
                     <div class="row-start-3 col-start-1 col-span-1 ">Time :</div>
                     <div class="row-start-4 col-start-1 col-end-4 col-span-3 ">
                         <form action=""> <input class="bg-gray-200 rounded w-full border" :max="maxdateIndexSelect"
@@ -319,7 +313,6 @@ const isInputTime = computed(() => {
                     <div class="row-start-4 col-start-4 col-span-1 "><input
                             class="bg-gray-300 rounded w-full pb-0.5 pl-1 text-center" readonly type="text"
                             v-model="localData.eventDuration" /></div>
-
                     <div class="row-start-3 col-start-7 col-span-1 ">Email :</div>
                     <div class="row-start-3 col-start-9 col-span-1 text-right text-gray-400">
                         {{ localData.bookingEmail.length }}/100
@@ -339,12 +332,10 @@ const isInputTime = computed(() => {
                             input email is invalid!!
                         </label>
                     </div>
-
                     <div class="row-start-5 col-start-1 col-span-1 ">Notes :</div>
                     <div class="row-start-5 col-start-9 col-span-1 text-right text-gray-400">
                         {{ localData.eventNotes.length }}/500
                     </div>
-
                     <div class="row-start-6 col-start-1 col-end-10 span-9"> <textarea
                             class="bg-gray-200 w-full resize-none rounded border" name="" id="" cols="100" rows="5"
                             placeholder="enter your message(limit 500 text)" v-model="localData.eventNotes"
@@ -353,14 +344,12 @@ const isInputTime = computed(() => {
                             over limit of input message!!
                         </label>
                     </div>
-
                     <div class="row-start-7 col-start-8 col-span-1"> <button @click="changeConfirmDialog"
                             class="w-full h-full m-auto py-2 bg-[#499D6B] text-white rounded-lg">
                             create </button> </div>
                     <div class="row-start-7 col-start-9 col-span-1"> <button @click="changeCancelDialogTrue"
                             class="w-full h-full m-auto py-2 bg-[#F97473] text-white rounded-lg">
                             cancel </button> </div>
-
                 </div>
                 <Cancel v-if="cancelDialog" @onClickCancelNo="changeCancelDialogFalse" @onClickCancelYes="reset" />
 
@@ -370,7 +359,6 @@ const isInputTime = computed(() => {
         </div>
         <NavbarBottom />
     </div>
-
 </template>
  
 <style>

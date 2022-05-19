@@ -3,19 +3,17 @@ package sit.int221.TimeUpBackend.Controller;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.*;
-import sit.int221.TimeUpBackend.DTO.BookingDTO;
-import sit.int221.TimeUpBackend.DTO.BookingMoreDetailDTO;
-import sit.int221.TimeUpBackend.DTO.BookingPUTDTO;
+import sit.int221.TimeUpBackend.DTO.*;
 import sit.int221.TimeUpBackend.Entity.Booking;
 import sit.int221.TimeUpBackend.Service.BookingService;
 
 import javax.validation.Valid;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
+import static sit.int221.TimeUpBackend.Controller.EventCategoryController.getStringStringMap;
 
 @RestController
 @RequestMapping("/api/booking")
@@ -24,15 +22,23 @@ public class BookingController {
     @Autowired
     private BookingService bookingService;
 
-
     @GetMapping("/more-detail")
     public List<BookingMoreDetailDTO> getAllBookingDetail(){
         return bookingService.getAllBookingDetailDTO();
     }
 
+    @GetMapping("/test")
+    public PageBookingDTO getAllBookingTest(
+            @RequestParam(defaultValue= "eventStartTime") String sortBy,
+            @RequestParam(defaultValue= "0") Integer page,
+            @RequestParam(defaultValue= "5") Integer pageSize)
+    {
+        return  bookingService.getAllBookingTest(page , pageSize , sortBy);
+    }
+
     @GetMapping("")
     public List<BookingDTO> getAllBooking(){
-        return bookingService.getAllBookingDTO();
+        return bookingService.getAllBooking();
     }
 
     @GetMapping("/{id}")
@@ -40,10 +46,9 @@ public class BookingController {
         return bookingService.getBookingDetailDTOById(id);
     }
 
-
     @PostMapping("")
     @ResponseStatus(HttpStatus.CREATED)
-    public ResponseEntity createBooking(@Valid @RequestBody Booking newBooking){
+    public ResponseEntity createBooking(@Valid @RequestBody BookingPOSTDTO newBooking){
         return bookingService.create(newBooking);
     }
 
@@ -62,13 +67,7 @@ public class BookingController {
     @ExceptionHandler(MethodArgumentNotValidException.class)
     public Map<String, String> handleValidationExceptions(
             MethodArgumentNotValidException ex) {
-        Map<String, String> errors = new HashMap<>();
-        ex.getBindingResult().getAllErrors().forEach((error) -> {
-            String fieldName = ((FieldError) error).getField();
-            String errorMessage = error.getDefaultMessage();
-            errors.put(fieldName, errorMessage);
-        });
-        return errors;
+        return getStringStringMap(ex);
     }
 }
 

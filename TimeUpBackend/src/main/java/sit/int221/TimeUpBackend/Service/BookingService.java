@@ -2,20 +2,20 @@ package sit.int221.TimeUpBackend.Service;
 
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import org.springframework.web.server.ResponseStatusException;
-import sit.int221.TimeUpBackend.DTO.BookingDTO;
-import sit.int221.TimeUpBackend.DTO.BookingMoreDetailDTO;
-import sit.int221.TimeUpBackend.DTO.BookingPUTDTO;
+import sit.int221.TimeUpBackend.DTO.*;
 import sit.int221.TimeUpBackend.Entity.Booking;
+import sit.int221.TimeUpBackend.Entity.EventCategory;
 import sit.int221.TimeUpBackend.Repository.BookingRepository;
+import sit.int221.TimeUpBackend.Repository.EventCategoryRepository;
 
 import java.util.*;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
 @Service
@@ -23,12 +23,18 @@ public class BookingService {
 
     @Autowired
     private BookingRepository bookingRepository;
+    @Autowired
+    private EventCategoryRepository eventCategoryRepository;
     private ModelMapper modelMapper = new ModelMapper();
 
     //    get
-    public List<BookingDTO> getAllBookingDTO(){
+    public List<BookingDTO> getAllBooking(){
         List<Booking>bookings= bookingRepository.findAll();
         return bookings.stream().map(e -> modelMapper.map(e, BookingDTO.class)).collect(Collectors.toList());
+    }
+    public PageBookingDTO getAllBookingTest(int page , int pageSize , String sortBy){
+        Sort sort  =  Sort.by(Sort.Direction.DESC , sortBy);
+        return modelMapper.map(bookingRepository.findAll(PageRequest.of(page , pageSize , sort)) , PageBookingDTO.class);
     }
 
     public List<BookingMoreDetailDTO> getAllBookingDetailDTO(){
@@ -40,31 +46,30 @@ public class BookingService {
         return modelMapper.map(bookings , BookingMoreDetailDTO.class);
     }
 
-
-
     // post
-    public ResponseEntity create(  Booking newBooking) {
 
-        List<Booking> checkCompare = bookingRepository.findAllByEventCategoryEventCategoryId(newBooking.getEventCategory().getEventCategoryId());
-        if (!checkTimeOverLap(checkCompare , newBooking)){
-                    bookingRepository.save(newBooking);
-            return ResponseEntity.status(200).body("Edited Successfully");
+    public ResponseEntity create( BookingPOSTDTO newBooking) {
+        Booking booking = modelMapper.map(newBooking , Booking.class);
+        EventCategory eventCategory = eventCategoryRepository.findById(newBooking.getEventCategory().getEventCategoryId()).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
+        booking.setEventDuration(eventCategory.getEventDuration());
+        List<Booking> checkCompare = bookingRepository.findAllByEventCategoryEventCategoryId(booking.getEventCategory().getEventCategoryId());
+        if (!checkTimeOverLap(checkCompare , booking)){
+            bookingRepository.save(booking);
+            return ResponseEntity.status(201).body("Inserted Successfully");
         }
         else {
-            throw  new ResponseStatusException(HttpStatus.BAD_REQUEST , "Can't Insert Date is Overlap!!");
+            throw  new ResponseStatusException(HttpStatus.BAD_REQUEST , "overlapped with other events");
         }
 
     }
-
-
     public boolean checkTimeOverLap(List<Booking> allBooking , Booking booking ) {
 
         for (Booking book : allBooking) {
             if (((booking.getEventStartTime().toEpochMilli() >= book.getEventStartTime().toEpochMilli())
                     && ((booking.getEventStartTime().toEpochMilli() <= endTimeMs(book))))
                     || (( (endTimeMs(booking)) >= book.getEventStartTime().toEpochMilli())
-                    && ((endTimeMs(booking))<= endTimeMs(book))
-            )){
+                    && ((endTimeMs(booking))<= endTimeMs(book)))
+                    || ((booking.getEventStartTime().toEpochMilli() <= book.getEventStartTime().toEpochMilli()) && (endTimeMs(booking) >= endTimeMs(book)))) {
                 return true;
             }
         }
@@ -74,7 +79,6 @@ public class BookingService {
     public long endTimeMs(Booking time){
         return (time.getEventStartTime().toEpochMilli() + ((time.getEventDuration() * 60000)));
     }
-
 
     // delete
     public void deleteById (Integer idBooking){
@@ -104,10 +108,8 @@ public class BookingService {
                    return ResponseEntity.status(200).body("Edited Successfully");
         }
         else {
-            throw  new ResponseStatusException(HttpStatus.BAD_REQUEST , "Can't Insert Date is Overlap!!");
+            throw  new ResponseStatusException(HttpStatus.BAD_REQUEST , "overlapped with other events");
         }
 
     }
-
-
 }
