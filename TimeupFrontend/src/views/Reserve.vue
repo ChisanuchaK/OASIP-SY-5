@@ -158,7 +158,8 @@ const changeConfirmDialog = () => {
     // const localEndTime = `${moment.utc(localData.eventStartTime).add(localData.eventDuration, 'm').format("YYYY-MM-DDTHH:mm:ss")}Z`;
     // console.log("------------------------------------------------------------------");
     isInvalid.value = false
-         if (localData.bookingName.trim() == "" || (localData.bookingEmail.trim() == "")
+         if (localData.bookingName.trim() == "" || (localData.bookingEmail.trim() == "") 
+            ||  (!(localData.bookingEmail.match(regexEmail)))
             || categoryIndexSelect.value == undefined || (localData.eventNotes.length > 500)
             || (new Date(dateIndexSelect.value).toISOString() < new Date().toISOString())) {
                 console.log("first if");
