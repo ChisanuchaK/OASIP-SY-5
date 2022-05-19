@@ -23,7 +23,7 @@ export const getBookings = async () => {
   const res = await fetch(`${import.meta.env.VITE_BASE_URL}/booking`);
   if (res.status === 200) {
     console.log(res);
-    return await res.json();
+    return res;
   } else console.log("error to getBookings");
 };
 

@@ -148,7 +148,9 @@ const removeBookingEvent = async (deleteBookingId, booking, loopBooking) => {
                         <div class="row-start-1 col-start-3 col-end-5 p-1 mb-1.5 rounded-lg ">{{
                                 moment(booking.eventStartTime).local().format('hh:mm A')
                         }}
-                            - {{ moment(booking.eventStartTime).local().add(booking.eventDuration, 'm')
+                            - 
+                            {{ 
+                            moment(booking.eventStartTime).local().add(booking.eventDuration, 'm')
                                     .format('hh:mm A')
                             }}
                         </div>
@@ -209,5 +211,9 @@ const removeBookingEvent = async (deleteBookingId, booking, loopBooking) => {
 /* Handle on hover */
 ::-webkit-scrollbar-thumb:hover {
   background: #555;
+}
+
+::placeholder {
+  font-style: italic;
 }
 </style>

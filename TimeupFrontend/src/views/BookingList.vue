@@ -15,7 +15,9 @@ const bookings = ref([]);
 
 
 onBeforeMount(async () => {
- bookings.value = await getBookings();
+ const getAllBooks = await getBookings();
+ bookings.value = await getAllBooks.json(); 
+//  bookings.value = await getBookings();
  bookings.value.map((s)=>{
  s.statusClickSeeDetails = ref(false)
 //  s.statusClickDelete = ref(false)
@@ -45,13 +47,14 @@ const filterEdit = (editId)=>{
   //   ? {...booking, }
     
   // })
-  console.log(editId);
-  // notes.value = notes.value.map((note) =>
-        //   note.id === editedNote.id
-        //     ? { ...note, noteDetail: editedNote.noteDetail }
-        //     : note
-        // )
+  bookings.value = bookings.value.map((booking)=>
+    booking.idBooking === editId.idBooking
+    ? {...booking, eventStartTime: editId.eventStartTime , eventNotes: editId.eventNotes}
+    : booking
+  )
+        console.log(editId);
 }
+
 
 </script>
  
@@ -65,6 +68,8 @@ const filterEdit = (editId)=>{
          (a,b)=> new Date(b.eventStartTime) - new Date(a.eventStartTime) 
        )" @idDialogDetails="filterList" @EditIdFromDialog="filterEdit"/>
 <NavbarBottom/>
+
+
 </div>
 
 </template>

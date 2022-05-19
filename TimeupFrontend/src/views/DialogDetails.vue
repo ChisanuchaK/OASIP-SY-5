@@ -176,7 +176,9 @@ const changeEditDialog = (booking)=>{
                         :bookingsFromLoopBookings="loopBooking" @onCancelDelete="changeDeleteDialog(bookingsDetails)"
                         @onConfirmDelete="removeBookingEvent" />
 
-                    <EditBooking v-if="bookingsDetails.statusClickEdit" :loopEdit="loopBooking" :bookingsDetailsEdit="bookingsDetails" @onClickCancelEdit="changeEditDialog(bookingsDetails)"  @EditbookingId="getEditIdFromEdit"/>
+                    <!-- <EditBooking v-if="bookingsDetails.statusClickEdit" :loopEdit="loopBooking" :bookingsDetailsEdit="bookingsDetails" @onClickCancelEdit="changeEditDialog(bookingsDetails)"  @EditbookingId="getEditIdFromEdit"/> -->
+
+                    <EditBooking v-if="bookingsDetails.statusClickEdit" :loopEdit="loopBooking" :bookingsDetailsEdit="bookingsDetails"  @EditbookingId="getEditIdFromEdit"/>
                     <!-- <EditBooking v-if="bookingsDetails.statusClickEdit"  :bookingsEdit="bookingsDetails" /> -->
                     
                     <!-- <DialogDetails v-if="booking.statusClickSeeDetails" @onCloseDetails="changeSeeDetailsDialog(booking)" :bookings="booking"/> -->
