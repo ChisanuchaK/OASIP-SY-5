@@ -5,6 +5,7 @@ import DialogDetails from "../views/DialogDetails.vue";
 import Details from "../views/Details.vue";
 import About from "../views/About.vue";
 import Reserve from "../views/Reserve.vue";
+import CategoryList from "../views/CategoryList.vue";
 
 const history = createWebHistory("/sy5");
 const routes = [
@@ -32,6 +33,10 @@ const routes = [
         path:"/Reserve",
         name: 'Reserve',
         component: Reserve
+    },{
+        path:"/CategoryList",
+        name: 'CategoryList',
+        component: CategoryList
     }
 ];
 
