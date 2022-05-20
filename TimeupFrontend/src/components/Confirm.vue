@@ -1,5 +1,5 @@
 <script setup>
-const emits = defineEmits(["onClickCreateNo", "onClickCreateYes"])
+const emits = defineEmits(["onClickCreateNo", "onClickCreateYes"]);
 
 const closeCancel = (event) => {
     if (event.target.id == "modalCreate") {

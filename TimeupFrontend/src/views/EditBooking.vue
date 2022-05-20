@@ -214,7 +214,8 @@ const sentEditData = () => {
 onBeforeMount(async () => {
     const getAllBooks = await getBookings();
     bookingLists.value = await getAllBooks.json();
-    categoryList.value = await getEventCategory();
+    const getAllCategory = await getEventCategory();
+    categoryList.value = await getAllCategory.json();
     console.log(bookingLists.value);
     console.log(categoryList.value);
     console.log(someBooking.value);

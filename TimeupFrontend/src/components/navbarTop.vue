@@ -21,6 +21,9 @@
 <router-link to="/About" class="block py-2 pr-4 pl-3 hover:bg-[#6b6b6b] hover:rounded-lg hover:text-white hover:text-white hover:underline-offset-2 hover:underline uppercase menu" >About</router-link>
 </li>
 <li>
+<router-link to="/categoryList" class="block py-2 pr-4 pl-3 hover:bg-[#6b6b6b] hover:rounded-lg hover:text-white hover:text-white hover:underline-offset-2 hover:underline uppercase menu ">Category-List</router-link>
+</li>
+<li>
 <router-link to="/Reserve" class="block py-2 pr-4 pl-3 hover:bg-[#6b6b6b] hover:rounded-lg hover:text-white hover:text-white hover:underline-offset-2 hover:underline uppercase menu ">New booking</router-link>
 </li>
 <li>

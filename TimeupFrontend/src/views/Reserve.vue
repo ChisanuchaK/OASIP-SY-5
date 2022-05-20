@@ -1,8 +1,8 @@
 <script setup>
 import { ref, computed, onBeforeMount, reactive } from 'vue'
 import moment from "moment";
-import NavbarTop from '../components/navbarTop.vue';
-import NavbarBottom from '../components/navbarBottom.vue';
+import NavbarTop from '../components/NavbarTop.vue';
+import NavbarBottom from '../components/NavbarBottom.vue';
 import { getEventCategory } from "../stores/book.js";
 import { getBookings } from "../stores/book.js";
 import Cancel from "../components/Cancel.vue";
@@ -65,7 +65,8 @@ const handleTime = () => {
 onBeforeMount(async () => {
     const getAllBooks = await getBookings();
     bookingLists.value = await getAllBooks.json();
-    categoryList.value = await getEventCategory();
+    const getAllCategory = await getEventCategory();
+    categoryList.value = await getAllCategory.json();
 })
 const createBooking = async (localDataInput) => {
     // export const createBooking = async (localData) => {
@@ -150,7 +151,7 @@ const reset = () => {
     cancelDialog.value = !cancelDialog.value
 }
 
-const closeConfirmDialog = ()=>{
+const closeConfirmDialog = () => {
     createDialog.value = false
 }
 
@@ -158,22 +159,23 @@ const changeConfirmDialog = () => {
     // const localEndTime = `${moment.utc(localData.eventStartTime).add(localData.eventDuration, 'm').format("YYYY-MM-DDTHH:mm:ss")}Z`;
     // console.log("------------------------------------------------------------------");
     isInvalid.value = false
-         if (localData.bookingName.trim() == "" || (localData.bookingEmail.trim() == "") 
-            ||  (!(localData.bookingEmail.match(regexEmail)))
-            || categoryIndexSelect.value == undefined || (localData.eventNotes.length > 500)
-            || (new Date(dateIndexSelect.value).toISOString() < new Date().toISOString())) {
-                console.log("first if");
-            isInvalid.value = true
-        }else{
-            isInvalid.value = false
-            console.log("first else");
-        }
-        if(isOverlap.value == false &&  isInvalid.value == false){
-            createDialog.value = true
-            isInvalid.value = false
-            console.log("second if");
-        }
-    console.log("not overlap and isInvalid "+isInvalid.value);
+    if ((localData.bookingName.trim() == "" || localData.bookingName.length > 100)
+        || (localData.bookingEmail.trim() == "" || localData.bookingEmail.length > 100)
+        || (!(localData.bookingEmail.match(regexEmail)))
+        || categoryIndexSelect.value == undefined || (localData.eventNotes.length > 500)
+        || (new Date(dateIndexSelect.value).toISOString() < new Date().toISOString())) {
+        console.log("first if");
+        isInvalid.value = true
+    } else {
+        isInvalid.value = false
+        console.log("first else");
+    }
+    if (isOverlap.value == false && isInvalid.value == false) {
+        createDialog.value = true
+        isInvalid.value = false
+        console.log("second if");
+    }
+    console.log("not overlap and isInvalid " + isInvalid.value);
 
 }
 
@@ -205,7 +207,7 @@ const isInputEmailOver = computed(() => {
 });
 
 const isInputCategory = computed(() => {
-    return ((categoryIndexSelect.value == undefined ));
+    return ((categoryIndexSelect.value == undefined));
 });
 
 const isInputNotes = computed(() => {
@@ -226,7 +228,7 @@ const isInputTime = computed(() => {
             //     || (localData.eventStartTime <= booking.eventStartTime) && ((localEndTime) >= booking.eventEndTime)
             //     // || (new Date(dateIndexSelect.value).toISOString() < new Date().toISOString())
             // ) {
-                if((localData.eventStartTime < booking.eventEndTime) && (localEndTime > booking.eventStartTime)){
+            if ((localData.eventStartTime < booking.eventEndTime) && (localEndTime > booking.eventStartTime)) {
                 isOverlap.value = true
                 isInvalid.value = true
                 // console.log("local start " + localData.eventStartTime)
@@ -246,7 +248,7 @@ const isInputTime = computed(() => {
         }
 
     }
-    console.log("overlap value "+isOverlap.value);
+    console.log("overlap value " + isOverlap.value);
     return (isInvalid.value && isOverlap.value)
 });
 
@@ -256,9 +258,9 @@ const isInputTime = computed(() => {
     <div>
         <NavbarTop />
 
-        <div class="mt-20 mb-8 uppercase w-3/4 m-auto text-center text-[46px] text-white"> select scheduled</div>
-        <div class="w-[80%] m-auto h-auto">
-            <div class="bg-white text-[100%] rounded-xl font-bold">
+        <div class="mt-24 mb-8 uppercase w-3/4 m-auto text-center text-4xl font-bold text-white"> select scheduled</div>
+        <div class="w-[80%] m-auto h-auto mb-24">
+            <div class="bg-white text-xl rounded-xl font-bold">
                 <div class="m-auto w-1/2 text-center pt-5">Enter Your Details
                     <!-- <button @click="checkOverLap"> aaa </button>
                     <button @click="clickCheck"> sssssssssssssssssss </button> -->

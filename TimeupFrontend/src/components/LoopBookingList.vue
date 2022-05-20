@@ -3,12 +3,10 @@ import { ref, onBeforeMount, computed, popScopeId } from 'vue'
 import moment from 'moment';
 import DialogDetails from '../views/DialogDetails.vue';
 import ConfirmDelete from '../views/ConfirmDelete.vue';
-// import { getBookingId } from "../stores/book.js";
-// import { getBookings } from "../stores/book.js";
 import { getEventCategory } from "../stores/book.js";
 import { removeBooking } from '../stores/book.js';
 
-const emits = defineEmits(["idDialogDetails","EditIdFromDialog"])
+const emits = defineEmits(["idDialogDetails", "EditIdFromDialog"])
 const props = defineProps({
     bookings: {
         type: [Object],
@@ -27,10 +25,10 @@ const indexSelect = ref();
 // const bookingsDetails = ref([]);
 
 onBeforeMount(async () => {
-    // console.log(bookingList);
-    categorys.value = await getEventCategory();
+    const getAllCategory = await getEventCategory();
+    categorys.value = await getAllCategory.json();
     console.log(categorys.value[0].eventCategoryName);
-    
+
     // categorys.forEach(category => { 
     //     categoryColors.value.push(category.eventColor) 
     // });
@@ -58,10 +56,10 @@ onBeforeMount(async () => {
     // console.log(" Show Bookings "+ props.bookings);
 })
 
-const colorBg = (booking)=> {
-        for(let category of categorys.value){
-        if(booking.eventCategoryId == category.eventCategoryId){
-            return  category.eventColor
+const colorBg = (booking) => {
+    for (let category of categorys.value) {
+        if (booking.eventCategoryId == category.eventCategoryId) {
+            return category.eventColor
         }
     }
     // for(let i = 0;i<categorys.value.length;i++){
@@ -71,10 +69,10 @@ const colorBg = (booking)=> {
     //     }
     // }
 
-//    if(booking == categorys.value.eventCategoryName){
-        // console.log(booking.eventCategoryName);
-        // console.log(categorys.value.eventColor+"aaaaaa");
-        
+    //    if(booking == categorys.value.eventCategoryName){
+    // console.log(booking.eventCategoryName);
+    // console.log(categorys.value.eventColor+"aaaaaa");
+
     // } 
     // console.log(booking);
     // console.log(categoryName);
@@ -111,18 +109,18 @@ const removeBookingEvent = async (deleteBookingId, booking, loopBooking) => {
  
 <template>
 
-    <div >
+    <div>
         <div>
-            <div class="text-center text-xl mt-24 mb-10">
+            <!-- <div class="text-center text-xl mt-24 mb-10">
                 <h1 class="uppercase font-bold text-[#ffffff] text-4xl">Booking Lists</h1>
-            </div>
+            </div> -->
 
             <div v-if="bookings == ''" class="flex flex-warp justify-center bg-gray-800 text-white text-xl">
                 No scheduled Events
             </div>
 
-            <div v-else class="grid grid-flow-row grid-cols-1">
-                <div class="mx-24 mb-1 bg-[#E2DDDD] rounded-lg  p-2 text-center px-2">
+            <div v-if="!(bookings == '')" class="grid grid-flow-row grid-cols-1 mb-24">
+                <div class="w-[90%] m-auto mb-1 bg-[#E2DDDD] rounded-lg  p-2 text-center px-2">
                     <div class="grid grid-flow-row grid-cols-12 flex p-1 ">
                         <div class="row-start-1 col-start-1 col-end-3 col-span-2  uppercase text-lg font-bold">date
                         </div>
@@ -136,56 +134,61 @@ const removeBookingEvent = async (deleteBookingId, booking, loopBooking) => {
                         </div>
                     </div>
                 </div>
-                    <div class="overflow-y-auto overflow-x-hidden" style="height: 460px; margin-right: 95px;">
-                           <div v-for="(booking, index) in bookingList" :key="index"
-                    class="mx-24 my-1 bg-white rounded-lg text-xl  " style="width: 93% ;">
-                    <div class="grid grid-flow-row grid-cols-12 flex py-3 text-center px-2">
+                <div class="overflow-y-auto overflow-x-hidden h-[460px] mr-[95px]">
+                <!-- <div class="overflow-y-auto overflow-x-hidden 2xl:h-[500px] 2xl:mr-[3.25%] mr-[95px] h-[460px]"> -->
+                    <div v-for="(booking, index) in bookingList" :key="index"
+                        class="mx-24 my-1 bg-white rounded-lg text-xl w-[95%]">
+                        <div class="grid grid-flow-row grid-cols-12 flex py-3 text-center px-2">
 
-                        <div class="row-start-1 col-start-1 col-end-3 p-1 mb-1.5 rounded-lg ">{{
-                                moment(booking.eventStartTime).local().format("DD MMMM YYYY")
-                        }}</div>
+                            <div class="row-start-1 col-start-1 col-end-3 p-1 mb-1.5 rounded-lg ">{{
+                                    moment(booking.eventStartTime).local().format("DD MMMM YYYY")
+                            }}</div>
 
-                        <div class="row-start-1 col-start-3 col-end-5 p-1 mb-1.5 rounded-lg ">{{
-                                moment(booking.eventStartTime).local().format('hh:mm A')
-                        }}
-                            - 
-                            {{ 
-                            moment(booking.eventStartTime).local().add(booking.eventDuration, 'm')
-                                    .format('hh:mm A')
+                            <div class="row-start-1 col-start-3 col-end-5 p-1 mb-1.5 rounded-lg ">{{
+                                    moment(booking.eventStartTime).local().format('hh:mm A')
                             }}
+                                -
+                                {{
+                                        moment(booking.eventStartTime).local().add(booking.eventDuration, 'm')
+                                            .format('hh:mm A')
+                                }}
+                            </div>
+
+                            <div class="row-start-1 col-start-5 col-end-7 p-1 mb-1.5 rounded-lg "
+                                :style="[`background-color:${colorBg(booking)};`]">{{ booking.eventCategoryName
+                                }} </div>
+
+                            <div class="row-start-1 col-start-7 col-end-9 p-1 mb-1.5 rounded-lg ">{{
+                                    booking.eventDuration
+                            }} minute </div>
+
+                            <div class="row-start-1 col-start-9 col-end-11 p-1 mb-1.5 rounded-lg ">
+                                <p class="truncate">
+                                    {{ booking.bookingName
+                                    }}
+                                </p>
+                            </div>
+
+                            <button
+                                class="row-start-1 col-start-11 bg-[#74ABFF] text-white p-1 rounded-lg uppercase w-11/12 h-full m-auto"
+                                @click="changeSeeDetailsDialog(booking)">Detail</button>
+                            <button
+                                class="row-start-1 col-start-12 bg-[red] text-white rounded-lg uppercase w-11/12 h-full m-auto"
+                                @click="changeDeleteDialog(booking)">delete</button>
+
+
+                            <!-- <DialogDetails v-if="booking.statusClickSeeDetails" @onCloseDetails="changeSeeDetailsDialog(booking)" :bookings="booking"/> -->
+                            <DialogDetails v-if="booking.statusClickSeeDetails"
+                                @onCloseDetails="changeSeeDetailsDialog(booking)" :bookings="booking"
+                                @idConfirmDelete="getIdFromDialog" @EditIdFromEdit="getEditIdFromDialog" />
+
+                            <ConfirmDelete v-if="booking.statusClickDelete" :bookingsFromDetails="booking"
+                                :bookingsFromLoopBookings="booking" @onCancelDelete="changeDeleteDialog(booking)"
+                                @onConfirmDelete="removeBookingEvent" />
                         </div>
 
-                        <div class="row-start-1 col-start-5 col-end-7 p-1 mb-1.5 rounded-lg "
-                         :style="[`background-color:${colorBg(booking)};`]"  >{{ booking.eventCategoryName
-                            }} </div>
-
-                        <div class="row-start-1 col-start-7 col-end-9 p-1 mb-1.5 rounded-lg ">{{
-                                booking.eventDuration
-                        }} minute </div>
-
-                        <div class="row-start-1 col-start-9 col-end-11 p-1 mb-1.5 rounded-lg ">{{ booking.bookingName
-                        }}</div>
-
-                        <button
-                            class="row-start-1 col-start-11 bg-[#74ABFF] text-white p-1 rounded-lg uppercase w-11/12 h-full m-auto"
-                            @click="changeSeeDetailsDialog(booking)">Detail</button>
-                        <button
-                            class="row-start-1 col-start-12 bg-[red] text-white rounded-lg uppercase w-11/12 h-full m-auto"
-                            @click="changeDeleteDialog(booking)">delete</button>
-
-
-                        <!-- <DialogDetails v-if="booking.statusClickSeeDetails" @onCloseDetails="changeSeeDetailsDialog(booking)" :bookings="booking"/> -->
-                        <DialogDetails v-if="booking.statusClickSeeDetails"
-                            @onCloseDetails="changeSeeDetailsDialog(booking)" :bookings="booking"
-                            @idConfirmDelete="getIdFromDialog" @EditIdFromEdit="getEditIdFromDialog"/>
-
-                        <ConfirmDelete v-if="booking.statusClickDelete" :bookingsFromDetails="booking"
-                            :bookingsFromLoopBookings="booking" @onCancelDelete="changeDeleteDialog(booking)"
-                            @onConfirmDelete="removeBookingEvent" />
                     </div>
-
                 </div>
-                    </div>
             </div>
         </div>
     </div>
@@ -195,25 +198,25 @@ const removeBookingEvent = async (deleteBookingId, booking, loopBooking) => {
 <style scoped>
 /* width */
 ::-webkit-scrollbar {
-  width: 10px;
+    width: 10px;
 }
 
 /* Track */
 ::-webkit-scrollbar-track {
-  background: #f1f1f1;
+    background: #f1f1f1;
 }
 
 /* Handle */
 ::-webkit-scrollbar-thumb {
-  background: #888;
+    background: #888;
 }
 
 /* Handle on hover */
 ::-webkit-scrollbar-thumb:hover {
-  background: #555;
+    background: #555;
 }
 
 ::placeholder {
-  font-style: italic;
+    font-style: italic;
 }
 </style>

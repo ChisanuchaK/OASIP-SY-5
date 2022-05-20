@@ -20,16 +20,6 @@ const bookingsDetails = ref([]);
 
 const loopBooking = computed(() => props.bookings);
 
-// const getCatagoryName = async ()=> {
-//     let s = "kuy";
-//     setTimeout(()  => {
-//   s = bookingsDetails.value.eventCategory.eventCategoryName
-// }, "100")
-//     console.log(s);
-//     return s;
-
-// }
-
 onBeforeMount(async () => {
     bookingsDetails.value = await getBookingId(props.bookings.idBooking);
     console.log(bookingsDetails.value);
@@ -103,8 +93,10 @@ const changeEditDialog = (booking)=>{
                     <div class="row-start-1 col-start-1 col-span-2 p-1 rounded-lg">
                         Category : {{ bookingsDetails.eventCategoryName }}
                     </div>
-                    <div class="row-start-2 col-start-1 col-span-2 p-1 rounded-lg">
-                        Name : {{ bookingsDetails.bookingName }}
+                    <div class="row-start-2 col-start-1 col-span-2 p-1 rounded-lg  ">
+                        <!-- <p class="w-[50%] m-auto"> -->
+                            Name : {{ bookingsDetails.bookingName }}
+                        <!-- </p>  -->
                     </div>
                     <div class="row-start-3 col-start-1 col-span-2 p-1 rounded-lg">
                         Email : {{ bookingsDetails.bookingEmail }}

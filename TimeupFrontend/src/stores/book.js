@@ -46,11 +46,35 @@ export const getEventCategory = async () => {
     `${import.meta.env.VITE_BASE_URL}/admin/event-category`
   );
   if (res.status === 200) {
-    return await res.json();
+    return res;
   } else {
     alert("find not found !!");
   }
 };
+
+// edit category
+export const editCategory = async (editCategory) => {
+  const res = await fetch(`${import.meta.env.VITE_BASE_URL}/admin/event-category/${editCategory.eventCategoryId}`, {
+      method: 'PUT',
+      headers: {
+          'content-type': 'application/json'
+      },
+      body: JSON.stringify({
+          eventCategoryName: editCategory.eventCategoryName.trim(),
+          eventDuration: editCategory.eventDuration,
+          eventCategoryDescription: editCategory.eventCategoryDescription
+      })
+  })
+
+  if (res.status === 200) {
+      return res;
+      console.log('edited successfully')
+  } else {
+
+      console.log('error, cannot be added')
+  }
+}
+
 
 // create Booking
 // export const createBooking = async (localData,categoryIndexSelect,dateIndexSelect,localPresentTime) => {
