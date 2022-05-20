@@ -2,7 +2,6 @@ import {createRouter, createWebHistory} from 'vue-router';
 import Home from "../views/Home.vue";
 import BookingList from "../views/BookingList.vue";
 import DialogDetails from "../views/DialogDetails.vue";
-import Details from "../views/Details.vue";
 import About from "../views/About.vue";
 import Reserve from "../views/Reserve.vue";
 import CategoryList from "../views/CategoryList.vue";
@@ -21,10 +20,6 @@ const routes = [
         path:"/bookingList/d",
         name: 'DialogDetails',
         component: DialogDetails
-    },{
-        path:"/bookingList/details/:bookingId",
-        name: 'Details',
-        component: Details
     },{
         path:"/About",
         name: 'About',
