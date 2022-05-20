@@ -12,7 +12,7 @@ const props = defineProps({
 const categoryLists = computed(() => props.categorys);
 const categoryList = ref(categoryLists);
 
-let categoryIndexSelect = ref(0);
+let categoryIndexSelect = ref('');
 
 // const time = ref(moment().format("YYYY-MM-DD"))
 const time = ref()
@@ -31,19 +31,22 @@ const getChangeCategory = () => {
 }
 
 const getReset = () => {
-    categoryIndexSelect.value = 0
+    categoryIndexSelect.value = ''
     time.value = ''
     emits('getReset');
 }
 
 const getChangeToPast = () => {
+     categoryIndexSelect.value = ''
     emits('getPastEvent');
 }
 const getChangeToUpcoming = () => {
+     categoryIndexSelect.value = ''
     emits('getUpComingEvent');
 }
 
 const getChangeByDateTime = (times) => {
+     categoryIndexSelect.value = ''
     emits('getDateTime',times);
 }
 
@@ -68,8 +71,8 @@ const getChangeByDateTime = (times) => {
                 @change="getChangeCategory()">
                 <!-- <option value="">select category</option> -->
                 <!-- <option value="" selected hidden>Choose a drink</option> -->
-                 <option value="0" selected hidden>Select category</option>
-                <option v-for="(category, index) in categoryLists" :value="index" :key="index + 1" >
+                 <option value="" selected hidden >Select category</option>
+                <option v-for="(category, index) in categoryLists" :value="index " :key="index " >
                     <!-- <option value=""></option> -->
                     {{ category.eventCategoryName }}
                 </option>
