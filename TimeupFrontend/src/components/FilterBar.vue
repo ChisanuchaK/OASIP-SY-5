@@ -12,7 +12,7 @@ const props = defineProps({
 const categoryLists = computed(() => props.categorys);
 const categoryList = ref(categoryLists);
 
-const categoryIndexSelect = ref();
+let categoryIndexSelect = ref(0);
 
 // const time = ref(moment().format("YYYY-MM-DD"))
 const time = ref()
@@ -31,7 +31,8 @@ const getChangeCategory = () => {
 }
 
 const getReset = () => {
-    categoryIndexSelect.value = undefined
+    categoryIndexSelect.value = 0
+    time.value = ''
     emits('getReset');
 }
 
@@ -62,11 +63,13 @@ const getChangeByDateTime = (times) => {
 
         <div class="row-start-1 col-start-9 col-span-2 w-full  p-2 bg-[#E2DDDD] rounded-xl uppercase">
             <!-- <select class="bg-gray-200 rounded w-full" v-model="CategorySelect" @change="hanleSelcet()"> -->
+               
             <select class="p-2 bg-[#E2DDDD] rounded w-full font-bold" v-model="categoryIndexSelect"
                 @change="getChangeCategory()">
                 <!-- <option value="">select category</option> -->
                 <!-- <option value="" selected hidden>Choose a drink</option> -->
-                <option v-for="(category, indexs) in categoryLists" :value="indexs" :key="indexs">
+                 <option value="0" selected hidden>Select category</option>
+                <option v-for="(category, index) in categoryLists" :value="index" :key="index + 1" >
                     <!-- <option value=""></option> -->
                     {{ category.eventCategoryName }}
                 </option>

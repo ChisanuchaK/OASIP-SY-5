@@ -77,6 +77,7 @@ const filterPastEvent = ()=>{
 
 const filterUpComingEvent = ()=>{
   bookings.value = allBooking.value
+  bookings.value = ascOrder()
   bookings.value = bookings.value.filter((booking)=>{
     return (moment(booking.eventStartTime).local().format("YYYY-MM-DD") > dates)
   })
@@ -86,22 +87,21 @@ const filterUpComingEvent = ()=>{
 
 const filterByDateTime = (time)=>{
   bookings.value = allBooking.value
+  bookings.value =  ascOrder();
   bookings.value = bookings.value.filter((booking)=>{
    return (moment(booking.eventStartTime).local().format("YYYY-MM-DD") == time)
   })
 }
 
-const ascOrder = ()=>{
+const ascOrder = ()=>
   bookings.value.sort(
       (a, b) => new Date(a.eventStartTime) - new Date(b.eventStartTime)
     )
-}
 
-const desOrder = ()=>{
-  bookings.value.sort(
-      (a, b) => new Date(b.eventStartTime) - new Date(a.eventStartTime)
-    )
-}
+
+
+
+
 
 
 </script>
@@ -118,9 +118,7 @@ const desOrder = ()=>{
     <FilterBar :categorys="categoryLists" @getChageCategory="filterBookFromCategory" @getReset="filterReset" @getPastEvent="filterPastEvent"
      @getUpComingEvent="filterUpComingEvent" @getDateTime="filterByDateTime"/>
 
-    <LoopBookingList :bookings="bookings.sort(
-      (a, b) => new Date(b.eventStartTime) - new Date(a.eventStartTime)
-    )" @idDialogDetails="filterList" @EditIdFromDialog="filterEditBooking" />
+    <LoopBookingList :bookings="bookings" @idDialogDetails="filterList" @EditIdFromDialog="filterEditBooking" />
     <NavbarBottom />
   </div>
 </template>
