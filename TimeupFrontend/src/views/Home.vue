@@ -1,6 +1,6 @@
 <script setup>
-import NavbarTop from "../components/NavbarTop.vue";
-import NavbarBottom from "../components/NavbarBottom.vue";
+import NavbarTop from '../components/NavbarTop.vue';
+import NavbarBottom from '../components/NavbarBottom.vue';
 import {ref , onBeforeMount} from 'vue';
 import moment from "moment"
 let arrLists = ref()
