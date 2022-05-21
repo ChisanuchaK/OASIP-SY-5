@@ -97,9 +97,10 @@ const filterUpComingEvent = async()=>{
   // return bookings.value
 }
 
-const filterByDateTime = (time)=>{
+const filterByDateTime = async(time)=>{
      statusScheduledBl.value = "No Scheduled Events"
-  bookings.value = allBooking.value
+      const getAllBooks = await getBookings();
+  bookings.value = await getAllBooks.json();
   bookings.value =  ascOrder();
   bookings.value = bookings.value.filter((booking)=>{
    return (moment(booking.eventStartTime).local().format("YYYY-MM-DD") == time)
