@@ -78,7 +78,7 @@ const filterPastEvent = async () => {
   bookings.value = await getAllBooks.json();
   bookings.value = descOrder();
   bookings.value = bookings.value.filter((booking) => {
-    return (moment(booking.eventStartTime).local().format("YYYY-MM-DD") < dates)
+    return (moment(booking.eventStartTime).local().format("YYYY-MM-DD hh:mm A") < dates)
   })
 }
 
@@ -88,7 +88,7 @@ const filterUpComingEvent = async () => {
   const getAllBooks = await getBookings();
   bookings.value = await getAllBooks.json();
   bookings.value = bookings.value.filter((booking) => {
-    return (moment(booking.eventStartTime).local().format("YYYY-MM-DD") >= dates)
+    return (moment(booking.eventStartTime).local().format("YYYY-MM-DD hh:mm A") >= dates)
   })
 }
 
