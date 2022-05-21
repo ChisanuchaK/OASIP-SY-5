@@ -265,7 +265,7 @@ const isInputTime = computed(() => {
                     <!-- <button @click="checkOverLap"> aaa </button>
                     <button @click="clickCheck"> sssssssssssssssssss </button> -->
                 </div>
-                <div class="grid grid-flow-row grid-cols-9 p-10 gap-3">
+                <div class="grid grid-flow-row grid-cols-9 p-5 gap-3">
                     <div class="row-start-1 col-start-1 col-span-3 ">Scheduled Category :</div>
                     <div class="row-start-2 col-start-1 col-end-4 col-span-3">
                         <!-- <select class="bg-gray-200 rounded w-full" v-model="CategorySelect" @change="hanleSelcet()"> -->
@@ -276,7 +276,7 @@ const isInputTime = computed(() => {
                             }}</option>
                         </select>
                         <label class="text-red-500" v-if="isInputCategory">
-                            Please choose category
+                            *Please choose category
                         </label>
                     </div>
                     <div class="row-start-1 col-start-7 col-span-1 ">
@@ -291,10 +291,10 @@ const isInputTime = computed(() => {
                             v-model="localData.bookingName"
                             :style="{ 'border-color': (isInputName || isInputNameOver) ? 'red' : 'white' }" />
                         <label class="text-red-500" v-if="isInputName">
-                            Please enter name!
+                            *Please enter name
                         </label>
                         <label class="text-red-500" v-if="isInputNameOver">
-                            over limit of input name!
+                            *over limit of input name
                         </label>
                     </div>
                     <div class="row-start-3 col-start-1 col-span-1 ">Time :</div>
@@ -305,10 +305,10 @@ const isInputTime = computed(() => {
                                 v-model="dateIndexSelect" />
                         </form>
                         <label class="text-red-500" v-if="isInputTime">
-                            overlap
+                            *overlap
                         </label>
                         <label class="text-red-500" v-if="isInputTimeOld">
-                            Please select time is future than present!
+                            *Please select time is future than present
                         </label>
                     </div>
 
@@ -326,13 +326,13 @@ const isInputTime = computed(() => {
                             v-model="localData.bookingEmail"
                             :style="{ 'border-color': (isInputEmail || isInputEmailOver || isInputEmailVaild) ? 'red' : 'white' }" />
                         <label class="text-red-500" v-if="isInputEmail">
-                            Please enter email!!
+                            *Please enter email
                         </label>
                         <label class="text-red-500" v-if="isInputEmailOver">
-                            over limit of input email!!
+                            *over limit of input email
                         </label>
                         <label class="text-red-500" v-if="isInputEmailVaild">
-                            input email is invalid!!
+                            *input email is invalid
                         </label>
                     </div>
                     <div class="row-start-5 col-start-1 col-span-1 ">Notes :</div>
@@ -344,14 +344,20 @@ const isInputTime = computed(() => {
                             placeholder="enter your message(limit 500 text)" v-model="localData.eventNotes"
                             :style="{ 'border-color': isInputNotes ? 'red' : 'white' }"></textarea>
                         <label class="text-red-500" v-if="isInputNotes">
-                            over limit of input message!!
+                            *over limit of input message
                         </label>
                     </div>
                     <div class="row-start-7 col-start-8 col-span-1"> <button @click="changeConfirmDialog"
-                            class="w-full h-full m-auto py-2 bg-[#499D6B] text-white rounded-lg">
-                            create </button> </div>
+                            class="w-full h-full m-auto  bg-[#499D6B] text-white rounded-lg">
+                            create </button>
+                    </div>
+                    <div class="row-start-8 col-start-8 py-2 col-span-2 text-red-500" v-show="isInputName || isInputNameOver || isInputEmail || isInputEmailVaild || isInputEmailOver
+                    || isInputCategory || isInputNotes || isInputTime || isInputTimeOld">
+                        *some input is invalid
+                    </div>
+
                     <div class="row-start-7 col-start-9 col-span-1"> <button @click="changeCancelDialogTrue"
-                            class="w-full h-full m-auto py-2 bg-[#F97473] text-white rounded-lg">
+                            class="w-full h-full m-auto py-2  bg-[#F97473] text-white rounded-lg">
                             cancel </button> </div>
                 </div>
                 <Cancel v-if="cancelDialog" @onClickCancelNo="changeCancelDialogFalse" @onClickCancelYes="reset" />
