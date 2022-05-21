@@ -47,7 +47,7 @@ console.log(newDateObj);
           </button>
          </div>
         </div>
-        <div class="animate-bounce w-700 h-20 md:shrink-0 object-cove  fixed right-20 top-1/4 w-1/4 ">
+        <div class="animate-bounce h-24 md:shrink-0 object-cove  fixed right-52 top-36 w-3/12">
           <img src="../../public/images/icon.png">
         </div>
     </div>

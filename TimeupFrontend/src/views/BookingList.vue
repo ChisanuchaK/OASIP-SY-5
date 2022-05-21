@@ -13,11 +13,11 @@ const allBooking = ref();
 const categoryLists = ref([]);
 const statusScheduledBL = ref();
 // const eventStartTime = "2022-06-27 02:30";
-const dates = moment().local().format("YYYY-MM-DD");
+const dates = moment().local().format("YYYY-MM-DD hh:mm A");
 // const startTimes = moment.utc(eventStartTime).format("h:mm");
 console.log(dates);
 // console.log(startTimes);
-
+let statusScheduledBl = ref();
 
 onBeforeMount(async () => {
   const getAllBooks = await getBookings();
