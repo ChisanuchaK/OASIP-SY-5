@@ -55,7 +55,8 @@ const filterEditBooking = (editId) => {
 
 const filterBookFromCategory = async (filterData) => {
     statusScheduledBl.value = "No Scheduled Events"
-  bookings.value = allBooking.value
+   const getAllBooks = await getBookings();
+  bookings.value = await getAllBooks.json();
   bookings.value = descOrder()
   bookings.value = bookings.value.filter((booking) => {
     return booking.eventCategoryId == filterData
@@ -63,15 +64,18 @@ const filterBookFromCategory = async (filterData) => {
   console.log("fildata" + filterData);
 }
 
-const filterReset = ()=>{
+const filterReset = async ()=>{
   statusScheduledBl.value = "No Scheduled Events"
-  bookings.value = allBooking.value
    bookings.value = descOrder()
+  const getAllBooks = await getBookings();
+  allBooking.value = await getAllBooks.json();
+  bookings.value = allBooking.value
 }
 
-const filterPastEvent = ()=>{
+const filterPastEvent = async()=>{
     statusScheduledBl.value = "No Past Events"
-  bookings.value = allBooking.value
+    const getAllBooks = await getBookings();
+  bookings.value = await getAllBooks.json();
    bookings.value = descOrder()
   bookings.value = bookings.value.filter((booking)=>{
    return (moment(booking.eventStartTime).local().format("YYYY-MM-DD hh:mm A") < dates)
@@ -81,10 +85,11 @@ const filterPastEvent = ()=>{
   // }
 }
 
-const filterUpComingEvent = ()=>{
+const filterUpComingEvent = async()=>{
     statusScheduledBl.value = "No On-Going"
-  bookings.value = allBooking.value
   bookings.value = ascOrder()
+    const getAllBooks = await getBookings();
+  bookings.value = await getAllBooks.json();
   bookings.value = bookings.value.filter((booking)=>{
     return (moment(booking.eventStartTime).local().format("YYYY-MM-DD hh:mm A") > dates)
   })
