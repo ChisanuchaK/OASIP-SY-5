@@ -30,15 +30,13 @@ const getEditCategoryValue = (editCategory)=>{
 
             <div class="grid grid-cols-3 w-full mb-10">
                 <div v-for="(category, index) in categorys" :key="index"
-                    class="grid grid-flow-row grid-cols-2 mb-10 m-auto w-[90%] gap-2 text-center bg-white rounded-xl ">
+                    class="grid grid-flow-row grid-cols-2 mb-10 m-auto w-[90%] gap-2 text-center bg-white rounded-xl  font-bold">
 
-                    <div class="row-start-1 col-start-1 col-span-2 w-full rounded-t-xl text-2xl p-1 font-semibold"
+                    <div class="row-start-1 col-start-1 col-span-2 w-full rounded-t-xl text-2xl p-1 font-semibold "
                         :style="{ 'background-color': category.eventColor }">
                         {{ category.eventCategoryName }}
                     </div>
-                    <div class="row-start-2 col-start-1 col-span-2 ">
-                        Category ID : {{ category.eventCategoryId }}
-                    </div>
+        
                     <div class="row-start-3 col-start-1 col-span-2">
                         Duration : {{ category.eventDuration }} minute
                     </div>
