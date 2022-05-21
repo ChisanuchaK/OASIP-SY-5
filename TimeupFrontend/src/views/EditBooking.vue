@@ -64,11 +64,12 @@ const isInputTimeOlds = computed(() => {
 const isInputTimes = computed(() => {
     const localEndTime = `${moment.utc(editData.eventStartTime).add(editData.eventDuration, 'm').format("YYYY-MM-DDTHH:mm:ss")}Z`;
     for (let booking of bookingLists.value) {
-        if (bookingPresentTime.value === (moment.utc(someBooking.value.eventStartTime).local().format("YYYY-MM-DDTHH:mm"))) {
-            break;
-        }
+        // if (bookingPresentTime.value == (moment.utc(someBooking.value.eventStartTime).local().format("YYYY-MM-DDTHH:mm"))) {
+        //     break;
+        // }
         if (editData.eventCategory.eventCategoryId === booking.eventCategoryId) {
-            if ((editData.eventStartTime < booking.eventEndTime) && (localEndTime > booking.eventStartTime)) {
+            if ((editData.eventStartTime < booking.eventEndTime) && (localEndTime > booking.eventStartTime) 
+                && (editData.idBooking != booking.idBooking)) {
                 isOverlap.value = true
                 isInvalid.value = true
                 console.log("overlap")

@@ -30,10 +30,12 @@ const filterEditCategory = (editCategory)=>{
 </script>
  
 <template>
-    <NavbarTop />
+   <div>
+      <NavbarTop />
     
     <LoopCategoryList :categorysList="categoryList" @EditCategoryIdFromEdit="filterEditCategory"/>
     <NavbarBottom />
+   </div>
 </template>
  
 <style>

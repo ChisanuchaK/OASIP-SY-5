@@ -112,6 +112,7 @@ const changeCreateDialogTrue = (category) => {
     if (isDuplicate.value == false && isInvalid.value == false) {
         category.statusConfirmDialog = true
         editCategoryData.eventCategoryName = editCategoryData.eventCategoryName.trim()
+        editCategoryData.eventCategoryDescription = editCategoryData.eventCategoryDescription.trim
     }
 }
 
