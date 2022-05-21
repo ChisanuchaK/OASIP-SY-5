@@ -25,6 +25,7 @@ const filterData = reactive({
 const getChangeCategory = () => {
     filterData.eventCategoryId = categoryList.value[categoryIndexSelect.value].eventCategoryId
     console.log(filterData.eventCategoryId);
+     time.value = ''
     // console.log(time.value);
     emits('getChageCategory', filterData.eventCategoryId);
     
@@ -38,10 +39,12 @@ const getReset = () => {
 
 const getChangeToPast = () => {
      categoryIndexSelect.value = ''
+      time.value = ''
     emits('getPastEvent');
 }
 const getChangeToUpcoming = () => {
      categoryIndexSelect.value = ''
+      time.value = ''
     emits('getUpComingEvent');
 }
 

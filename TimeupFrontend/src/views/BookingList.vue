@@ -55,6 +55,7 @@ const filterEditBooking = (editId) => {
 
 const filterBookFromCategory = async (filterData) => {
   bookings.value = allBooking.value
+  bookings.value = descOrder()
   bookings.value = bookings.value.filter((booking) => {
     return booking.eventCategoryId == filterData
   })
@@ -67,6 +68,7 @@ const filterReset = ()=>{
 
 const filterPastEvent = ()=>{
   bookings.value = allBooking.value
+   bookings.value = descOrder()
   bookings.value = bookings.value.filter((booking)=>{
    return (moment(booking.eventStartTime).local().format("YYYY-MM-DD") < dates)
   })
@@ -97,6 +99,12 @@ const ascOrder = ()=>
   bookings.value.sort(
       (a, b) => new Date(a.eventStartTime) - new Date(b.eventStartTime)
     )
+
+const descOrder = ()=>
+  bookings.value.sort(
+      (a, b) => new Date(b.eventStartTime) - new Date(a.eventStartTime)
+    )
+
 
 
 
