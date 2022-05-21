@@ -17,11 +17,11 @@ const dates = moment().local().format("YYYY-MM-DD hh:mm A");
 // const startTimes = moment.utc(eventStartTime).format("h:mm");
 console.log(dates);
 // console.log(startTimes);
-let statusScheduledBl = ref();
 
 onBeforeMount(async () => {
   const getAllBooks = await getBookings();
   bookings.value = await getAllBooks.json();
+  bookings.value = descOrder();
   // allBooking.value = await getAllBooks.json();
   const getAllCategory = await getEventCategory();
   categoryLists.value = await getAllCategory.json();
@@ -66,10 +66,10 @@ const filterBookFromCategory = async (filterData) => {
 
 const filterAllEvent = async () => {
   statusScheduledBL.value = "No Scheduled Events";
-  bookings.value = descOrder();
   const getAllBooks = await getBookings();
-  allBooking.value = await getAllBooks.json();
-  bookings.value = allBooking.value;
+  bookings.value = await getAllBooks.json();
+  bookings.value = descOrder();
+  bookings.value = bookings.value;
 }
 
 const filterPastEvent = async () => {
@@ -110,7 +110,8 @@ const ascOrder = () =>
 
 const descOrder = () =>
   bookings.value.sort(
-    (a, b) => new Date(b.eventStartTime) - new Date(a.eventStartTime)
+    (a, b) => new Date(b.eventStartTime) -
+     new Date(a.eventStartTime)
   );
 
 </script>
@@ -127,10 +128,11 @@ const descOrder = () =>
     <FilterBar :categorys="categoryLists" @getChageCategory="filterBookFromCategory" @getAllEvent="filterAllEvent"
       @getPastEvent="filterPastEvent" @getUpComingEvent="filterUpComingEvent" @getDateTime="filterByDateTime" />
 
-    <!-- <LoopBookingList :bookings="bookings.sort(
+    <!-- <LoopBookingList :statusScheduled="statusScheduledBL" :bookings="bookings.sort(
       (a, b) => new Date(b.eventStartTime) - new Date(a.eventStartTime)
     )" @idDialogDetails="filterList" @EditIdFromDialog="filterEditBooking" /> -->
-    <LoopBookingList :statusScheduled="statusScheduledBL" :bookings="bookings" @idDialogDetails="filterList" @EditIdFromDialog="filterEditBooking" />
+    <LoopBookingList :statusScheduled="statusScheduledBL" :bookings="bookings" @idDialogDetails="filterList"
+      @EditIdFromDialog="filterEditBooking" />
     <NavbarBottom />
   </div>
 </template>
