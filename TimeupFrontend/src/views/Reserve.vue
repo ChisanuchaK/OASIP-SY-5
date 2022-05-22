@@ -3,8 +3,7 @@ import { ref, computed, onBeforeMount, reactive } from 'vue'
 import moment from "moment";
 import NavbarTop from '../components/NavbarTop.vue';
 import NavbarBottom from '../components/NavbarBottom.vue';
-import { getEventCategory } from "../stores/book.js";
-import { getBookings } from "../stores/book.js";
+import { getEventCategory, createBooking, getBookings } from "../stores/book.js";
 import Cancel from "../components/Cancel.vue";
 import Confirm from "../components/Confirm.vue";
 
@@ -68,26 +67,45 @@ onBeforeMount(async () => {
     const getAllCategory = await getEventCategory();
     categoryList.value = await getAllCategory.json();
 })
-const createBooking = async (localDataInput) => {
+
+// const createBooking = async (localDataInput) => {
+//     // export const createBooking = async (localData) => {
+//     const res = await fetch(`${import.meta.env.VITE_BASE_URL}/booking`, {
+//         method: "POST",
+//         headers: {
+//             "content-type": "application/json",
+//         },
+//         body: JSON.stringify({
+//             bookingName: localDataInput.bookingName,
+//             bookingEmail: localDataInput.bookingEmail,
+//             eventCategory: {
+//                 eventCategoryId: localDataInput.eventCategory.eventCategoryId,
+//             },
+//             eventStartTime: localDataInput.eventStartTime,
+//             // eventDuration: localDataInput.eventDuration,
+//             eventNotes: localDataInput.eventNotes,
+//         }),
+//     });
+//     if (res.status === 201) {
+//         alert(`Create successfully \n Category ID :  ${localData.eventCategory.eventCategoryId} \n Date : ${localData.eventStartTime} \n Booking name :  ${localData.bookingName}`)
+//         console.log(`Create successfully \n Category ID :  ${localDataInput.eventCategory.eventCategoryId} \n Date : ${localDataInput.eventStartTime} \n Booking name :  ${localDataInput.bookingName}`)
+//         localDataInput.bookingName = ""
+//         localDataInput.bookingEmail = ""
+//         categoryIndexSelect.value = undefined
+//         localDataInput.eventDuration = ""
+//         dateIndexSelect.value = localPresentTime
+//         localDataInput.eventNotes = ""
+//     } else {
+//         console.log("error , failed to created");
+//     }
+//     createDialog.value = !createDialog.value
+// };
+
+const createBookingEvent = async (localDataInput) => {
     // export const createBooking = async (localData) => {
-    const res = await fetch(`${import.meta.env.VITE_BASE_URL}/booking`, {
-        method: "POST",
-        headers: {
-            "content-type": "application/json",
-        },
-        body: JSON.stringify({
-            bookingName: localDataInput.bookingName,
-            bookingEmail: localDataInput.bookingEmail,
-            eventCategory: {
-                eventCategoryId: localDataInput.eventCategory.eventCategoryId,
-            },
-            eventStartTime: localDataInput.eventStartTime,
-            // eventDuration: localDataInput.eventDuration,
-            eventNotes: localDataInput.eventNotes,
-        }),
-    });
+    const res = await createBooking(localDataInput);
     if (res.status === 201) {
-        alert(`Create successfully \n Category ID :  ${localData.eventCategory.eventCategoryId} \n Date : ${localData.eventStartTime} \n Booking name :  ${localData.bookingName}`)
+        alert(`Create successfully \n Category ID :  ${localData.eventCategory.eventCategoryId} \n CategoryName : ${categoryList.value[categoryIndexSelect.value].eventCategoryName} \n Date : ${localData.eventStartTime} \n Booking name :  ${localData.bookingName}`)
         console.log(`Create successfully \n Category ID :  ${localDataInput.eventCategory.eventCategoryId} \n Date : ${localDataInput.eventStartTime} \n Booking name :  ${localDataInput.bookingName}`)
         localDataInput.bookingName = ""
         localDataInput.bookingEmail = ""
@@ -363,7 +381,7 @@ const isInputTime = computed(() => {
                 <Cancel v-if="cancelDialog" @onClickCancelNo="changeCancelDialogFalse" @onClickCancelYes="reset" />
 
                 <Confirm v-if="createDialog" @onClickCreateNo="closeConfirmDialog"
-                    @onClickCreateYes="createBooking(localData)" />
+                    @onClickCreateYes="createBookingEvent(localData)" />
             </div>
         </div>
         <NavbarBottom />

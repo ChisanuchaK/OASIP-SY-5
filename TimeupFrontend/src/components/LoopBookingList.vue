@@ -1,10 +1,9 @@
 <script setup>
 import { ref, onBeforeMount, computed, popScopeId } from 'vue'
 import moment from 'moment';
-import DialogDetails from '../views/DialogDetails.vue';
-import ConfirmDelete from '../views/ConfirmDelete.vue';
-import { getEventCategory } from "../stores/book.js";
-import { removeBooking } from '../stores/book.js';
+import DialogDetails from './DialogDetails.vue';
+import ConfirmDelete from './ConfirmDelete.vue';
+import { getEventCategory,removeBooking } from "../stores/book.js";
 
 const emits = defineEmits(["idDialogDetails", "EditIdFromDialog"])
 const props = defineProps({
