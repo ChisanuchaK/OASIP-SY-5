@@ -22,19 +22,11 @@ public class BookingController {
     @Autowired
     private BookingService bookingService;
 
-    @GetMapping("/more-detail")
-    public List<BookingMoreDetailDTO> getAllBookingDetail(){
-        return bookingService.getAllBookingDetailDTO();
-    }
+//    @GetMapping("/more-detail")
+//    public List<BookingMoreDetailDTO> getAllBookingDetail(){
+//        return bookingService.getAllBookingDetailDTO();
+//    }
 
-    @GetMapping("/test")
-    public PageBookingDTO getAllBookingTest(
-            @RequestParam(defaultValue= "eventStartTime") String sortBy,
-            @RequestParam(defaultValue= "0") Integer page,
-            @RequestParam(defaultValue= "5") Integer pageSize)
-    {
-        return  bookingService.getAllBookingTest(page , pageSize , sortBy);
-    }
 
     @GetMapping("")
     public List<BookingDTO> getAllBooking(){

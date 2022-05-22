@@ -32,15 +32,11 @@ public class BookingService {
         List<Booking>bookings= bookingRepository.findAll();
         return bookings.stream().map(e -> modelMapper.map(e, BookingDTO.class)).collect(Collectors.toList());
     }
-    public PageBookingDTO getAllBookingTest(int page , int pageSize , String sortBy){
-        Sort sort  =  Sort.by(Sort.Direction.DESC , sortBy);
-        return modelMapper.map(bookingRepository.findAll(PageRequest.of(page , pageSize , sort)) , PageBookingDTO.class);
-    }
 
-    public List<BookingMoreDetailDTO> getAllBookingDetailDTO(){
-        List<Booking> bookings= bookingRepository.findAll();
-        return bookings.stream().map(e -> modelMapper.map(e, BookingMoreDetailDTO.class)).collect(Collectors.toList());
-    }
+//    public List<BookingMoreDetailDTO> getAllBookingDetailDTO(){
+//        List<Booking> bookings= bookingRepository.findAll();
+//        return bookings.stream().map(e -> modelMapper.map(e, BookingMoreDetailDTO.class)).collect(Collectors.toList());
+//    }
     public BookingMoreDetailDTO getBookingDetailDTOById(Integer id){
         Booking bookings= bookingRepository.findById(id).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
         return modelMapper.map(bookings , BookingMoreDetailDTO.class);
