@@ -42,7 +42,8 @@ public class BookingService {
 
     public ResponseEntity create( BookingPOSTDTO newBooking) {
         Booking booking = modelMapper.map(newBooking , Booking.class);
-        EventCategory eventCategory = eventCategoryRepository.findById(newBooking.getEventCategory().getEventCategoryId()).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
+        EventCategory eventCategory = eventCategoryRepository.findById(newBooking.getEventCategory().getEventCategoryId()).orElseThrow(()
+                -> new ResponseStatusException(HttpStatus.NOT_FOUND));
         booking.setEventDuration(eventCategory.getEventDuration());
         List<Booking> checkCompare = bookingRepository.findAllByEventCategoryEventCategoryId(booking.getEventCategory().getEventCategoryId());
         if (!checkTimeOverLap(checkCompare , booking)){

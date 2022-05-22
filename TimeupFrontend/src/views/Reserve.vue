@@ -228,7 +228,7 @@ const isInputTime = computed(() => {
             //     || (localData.eventStartTime <= booking.eventStartTime) && ((localEndTime) >= booking.eventEndTime)
             //     // || (new Date(dateIndexSelect.value).toISOString() < new Date().toISOString())
             // ) {
-            if ((localData.eventStartTime < booking.eventEndTime) && (localEndTime > booking.eventStartTime)) {
+            if ((localData.eventStartTime <= booking.eventEndTime) && (localEndTime >= booking.eventStartTime)) {
                 isOverlap.value = true
                 isInvalid.value = true
                 // console.log("local start " + localData.eventStartTime)
