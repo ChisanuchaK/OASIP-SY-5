@@ -1,12 +1,11 @@
 <script setup>
 import { ref, onBeforeMount, computed, onMounted } from "vue";
-import { getBookingId } from "../stores/book.js";
+import { getBookingId, removeBooking } from "../stores/book.js";
 import ConfirmDelete from "./ConfirmDelete.vue";
-import { removeBooking } from "../stores/book.js";
 import EditBooking from './EditBooking.vue';
 import moment from "moment";
 
-const emits = defineEmits(["onCloseDetails", "idConfirmDelete","EditIdFromEdit"]);
+const emits = defineEmits(["onCloseDetails", "idConfirmDelete", "EditIdFromEdit"]);
 const props = defineProps({
     bookings: {
         type: [Object],
@@ -67,7 +66,7 @@ const getEditIdFromEdit = (EditId) => {
     emits('EditIdFromEdit', EditId)
 }
 
-const changeEditDialog = (booking)=>{
+const changeEditDialog = (booking) => {
     booking.statusClickEdit = !booking.statusClickEdit;
     console.log(booking.statusClickEdit);
 }
@@ -95,7 +94,7 @@ const changeEditDialog = (booking)=>{
                     </div>
                     <div class="row-start-2 col-start-1 col-span-2 p-1 rounded-lg  ">
                         <!-- <p class="w-[50%] m-auto"> -->
-                            Name : {{ bookingsDetails.bookingName }}
+                        Name : {{ bookingsDetails.bookingName }}
                         <!-- </p>  -->
                     </div>
                     <div class="row-start-3 col-start-1 col-span-2 p-1 rounded-lg">
@@ -138,8 +137,9 @@ const changeEditDialog = (booking)=>{
                     }}</div> -->
 
                     <div class="row-start-8 col-start-1 col-end-3 col-span-2">
-                        <textarea class="bg-gray-200 w-full resize-none rounded text-center bg-" placeholder="No Message" disabled
-                            v-model="bookingsDetails.eventNotes" name="" id="" cols="90" rows="5">{{
+                        <textarea class="bg-gray-200 w-full resize-none rounded text-center bg-"
+                            placeholder="No Message" disabled v-model="bookingsDetails.eventNotes" name="" id=""
+                            cols="90" rows="5">{{
                                     bookingsDetails.eventNotes == null || bookingsDetails.eventNotes.trim() === ''
                                         ? ""
                                         : bookingsDetails.eventNotes
@@ -156,10 +156,12 @@ const changeEditDialog = (booking)=>{
                     <!-- template -->
 
                     <div class="row-start-9 mt-5 col-start-1">
-                        <button class="bg-[#499D6B] text-white rounded-lg w-6/12 h-full m-auto py-2" @click="changeEditDialog(bookingsDetails)">edit</button>
+                        <button class="bg-[#499D6B] text-white rounded-lg w-6/12 h-full m-auto py-2"
+                            @click="changeEditDialog(bookingsDetails)">edit</button>
                     </div>
                     <div class="row-start-9 mt-5 col-start-2">
-                        <button class="bg-[#F97473] text-white rounded-lg w-6/12 h-full m-auto py-2" @click="changeDeleteDialog(bookingsDetails)" >delete</button>
+                        <button class="bg-[#F97473] text-white rounded-lg w-6/12 h-full m-auto py-2"
+                            @click="changeDeleteDialog(bookingsDetails)">delete</button>
                     </div>
 
                     <!-- <ConfirmDelete v-if="bookingsDetails.statusClickDelete" :bookingsFromDetails="bookingsDetails" @onCancelDelete="changeDeleteDialog(bookingsDetails)" @onConfirmDelete="confirmDelete(bookingsDetails,loopBooking)"/> -->
@@ -170,9 +172,10 @@ const changeEditDialog = (booking)=>{
 
                     <!-- <EditBooking v-if="bookingsDetails.statusClickEdit" :loopEdit="loopBooking" :bookingsDetailsEdit="bookingsDetails" @onClickCancelEdit="changeEditDialog(bookingsDetails)"  @EditbookingId="getEditIdFromEdit"/> -->
 
-                    <EditBooking v-if="bookingsDetails.statusClickEdit" :loopEdit="loopBooking" :bookingsDetailsEdit="bookingsDetails"  @EditbookingId="getEditIdFromEdit"/>
+                    <EditBooking v-if="bookingsDetails.statusClickEdit" :loopEdit="loopBooking"
+                        :bookingsDetailsEdit="bookingsDetails" @EditbookingId="getEditIdFromEdit" />
                     <!-- <EditBooking v-if="bookingsDetails.statusClickEdit"  :bookingsEdit="bookingsDetails" /> -->
-                    
+
                     <!-- <DialogDetails v-if="booking.statusClickSeeDetails" @onCloseDetails="changeSeeDetailsDialog(booking)" :bookings="booking"/> -->
 
                     <!-- <div class="row-start-8 col-start-1 col-end-2 p-1 mb-1.5 bg-gray rounded-lg">Id</div>

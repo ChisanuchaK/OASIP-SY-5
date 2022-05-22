@@ -1,10 +1,9 @@
 <script setup>
 import { ref, reactive, onBeforeMount, computed, onBeforeUpdate } from "vue";
 import moment from "moment";
-import Cancel from "../components/Cancel.vue";
-import Confirm from "../components/Confirm.vue";
-import { getEventCategory } from "../stores/book.js";
-import { getBookings } from "../stores/book.js";
+import Cancel from "./Cancel.vue";
+import Confirm from "./Confirm.vue";
+import { getEventCategory, editBooking, getBookings } from "../stores/book.js";
 const emits = defineEmits(["EditbookingId"]);
 const props = defineProps({
     bookingsDetailsEdit: {
@@ -68,7 +67,7 @@ const isInputTimes = computed(() => {
         //     break;
         // }
         if (editData.eventCategory.eventCategoryId === booking.eventCategoryId) {
-            if ((editData.eventStartTime < booking.eventEndTime) && (localEndTime > booking.eventStartTime)  && (editData.idBooking != booking.idBooking)) {
+            if ((editData.eventStartTime <= booking.eventEndTime) && (localEndTime >= booking.eventStartTime) && (editData.idBooking != booking.idBooking)) {
                 isOverlap.value = true
                 isInvalid.value = true
                 console.log("overlap")
@@ -106,7 +105,7 @@ const isInputTimes = computed(() => {
 // console.log(someBooking.value.eventStartTime);
 // console.log(bookingPresentTime.value);
 
-const closeEdit = (event,bookingEdit) => {
+const closeEdit = (event, bookingEdit) => {
     if (event.target.id == "modalEdit") {
         bookingEdit.cancelDialog = true;
         // emits("onClickCancelEdit")
@@ -234,22 +233,38 @@ onBeforeMount(async () => {
 //   console.log(editNote)
 //   editingNote.value = editNote
 // }
-const editBooking = async (editNoteId, editData, bookingEdit, loopEdit) => {
-    const res = await fetch(`${import.meta.env.VITE_BASE_URL}/booking/${editNoteId}`, {
-        method: 'PUT',
-        headers: {
-            'content-type': 'application/json'
-        },
-        body: JSON.stringify({
-            // idBooking: editData.idBooking,
-            // bookingName: editData.bookingName,
-            // bookingEmail: editData.bookingEmail,
-            // eventCategory: { eventCategoryId: editData.eventCategory.eventCategoryId },
-            eventStartTime: editData.eventStartTime,
-            // eventDuration: editData.eventDuration,
-            eventNotes: editData.eventNotes,
-        })
-    })
+
+// const editBooking = async (editData, bookingEdit, loopEdit) => {
+//     const res = await fetch(`${import.meta.env.VITE_BASE_URL}/booking/${editData.idBooking}`, {
+//         method: 'PUT',
+//         headers: {
+//             'content-type': 'application/json'
+//         },
+//         body: JSON.stringify({
+//             // idBooking: editData.idBooking,
+//             // bookingName: editData.bookingName,
+//             // bookingEmail: editData.bookingEmail,
+//             // eventCategory: { eventCategoryId: editData.eventCategory.eventCategoryId },
+//             eventStartTime: editData.eventStartTime,
+//             // eventDuration: editData.eventDuration,
+//             eventNotes: editData.eventNotes,
+//         })
+//     })
+//     // console.log(editData.eventStartTime);
+//     if (res.status === 200) {
+//         bookingEdit.createDialog = !bookingEdit.createDialog;
+//         bookingEdit.statusClickEdit = !bookingEdit.statusClickEdit;
+//         loopEdit.statusClickSeeDetails = !loopEdit.statusClickSeeDetails;
+//         emits('EditbookingId', editData)
+//         console.log('edited successfully')
+//     } else {
+//         // bookingEdit.createDialog = !bookingEdit.createDialog;
+//         console.log('error, cannot be added')
+//     }
+// }
+
+const editBookingEvent = async (editData, bookingEdit, loopEdit) => {
+    const res = await editBooking(editData);
     // console.log(editData.eventStartTime);
     if (res.status === 200) {
         bookingEdit.createDialog = !bookingEdit.createDialog;
@@ -266,7 +281,7 @@ const editBooking = async (editNoteId, editData, bookingEdit, loopEdit) => {
 </script>
 
 <template>
-    <div id="modalEdit" @click="closeEdit($event,someBooking)"
+    <div id="modalEdit" @click="closeEdit($event, someBooking)"
         class="font overflow-x-hidden overflow-y-auto fixed inset-0 z-10 outline-none focus:outline-none justify-center items-center flex bg-black bg-opacity-20">
         <!-- <div class=" ">
         {{bookings.bookings}}
@@ -394,7 +409,7 @@ const editBooking = async (editNoteId, editData, bookingEdit, loopEdit) => {
                         @onClickCreateYes="editBooking(editData.idBooking,editData, bookingToEdit, loopEdit )" /> -->
 
                     <Confirm v-if="someBooking.createDialog" @onClickCreateNo="changeCreateDialogFalse(someBooking)"
-                        @onClickCreateYes="editBooking(editData.idBooking, editData, someBooking, loopEdit)" />
+                        @onClickCreateYes="editBookingEvent(editData, someBooking, loopEdit)" />
                 </div>
             </div>
         </div>

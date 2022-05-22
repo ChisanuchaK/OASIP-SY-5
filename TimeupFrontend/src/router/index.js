@@ -1,7 +1,7 @@
 import {createRouter, createWebHistory} from 'vue-router';
 import Home from "../views/Home.vue";
 import BookingList from "../views/BookingList.vue";
-import DialogDetails from "../views/DialogDetails.vue";
+// import DialogDetails from "../components/DialogDetails.vue";
 import About from "../views/About.vue";
 import Reserve from "../views/Reserve.vue";
 import CategoryList from "../views/CategoryList.vue";
@@ -16,11 +16,13 @@ const routes = [
         path: "/bookingList",
         name: "BookingList",
         component:BookingList
-    },{
-        path:"/bookingList/d",
-        name: 'DialogDetails',
-        component: DialogDetails
-    },{
+    }
+    // ,{
+    //     path:"/bookingList/d",
+    //     name: 'DialogDetails',
+    //     component: DialogDetails
+    // }
+    ,{
         path:"/About",
         name: 'About',
         component: About
