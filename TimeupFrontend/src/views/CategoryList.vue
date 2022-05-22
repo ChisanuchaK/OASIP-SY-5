@@ -33,7 +33,7 @@ const filterEditCategory = (editCategory)=>{
    <div>
       <NavbarTop />
     
-    <LoopCategoryList :categorysList="categoryList" @EditCategoryIdFromEdit="filterEditCategory"/>
+    <LoopCategoryList :categorysList="categoryList.sort((a,b)=>b.eventCategoryId - a.eventCategoryId)" @EditCategoryIdFromEdit="filterEditCategory"/>
     <NavbarBottom />
    </div>
 </template>

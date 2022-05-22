@@ -11,17 +11,17 @@ const bookings = ref([]);
 const reBooks = computed(() => bookings.value)
 const allBooking = ref();
 const categoryLists = ref([]);
+const statusScheduledBL = ref();
 // const eventStartTime = "2022-06-27 02:30";
-const dates = moment().local().format("YYYY-MM-DD hh:mm A");
+const dates = moment().local().format("YYYY-MM-DD HH:mm");
 // const startTimes = moment.utc(eventStartTime).format("h:mm");
 console.log(dates);
 // console.log(startTimes);
-let statusScheduledBl = ref();
 
 onBeforeMount(async () => {
   const getAllBooks = await getBookings();
   bookings.value = await getAllBooks.json();
-  allBooking.value = bookings.value
+  bookings.value = descOrder();
   // allBooking.value = await getAllBooks.json();
   const getAllCategory = await getEventCategory();
   categoryLists.value = await getAllCategory.json();
@@ -54,73 +54,65 @@ const filterEditBooking = (editId) => {
 }
 
 const filterBookFromCategory = async (filterData) => {
-    statusScheduledBl.value = "No Scheduled Events"
-   const getAllBooks = await getBookings();
+  statusScheduledBL.value = "No Scheduled Events"
+  const getAllBooks = await getBookings();
   bookings.value = await getAllBooks.json();
-  bookings.value = descOrder()
+  bookings.value = descOrder();
   bookings.value = bookings.value.filter((booking) => {
     return booking.eventCategoryId == filterData
   })
   console.log("fildata" + filterData);
 }
 
-const filterReset = async ()=>{
-  statusScheduledBl.value = "No Scheduled Events"
-   bookings.value = descOrder()
+const filterAllEvent = async () => {
+  statusScheduledBL.value = "No Scheduled Events";
   const getAllBooks = await getBookings();
-  allBooking.value = await getAllBooks.json();
-  bookings.value = allBooking.value
+  bookings.value = await getAllBooks.json();
+  bookings.value = descOrder();
+  bookings.value = bookings.value;
 }
 
-const filterPastEvent = async()=>{
-    statusScheduledBl.value = "No Past Events"
-    const getAllBooks = await getBookings();
+const filterPastEvent = async () => {
+  statusScheduledBL.value = "No Past Events"
+  const getAllBooks = await getBookings();
   bookings.value = await getAllBooks.json();
-   bookings.value = descOrder()
-  bookings.value = bookings.value.filter((booking)=>{
-   return (moment(booking.eventStartTime).local().format("YYYY-MM-DD hh:mm A") < dates)
-  })
-  // for(let booking of bookings.value){
-  //   console.log(moment.utc(booking.eventStartTime).format("DD"));
-  // }
-}
-
-const filterUpComingEvent = async()=>{
-    statusScheduledBl.value = "No On-Going"
-  bookings.value = ascOrder()
-    const getAllBooks = await getBookings();
-  bookings.value = await getAllBooks.json();
-  bookings.value = bookings.value.filter((booking)=>{
-    return (moment(booking.eventStartTime).local().format("YYYY-MM-DD hh:mm A") > dates)
-  })
-  // ascOrder()
-  // return bookings.value
-}
-
-const filterByDateTime = async(time)=>{
-     statusScheduledBl.value = "No Scheduled Events"
-      const getAllBooks = await getBookings();
-  bookings.value = await getAllBooks.json();
-  bookings.value =  ascOrder();
-  bookings.value = bookings.value.filter((booking)=>{
-   return (moment(booking.eventStartTime).local().format("YYYY-MM-DD") == time)
+  bookings.value = descOrder();
+  bookings.value = bookings.value.filter((booking) => {
+    return (moment(booking.eventStartTime).local().format("YYYY-MM-DD HH:mm") < dates)
   })
 }
 
-const ascOrder = ()=>
+const filterUpComingEvent = async () => {
+  statusScheduledBL.value = "No On-Going";
+  bookings.value = ascOrder();
+  const getAllBooks = await getBookings();
+  bookings.value = await getAllBooks.json();
+  bookings.value = bookings.value.filter((booking) => {
+    return (moment(booking.eventStartTime).local().format("YYYY-MM-DD HH:mm") >= dates)
+  })
+}
+
+const filterByDateTime = async (time) => {
+  statusScheduledBL.value = "No Scheduled Events"
+  const getAllBooks = await getBookings();
+  bookings.value = await getAllBooks.json();
+  bookings.value = ascOrder();
+  bookings.value = bookings.value.filter((booking) => {
+    return (moment(booking.eventStartTime).local().format("YYYY-MM-DD") == time);
+  })
+}
+
+const ascOrder = () =>
   bookings.value.sort(
-      (a, b) => new Date(a.eventStartTime) - new Date(b.eventStartTime)
-    )
-    const descOrder = ()=>
+    (a, b) => new Date(a.eventStartTime) - new Date(b.eventStartTime)
+  );
+
+
+const descOrder = () =>
   bookings.value.sort(
-      (a, b) => new Date(b.eventStartTime) - new Date(a.eventStartTime)
-    )
-
-
-
-
-
-
+    (a, b) => new Date(b.eventStartTime) -
+     new Date(a.eventStartTime)
+  );
 
 </script>
 <template>
@@ -133,10 +125,14 @@ const ascOrder = ()=>
     <!-- <div v-if="bookings == ''" class="flex flex-warp justify-center bg-gray-800 text-white text-xl">
       No scheduled Events
     </div> -->
-    <FilterBar :categorys="categoryLists" @getChageCategory="filterBookFromCategory" @getReset="filterReset" @getPastEvent="filterPastEvent"
-     @getUpComingEvent="filterUpComingEvent" @getDateTime="filterByDateTime"/>
+    <FilterBar :categorys="categoryLists" @getChageCategory="filterBookFromCategory" @getAllEvent="filterAllEvent"
+      @getPastEvent="filterPastEvent" @getUpComingEvent="filterUpComingEvent" @getDateTime="filterByDateTime" />
 
-    <LoopBookingList :statusScheduled="statusScheduledBl" :bookings="bookings" @idDialogDetails="filterList" @EditIdFromDialog="filterEditBooking" />
+    <!-- <LoopBookingList :statusScheduled="statusScheduledBL" :bookings="bookings.sort(
+      (a, b) => new Date(b.eventStartTime) - new Date(a.eventStartTime)
+    )" @idDialogDetails="filterList" @EditIdFromDialog="filterEditBooking" /> -->
+    <LoopBookingList :statusScheduled="statusScheduledBL" :bookings="bookings" @idDialogDetails="filterList"
+      @EditIdFromDialog="filterEditBooking" />
     <NavbarBottom />
   </div>
 </template>

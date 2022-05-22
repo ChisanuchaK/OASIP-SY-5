@@ -1,7 +1,7 @@
 <script setup>
 import { ref, computed, reactive } from 'vue';
 import moment from 'moment';
-const emits = defineEmits(["getChageCategory", "getReset", "getPastEvent", "getUpComingEvent", "getDateTime"])
+const emits = defineEmits(["getChageCategory", "getAllEvent", "getPastEvent", "getUpComingEvent", "getDateTime"])
 const props = defineProps({
     categorys: {
         type: [Object],
@@ -12,7 +12,7 @@ const props = defineProps({
 const categoryLists = computed(() => props.categorys);
 const categoryList = ref(categoryLists);
 
-let categoryIndexSelect = ref('');
+const categoryIndexSelect = ref('');
 
 // const time = ref(moment().format("YYYY-MM-DD"))
 const time = ref()
@@ -25,32 +25,41 @@ const filterData = reactive({
 const getChangeCategory = () => {
     filterData.eventCategoryId = categoryList.value[categoryIndexSelect.value].eventCategoryId
     console.log(filterData.eventCategoryId);
-     time.value = ''
+    time.value = ''
     // console.log(time.value);
     emits('getChageCategory', filterData.eventCategoryId);
     
 }
 
-const getReset = () => {
+const getAllEvent = () => {
     categoryIndexSelect.value = ''
     time.value = ''
-    emits('getReset');
+    emits('getAllEvent');
 }
 
 const getChangeToPast = () => {
-     categoryIndexSelect.value = ''
-      time.value = ''
+    categoryIndexSelect.value = ''
+    time.value = ''
     emits('getPastEvent');
 }
 const getChangeToUpcoming = () => {
-     categoryIndexSelect.value = ''
-      time.value = ''
+    categoryIndexSelect.value = ''
+    time.value = ''
     emits('getUpComingEvent');
 }
 
 const getChangeByDateTime = (times) => {
-     categoryIndexSelect.value = ''
+    categoryIndexSelect.value = ''
     emits('getDateTime',times);
+}
+
+const colorBg = (categorys) => {
+    for (let category of categoryList.value) {
+        if(categorys.eventCategoryId == category.eventCategoryId){
+            return category.eventColor
+        }
+            
+    }
 }
 
 </script>
@@ -58,7 +67,7 @@ const getChangeByDateTime = (times) => {
 <template>
     <div class="grid grid-flow-row grid-cols-10 w-[90%] mb-10 m-auto gap-2 ">
         <button class="row-start-1 col-start-1  col-span-1 w-full  p-2 bg-[#E2DDDD] rounded-xl uppercase font-bold"
-            @click="getReset">reset</button>
+            @click="getAllEvent">all-event</button>
         <button class="row-start-1 col-start-2  col-span-1 w-full  p-2 bg-[#E2DDDD] rounded-xl uppercase font-bold"
             @click="getChangeToPast">past-event</button>
         <button class="row-start-1 col-start-3  col-span-1 w-full  p-2 bg-[#E2DDDD] rounded-xl uppercase font-bold"
@@ -74,8 +83,8 @@ const getChangeByDateTime = (times) => {
                 @change="getChangeCategory()">
                 <!-- <option value="">select category</option> -->
                 <!-- <option value="" selected hidden>Choose a drink</option> -->
-                 <option value="" selected hidden >Select category</option>
-                <option v-for="(category, index) in categoryLists" :value="index " :key="index " >
+                <option value="" selected hidden >Select category</option>
+                <option v-for="(category, indexs) in categoryLists" :value="indexs" :key="indexs">
                     <!-- <option value=""></option> -->
                     {{ category.eventCategoryName }}
                 </option>
@@ -84,5 +93,6 @@ const getChangeByDateTime = (times) => {
     </div>
 </template>
  
-<style>
+<style scoped>
+
 </style>

@@ -120,7 +120,7 @@ const removeBookingEvent = async (deleteBookingId, booking, loopBooking) => {
             </div> -->
 
             <div v-if="bookings == ''" class="flex flex-warp justify-center bg-gray-800 text-white text-xl">
-               {{props.statusScheduled}}
+                {{props.statusScheduled}}
             </div>
 
             <div v-if="!(bookings == '')" class="grid grid-flow-row grid-cols-1 mb-24">

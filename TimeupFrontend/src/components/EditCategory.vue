@@ -56,10 +56,11 @@ const isInvalidInputDurationMaxMin = computed(() => {
 
 const isInputCategoryNameDupplicate = computed(() => {
     for (let categorySome of categoryAlls.value) {
-        if (editCategoryData.eventCategoryName == category.value.eventCategoryName) {
+        if (editCategoryData.eventCategoryName.trim() == category.value.eventCategoryName.trim()) {
             break;
         }
-        if (new String(editCategoryData.eventCategoryName).valueOf() == new String(categorySome.eventCategoryName).valueOf()) {
+        if (new String(editCategoryData.eventCategoryName.toLowerCase()).valueOf() == new String(categorySome.eventCategoryName.toLowerCase()).valueOf()) {
+        // if (editCategoryData.eventCategoryName.toLowerCase().includes(categorySome.eventCategoryName.toLowerCase()) ) {
             console.log("Duplicate name !");
             isDuplicate.value = true
             isInvalid.value = true
@@ -112,7 +113,7 @@ const changeCreateDialogTrue = (category) => {
     if (isDuplicate.value == false && isInvalid.value == false) {
         category.statusConfirmDialog = true
         editCategoryData.eventCategoryName = editCategoryData.eventCategoryName.trim()
-        editCategoryData.eventCategoryDescription = editCategoryData.eventCategoryDescription.trim
+        editCategoryData.eventCategoryDescription = editCategoryData.eventCategoryDescription.trim()
     }
 }
 

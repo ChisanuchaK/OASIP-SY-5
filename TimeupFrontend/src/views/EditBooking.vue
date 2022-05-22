@@ -64,12 +64,11 @@ const isInputTimeOlds = computed(() => {
 const isInputTimes = computed(() => {
     const localEndTime = `${moment.utc(editData.eventStartTime).add(editData.eventDuration, 'm').format("YYYY-MM-DDTHH:mm:ss")}Z`;
     for (let booking of bookingLists.value) {
-        // if (bookingPresentTime.value == (moment.utc(someBooking.value.eventStartTime).local().format("YYYY-MM-DDTHH:mm"))) {
+        // if (bookingPresentTime.value === (moment.utc(someBooking.value.eventStartTime).local().format("YYYY-MM-DDTHH:mm"))) {
         //     break;
         // }
         if (editData.eventCategory.eventCategoryId === booking.eventCategoryId) {
-            if ((editData.eventStartTime < booking.eventEndTime) && (localEndTime > booking.eventStartTime) 
-                && (editData.idBooking != booking.idBooking)) {
+            if ((editData.eventStartTime < booking.eventEndTime) && (localEndTime > booking.eventStartTime)  && (editData.idBooking != booking.idBooking)) {
                 isOverlap.value = true
                 isInvalid.value = true
                 console.log("overlap")
@@ -306,10 +305,10 @@ const editBooking = async (editNoteId, editData, bookingEdit, loopEdit) => {
                             :style="{ 'border-color': (isInputTimes || isInputTimeOlds) ? 'red' : 'white' }"
                             @change="selectTime()">
                         <div class="text-red-500" v-if="isInputTimes">
-                            overlap
+                            *overlap
                         </div>
                         <div class="text-red-500" v-if="isInputTimeOlds">
-                            Please select time is future than present!
+                            *Please select time is future than present
                         </div>
                         <!-- {{
                                 moment(bookingToEdit.eventStartTime)
@@ -353,7 +352,7 @@ const editBooking = async (editNoteId, editData, bookingEdit, loopEdit) => {
                                         : note
                             }}</textarea>
                         <div class="text-red-500 text-center m-auto" v-if="isInputNotes">
-                            over limit of Notes!
+                            *over limit of Notes
                         </div>
                     </div>
 
@@ -374,6 +373,10 @@ const editBooking = async (editNoteId, editData, bookingEdit, loopEdit) => {
                     <div class="row-start-9 mt-5 col-start-2">
                         <button class="bg-[#F97473] text-white rounded-lg w-6/12 h-full m-auto py-2"
                             @click="changeCancelDialogTrue(someBooking)">cancel</button>
+                    </div>
+
+                    <div class="text-red-500" v-show="isInputNotes || isInputTimeOlds || isInputTimes">
+                        *some input is invalid
                     </div>
 
                     <!-- <Cancel v-if="bookingToEdit.cancelDialog" @onClickCancelNo="changeCancelDialog(bookingToEdit)"
