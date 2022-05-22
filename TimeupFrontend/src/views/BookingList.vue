@@ -13,7 +13,7 @@ const allBooking = ref();
 const categoryLists = ref([]);
 const statusScheduledBL = ref();
 // const eventStartTime = "2022-06-27 02:30";
-const dates = moment().local().format("YYYY-MM-DD hh:mm A");
+const dates = moment().local().format("YYYY-MM-DD HH:mm");
 // const startTimes = moment.utc(eventStartTime).format("h:mm");
 console.log(dates);
 // console.log(startTimes);
@@ -78,7 +78,7 @@ const filterPastEvent = async () => {
   bookings.value = await getAllBooks.json();
   bookings.value = descOrder();
   bookings.value = bookings.value.filter((booking) => {
-    return (moment(booking.eventStartTime).local().format("YYYY-MM-DD hh:mm A") < dates)
+    return (moment(booking.eventStartTime).local().format("YYYY-MM-DD HH:mm") < dates)
   })
 }
 
@@ -88,7 +88,7 @@ const filterUpComingEvent = async () => {
   const getAllBooks = await getBookings();
   bookings.value = await getAllBooks.json();
   bookings.value = bookings.value.filter((booking) => {
-    return (moment(booking.eventStartTime).local().format("YYYY-MM-DD hh:mm A") >= dates)
+    return (moment(booking.eventStartTime).local().format("YYYY-MM-DD HH:mm") >= dates)
   })
 }
 
