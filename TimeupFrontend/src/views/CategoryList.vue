@@ -15,6 +15,7 @@ onBeforeMount(async () => {
      category.statusConfirmDialog = ref(false)
      category.statusCancelDialog = ref(false)
      category.statusEditDialog = ref(false)
+     category.statusEditSuccesDialog =ref(false)
  })
 })
 

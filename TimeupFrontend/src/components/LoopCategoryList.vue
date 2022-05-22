@@ -57,6 +57,7 @@ const getEditCategoryValue = (editCategory)=>{
                     
                     <EditCategory v-if="category.statusEditDialog" :categorys="category" :categoryLists="categorys" @EditCategoryId="getEditCategoryValue"/>
 
+
                 </div>
             </div>
         </div>

@@ -267,6 +267,7 @@ const editBookingEvent = async (editData, bookingEdit, loopEdit) => {
     const res = await editBooking(editData);
     // console.log(editData.eventStartTime);
     if (res.status === 200) {
+        alert('Edit Booking Success!');
         bookingEdit.createDialog = !bookingEdit.createDialog;
         bookingEdit.statusClickEdit = !bookingEdit.statusClickEdit;
         loopEdit.statusClickSeeDetails = !loopEdit.statusClickSeeDetails;

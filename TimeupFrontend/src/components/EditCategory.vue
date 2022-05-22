@@ -3,7 +3,7 @@ import { ref, reactive, onBeforeMount, computed, onBeforeUpdate } from "vue";
 import moment from "moment";
 import Cancel from "./Cancel.vue";
 import Confirm from "./Confirm.vue";
-import {editCategory} from "../stores/book.js";
+import { editCategory } from "../stores/book.js";
 const emits = defineEmits(["EditCategoryId"]);
 const props = defineProps({
     categorys: {
@@ -24,7 +24,7 @@ const isInvalid = ref(false);
 const isDuplicate = ref(false);
 
 let editCategoryData = reactive({
-    eventCategoryId : category.value.eventCategoryId,
+    eventCategoryId: category.value.eventCategoryId,
     eventCategoryName: category.value.eventCategoryName,
     eventDuration: category.value.eventDuration,
     eventCategoryDescription: category.value.eventCategoryDescription
@@ -60,7 +60,7 @@ const isInputCategoryNameDupplicate = computed(() => {
             break;
         }
         if (new String(editCategoryData.eventCategoryName.toLowerCase()).valueOf() == new String(categorySome.eventCategoryName.toLowerCase()).valueOf()) {
-        // if (editCategoryData.eventCategoryName.toLowerCase().includes(categorySome.eventCategoryName.toLowerCase()) ) {
+            // if (editCategoryData.eventCategoryName.toLowerCase().includes(categorySome.eventCategoryName.toLowerCase()) ) {
             console.log("Duplicate name !");
             isDuplicate.value = true
             isInvalid.value = true
@@ -123,14 +123,16 @@ const changeCreateDialogTrue = (category) => {
 //     category.statusEditDialog = !category.statusEditDialog;
 // }
 
-const editCategoryEvent = async(editCategoryitem, category)=>{
+const editCategoryEvent = async (editCategoryitem, category) => {
     const editEvent = await editCategory(editCategoryitem);
-        if (editEvent.status === 200) {
-    category.statusConfirmDialog = !category.statusConfirmDialog;
-    category.statusEditDialog = !category.statusEditDialog;
-        emits('EditCategoryId', editCategoryitem)
-        console.log('edited successfully')
-}
+    if (editEvent.status === 200) {
+        alert('Edit Category Success!')
+        category.statusConfirmDialog = !category.statusConfirmDialog;
+        category.statusEditDialog = !category.statusEditDialog;
+        category.statusEditSuccesDialog = !category.statusEditSuccesDialog;
+        emits('EditCategoryId', editCategoryitem);
+        console.log('edited successfully');
+    }
 }
 // const editCategory = async (editCategory, category) => {
 //     const res = await fetch(`${import.meta.env.VITE_BASE_URL}/admin/event-category/${editCategory.eventCategoryId}`, {
@@ -254,7 +256,8 @@ const editCategoryEvent = async(editCategoryitem, category)=>{
                         @onClickCancelYes="changeEditDialogFalse(category)" />
 
                     <Confirm v-if="category.statusConfirmDialog" @onClickCreateNo="changeCreateDialogFalse(category)"
-                        @onClickCreateYes="editCategoryEvent(editCategoryData,category)" />
+                        @onClickCreateYes="editCategoryEvent(editCategoryData, category)" />
+
                 </div>
             </div>
         </div>

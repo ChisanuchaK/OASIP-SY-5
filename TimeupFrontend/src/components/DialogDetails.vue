@@ -58,6 +58,7 @@ const confirmDelete = (booking, loopBooking) => {
 // }
 
 const removeBookingEvent = async (deleteBookingId, booking, loopBooking) => {
+    alert('Delete Booking Success!');
     emits("idConfirmDelete", deleteBookingId);
     await removeBooking(deleteBookingId, booking, loopBooking);
 };

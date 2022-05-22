@@ -104,8 +104,10 @@ const getEditIdFromDialog = (EditId) => {
 }
 
 const removeBookingEvent = async (deleteBookingId, booking, loopBooking) => {
+    alert('Delete Booking Success!');
     emits('idDialogDetails', deleteBookingId)
     await removeBooking(deleteBookingId, booking, loopBooking)
+    
 }
 
 </script>
