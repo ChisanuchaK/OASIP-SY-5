@@ -22,12 +22,6 @@ public class BookingController {
     @Autowired
     private BookingService bookingService;
 
-//    @GetMapping("/more-detail")
-//    public List<BookingMoreDetailDTO> getAllBookingDetail(){
-//        return bookingService.getAllBookingDetailDTO();
-//    }
-
-
     @GetMapping("")
     public List<BookingDTO> getAllBooking(){
         return bookingService.getAllBooking();
