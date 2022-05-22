@@ -1,19 +1,19 @@
 <script setup>
 import { ref, computed, onBeforeMount, reactive } from 'vue'
 import moment from "moment";
+import Cancel from "../components/Cancel.vue";
+import Confirm from "../components/Confirm.vue";
 import NavbarTop from '../components/NavbarTop.vue';
 import NavbarBottom from '../components/NavbarBottom.vue';
 import { getEventCategory, createBooking, getBookings } from "../stores/book.js";
-import Cancel from "../components/Cancel.vue";
-import Confirm from "../components/Confirm.vue";
 
-const localPresentTime = moment.utc().local().format("YYYY-MM-DDTHH:mm");
 const bookingLists = ref([]);
-// const books = computed(() => bookingLists.value);
-
 const categoryList = ref([]);
 const categoryIndexSelect = ref();
+
+const localPresentTime = moment.utc().local().format("YYYY-MM-DDTHH:mm");
 const dateIndexSelect = ref(localPresentTime);
+const regexEmail = "[a-z0-9._%+-]+@[a-z0-9.-]+\\.[a-z]{2,3}";
 
 let localData = reactive({
     bookingName: "",
@@ -25,157 +25,39 @@ let localData = reactive({
 });
 
 let date = new Date();
-console.log(date);
 date.setMonth(date.getMonth() + 3);
-console.log(date);
 let maxlocalPresentTime = moment(date).format("YYYY-MM-DDTHH:mm");
 let maxdateIndexSelect = ref(maxlocalPresentTime);
-const regexEmail = "[a-z0-9._%+-]+@[a-z0-9.-]+\\.[a-z]{2,3}";
 
-let isInvalid = ref(false);
-let isOverlap = ref(false);
-
-const cancelDialog = ref(false)
-const createDialog = ref(false)
-
-// console.log(bookingListSome.value);
-
-// const localEndTime = moment.utc(localData.eventStartTime).add(localData.eventDuration, 'm').format("YYYY-MM-DDTHH:mm:ss")
-// console.log(localEndTime);
-
-// console.log(moment.utc().local().format("YYYY-MM-DDTHH:mm"));
+const isInvalid = ref(false);
+const isOverlap = ref(false);
+const cancelDialog = ref(false);
+const createDialog = ref(false);
 
 const handleSelect = () => {
     localData.eventCategory.eventCategoryId = categoryList.value[categoryIndexSelect.value].eventCategoryId
     localData.eventDuration = categoryList.value[categoryIndexSelect.value].eventDuration
-    // alert(CategorySelect)
     console.log(localData)
     console.log(categoryIndexSelect.value);
 }
-
 const handleTime = () => {
-    // localData.eventStartTime = new Date().toISOString()
-    // localData.eventStartTime = moment.utc(dateIndexSelect.value).format()
     localData.eventStartTime = new Date(dateIndexSelect.value).toISOString()
     console.log(dateIndexSelect.value);
     console.log(localData.eventStartTime);
     console.log(`${moment.utc(localData.eventStartTime).add(localData.eventDuration, 'm').format("YYYY-MM-DDTHH:mm:ss")}Z`);
 }
-onBeforeMount(async () => {
-    const getAllBooks = await getBookings();
-    bookingLists.value = await getAllBooks.json();
-    const getAllCategory = await getEventCategory();
-    categoryList.value = await getAllCategory.json();
-})
-
-// const createBooking = async (localDataInput) => {
-//     // export const createBooking = async (localData) => {
-//     const res = await fetch(`${import.meta.env.VITE_BASE_URL}/booking`, {
-//         method: "POST",
-//         headers: {
-//             "content-type": "application/json",
-//         },
-//         body: JSON.stringify({
-//             bookingName: localDataInput.bookingName,
-//             bookingEmail: localDataInput.bookingEmail,
-//             eventCategory: {
-//                 eventCategoryId: localDataInput.eventCategory.eventCategoryId,
-//             },
-//             eventStartTime: localDataInput.eventStartTime,
-//             // eventDuration: localDataInput.eventDuration,
-//             eventNotes: localDataInput.eventNotes,
-//         }),
-//     });
-//     if (res.status === 201) {
-//         alert(`Create successfully \n Category ID :  ${localData.eventCategory.eventCategoryId} \n Date : ${localData.eventStartTime} \n Booking name :  ${localData.bookingName}`)
-//         console.log(`Create successfully \n Category ID :  ${localDataInput.eventCategory.eventCategoryId} \n Date : ${localDataInput.eventStartTime} \n Booking name :  ${localDataInput.bookingName}`)
-//         localDataInput.bookingName = ""
-//         localDataInput.bookingEmail = ""
-//         categoryIndexSelect.value = undefined
-//         localDataInput.eventDuration = ""
-//         dateIndexSelect.value = localPresentTime
-//         localDataInput.eventNotes = ""
-//     } else {
-//         console.log("error , failed to created");
-//     }
-//     createDialog.value = !createDialog.value
-// };
-
-const createBookingEvent = async (localDataInput) => {
-    // export const createBooking = async (localData) => {
-    const res = await createBooking(localDataInput);
-    if (res.status === 201) {
-        alert(`Create successfully \n Category ID :  ${localData.eventCategory.eventCategoryId} \n CategoryName : ${categoryList.value[categoryIndexSelect.value].eventCategoryName} \n Date : ${localData.eventStartTime} \n Booking name :  ${localData.bookingName}`)
-        console.log(`Create successfully \n Category ID :  ${localDataInput.eventCategory.eventCategoryId} \n Date : ${localDataInput.eventStartTime} \n Booking name :  ${localDataInput.bookingName}`)
-        localDataInput.bookingName = ""
-        localDataInput.bookingEmail = ""
-        categoryIndexSelect.value = undefined
-        localDataInput.eventDuration = ""
-        dateIndexSelect.value = localPresentTime
-        localDataInput.eventNotes = ""
-    } else {
-        console.log("error , failed to created");
-    }
-    createDialog.value = !createDialog.value
-};
-
 const changeCancelDialogTrue = () => {
     cancelDialog.value = true
 }
-
 const changeCancelDialogFalse = () => {
     cancelDialog.value = false
 }
-
-
-const checkOverLap = () => {
-    const localEndTime = `${moment.utc(localData.eventStartTime).add(localData.eventDuration, 'm').format("YYYY-MM-DDTHH:mm:ss")}Z`;
-    console.log("------------------------------------------------------------------");
-    for (let booking of bookingLists.value) {
-        if (localData.eventCategory.eventCategoryId === booking.eventCategoryId) {
-            if (((localData.eventStartTime >= booking.eventStartTime) && (localData.eventStartTime <= booking.eventEndTime))
-                || ((localEndTime >= booking.eventStartTime) && (localEndTime <= booking.eventEndTime))
-                || (localData.eventStartTime <= booking.eventStartTime) && ((localEndTime) >= booking.eventEndTime)
-            ) {
-                // isOverlap.value
-                // console.log(isOverlap.value);
-                // console.log(booking);
-
-                // console.log("local start " + localData.eventStartTime)
-                // console.log(localEndTime);
-                // console.log("book start " + booking.eventStartTime)
-                // console.log("book end" + booking.eventEndTime)
-                console.log("overlap")
-            } else {
-
-                // console.log("local start " + localData.eventStartTime)
-                // console.log("local end " + localEndTime);
-                // console.log("book start " + booking.eventStartTime)
-                // console.log("book end" + booking.eventEndTime)
-                // console.log(booking);
-                console.log("not overlap")
-            }
-        }
-    }
-}
-
-const reset = () => {
-    localData.bookingName = ""
-    localData.bookingEmail = ""
-    categoryIndexSelect.value = undefined
-    localData.eventDuration = ""
-    dateIndexSelect.value = localPresentTime
-    localData.eventNotes = ""
-    cancelDialog.value = !cancelDialog.value
-}
-
 const closeConfirmDialog = () => {
     createDialog.value = false
 }
 
+//check all input is correct to create
 const changeConfirmDialog = () => {
-    // const localEndTime = `${moment.utc(localData.eventStartTime).add(localData.eventDuration, 'm').format("YYYY-MM-DDTHH:mm:ss")}Z`;
-    // console.log("------------------------------------------------------------------");
     isInvalid.value = false
     if ((localData.bookingName.trim() == "" || localData.bookingName.length > 100)
         || (localData.bookingEmail.trim() == "" || localData.bookingEmail.length > 100)
@@ -194,24 +76,18 @@ const changeConfirmDialog = () => {
         console.log("second if");
     }
     console.log("not overlap and isInvalid " + isInvalid.value);
-
 }
-
 
 const isInputName = computed(() => {
     return (isInvalid.value && localData.bookingName.trim() == "");
-
 });
 const isInputNameOver = computed(() => {
     return (isInvalid.value && localData.bookingName.length > 100);
 });
-
 const isInputEmail = computed(() => {
     return isInvalid.value && localData.bookingEmail.trim() == ""
 });
-
 const isInputEmailVaild = computed(() => {
-    // var validRegex = /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/;
     if (localData.bookingEmail.trim() == "" || localData.bookingEmail.trim() == null) {
         return '';
     }
@@ -219,56 +95,74 @@ const isInputEmailVaild = computed(() => {
         return isInvalid.value && (!(localData.bookingEmail.match(regexEmail)));
     }
 });
-
 const isInputEmailOver = computed(() => {
     return isInvalid.value && localData.bookingEmail.length > 100;
 });
-
 const isInputCategory = computed(() => {
     return ((categoryIndexSelect.value == undefined));
 });
-
 const isInputNotes = computed(() => {
     return (isInvalid.value && localData.eventNotes.length > 500);
 });
-
 const isInputTimeOld = computed(() => {
     return (isInvalid.value && (new Date(dateIndexSelect.value).toISOString() < new Date().toISOString()));
 });
 
+//check overlap 
 const isInputTime = computed(() => {
     const localEndTime = `${moment.utc(localData.eventStartTime).add(localData.eventDuration, 'm').format("YYYY-MM-DDTHH:mm:ss")}Z`;
-    // console.log("------------------------------------------------------------------");
     for (let booking of bookingLists.value) {
         if (localData.eventCategory.eventCategoryId === booking.eventCategoryId) {
-            // if (((localData.eventStartTime >= booking.eventStartTime) && (localData.eventStartTime <= booking.eventEndTime))
-            //     || ((localEndTime >= booking.eventStartTime) && (localEndTime <= booking.eventEndTime))
-            //     || (localData.eventStartTime <= booking.eventStartTime) && ((localEndTime) >= booking.eventEndTime)
-            //     // || (new Date(dateIndexSelect.value).toISOString() < new Date().toISOString())
-            // ) {
             if ((localData.eventStartTime <= booking.eventEndTime) && (localEndTime >= booking.eventStartTime)) {
                 isOverlap.value = true
                 isInvalid.value = true
-                // console.log("local start " + localData.eventStartTime)
-                // console.log("local end " + localEndTime);
-                // console.log("book start " + booking.eventStartTime)
-                // console.log("book end " + booking.eventEndTime)
                 console.log("overlap")
                 break;
             } else {
                 isOverlap.value = false
-                // console.log("local start " + localData.eventStartTime)
-                // console.log("local end " + localEndTime);
-                // console.log("book start " + booking.eventStartTime)
-                // console.log("book end " + booking.eventEndTime)
                 console.log("not overlap")
             }
         }
-
     }
     console.log("overlap value " + isOverlap.value);
     return (isInvalid.value && isOverlap.value)
 });
+
+const reset = () => {
+    localData.bookingName = ""
+    localData.bookingEmail = ""
+    categoryIndexSelect.value = undefined
+    localData.eventDuration = ""
+    dateIndexSelect.value = localPresentTime
+    localData.eventNotes = ""
+    cancelDialog.value = !cancelDialog.value
+}
+
+//create new booking event
+const createBookingEvent = async (localDataInput) => {
+    const res = await createBooking(localDataInput);
+    if (res.status === 201) {
+        alert(`Create successfully \n Category ID :  ${localData.eventCategory.eventCategoryId} \n CategoryName : ${categoryList.value[categoryIndexSelect.value].eventCategoryName} \n Date : ${localData.eventStartTime} \n Booking name :  ${localData.bookingName}`)
+        console.log(`Create successfully \n Category ID :  ${localDataInput.eventCategory.eventCategoryId} \n Date : ${localDataInput.eventStartTime} \n Booking name :  ${localDataInput.bookingName}`)
+        localDataInput.bookingName = ""
+        localDataInput.bookingEmail = ""
+        categoryIndexSelect.value = undefined
+        localDataInput.eventDuration = ""
+        dateIndexSelect.value = localPresentTime
+        localDataInput.eventNotes = ""
+    } else {
+        console.log("error , failed to created");
+    }
+    createDialog.value = !createDialog.value
+};
+
+//fetch data
+onBeforeMount(async () => {
+    const getAllBooks = await getBookings();
+    bookingLists.value = await getAllBooks.json();
+    const getAllCategory = await getEventCategory();
+    categoryList.value = await getAllCategory.json();
+})
 
 </script>
  
@@ -280,13 +174,10 @@ const isInputTime = computed(() => {
         <div class="w-[80%] m-auto h-auto mb-24">
             <div class="bg-white text-xl rounded-xl font-bold">
                 <div class="m-auto w-1/2 text-center pt-5">Enter Your Details
-                    <!-- <button @click="checkOverLap"> aaa </button>
-                    <button @click="clickCheck"> sssssssssssssssssss </button> -->
                 </div>
                 <div class="grid grid-flow-row grid-cols-9 p-5 gap-3">
                     <div class="row-start-1 col-start-1 col-span-3 ">Scheduled Category :</div>
                     <div class="row-start-2 col-start-1 col-end-4 col-span-3">
-                        <!-- <select class="bg-gray-200 rounded w-full" v-model="CategorySelect" @change="hanleSelcet()"> -->
                         <select class="bg-gray-200 rounded w-full border" v-model="categoryIndexSelect"
                             :style="{ 'border-color': isInputCategory ? 'red' : 'white' }" @change="handleSelect()">
                             <option v-for="(res, indexs) in categoryList" :value="indexs" v-bind:key="indexs">{{
@@ -298,7 +189,6 @@ const isInputTime = computed(() => {
                         </label>
                     </div>
                     <div class="row-start-1 col-start-7 col-span-1 ">
-                        <!-- <div v-if="">Name is null</div>  -->
                         Name :
                     </div>
                     <div class="row-start-1 col-start-9 col-span-1 text-right text-gray-400">
@@ -380,8 +270,8 @@ const isInputTime = computed(() => {
                 </div>
                 <Cancel v-if="cancelDialog" @onClickCancelNo="changeCancelDialogFalse" @onClickCancelYes="reset" />
 
-                <Confirm v-if="createDialog" @onClickCreateNo="closeConfirmDialog"
-                    @onClickCreateYes="createBookingEvent(localData)" />
+                <Confirm v-if="createDialog" @onClickConfirmNo="closeConfirmDialog"
+                    @onClickConfirmYes="createBookingEvent(localData)" />
             </div>
         </div>
         <NavbarBottom />

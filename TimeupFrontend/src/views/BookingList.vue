@@ -7,112 +7,100 @@ import FilterBar from "../components/FilterBar.vue"
 import { getBookings, getEventCategory } from '../stores/book.js';
 import moment from 'moment';
 
-const bookings = ref([]);
-const reBooks = computed(() => bookings.value)
-const allBooking = ref();
+const bookingLists = ref([]);
 const categoryLists = ref([]);
 const statusScheduledBL = ref();
-// const eventStartTime = "2022-06-27 02:30";
 const dates = moment().local().format("YYYY-MM-DD HH:mm");
-// const startTimes = moment.utc(eventStartTime).format("h:mm");
-console.log(dates);
-// console.log(startTimes);
 
-onBeforeMount(async () => {
-  const getAllBooks = await getBookings();
-  bookings.value = await getAllBooks.json();
-  bookings.value = descOrder();
-  // allBooking.value = await getAllBooks.json();
-  const getAllCategory = await getEventCategory();
-  categoryLists.value = await getAllCategory.json();
-
-  bookings.value.map((s) => {
-    s.statusClickSeeDetails = ref(false)
-    //  s.statusClickDelete = ref(false)
-
-    //  s.statusClickEdit = ref(false)
-    //  s.statusCancelEdit = ref(false)
-    //  s.statusConfirmEdit = ref(false)
-
-    //  s.statusClickDelete = ref(false)
-    //  s.statusCancelEdit = ref(false)
-    //  s.statusConfirmEdit = ref(false)
-  })
-})
-
+// ---------------------------- filter data is change real-time ----------------------------------------
+//delete data
 const filterList = (idDeleteFromLoop) => {
-  bookings.value = bookings.value.filter((BookingInBookings) => (BookingInBookings.idBooking != idDeleteFromLoop))
+  bookingLists.value = bookingLists.value.filter((BookingInBookings) => (BookingInBookings.idBooking != idDeleteFromLoop))
 }
-
+//edit data
 const filterEditBooking = (editId) => {
-  bookings.value = bookings.value.map((booking) =>
+  bookingLists.value = bookingLists.value.map((booking) =>
     booking.idBooking === editId.idBooking
       ? { ...booking, eventStartTime: editId.eventStartTime, eventNotes: editId.eventNotes }
       : booking
   )
   console.log(editId);
 }
+// ---------------------------- filter data is change real-time ----------------------------------------
 
+
+// ---------------------------- filter-bar ----------------------------------------
 const filterBookFromCategory = async (filterData) => {
   statusScheduledBL.value = "No Scheduled Events"
   const getAllBooks = await getBookings();
-  bookings.value = await getAllBooks.json();
-  bookings.value = descOrder();
-  bookings.value = bookings.value.filter((booking) => {
+  bookingLists.value = await getAllBooks.json();
+  bookingLists.value = descOrder();
+  bookingLists.value = bookingLists.value.filter((booking) => {
     return booking.eventCategoryId == filterData
   })
   console.log("fildata" + filterData);
 }
-
 const filterAllEvent = async () => {
   statusScheduledBL.value = "No Scheduled Events";
   const getAllBooks = await getBookings();
-  bookings.value = await getAllBooks.json();
-  bookings.value = descOrder();
-  bookings.value = bookings.value;
+  bookingLists.value = await getAllBooks.json();
+  bookingLists.value = descOrder();
+  bookingLists.value = bookingLists.value;
 }
-
 const filterPastEvent = async () => {
   statusScheduledBL.value = "No Past Events"
   const getAllBooks = await getBookings();
-  bookings.value = await getAllBooks.json();
-  bookings.value = descOrder();
-  bookings.value = bookings.value.filter((booking) => {
+  bookingLists.value = await getAllBooks.json();
+  bookingLists.value = descOrder();
+  bookingLists.value = bookingLists.value.filter((booking) => {
     return (moment(booking.eventStartTime).local().format("YYYY-MM-DD HH:mm") < dates)
   })
 }
-
 const filterUpComingEvent = async () => {
   statusScheduledBL.value = "No On-Going";
-  bookings.value = ascOrder();
+  bookingLists.value = ascOrder();
   const getAllBooks = await getBookings();
-  bookings.value = await getAllBooks.json();
-  bookings.value = bookings.value.filter((booking) => {
+  bookingLists.value = await getAllBooks.json();
+  bookingLists.value = bookingLists.value.filter((booking) => {
     return (moment(booking.eventStartTime).local().format("YYYY-MM-DD HH:mm") >= dates)
   })
 }
-
 const filterByDateTime = async (time) => {
   statusScheduledBL.value = "No Scheduled Events"
   const getAllBooks = await getBookings();
-  bookings.value = await getAllBooks.json();
-  bookings.value = ascOrder();
-  bookings.value = bookings.value.filter((booking) => {
+  bookingLists.value = await getAllBooks.json();
+  bookingLists.value = ascOrder();
+  bookingLists.value = bookingLists.value.filter((booking) => {
     return (moment(booking.eventStartTime).local().format("YYYY-MM-DD") == time);
   })
 }
+// ---------------------------- filter-bar ----------------------------------------
 
+//order data
 const ascOrder = () =>
-  bookings.value.sort(
+  bookingLists.value.sort(
     (a, b) => new Date(a.eventStartTime) - new Date(b.eventStartTime)
   );
-
-
 const descOrder = () =>
-  bookings.value.sort(
+  bookingLists.value.sort(
     (a, b) => new Date(b.eventStartTime) -
-     new Date(a.eventStartTime)
+      new Date(a.eventStartTime)
   );
+
+//fetch data
+onBeforeMount(async () => {
+  const getAllBooks = await getBookings();
+  bookingLists.value = await getAllBooks.json();
+  bookingLists.value = descOrder();
+  const getAllCategory = await getEventCategory();
+  categoryLists.value = await getAllCategory.json();
+
+  bookingLists.value.map((booking) => {
+    booking.statusClickSeeDetails = ref(false)
+    booking.statusClickSeeDetails = ref(false)
+    booking.statusClickDelete = ref(false)
+  })
+})
 
 </script>
 <template>
@@ -122,16 +110,10 @@ const descOrder = () =>
       <h1 class="uppercase font-bold text-[#ffffff] text-4xl">Booking Lists</h1>
     </div>
 
-    <!-- <div v-if="bookings == ''" class="flex flex-warp justify-center bg-gray-800 text-white text-xl">
-      No scheduled Events
-    </div> -->
     <FilterBar :categorys="categoryLists" @getChageCategory="filterBookFromCategory" @getAllEvent="filterAllEvent"
       @getPastEvent="filterPastEvent" @getUpComingEvent="filterUpComingEvent" @getDateTime="filterByDateTime" />
 
-    <!-- <LoopBookingList :statusScheduled="statusScheduledBL" :bookings="bookings.sort(
-      (a, b) => new Date(b.eventStartTime) - new Date(a.eventStartTime)
-    )" @idDialogDetails="filterList" @EditIdFromDialog="filterEditBooking" /> -->
-    <LoopBookingList :statusScheduled="statusScheduledBL" :bookings="bookings" @idDialogDetails="filterList"
+    <LoopBookingList :statusScheduled="statusScheduledBL" :bookingLists="bookingLists" @idDialogDetails="filterList"
       @EditIdFromDialog="filterEditBooking" />
     <NavbarBottom />
   </div>

@@ -1,4 +1,6 @@
-//   //Get All Booking
+// ---------------------------------------- ALL FETCH API ----------------------------------------
+
+//Get All Booking
 export const getBookings = async () => {
   const res = await fetch(`${import.meta.env.VITE_BASE_URL}/booking`);
   if (res.status === 200) {
@@ -21,9 +23,7 @@ export const getBookingId = async (bookingId) => {
 };
 
 // create Booking
-// export const createBooking = async (localData,categoryIndexSelect,dateIndexSelect,localPresentTime) => {
 export const createBooking = async (localDataInput) => {
-  // export const createBooking = async (localData) => {
   const res = await fetch(`${import.meta.env.VITE_BASE_URL}/booking`, {
     method: "POST",
     headers: {
@@ -36,7 +36,6 @@ export const createBooking = async (localDataInput) => {
         eventCategoryId: localDataInput.eventCategory.eventCategoryId,
       },
       eventStartTime: localDataInput.eventStartTime,
-      // eventDuration: localDataInput.eventDuration,
       eventNotes: localDataInput.eventNotes,
     }),
   });
@@ -58,22 +57,15 @@ export const editBooking = async (editData) => {
         "content-type": "application/json",
       },
       body: JSON.stringify({
-        // idBooking: editData.idBooking,
-        // bookingName: editData.bookingName,
-        // bookingEmail: editData.bookingEmail,
-        // eventCategory: { eventCategoryId: editData.eventCategory.eventCategoryId },
         eventStartTime: editData.eventStartTime,
-        // eventDuration: editData.eventDuration,
         eventNotes: editData.eventNotes,
       }),
     }
   );
-  // console.log(editData.eventStartTime);
   if (res.status === 200) {
     console.log("edited successfully");
     return res;
   } else {
-    // bookingEdit.createDialog = !bookingEdit.createDialog;
     console.log("error, cannot be added");
   }
 };
@@ -87,11 +79,8 @@ export const removeBooking = async (deleteBookingId, booking, loopBooking) => {
     }
   );
   if (res.status === 200) {
-    // bookingAll.value = bookingAll.value.filter((BookingInBookings) => (BookingInBookings.idBooking != deleteBookingId))
     booking.statusClickDelete = !booking.statusClickDelete;
     loopBooking.statusClickSeeDetails = !loopBooking.statusClickSeeDetails;
-    // emits('idConfirmDelete', deleteBookingId)
-    // location.reload();
     console.log("deleted success");
   } else {
     console.log("error , cannot delete");
