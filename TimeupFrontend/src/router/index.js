@@ -5,7 +5,7 @@ import About from "../views/About.vue";
 import Reserve from "../views/Reserve.vue";
 import CategoryList from "../views/CategoryList.vue";
 
-const history = createWebHistory("/sy5");
+const history = createWebHistory(`${import.meta.env.VITE_ROUTER_URL}`);
 const routes = [
     {
         path: "/",
