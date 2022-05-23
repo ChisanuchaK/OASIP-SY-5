@@ -12,6 +12,8 @@ services:
 
   backend:
     container_name: backend
+    ports:
+      - 8080:8080
     image: quay.io/chisanuchakim/oasip-sy-5-backend
     restart: on-failure
     depends_on:
