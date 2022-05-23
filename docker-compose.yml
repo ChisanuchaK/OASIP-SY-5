@@ -2,8 +2,6 @@ version: '3.3'
 services:
   mysql:
     container_name: db
-    ports:
-      - 3306:3306
     image: docker.io/mysql:8.0
     restart: always
     volumes:
@@ -14,8 +12,6 @@ services:
 
   backend:
     container_name: backend
-    ports:
-      - 8080:8080
     image: quay.io/chisanuchakim/oasip-sy-5-backend
     restart: on-failure
     depends_on:
