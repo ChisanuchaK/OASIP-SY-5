@@ -5,11 +5,10 @@ import infoVue from '../components/info.vue';
 </script>
  
 <template>
-    <NavbarTop/>
-    <NavbarBottom/>
-  <infoVue/>
+  <NavbarTop />
+  <NavbarBottom />
+  <infoVue />
 </template>
  
 <style>
-
 </style>

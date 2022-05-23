@@ -1,30 +1,33 @@
 <script setup>
 import { ref, reactive, onBeforeMount, computed, onBeforeUpdate } from "vue";
-import moment from "moment";
 import Cancel from "./Cancel.vue";
 import Confirm from "./Confirm.vue";
-import {editCategory} from "../stores/book.js";
+import { editCategory } from "../stores/book.js";
 const emits = defineEmits(["EditCategoryId"]);
 const props = defineProps({
     categorys: {
-        type: [Object],
+        type: Object,
         default: {}
     },
     categoryLists: {
-        type: [Object],
+        type: Object,
         default: {}
     }
 });
 
+//some category form for-loop 
 const categoryList = computed(() => props.categorys);
 const category = ref(categoryList);
+
+//all categorys 
 const categoryListAlls = computed(() => props.categoryLists);
 const categoryAlls = ref(categoryListAlls);
+
 const isInvalid = ref(false);
 const isDuplicate = ref(false);
 
 let editCategoryData = reactive({
-    eventCategoryId : category.value.eventCategoryId,
+    eventCategoryId: category.value.eventCategoryId,
     eventCategoryName: category.value.eventCategoryName,
     eventDuration: category.value.eventDuration,
     eventCategoryDescription: category.value.eventCategoryDescription
@@ -54,13 +57,13 @@ const isInvalidInputDurationMaxMin = computed(() => {
     return isInvalid.value && (editCategoryData.eventDuration > 480 || editCategoryData.eventDuration < 1);
 });
 
-const isInputCategoryNameDupplicate = computed(() => {
+//check categoryname is duplicate?
+const isInputCategoryNameDuplicate = computed(() => {
     for (let categorySome of categoryAlls.value) {
         if (editCategoryData.eventCategoryName.trim() == category.value.eventCategoryName.trim()) {
             break;
         }
         if (new String(editCategoryData.eventCategoryName.toLowerCase()).valueOf() == new String(categorySome.eventCategoryName.toLowerCase()).valueOf()) {
-        // if (editCategoryData.eventCategoryName.toLowerCase().includes(categorySome.eventCategoryName.toLowerCase()) ) {
             console.log("Duplicate name !");
             isDuplicate.value = true
             isInvalid.value = true
@@ -78,27 +81,21 @@ const isInputCategoryNameDupplicate = computed(() => {
 const closeEdit = (event, category) => {
     if (event.target.id == "modalCategoryEdit") {
         category.statusCancelDialog = true;
-        // emits("onClickCancelEdit")
     }
 }
-
 const changeCancelDialogFalse = (category) => {
     category.statusCancelDialog = false;
 }
-
 const changeCancelDialogTrue = (category) => {
     category.statusCancelDialog = true;
 }
-
 const changeEditDialogFalse = (category) => {
     category.statusCancelDialog = !category.statusCancelDialog;
     category.statusEditDialog = !category.statusEditDialog;
 }
-
 const changeCreateDialogFalse = (category) => {
     category.statusConfirmDialog = false
 }
-
 const changeCreateDialogTrue = (category) => {
     isInvalid.value = false
     if (editCategoryData.eventCategoryName == "" || editCategoryData.eventCategoryName == null
@@ -117,60 +114,31 @@ const changeCreateDialogTrue = (category) => {
     }
 }
 
-// const confirmEditDialog = (category) => {
-
-//     category.statusConfirmDialog = !category.statusConfirmDialog;
-//     category.statusEditDialog = !category.statusEditDialog;
-// }
-
-const editCategoryEvent = async(editCategoryitem, category)=>{
+//put category is edited 
+const editCategoryEvent = async (editCategoryitem, category) => {
     const editEvent = await editCategory(editCategoryitem);
-        if (editEvent.status === 200) {
-    category.statusConfirmDialog = !category.statusConfirmDialog;
-    category.statusEditDialog = !category.statusEditDialog;
-        emits('EditCategoryId', editCategoryitem)
-        console.log('edited successfully')
+    if (editEvent.status === 200) {
+        alert('Edit Category Success!');
+        category.statusConfirmDialog = !category.statusConfirmDialog;
+        category.statusEditDialog = !category.statusEditDialog;
+        category.statusEditSuccesDialog = !category.statusEditSuccesDialog;
+        emits('EditCategoryId', editCategoryitem);
+        console.log('edited successfully');
+    }
 }
-}
-// const editCategory = async (editCategory, category) => {
-//     const res = await fetch(`${import.meta.env.VITE_BASE_URL}/admin/event-category/${editCategory.eventCategoryId}`, {
-//         method: 'PUT',
-//         headers: {
-//             'content-type': 'application/json'
-//         },
-//         body: JSON.stringify({
-//             eventCategoryName: editCategory.eventCategoryName,
-//             eventDuration: editCategory.eventDuration,
-//             eventCategoryDescription: editCategory.eventCategoryDescription
-//         })
-//     })
-//     // console.log(editData.eventStartTime);
-//     if (res.status === 200) {
-//         category.statusConfirmDialog = !category.statusConfirmDialog;
-//     category.statusEditDialog = !category.statusEditDialog;
-//         // emits('EditbookingId', editData)
-//         console.log('edited successfully')
-//     } else {
-//         // bookingEdit.createDialog = !bookingEdit.createDialog;
-//         console.log('error, cannot be added')
-//     }
-// }
 
 </script>
 
 <template>
     <div id="modalCategoryEdit" @click="closeEdit($event, category)"
         class="font overflow-x-hidden overflow-y-auto fixed inset-0 z-10 outline-none focus:outline-none justify-center items-center flex bg-black bg-opacity-20">
-        <!-- <div class=" ">
-        {{bookings.bookings}}
-    </div> -->
         <div class="">
             <div class="relative bg-white rounded-lg text-xl p-5 px-12">
                 <div class="w-36 m-auto text-1xl text-center">
                     Category ID : {{ category.eventCategoryId }}
 
                 </div>
-                <img class="absolute top-0 right-0 h-16 w-16 text-4xl text-lg font-normal h-[30px] w-[30px] mt-3 mr-7 cursor-pointer"
+                <img class="absolute top-0 right-0 text-4xl text-lg font-normal h-[30px] w-[30px] mt-3 mr-7 cursor-pointer"
                     @click="changeCancelDialogTrue(category)" src="/images/cancel.png" alt="cancel" />
                 <div class="grid grid-flow-row grid-cols-2 p-1 gap-1 pt-5 text-center">
                     <div class="row-start-1 col-start-1 col-span-2 p-1 rounded-lg w-[50%] m-auto">
@@ -186,7 +154,7 @@ const editCategoryEvent = async(editCategoryitem, category)=>{
                     </div>
                     <div class="row-start-2 col-start-1 col-span-2 p-1 rounded-lg w-[50%] m-auto">
                         <input class="rounded text-center border bg-gray-200 w-full" type="text"
-                            :style="{ 'border-color': isInvalidInputNameLength || isInvalidInputName || isInputCategoryNameDupplicate ? 'red' : 'white' }"
+                            :style="{ 'border-color': isInvalidInputNameLength || isInvalidInputName || isInputCategoryNameDuplicate ? 'red' : 'white' }"
                             v-model="editCategoryData.eventCategoryName">
                         <div class="text-red-500 text-center m-auto" v-if="isInvalidInputName">
                             please enter category name !
@@ -194,7 +162,7 @@ const editCategoryEvent = async(editCategoryitem, category)=>{
                         <div class="text-red-500 text-center m-auto" v-if="isInvalidInputNameLength">
                             over limit of category name !
                         </div>
-                        <div class="text-red-500 text-center m-auto" v-if="isInputCategoryNameDupplicate">
+                        <div class="text-red-500 text-center m-auto" v-if="isInputCategoryNameDuplicate">
                             Duplicate category name !
                         </div>
                     </div>
@@ -253,8 +221,9 @@ const editCategoryEvent = async(editCategoryitem, category)=>{
                     <Cancel v-if="category.statusCancelDialog" @onClickCancelNo="changeCancelDialogFalse(category)"
                         @onClickCancelYes="changeEditDialogFalse(category)" />
 
-                    <Confirm v-if="category.statusConfirmDialog" @onClickCreateNo="changeCreateDialogFalse(category)"
-                        @onClickCreateYes="editCategoryEvent(editCategoryData,category)" />
+                    <Confirm v-if="category.statusConfirmDialog" @onClickConfirmNo="changeCreateDialogFalse(category)"
+                        @onClickConfirmYes="editCategoryEvent(editCategoryData, category)" />
+
                 </div>
             </div>
         </div>

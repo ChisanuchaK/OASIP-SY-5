@@ -1,112 +1,67 @@
 <script setup>
-import { ref, onBeforeMount, computed, popScopeId } from 'vue'
+import { ref, onBeforeMount, computed } from 'vue'
 import moment from 'moment';
 import DialogDetails from './DialogDetails.vue';
 import ConfirmDelete from './ConfirmDelete.vue';
-import { getEventCategory,removeBooking } from "../stores/book.js";
+import { getEventCategory, removeBooking } from "../stores/book.js";
 
 const emits = defineEmits(["idDialogDetails", "EditIdFromDialog"])
 const props = defineProps({
-    bookings: {
+    bookingLists: {
         type: [Object],
         require: true
     },
-    statusScheduled:{
+    statusScheduled: {
         type: String,
         default: "No Scheduled Events"
-    } 
+    }
 })
 
-const bookingList = computed(() => props.bookings);
-console.log(bookingList);
+const bookingList = computed(() => props.bookingLists);
 const categorys = ref([]);
-const indexSelect = ref();
-// const categoryColors = ref([])
-// const categoryNames = ref([])
 
-// const bookId = ref([]);
-// const bookingsDetails = ref([]);
+//---------------------------pop-up-dialog-------------------------------------
+const changeSeeDetailsDialog = (booking) => {
+    booking.statusClickSeeDetails = !booking.statusClickSeeDetails
+    console.log(booking.statusClickSeeDetails);
+}
+const changeDeleteDialog = (booking) => {
+    booking.statusClickDelete = !booking.statusClickDelete
+    console.log(booking.statusClickDelete);
+}
+//---------------------------pop-up-dialog-------------------------------------
 
-onBeforeMount(async () => {
-    const getAllCategory = await getEventCategory();
-    categorys.value = await getAllCategory.json();
-    console.log(categorys.value[0].eventCategoryName);
-
-    // categorys.forEach(category => { 
-    //     categoryColors.value.push(category.eventColor) 
-    // });
-    // console.log(categoryColors.value);
-
-    // categorys.forEach(category => { 
-    //     categoryNames.value.push(category.eventCategoryName) 
-    // });
-    // console.log(categoryNames.value);
-
-    // const getColor = (()=>{})
-
-    // bookingList.value.forEach(bookId => { bookingsDetails.value.push(getBookingId(bookId.idBooking))    
-    // });
-
-    //ใช้ไม่ได้
-    // bookingsDetails.value = getBookingId(bookingList[0].idBooking)
-
-    // console.log(bookingsDetails.value);
-    // console.log(bookingsDetails.value);
-    // bookingsDetails.value = await getBookingId(res[0].idBooking)
-
-
-    // setTimeout(1,()=>console.log("aa"+superList))
-    // console.log(" Show Bookings "+ props.bookings);
-})
-
+//set color
 const colorBg = (booking) => {
     for (let category of categorys.value) {
         if (booking.eventCategoryId == category.eventCategoryId) {
             return category.eventColor
         }
     }
-    // for(let i = 0;i<categorys.value.length;i++){
-    //     if(booking == categorys.value[i].eventCategoryName){
-    //         // console.log(categorys.value[i].eventColor);
-    //       return categorys.value[i].eventColor
-    //     }
-    // }
-
-    //    if(booking == categorys.value.eventCategoryName){
-    // console.log(booking.eventCategoryName);
-    // console.log(categorys.value.eventColor+"aaaaaa");
-
-    // } 
-    // console.log(booking);
-    // console.log(categoryName);
 }
-
-const changeSeeDetailsDialog = (booking) => {
-    booking.statusClickSeeDetails = !booking.statusClickSeeDetails
-    console.log(booking.statusClickSeeDetails);
-    // dialogs.value = !dialogs.value
-    // console.log(dialogs.value);
-}
-
-const changeDeleteDialog = (booking) => {
-    booking.statusClickDelete = !booking.statusClickDelete
-    console.log(booking.statusClickDelete);
-    // dialogs.value = !dialogs.value
-    // console.log(dialogs.value);
-}
-
+// get delete booking id to send back
 const getIdFromDialog = (idDelete) => {
     emits('idDialogDetails', idDelete)
 }
 
+// get edit booking id to send back
 const getEditIdFromDialog = (EditId) => {
     emits('EditIdFromDialog', EditId)
 }
 
+// remove booking 
 const removeBookingEvent = async (deleteBookingId, booking, loopBooking) => {
+    alert('Delete Booking Success!');
     emits('idDialogDetails', deleteBookingId)
     await removeBooking(deleteBookingId, booking, loopBooking)
 }
+
+//fetch data
+onBeforeMount(async () => {
+    const getAllCategory = await getEventCategory();
+    categorys.value = await getAllCategory.json();
+    console.log(categorys.value[0].eventCategoryName);
+})
 
 </script>
  
@@ -114,15 +69,11 @@ const removeBookingEvent = async (deleteBookingId, booking, loopBooking) => {
 
     <div>
         <div>
-            <!-- <div class="text-center text-xl mt-24 mb-10">
-                <h1 class="uppercase font-bold text-[#ffffff] text-4xl">Booking Lists</h1>
-            </div> -->
-
-            <div v-if="bookings == ''" class="flex flex-warp justify-center bg-gray-800 text-white text-xl">
-                {{props.statusScheduled}}
+            <div v-if="bookingLists == ''" class="flex flex-warp justify-center bg-gray-800 text-white text-xl">
+                {{ props.statusScheduled }}
             </div>
 
-            <div v-if="!(bookings == '')" class="grid grid-flow-row grid-cols-1 mb-24">
+            <div v-if="!(bookingLists == '')" class="grid grid-flow-row grid-cols-1 mb-24">
                 <div class="w-[90%] m-auto mb-1 bg-[#E2DDDD] rounded-lg  p-2 text-center px-2">
                     <div class="grid grid-flow-row grid-cols-12 flex p-1 ">
                         <div class="row-start-1 col-start-1 col-end-3 col-span-2  uppercase text-lg font-bold">date
@@ -138,7 +89,6 @@ const removeBookingEvent = async (deleteBookingId, booking, loopBooking) => {
                     </div>
                 </div>
                 <div class="overflow-y-auto overflow-x-hidden h-[460px] mr-[95px]">
-                <!-- <div class="overflow-y-auto overflow-x-hidden 2xl:h-[500px] 2xl:mr-[3.25%] mr-[95px] h-[460px]"> -->
                     <div v-for="(booking, index) in bookingList" :key="index"
                         class="mx-24 my-1 bg-white rounded-lg text-xl w-[95%]">
                         <div class="grid grid-flow-row grid-cols-12 flex py-3 text-center px-2">
@@ -179,8 +129,6 @@ const removeBookingEvent = async (deleteBookingId, booking, loopBooking) => {
                                 class="row-start-1 col-start-12 bg-[red] text-white rounded-lg uppercase w-11/12 h-full m-auto"
                                 @click="changeDeleteDialog(booking)">delete</button>
 
-
-                            <!-- <DialogDetails v-if="booking.statusClickSeeDetails" @onCloseDetails="changeSeeDetailsDialog(booking)" :bookings="booking"/> -->
                             <DialogDetails v-if="booking.statusClickSeeDetails"
                                 @onCloseDetails="changeSeeDetailsDialog(booking)" :bookings="booking"
                                 @idConfirmDelete="getIdFromDialog" @EditIdFromEdit="getEditIdFromDialog" />
