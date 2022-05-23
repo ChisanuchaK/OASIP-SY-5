@@ -1,4 +1,4 @@
-package sit.int221.TimeUpBackend.DTO;
+package sit.int221.TimeUpBackend.DTOS;
 
 
 import lombok.AllArgsConstructor;
@@ -7,7 +7,6 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.validation.constraints.Future;
-import javax.validation.constraints.FutureOrPresent;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import java.time.Instant;

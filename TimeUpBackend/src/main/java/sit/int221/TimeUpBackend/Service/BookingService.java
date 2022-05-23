@@ -2,16 +2,15 @@ package sit.int221.TimeUpBackend.Service;
 
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.server.ResponseStatusException;
-import sit.int221.TimeUpBackend.DTO.*;
-import sit.int221.TimeUpBackend.Entity.Booking;
-import sit.int221.TimeUpBackend.Entity.EventCategory;
+import sit.int221.TimeUpBackend.DTOS.*;
+import sit.int221.TimeUpBackend.Entities.Booking;
+import sit.int221.TimeUpBackend.Entities.EventCategory;
 import sit.int221.TimeUpBackend.Repository.BookingRepository;
 import sit.int221.TimeUpBackend.Repository.EventCategoryRepository;
 
@@ -37,7 +36,11 @@ public class BookingService {
         Booking bookings= bookingRepository.findById(id).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
         return modelMapper.map(bookings , BookingMoreDetailDTO.class);
     }
-
+    public List<BookingDTO> getBookingByIdCategory(@PathVariable Integer id){
+            EventCategory eventCategory = eventCategoryRepository.findById(id).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
+            List<Booking> bookingList = bookingRepository.findAllByEventCategoryEventCategoryId(eventCategory.getEventCategoryId());
+        return bookingList.stream().map(e -> modelMapper.map(e, BookingDTO.class)).collect(Collectors.toList());
+    }
     // post
 
     public ResponseEntity create( BookingPOSTDTO newBooking) {

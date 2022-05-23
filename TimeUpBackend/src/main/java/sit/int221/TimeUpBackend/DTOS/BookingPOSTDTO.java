@@ -1,10 +1,10 @@
-package sit.int221.TimeUpBackend.DTO;
+package sit.int221.TimeUpBackend.DTOS;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import sit.int221.TimeUpBackend.Entity.EventCategory;
+import sit.int221.TimeUpBackend.Entities.EventCategory;
 
 import javax.validation.constraints.*;
 import java.time.Instant;

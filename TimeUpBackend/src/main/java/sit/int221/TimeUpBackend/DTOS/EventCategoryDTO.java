@@ -1,4 +1,4 @@
-package sit.int221.TimeUpBackend.DTO;
+package sit.int221.TimeUpBackend.DTOS;
 
 
 import lombok.AllArgsConstructor;

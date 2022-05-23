@@ -1,16 +1,10 @@
-package sit.int221.TimeUpBackend.Entity;
+package sit.int221.TimeUpBackend.Entities;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Getter;
 import lombok.Setter;
 
 import javax.persistence.*;
-import javax.validation.constraints.*;
-import java.sql.Time;
-import java.sql.Timestamp;
 import java.time.Instant;
-import java.util.Date;
 
 @Entity
 @Setter

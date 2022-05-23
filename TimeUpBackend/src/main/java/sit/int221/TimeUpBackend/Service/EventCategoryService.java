@@ -6,8 +6,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
-import sit.int221.TimeUpBackend.DTO.EventCategoryDTO;
-import sit.int221.TimeUpBackend.Entity.EventCategory;
+import sit.int221.TimeUpBackend.DTOS.EventCategoryDTO;
+import sit.int221.TimeUpBackend.Entities.EventCategory;
 import sit.int221.TimeUpBackend.Repository.EventCategoryRepository;
 
 import java.util.List;
@@ -21,6 +21,7 @@ public class EventCategoryService {
     public  List<EventCategory> getAllCategory(){
         return eventCategoryRepository.findAll();
     }
+
 
     public EventCategory create(EventCategory newEventCategory){
         return eventCategoryRepository.saveAndFlush(newEventCategory);

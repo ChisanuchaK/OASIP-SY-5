@@ -5,8 +5,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.*;
-import sit.int221.TimeUpBackend.DTO.*;
-import sit.int221.TimeUpBackend.Entity.Booking;
+import sit.int221.TimeUpBackend.DTOS.*;
 import sit.int221.TimeUpBackend.Service.BookingService;
 
 import javax.validation.Valid;
@@ -30,6 +29,11 @@ public class BookingController {
     @GetMapping("/{id}")
     public BookingMoreDetailDTO getBookingById(@PathVariable Integer id){
         return bookingService.getBookingDetailDTOById(id);
+    }
+
+    @GetMapping("/{id}/category")
+    public List<BookingDTO> getAllBookingByIdCategory(@PathVariable Integer id){
+        return bookingService.getBookingByIdCategory(id);
     }
 
     @PostMapping("")

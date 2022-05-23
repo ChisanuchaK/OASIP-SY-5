@@ -6,8 +6,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.*;
-import sit.int221.TimeUpBackend.DTO.EventCategoryDTO;
-import sit.int221.TimeUpBackend.Entity.EventCategory;
+import sit.int221.TimeUpBackend.DTOS.EventCategoryDTO;
+import sit.int221.TimeUpBackend.Entities.EventCategory;
 import sit.int221.TimeUpBackend.Service.EventCategoryService;
 
 import javax.validation.Valid;
