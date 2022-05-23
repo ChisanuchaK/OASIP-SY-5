@@ -18,7 +18,8 @@ const props = defineProps({
 
 const bookingToEdit = computed(() => props.bookingsDetailsEdit);
 const someBooking = ref(bookingToEdit);
-const note = ref(someBooking.value.eventNotes);
+const note = ref(someBooking.value.eventNotes == null ? "" : someBooking.value.eventNotes);
+
 
 const bookingPresentTime = ref(moment.utc(someBooking.value.eventStartTime).local().format("YYYY-MM-DDTHH:mm"));
 const categoryList = ref([]);
