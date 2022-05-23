@@ -44,6 +44,7 @@ export const createBooking = async (localDataInput) => {
     return res;
   } else {
     console.log("error , failed to created");
+    return res;
   }
 };
 

@@ -6,6 +6,7 @@ import Reserve from "../views/Reserve.vue";
 import CategoryList from "../views/CategoryList.vue";
 
 const history = createWebHistory(`${import.meta.env.VITE_ROUTER_URL}`);
+// const history = createWebHistory();
 const routes = [
     {
         path: "/",

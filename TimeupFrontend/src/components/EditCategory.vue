@@ -60,7 +60,8 @@ const isInvalidInputDurationMaxMin = computed(() => {
 //check categoryname is duplicate?
 const isInputCategoryNameDuplicate = computed(() => {
     for (let categorySome of categoryAlls.value) {
-        if (editCategoryData.eventCategoryName.trim() == category.value.eventCategoryName.trim()) {
+        // if (editCategoryData.eventCategoryName.trim() == category.value.eventCategoryName.trim()) {
+        if (editCategoryData.eventCategoryName.toLowerCase().trim() == category.value.eventCategoryName.toLowerCase().trim()) {
             break;
         }
         if (new String(editCategoryData.eventCategoryName.toLowerCase()).valueOf() == new String(categorySome.eventCategoryName.toLowerCase()).valueOf()) {
