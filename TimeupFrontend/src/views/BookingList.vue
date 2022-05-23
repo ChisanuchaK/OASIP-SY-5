@@ -61,6 +61,7 @@ const filterUpComingEvent = async () => {
   bookingLists.value = ascOrder();
   const getAllBooks = await getBookings();
   bookingLists.value = await getAllBooks.json();
+  bookingLists.value = ascOrder();
   bookingLists.value = bookingLists.value.filter((booking) => {
     return (moment(booking.eventStartTime).local().format("YYYY-MM-DD HH:mm") >= dates)
   })
