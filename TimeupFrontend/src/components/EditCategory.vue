@@ -133,7 +133,7 @@ const editCategoryEvent = async (editCategoryitem, category) => {
     <div id="modalCategoryEdit" @click="closeEdit($event, category)"
         class="font overflow-x-hidden overflow-y-auto fixed inset-0 z-10 outline-none focus:outline-none justify-center items-center flex bg-black bg-opacity-20">
         <div class="">
-            <div class="relative bg-white rounded-lg text-xl p-5 px-12">
+            <div class="relative bg-white rounded-lg text-xl p-6 px-12">
                 <div class="w-36 m-auto text-1xl text-center">
                     Category ID : {{ category.eventCategoryId }}
 
@@ -207,13 +207,16 @@ const editCategoryEvent = async (editCategoryitem, category) => {
                         </div>
                     </div>
                     <div class="row-start-9 mt-5 col-start-1">
-                        <button class="bg-[#499D6B] text-white rounded-lg w-6/12 h-full m-auto py-2"
+                        <button class="bg-[#499D6B] text-white rounded-lg w-6/12 h-9/12 m-auto py-2"
                             @click="[changeCreateDialogTrue(category)]">confirm</button>
+                            <div class="text-red-500 text-center m-auto" v-if="isInputCategoryNameDuplicate || isInvalidInputDurationMaxMin || isInvalidInputDurationisNaN || isInvalidInputDuration || isInvalidInputName || isInvalidInputNameLength || isInvalidInputDescription">
+                            *some input is invalid
+                        </div>
                     </div>
 
 
                     <div class="row-start-9 mt-5 col-start-2">
-                        <button class="bg-[#F97473] text-white rounded-lg w-6/12 h-full m-auto py-2"
+                        <button class="bg-[#F97473] text-white rounded-lg w-6/12 h-9/12 m-auto py-2"
                             @click="changeCancelDialogTrue(category)">cancel</button>
                     </div>
 
