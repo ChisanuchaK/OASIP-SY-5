@@ -2,6 +2,8 @@ version: '3.3'
 services:
   mysql:
     container_name: db
+    ports:
+      - 3306:3306
     image: docker.io/mysql:8.0
     restart: always
     volumes:
