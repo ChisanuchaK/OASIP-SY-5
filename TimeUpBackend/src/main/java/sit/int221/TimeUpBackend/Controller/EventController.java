@@ -6,7 +6,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.*;
 import sit.int221.TimeUpBackend.DTOS.*;
-import sit.int221.TimeUpBackend.Service.BookingService;
+import sit.int221.TimeUpBackend.Service.EventService;
 
 import javax.validation.Valid;
 import java.util.List;
@@ -15,42 +15,42 @@ import java.util.Map;
 import static sit.int221.TimeUpBackend.Controller.EventCategoryController.getStringStringMap;
 
 @RestController
-@RequestMapping("/api/booking")
-public class BookingController {
+@RequestMapping("/api/event")
+public class EventController {
 
     @Autowired
-    private BookingService bookingService;
+    private EventService eventService;
 
     @GetMapping("")
-    public List<BookingDTO> getAllBooking(){
-        return bookingService.getAllBooking();
+    public List<EventDTO> getAllEvent(){
+        return eventService.getAllEvent();
     }
 
     @GetMapping("/{id}")
-    public BookingMoreDetailDTO getBookingById(@PathVariable Integer id){
-        return bookingService.getBookingDetailDTOById(id);
+    public EventMoreDetailDTO getBEventById(@PathVariable Integer id){
+        return eventService.getEventDetailDTOById(id);
     }
 
     @GetMapping("/{id}/category")
-    public List<BookingDTO> getAllBookingByIdCategory(@PathVariable Integer id){
-        return bookingService.getBookingByIdCategory(id);
+    public List<EventDTO> getAllEventByIdCategory(@PathVariable Integer id){
+        return eventService.getEventByIdCategory(id);
     }
 
     @PostMapping("")
     @ResponseStatus(HttpStatus.CREATED)
-    public ResponseEntity createBooking(@Valid @RequestBody BookingPOSTDTO newBooking){
-        return bookingService.create(newBooking);
+    public ResponseEntity createEvent(@Valid @RequestBody EventPOSTDTO newBooking){
+        return eventService.create(newBooking);
     }
 
-    @DeleteMapping("/{idBooking}")
-    public  void DeleteBookingById(@PathVariable Integer idBooking){
-        bookingService.deleteById(idBooking);
+    @DeleteMapping("/{id}")
+    public  void DeleteEventById(@PathVariable Integer idBooking){
+        eventService.deleteById(idBooking);
     }
 
 
     @PutMapping("/{id}")
-    public ResponseEntity editBooking(@Valid @RequestBody BookingPUTDTO editBooking , @PathVariable int id ){
-        return bookingService.editBooking(editBooking , id);
+    public ResponseEntity editEvent(@Valid @RequestBody EventPUTDTO editBooking , @PathVariable int id ){
+        return eventService.editEvent(editBooking , id);
     }
 
     @ResponseStatus(HttpStatus.BAD_REQUEST)

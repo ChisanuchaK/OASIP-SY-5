@@ -2,7 +2,7 @@
 
 //Get All Booking
 export const getBookings = async () => {
-  const res = await fetch(`${import.meta.env.VITE_BASE_URL}/booking`);
+  const res = await fetch(`${import.meta.env.VITE_BASE_URL}/event`);
   if (res.status === 200) {
     console.log(res);
     return res;
@@ -12,7 +12,7 @@ export const getBookings = async () => {
 //GetBy BookingId
 export const getBookingId = async (bookingId) => {
   const res = await fetch(
-    `${import.meta.env.VITE_BASE_URL}/booking/${bookingId}`
+    `${import.meta.env.VITE_BASE_URL}/event/${bookingId}`
   );
   if (res.status === 200) {
     console.log(res);
@@ -24,7 +24,7 @@ export const getBookingId = async (bookingId) => {
 
 // create Booking
 export const createBooking = async (localDataInput) => {
-  const res = await fetch(`${import.meta.env.VITE_BASE_URL}/booking`, {
+  const res = await fetch(`${import.meta.env.VITE_BASE_URL}/event`, {
     method: "POST",
     headers: {
       "content-type": "application/json",
@@ -51,7 +51,7 @@ export const createBooking = async (localDataInput) => {
 // edit booking
 export const editBooking = async (editData) => {
   const res = await fetch(
-    `${import.meta.env.VITE_BASE_URL}/booking/${editData.idBooking}`,
+    `${import.meta.env.VITE_BASE_URL}/event/${editData.idBooking}`,
     {
       method: "PUT",
       headers: {
@@ -74,7 +74,7 @@ export const editBooking = async (editData) => {
 // Delete method
 export const removeBooking = async (deleteBookingId, booking, loopBooking) => {
   const res = await fetch(
-    `${import.meta.env.VITE_BASE_URL}/booking/${deleteBookingId}`,
+    `${import.meta.env.VITE_BASE_URL}/event/${deleteBookingId}`,
     {
       method: "DELETE",
     }

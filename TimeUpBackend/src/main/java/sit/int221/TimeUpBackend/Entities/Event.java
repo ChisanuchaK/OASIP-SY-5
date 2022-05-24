@@ -11,7 +11,7 @@ import java.time.Instant;
 @Getter
 @Table(name = "booking")
 
-public class Booking {
+public class Event {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "idbooking" , nullable = false)

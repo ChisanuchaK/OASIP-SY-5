@@ -13,19 +13,19 @@ import java.time.Instant;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class BookingMoreDetailDTO {
+public class EventDTO {
     private Integer idBooking;
     private Instant eventStartTime;
     private Integer eventDuration;
     @JsonIgnore
     private EventCategory eventCategory;
-    private String eventCategoryName;
     private String bookingName;
-    private String bookingEmail;
-    private String eventNotes;
     public String  getEventCategoryName(){
         return eventCategory.getEventCategoryName();
     }
-    public Integer getEventCategoryId(){return  eventCategory.getEventCategoryId();}
     public Integer getEventCategoryDuration(){return eventCategory.getEventDuration();}
-}
+    public Integer getEventCategoryId(){return  eventCategory.getEventCategoryId();}
+    public Instant getEventEndTime(){return  eventStartTime.plusMillis(eventDuration * 60000);}
+    }
+
+
