@@ -13,7 +13,7 @@ const categoryIndexSelect = ref();
 
 const localPresentTime = moment.utc().local().format("YYYY-MM-DDTHH:mm");
 const dateIndexSelect = ref(localPresentTime);
-const regexEmail = "[a-z0-9._%+-]+@[a-z0-9.-]+\\.[a-z]{2,3}";
+const regexEmail = "[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,3}";
 
 let localData = reactive({
     bookingName: "",

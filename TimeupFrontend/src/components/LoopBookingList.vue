@@ -107,7 +107,7 @@ onBeforeMount(async () => {
                                 }}
                             </div>
 
-                            <div class="row-start-1 col-start-5 col-end-7 p-1 mb-1.5 rounded-lg "
+                            <div class="row-start-1 col-start-5 col-end-7 p-1 mb-1.5 rounded-lg truncate"
                                 :style="[`background-color:${colorBg(booking)};`]">{{ booking.eventCategoryName
                                 }} </div>
 

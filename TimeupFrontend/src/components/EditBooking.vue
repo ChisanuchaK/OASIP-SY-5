@@ -18,7 +18,8 @@ const props = defineProps({
 
 const bookingToEdit = computed(() => props.bookingsDetailsEdit);
 const someBooking = ref(bookingToEdit);
-const note = ref(someBooking.value.eventNotes);
+const note = ref(someBooking.value.eventNotes == null ? "" : someBooking.value.eventNotes);
+
 
 const bookingPresentTime = ref(moment.utc(someBooking.value.eventStartTime).local().format("YYYY-MM-DDTHH:mm"));
 const categoryList = ref([]);
@@ -207,7 +208,7 @@ onBeforeMount(async () => {
                         EventNotes :
                     </div>
                     <div class="row-start-7 col-start-2 col-span-1 p-1 rounded-lg text-right text-gray-400">
-                        {{ note.length }}/500
+                        {{ note ? note.length : 0 }}/500
                     </div>
 
                     <div class="row-start-8 col-start-1 col-end-3 col-span-2">
