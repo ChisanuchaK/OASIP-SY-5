@@ -23,11 +23,11 @@ const categorys = ref([]);
 //---------------------------pop-up-dialog-------------------------------------
 const changeSeeDetailsDialog = (booking) => {
     booking.statusClickSeeDetails = !booking.statusClickSeeDetails
-    console.log(booking.statusClickSeeDetails);
+    // console.log(booking.statusClickSeeDetails);
 }
 const changeDeleteDialog = (booking) => {
     booking.statusClickDelete = !booking.statusClickDelete
-    console.log(booking.statusClickDelete);
+    // console.log(booking.statusClickDelete);
 }
 //---------------------------pop-up-dialog-------------------------------------
 
@@ -60,7 +60,6 @@ const removeBookingEvent = async (deleteBookingId, booking, loopBooking) => {
 onBeforeMount(async () => {
     const getAllCategory = await getEventCategory();
     categorys.value = await getAllCategory.json();
-    console.log(categorys.value[0].eventCategoryName);
 })
 
 </script>

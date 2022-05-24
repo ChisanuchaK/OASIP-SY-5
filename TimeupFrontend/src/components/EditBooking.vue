@@ -46,8 +46,8 @@ let editData = reactive({
 //keep time to reactive valiable
 const selectTime = () => {
     editData.eventStartTime = new Date(bookingPresentTime.value).toISOString()
-    console.log(editData.eventStartTime);
-    console.log(bookingPresentTime.value);
+    // console.log(editData.eventStartTime);
+    // console.log(bookingPresentTime.value);
 }
 
 //keep time to reactive valiable (second check)
@@ -71,11 +71,11 @@ const isInputTimes = computed(() => {
             if ((editData.eventStartTime <= booking.eventEndTime) && (localEndTime >= booking.eventStartTime) && (editData.idBooking != booking.idBooking)) {
                 isOverlap.value = true
                 isInvalid.value = true
-                console.log("overlap")
+                // console.log("overlap")
                 break;
             } else {
                 isOverlap.value = false
-                console.log("not overlap")
+                // console.log("not overlap")
             }
         }
     }
@@ -111,18 +111,18 @@ const changeCreateDialogFalse = (bookingEdit) => {
 const changeCreateDialogTrue = (bookingEdit) => {
     isInvalid.value = false
     if ((note.value.length > 500) || (new Date(bookingPresentTime.value).toISOString() < new Date().toISOString())) {
-        console.log("first if");
+        // console.log("first if");
         isInvalid.value = true
     } else {
         isInvalid.value = false
-        console.log("first else");
+        // console.log("first else");
     }
     if (isOverlap.value == false && isInvalid.value == false) {
         bookingEdit.createDialog = true
         isInvalid.value = false
-        console.log("second if");
+        // console.log("second if");
     }
-    console.log("not overlap and isInvalid " + isInvalid.value);
+    // console.log("not overlap and isInvalid " + isInvalid.value);
 
 }
 //------------------------------------------pop-up-dialog------------------------------------------------------------------

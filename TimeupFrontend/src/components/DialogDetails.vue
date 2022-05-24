@@ -28,11 +28,11 @@ const closeDetails = (event) => {
 };
 const changeDeleteDialog = (booking) => {
     booking.statusClickDelete = !booking.statusClickDelete;
-    console.log(booking.statusClickDelete);
+    // console.log(booking.statusClickDelete);
 };
 const changeEditDialog = (booking) => {
     booking.statusClickEdit = !booking.statusClickEdit;
-    console.log(booking.statusClickEdit);
+    // console.log(booking.statusClickEdit);
 }
 //-----------------------------pop-up-dialog---------------------------------
 
@@ -51,7 +51,7 @@ const removeBookingEvent = async (deleteBookingId, booking, loopBooking) => {
 //fetch data
 onBeforeMount(async () => {
     bookingsDetails.value = await getBookingId(props.bookings.idBooking);
-    console.log(bookingsDetails.value);
+    // console.log(bookingsDetails.value);
 });
 
 </script>

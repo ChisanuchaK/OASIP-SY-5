@@ -68,8 +68,8 @@ const isInputCategoryNameDuplicate = computed(() => {
             console.log("Duplicate name !");
             isDuplicate.value = true
             isInvalid.value = true
-            console.log("edit value " + editCategoryData.eventCategoryName);
-            console.log("database value " + categorySome.eventCategoryName);
+            // console.log("edit value " + editCategoryData.eventCategoryName);
+            // console.log("database value " + categorySome.eventCategoryName);
             break;
         } else {
             isDuplicate.value = false
@@ -124,7 +124,7 @@ const editCategoryEvent = async (editCategoryitem, category) => {
         category.statusEditDialog = !category.statusEditDialog;
         category.statusEditSuccesDialog = !category.statusEditSuccesDialog;
         emits('EditCategoryId', editCategoryitem);
-        console.log('edited successfully');
+        // console.log('edited successfully');
     }
 }
 

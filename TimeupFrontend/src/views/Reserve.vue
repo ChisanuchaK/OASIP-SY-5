@@ -37,14 +37,14 @@ const createDialog = ref(false);
 const handleSelect = () => {
     localData.eventCategory.eventCategoryId = categoryList.value[categoryIndexSelect.value].eventCategoryId
     localData.eventDuration = categoryList.value[categoryIndexSelect.value].eventDuration
-    console.log(localData)
-    console.log(categoryIndexSelect.value);
+    // console.log(localData)
+    // console.log(categoryIndexSelect.value);
 }
 const handleTime = () => {
     localData.eventStartTime = new Date(dateIndexSelect.value).toISOString()
-    console.log(dateIndexSelect.value);
-    console.log(localData.eventStartTime);
-    console.log(`${moment.utc(localData.eventStartTime).add(localData.eventDuration, 'm').format("YYYY-MM-DDTHH:mm:ss")}Z`);
+    // console.log(dateIndexSelect.value);
+    // console.log(localData.eventStartTime);
+    // console.log(`${moment.utc(localData.eventStartTime).add(localData.eventDuration, 'm').format("YYYY-MM-DDTHH:mm:ss")}Z`);
 }
 const changeCancelDialogTrue = () => {
     cancelDialog.value = true
@@ -64,16 +64,13 @@ const changeConfirmDialog = () => {
         || (!(localData.bookingEmail.match(regexEmail)))
         || categoryIndexSelect.value == undefined || (localData.eventNotes.length > 500)
         || (new Date(dateIndexSelect.value).toISOString() < new Date().toISOString())) {
-        console.log("first if");
         isInvalid.value = true
     } else {
         isInvalid.value = false
-        console.log("first else");
     }
     if (isOverlap.value == false && isInvalid.value == false) {
         createDialog.value = true
         isInvalid.value = false
-        console.log("second if");
     }
     console.log("not overlap and isInvalid " + isInvalid.value);
 }
@@ -116,11 +113,9 @@ const isInputTime = computed(() => {
             if ((localData.eventStartTime <= booking.eventEndTime) && (localEndTime >= booking.eventStartTime)) {
                 isOverlap.value = true
                 isInvalid.value = true
-                console.log("overlap")
                 break;
             } else {
                 isOverlap.value = false
-                console.log("not overlap")
             }
         }
     }
