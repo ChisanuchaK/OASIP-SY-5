@@ -15,7 +15,7 @@ import java.time.Instant;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class BookingPUTDTO {
+public class EventPUTDTO {
 
     @Future(message = "must be a future date and not present time !!" )
     @NotNull
