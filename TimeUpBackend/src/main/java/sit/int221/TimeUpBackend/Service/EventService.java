@@ -77,8 +77,13 @@ public class EventService {
         return (time.getEventStartTime().toEpochMilli() + ((time.getEventDuration() * 60000)));
     }
 
+<<<<<<< HEAD
     // delete
     public void delete ( Integer id){
+=======
+      // delete
+    public void deleteById ( Integer id){
+>>>>>>> 816230b0bef2da8493594da6f6f0fae120f50a42
         eventRepository.deleteById(id);
     }
 

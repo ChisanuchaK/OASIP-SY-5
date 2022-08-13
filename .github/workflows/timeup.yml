@@ -2,7 +2,7 @@ name: timeup-runner
 
 on:
   push:
-    branches: [ main ]
+    branches: [ dev ]
     
 jobs:
   build:
@@ -28,3 +28,4 @@ jobs:
     - run: docker tag frontend quay.io/chisanuchakim/oasip-sy-5-fontend
     - run: docker push quay.io/chisanuchakim/oasip-sy-5-fontend
     - run: docker-compose up -d backend frontend reverse_proxy
+
