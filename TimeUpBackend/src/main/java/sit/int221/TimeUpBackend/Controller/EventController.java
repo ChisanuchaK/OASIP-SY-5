@@ -43,8 +43,8 @@ public class EventController {
     }
 
     @DeleteMapping("/{id}")
-    public  void DeleteEventById(@PathVariable Integer idBooking){
-        eventService.deleteById(idBooking);
+    public void deleteEventById(@PathVariable Integer id){
+        eventService.delete(id);
     }
 
 
