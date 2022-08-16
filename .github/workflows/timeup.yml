@@ -2,7 +2,7 @@ name: timeup-runner
 
 on:
   push:
-    branches: [ main ]
+    branches: [ devV2 ]
     
 jobs:
   build:
