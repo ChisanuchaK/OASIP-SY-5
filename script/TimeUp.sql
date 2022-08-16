@@ -51,6 +51,20 @@ CREATE TABLE IF NOT EXISTS `TimeUp`.`booking` (
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;
 
+-- -----------------------------------------------------
+-- Table `TimeUp`.`user`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `TimeUp`.`user` (
+`iduser` INT NOT NULL AUTO_INCREMENT,
+`name` VARCHAR(100) NOT NULL,
+`email` VARCHAR(50) NOT NULL,
+`role` VARCHAR(50) NOT NULL,
+`createdOn` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+`updatedOn` TIMESTAMP NOT NULL ON UPDATE CURRENT_TIMESTAMP,
+primary key (`iduser`),
+unique index (`name`, `email`))
+ENGINE = InnoDB;
+
 CREATE user 'admin'@'%' IDENTIFIED  by 'admin123';
 CREATE user 'dev'@'%' IDENTIFIED  by 'dev123';
 GRANT ALL PRIVILEGES ON *.* TO 'admin'@'%';
