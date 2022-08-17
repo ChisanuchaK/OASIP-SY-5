@@ -65,7 +65,8 @@ public class EventService {
                     && ((event.getEventStartTime().toEpochMilli() <= endTimeMs(book))))
                     || (( (endTimeMs(event)) >= book.getEventStartTime().toEpochMilli())
                     && ((endTimeMs(event))<= endTimeMs(book)))
-                    || ((event.getEventStartTime().toEpochMilli() <= book.getEventStartTime().toEpochMilli()) && (endTimeMs(event) >= endTimeMs(book)))) {
+                    || ((event.getEventStartTime().toEpochMilli() <= book.getEventStartTime().toEpochMilli())
+                    && (endTimeMs(event) >= endTimeMs(book)))) {
                 return true;
             }
         }
@@ -75,9 +76,8 @@ public class EventService {
     public long endTimeMs(Event time){
         return (time.getEventStartTime().toEpochMilli() + ((time.getEventDuration() * 60000)));
     }
-
     // delete
-    public void deleteById (Integer id){
+    public void delete ( Integer id){
         eventRepository.deleteById(id);
     }
 
