@@ -2,8 +2,7 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="f1c09785-2e25-4599-8d1a-b550d8746838" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/TimeUpBackend/src/main/java/sit/int221/TimeUpBackend/Controller/BookingController.java" beforeDir="false" afterPath="$PROJECT_DIR$/TimeUpBackend/src/main/java/sit/int221/TimeUpBackend/Controller/BookingController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/TimeUpBackend/src/main/resources/application.properties" beforeDir="false" afterPath="$PROJECT_DIR$/TimeUpBackend/src/main/resources/application.properties" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/TimeUpBackend/src/main/java/sit/int221/TimeUpBackend/Entities/user.java" beforeDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -22,7 +21,7 @@
     <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
     <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
     <property name="WebServerToolWindowFactoryState" value="false" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$/TimeUpBackend" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
   </component>
   <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
   <component name="TaskManager">
@@ -34,10 +33,22 @@
       <updated>1651039317437</updated>
       <workItem from="1651039324096" duration="68000" />
       <workItem from="1651155574614" duration="35000" />
+      <workItem from="1660661321431" duration="1561000" />
     </task>
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
     <option name="version" value="3" />
+  </component>
+  <component name="Vcs.Log.Tabs.Properties">
+    <option name="TAB_STATES">
+      <map>
+        <entry key="MAIN">
+          <value>
+            <State />
+          </value>
+        </entry>
+      </map>
+    </option>
   </component>
 </project>
