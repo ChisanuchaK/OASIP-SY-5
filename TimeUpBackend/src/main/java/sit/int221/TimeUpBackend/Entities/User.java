@@ -33,6 +33,6 @@ public class User {
     private Timestamp createOn;
 
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "updateOn" , nullable = false)
+    @Column(name = "updatedOn" , nullable = false)
     private Timestamp updateOn;
 }
