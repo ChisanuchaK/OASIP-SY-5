@@ -2,7 +2,7 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="f1c09785-2e25-4599-8d1a-b550d8746838" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/TimeUpBackend/src/main/java/sit/int221/TimeUpBackend/Entities/user.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -33,7 +33,7 @@
       <updated>1651039317437</updated>
       <workItem from="1651039324096" duration="68000" />
       <workItem from="1651155574614" duration="35000" />
-      <workItem from="1660661321431" duration="1561000" />
+      <workItem from="1660661321431" duration="2243000" />
     </task>
     <servers />
   </component>
