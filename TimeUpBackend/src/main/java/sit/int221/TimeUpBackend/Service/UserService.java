@@ -17,13 +17,16 @@ public class UserService {
     ModelMapper modelMapper = new ModelMapper();
 
     //get
-   public List<User> getAllUser(){
-       return userRepository.findAll();
+    public List<User> getAllUser(){
+    return userRepository.findAll();
    }
 
    //post
     public ResponseEntity createUser(UserDTOPOST userDTOPOST){
        User user = modelMapper.map(userDTOPOST , User.class);
+            user.setNameUser(userDTOPOST.getNameUser());
+            user.setEmailUser(userDTOPOST.getEmailUser());
+            user.setRoleUser(userDTOPOST.getRoleUser());
             userRepository.saveAndFlush(user);
         return ResponseEntity.status(201).body("create User Successfully");
     }

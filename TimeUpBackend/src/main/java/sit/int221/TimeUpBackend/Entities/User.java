@@ -2,10 +2,10 @@ package sit.int221.TimeUpBackend.Entities;
 
 import lombok.Getter;
 import lombok.Setter;
+import org.hibernate.annotations.CreationTimestamp;
 
 import javax.persistence.*;
 import java.sql.Timestamp;
-import java.time.Instant;
 
 @Entity
 @Setter
@@ -24,15 +24,15 @@ public class User {
     @Column(name = "email", length = 50 ,nullable = false)
     private String emailUser;
 
-    @Enumerated(EnumType.ORDINAL)
+    @Enumerated(EnumType.STRING)
     @Column(name = "role", nullable = false)
     private RoleUser roleUser;
 
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @CreationTimestamp
     @Column(name = "createdOn" , nullable = false)
     private Timestamp createOn;
 
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @CreationTimestamp
     @Column(name = "updatedOn" , nullable = false)
     private Timestamp updateOn;
 }

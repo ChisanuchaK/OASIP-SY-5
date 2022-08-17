@@ -14,7 +14,7 @@ import sit.int221.TimeUpBackend.Service.UserService;
 import javax.validation.Valid;
 import java.util.List;
 
-@Controller
+@RestController
 @RequestMapping("/api/user")
 public class UserController {
 
