@@ -4,6 +4,7 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.hibernate.validator.constraints.UniqueElements;
 import sit.int221.TimeUpBackend.Entities.EventCategory;
 
 import javax.validation.constraints.*;

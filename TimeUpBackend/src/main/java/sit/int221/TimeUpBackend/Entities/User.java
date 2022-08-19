@@ -3,6 +3,7 @@ package sit.int221.TimeUpBackend.Entities;
 import lombok.Getter;
 import lombok.Setter;
 import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
 
 import javax.persistence.*;
 import java.sql.Timestamp;
@@ -32,7 +33,7 @@ public class User {
     @Column(name = "createdOn" , nullable = false)
     private Timestamp createOn;
 
-    @CreationTimestamp
+    @UpdateTimestamp
     @Column(name = "updatedOn" , nullable = false)
     private Timestamp updateOn;
 }
