@@ -1,13 +1,9 @@
 package sit.int221.TimeUpBackend.Service;
 
 import org.modelmapper.ModelMapper;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
-import sit.int221.TimeUpBackend.DTOS.EventDTO;
 import sit.int221.TimeUpBackend.DTOS.UserDTOGET;
 import sit.int221.TimeUpBackend.DTOS.UserDTOPOST;
 import sit.int221.TimeUpBackend.DTOS.UserDTOPUT;
@@ -41,33 +37,30 @@ public class UserService {
                new ResponseStatusException(HttpStatus.NOT_FOUND));
    }
 
+
+
    //post
     public User createUser(UserDTOPOST userDTOPOST){
         User user = new User();
-      if (userDTOPOST.getRoleUser().equals(RoleUser.values())){
+
           user.setNameUser(userDTOPOST.getNameUser().trim());
           user.setEmailUser(userDTOPOST.getEmailUser().trim());
           user.setRoleUser(userDTOPOST.getRoleUser());
           return userRepository.saveAndFlush(user);
-      }
-      else{
-          throw new ResponseStatusException(HttpStatus.BAD_REQUEST , "name or email some");
-      }
+
     }
 
     //update
     public User updateUser(UserDTOPUT  userDTOPUT  , Integer id){
         User user = userRepository.findById(id).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
-        modelMapper.map(userDTOPUT , User.class);
-        user.setNameUser(userDTOPUT.getNameUser().trim());
-        user.setEmailUser(userDTOPUT.getEmailUser().trim());
-        if (userDTOPUT.getNameUser() == user.getNameUser() && userDTOPUT.getEmailUser() == user.getEmailUser()){
-            System.out.println("Edit up to date !!");
-        }
-        else{
+        if (!(userDTOPUT.getNameUser().equals(user.getNameUser())&& userDTOPUT.getEmailUser().equals(user.getEmailUser()))){
+            user.setNameUser(userDTOPUT.getNameUser().trim());
+            user.setEmailUser(userDTOPUT.getEmailUser().trim());
             return userRepository.saveAndFlush(user);
         }
-        return user;
+        else{
+            return user;
+        }
     }
 
     //delete
