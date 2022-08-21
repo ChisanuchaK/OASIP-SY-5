@@ -22,10 +22,26 @@
 
         <div class="md:block md:w-auto">
           <ul class="flex flex-row md:space-x-8 text-sm font-medium">
+            <!-- <li class="">
+              <router-link
+                :to="{name: 'EditUser'}"
+                class="block py-2 pr-4 pl-3 hover:bg-[#50ABCB] hover:rounded-lg hover:text-white hover:underline-offset-2 hover:underline uppercase menu"
+              >
+                EditUser</router-link
+              >
+            </li>
+            <li class="">
+              <router-link
+                :to="{name: 'DetailUser'}"
+                class="block py-2 pr-4 pl-3 hover:bg-[#50ABCB] hover:rounded-lg hover:text-white hover:underline-offset-2 hover:underline uppercase menu"
+              >
+                DetailUser</router-link
+              >
+            </li> -->
             <li class="">
               <router-link
                 to="/"
-                class="block py-2 pr-4 pl-3 hover:bg-[#6b6b6b] hover:rounded-lg hover:text-white hover:underline-offset-2 hover:underline uppercase menu"
+                class="block py-2 pr-4 pl-3 hover:bg-[#50ABCB] hover:rounded-lg hover:text-white hover:underline-offset-2 hover:underline uppercase menu"
               >
                 Home</router-link
               >
@@ -33,7 +49,7 @@
             <li>
               <router-link
                 to="/aboutus"
-                class="block py-2 pr-4 pl-3 hover:bg-[#6b6b6b] hover:rounded-lg hover:text-white hover:text-white hover:underline-offset-2 hover:underline uppercase menu"
+                class="block py-2 pr-4 pl-3 hover:bg-[#50ABCB] hover:rounded-lg hover:text-white hover:text-white hover:underline-offset-2 hover:underline uppercase menu"
               >
                 About</router-link
               >
@@ -41,7 +57,7 @@
             <li>
               <router-link
                 to="/categoryList"
-                class="block py-2 pr-4 pl-3 hover:bg-[#6b6b6b] hover:rounded-lg hover:text-white hover:text-white hover:underline-offset-2 hover:underline uppercase menu"
+                class="block py-2 pr-4 pl-3 hover:bg-[#50ABCB] hover:rounded-lg hover:text-white hover:text-white hover:underline-offset-2 hover:underline uppercase menu"
               >
                 Category-List</router-link
               >
@@ -49,7 +65,7 @@
             <li>
               <router-link
                 to="/Reserve"
-                class="block py-2 pr-4 pl-3 hover:bg-[#6b6b6b] hover:rounded-lg hover:text-white hover:text-white hover:underline-offset-2 hover:underline uppercase menu"
+                class="block py-2 pr-4 pl-3 hover:bg-[#50ABCB] hover:rounded-lg hover:text-white hover:text-white hover:underline-offset-2 hover:underline uppercase menu"
               >
                 New booking</router-link
               >
@@ -57,14 +73,14 @@
             <li>
               <router-link
                 to="/bookingList"
-                class="block py-2 pr-4 pl-3 hover:bg-[#6b6b6b] hover:rounded-lg hover:text-white hover:text-white hover:underline-offset-2 hover:underline uppercase menu"
+                class="block py-2 pr-4 pl-3 hover:bg-[#50ABCB] hover:rounded-lg hover:text-white hover:text-white hover:underline-offset-2 hover:underline uppercase menu"
               >
                 Booking-List</router-link
               >
             </li>
             <li class="dropdown">
               <div
-                class="Users flex py-2 pr-4 pl-3 hover:bg-[#6b6b6b] hover:rounded-lg hover:text-white hover:text-white hover:underline-offset-2 hover:underline uppercase menu"
+                class="Users flex py-2 pr-4 pl-3 hover:bg-[#50ABCB] hover:rounded-lg hover:text-white hover:text-white hover:underline-offset-2 hover:underline uppercase menu"
               >
                 <p class="px-[20px]">User</p>
                 <svg
@@ -81,12 +97,12 @@
                 <a href="#">Link 2</a>
                 <a href="#">Link 3</a> -->
                 <router-link
-                  class="hover:bg-[#6b6b6b] hover:rounded-sm hover:text-white hover:text-white hover:underline-offset-2 hover:underline uppercase"
+                  class="hover:bg-[#50ABCB] hover:rounded-sm hover:text-white hover:text-white hover:underline-offset-2 hover:underline uppercase"
                   :to="{ name: 'SignIn' }"
                   >Sign-In</router-link
                 >
                 <router-link
-                  class="hover:bg-[#6b6b6b] hover:rounded-sm hover:text-white hover:text-white hover:underline-offset-2 hover:underline uppercase"
+                  class="hover:bg-[#50ABCB] hover:rounded-sm hover:text-white hover:text-white hover:underline-offset-2 hover:underline uppercase"
                   :to="{ name: 'UserList' }"
                   >Userlist</router-link
                 >

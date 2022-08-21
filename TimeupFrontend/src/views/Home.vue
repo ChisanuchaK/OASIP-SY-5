@@ -14,13 +14,13 @@ import NavbarBottom from '../components/NavbarBottom.vue';
         consulting is simple and convenient.</p>
       <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px; padding-top: 25px;">
         <button
-          class="bg-white border-3 text-black rounded-full font-bold p-2 hover: transform transition ease-in-out delay-150 hover:-translate-y-3 text-[16px]">
+          class="bg-[#105E99]  border-3 border-sky-500 text-white rounded-full font-bold p-2 hover: transform transition ease-in-out delay-10 hover:-translate-y-3 text-[16px] hover:bg-[#00A28B]">
           <a href="./Reserve">
             <p> New Booking</p>
           </a>
         </button>
         <button
-          class="bg-white border-3 text-black rounded-full font-bold p-2 hover: transform transition ease-in-out delay-150 hover:-translate-y-3 text-[16px]">
+          class="bg-[#105E99]  border-3 border-sky-500 text-white rounded-full font-bold p-2 hover: transform transition ease-in-out delay-10 hover:-translate-y-3 text-[16px] hover:bg-[#00A28B]">
           <a href="./BookingList">
             <p> Booking List</p>
           </a>

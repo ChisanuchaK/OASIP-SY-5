@@ -2,11 +2,11 @@
 </script>
  
 <template>
- <div class=" uppercase w-full m-auto text-center text-white mt-[5%]">
-    <div class="text-[50px]">Team Member</div> 
+ <div class=" uppercase w-full m-auto text-center text-black  mt-[5%]">
+    <div class="font-bold underline decoration-[#50ABCB] text-[50px]">Team Member</div> 
     <div class="grid grid-flow-row grid-cols-3 mt-10 ">
         <!-- -------------------------------------------------------------------------------------------------------------- -->
-        <div class="row-start-1 col-start-1 col-span-1 max-w-sm m-auto bg-white rounded-lg border border-gray-200 hover:scale-110 duration-500">
+        <div class="row-start-1 col-start-1 col-span-1 max-w-sm m-auto bg-white rounded-lg border border-gray-200 hover:bg-[#EAEFC8] hover:scale-110 duration-500">
             <img class="rounded-t-lg w-90 h-80" src="../../public/images/kim.jpg" alt="picture"/>
             <div class="p-5">
                 <h5 class="mb-2  font-bold tracking-tight text-[16px] text-black">CHISANUCHA SOMBOONWANNA</h5>
@@ -19,7 +19,7 @@
             </div>
         </div>
          <!-- -------------------------------------------------------------------------------------------------------------- -->
-         <div class="row-start-1 col-start-2 col-span-1 max-w-sm m-auto bg-white rounded-lg border border-gray-200 hover:scale-110 duration-500">
+         <div class="row-start-1 col-start-2 col-span-1 max-w-sm m-auto bg-white rounded-lg border border-gray-200 hover:bg-[#C5DDD6] hover:scale-110 duration-500">
             <img class="rounded-t-lg w-90 h-80" src="../../public/images/tle.jpg" alt="picture"/>
             <div class="p-5">
                 <h5 class="mb-2  font-bold tracking-tight text-[16px]  text-black">THANAPAT TRAIRATPANASAN</h5>
@@ -32,10 +32,10 @@
             </div>
         </div>
          <!-- -------------------------------------------------------------------------------------------------------------- -->
-         <div class="row-start-1 col-start-3 col-span-1 max-w-sm  m-auto bg-white rounded-lg border border-gray-200 hover:scale-110 duration-500">
-            <img class="rounded-t-lg w-90 h-80" src="../../public/images/tle.jpg" alt="picture"/>
+         <div class="row-start-1 col-start-3 col-span-1 max-w-sm  m-auto bg-white rounded-lg border border-gray-200 hover:bg-[#AFD7D9] hover:scale-110 duration-500">
+            <img class="rounded-t-lg w-90 h-80" src="../../public/images/Spy.jpg" alt="picture"/>
             <div class="p-5">
-                <h5 class="mb-2  font-bold tracking-tight text-[16px]  text-black">Spy</h5>
+                <h5 class="mb-2  font-bold tracking-tight text-[16px]  text-black">CHICHAYA MAROD</h5>
                 <p class="mb-3 text-lg  text-gray-600">63130500150</p>
                 <a href="https://github.com/xJackTaox" class="inline-flex items-center py-1 text-sm font-medium text-center ">
                     <svg class="hover:scale-150 duration-500" width="3em" viewBox="0 0 24 24">

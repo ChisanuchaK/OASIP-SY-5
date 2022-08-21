@@ -3,9 +3,9 @@ import { useRouter } from 'vue-router' //get params to script
 // let {params} = useRoute()
 // console.log(params)
 
-const appRouter = useRouter()
+const appRouter = useRouter();
 
-const goBackToHome = () => appRouter.push({ name: 'SignIn' })
+const goBackToHome = () => appRouter.push({ name: 'SignIn' });
 </script>
 
 <template>
@@ -43,7 +43,7 @@ const goBackToHome = () => appRouter.push({ name: 'SignIn' })
         >
           <img
             class="m-auto"
-            src="../../../images/peoples01.jpg"
+            src="../../../public/images/peoples01.jpg"
             alt="peoples"
           />
         </div>
@@ -51,7 +51,7 @@ const goBackToHome = () => appRouter.push({ name: 'SignIn' })
         <div class="row-start-1 col-start-8 col-end-10 m-auto flex">
           <img
             class="w-[56px] items-right mr-4"
-            src="../../../images/logo.png"
+            src="../../../public/images/logo.png"
             alt="logo"
           />
           <div class="font-bold uppercase text-center text-[30px]">time-up</div>
@@ -209,14 +209,14 @@ const goBackToHome = () => appRouter.push({ name: 'SignIn' })
     box-shadow: 0px 0px 10px 0px #666;
 } */
 
-.input {
+/* .input {
   padding: 10px;
   width: 100%;
   max-width: 300px;
   box-sizing: border-box;
   outline: none;
   border: 1px solid #04aa6d;
-}
+} */
 
 .placeholder {
   position: absolute;
