@@ -63,7 +63,7 @@ CREATE TABLE IF NOT EXISTS `TimeUp`.`user` (
 `updatedOn` TIMESTAMP NOT NULL ON UPDATE CURRENT_TIMESTAMP,
 primary key (`iduser`),
 unique index `name` (`name` asc) visible,
-unique index (`email`)
+unique index (`email`) VISIBLE
 )
 ENGINE = InnoDB;
 

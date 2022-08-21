@@ -19,10 +19,10 @@ public class User {
     @Column(name = "iduser", nullable = false)
     private Integer idUser;
 
-    @Column(name = "name", length = 100 ,nullable = false)
+    @Column(name = "name", length = 100 ,nullable = false , unique = true)
     private String nameUser;
 
-    @Column(name = "email", length = 50 ,nullable = false)
+    @Column(name = "email", length = 50 ,nullable = false , unique = true)
     private String emailUser;
 
     @Enumerated(EnumType.STRING)

@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.*;
+import sit.int221.TimeUpBackend.DTOS.UserDTOGET;
 import sit.int221.TimeUpBackend.DTOS.UserDTOPOST;
 import sit.int221.TimeUpBackend.DTOS.UserDTOPUT;
 import sit.int221.TimeUpBackend.Entities.User;
@@ -22,9 +23,13 @@ public class UserController {
     @Autowired
     private UserService userService;
 
+    @GetMapping("/{name-user}")
+    public List<UserDTOGET> getUserByName(@Valid @RequestParam String nameUser){
+        return  userService.getUserByName(nameUser);
+    }
     @GetMapping("")
     public List<User> getAllUser(){
-        return  userService.getAllUser();
+        return userService.getAllUser();
     }
 
     @GetMapping("/{id}")
