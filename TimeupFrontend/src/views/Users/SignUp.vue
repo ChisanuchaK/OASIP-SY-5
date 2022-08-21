@@ -43,7 +43,11 @@ const goBackToHome = () => appRouter.push({ name: 'SignIn' });
         >
           <img
             class="m-auto"
+<<<<<<< HEAD
             src="../../../public/images/peoples01.jpg"
+=======
+            src="../../../images/../public/images/peoples01.jpg"
+>>>>>>> 2a0359b9ff0c8eb8e8511a2df85bce06f38098de
             alt="peoples"
           />
         </div>
