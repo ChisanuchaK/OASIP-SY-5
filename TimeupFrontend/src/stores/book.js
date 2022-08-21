@@ -129,3 +129,13 @@ export const editCategory = async (editCategory) => {
     return res;
   }
 };
+
+//get User Alls
+export const getAllUsers = async () => {
+  const res = await fetch(`${import.meta.env.VITE_BASE_URL}/user`);
+  if (res.status === 200) {
+    console.log(res);
+    return res;
+  } else console.log("error to getUserLists");
+};
+
