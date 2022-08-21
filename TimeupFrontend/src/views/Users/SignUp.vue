@@ -51,7 +51,7 @@ const goBackToHome = () => appRouter.push({ name: 'SignIn' })
         <div class="row-start-1 col-start-8 col-end-10 m-auto flex">
           <img
             class="w-[56px] items-right mr-4"
-            src="../../../images/logo.png"
+            src="../../../public/images/logo.png"
             alt="logo"
           />
           <div class="font-bold uppercase text-center text-[30px]">time-up</div>
