@@ -17,8 +17,8 @@ const roleIndexSelect = ref();
 // const goBackToUserList = () => appRouter.push({ name: 'UserList' }); //use to test back to userlist.
 
 onBeforeMount(async () => {
-    const userById = await getUser(params.idUser);
-    user.value = userById;
+    const userByIdEdit = await getUser(params.idUser);
+    user.value = userByIdEdit;
 })
 
 const changeCancelDialogShow = (user) => {
@@ -61,7 +61,7 @@ const changeConfirmDialogClose = (user) => {
             <div class="bg-[#50ABCB] w-full h-[100px] rounded-t-xl">
                 <div class="grid grid-rows-1 grid-flow-col h-full content-center justify-items-center">
                     <div class="col-start-1 col-span-1 uppercase m-auto text-[30px] text-white font-semibold">
-                        User Id :{{this.$route.params.idUser}}
+                        User Id : {{params.idUser}}
                     </div>
 
                     <!-- <span class="col-start-4 col-span-1 dot"></span>
@@ -97,7 +97,7 @@ const changeConfirmDialogClose = (user) => {
                     </div>
 
                     <div class="grid row-start-1 col-start-12 content-center text-left text-[#D9D9D9] w-[90%]">
-                        {{user.nameUser.length}}/100
+                        <!-- {{user.nameUser.length}}/100 -->
                     </div>
 
                     <div class="grid row-start-2 col-start-6 col-end-8 content-center text-center text-[18px] ">
@@ -117,7 +117,7 @@ const changeConfirmDialogClose = (user) => {
                         </form>
                     </div>
                      <div class="grid row-start-2 col-start-12 content-center text-left text-[#D9D9D9] w-[90%]">
-                        {{user.emailUser.length}}/50
+                        <!-- {{user.emailUser.length}}/50 -->
                     </div>
 
                     <div class="grid row-start-3 col-start-6 col-end-8 content-center text-center text-[18px]">
