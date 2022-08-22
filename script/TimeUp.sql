@@ -59,9 +59,8 @@ CREATE TABLE IF NOT EXISTS `TimeUp`.`user` (
 `name` VARCHAR(100) NOT NULL,
 `email` VARCHAR(50) NOT NULL,
 `role` enum ('admin', 'lecturer', 'student'),
-`createdOn` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
-`updatedOn` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP 
-			ON UPDATE CURRENT_TIMESTAMP,
+`createdOn`  DEFAULT CURRENT_TIMESTAMP ON CREATE CURRENT_TIMESTAMP,
+`updatedOn`   DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
 primary key (`iduser`),
 unique index `name` (`name` asc) visible,
 unique index `email` (`email`) visible

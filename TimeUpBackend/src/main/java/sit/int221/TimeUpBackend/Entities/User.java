@@ -29,11 +29,10 @@ public class User {
     @Column(name = "role")
     private RoleUser roleUser;
 
-    @CreationTimestamp
-    @Column(name = "createdOn" , nullable = false)
+
+    @Column(name = "createdOn")
     private Timestamp createOn;
 
-    @UpdateTimestamp
-    @Column(name = "updatedOn" , nullable = false)
+    @Column(name = "updatedOn" )
     private Timestamp updateOn;
 }
