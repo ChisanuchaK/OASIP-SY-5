@@ -4,12 +4,16 @@ import org.modelmapper.ModelMapper;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
+import sit.int221.TimeUpBackend.DTOS.RoleUserDTO;
 import sit.int221.TimeUpBackend.DTOS.UserDTOGET;
 import sit.int221.TimeUpBackend.DTOS.UserDTOPOST;
 import sit.int221.TimeUpBackend.DTOS.UserDTOPUT;
 import sit.int221.TimeUpBackend.Entities.RoleUser;
 import sit.int221.TimeUpBackend.Entities.User;
 import sit.int221.TimeUpBackend.Repository.UserRepository;
+
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -26,7 +30,6 @@ public class UserService {
     public List<UserDTOGET> getUserByName(String nameUser){
         List<User> user = userRepository.findAllByNameUserOrderByNameUserDesc(nameUser);
         return user.stream().map(e -> modelMapper.map(e, UserDTOGET.class)).collect(Collectors.toList());
-
    }
    public List<User> getAllUser(){
     return userRepository.findAll();
@@ -38,9 +41,10 @@ public class UserService {
 
        return  modelMapper.map(user , UserDTOGET.class );
    }
-
-
-
+   public ArrayList<RoleUser> getAllRole(){
+        RoleUser[] roleUser   = RoleUser.values();
+       return (ArrayList<RoleUser>) Arrays.stream(roleUser).collect(Collectors.toList());
+   }
    //post
     public User createUser(UserDTOPOST userDTOPOST) {
         RoleUser[] roleUser = RoleUser.values();
