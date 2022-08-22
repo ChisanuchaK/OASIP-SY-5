@@ -51,12 +51,12 @@ const routes = [
     name: 'SignUp',
     component: SignUp
   },{
-    path: '/userlist/detailuser' ,
+    path: '/userlist/detailuser/:idUser' ,
     name: 'DetailUser',
     component: DetailUser
   }
   ,{
-    path: '/userlist/edituser' ,
+    path: '/userlist/edituser/:idUser' ,
     name: 'EditUser',
     component: EditUser
   }

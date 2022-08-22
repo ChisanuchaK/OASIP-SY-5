@@ -134,8 +134,59 @@ export const editCategory = async (editCategory) => {
 export const getAllUsers = async () => {
   const res = await fetch(`${import.meta.env.VITE_BASE_URL}/user`);
   if (res.status === 200) {
-    console.log(res);
+    // console.log(res);
     return res;
   } else console.log("error to getUserLists");
 };
 
+
+//get User
+export const getUser = async (idUser) => {
+  const res = await fetch(`${import.meta.env.VITE_BASE_URL}/user/${idUser}`);
+  if (res.status === 200) {
+    // console.log(res);
+    return await res.json();
+  } else console.log("error to getUserLists");
+};
+
+// user Delete method
+export const deletedUser = async (deletedUserId) => {
+  const res = await fetch(
+    `${import.meta.env.VITE_BASE_URL}/user/${deletedUserId}`,
+    {
+      method: "DELETE",
+    }
+  );
+  if (res.status === 200) {
+    console.log("deleted success");
+  } else {
+    console.log("error , cannot delete");
+  }
+};
+
+// create user
+export const createUser = async (localDataInput) => {
+  const res = await fetch(`${import.meta.env.VITE_BASE_URL}/user`, {
+    method: "POST",
+    headers: {
+      "content-type": "application/json",
+    },
+    body: JSON.stringify({
+      nameUser: localDataInput.nameUser,
+      emailUser: localDataInput.emailUser,
+      roleUser: localDataInput.roleUser,
+      // eventCategory: {
+      //   eventCategoryId: localDataInput.eventCategory.eventCategoryId,
+      // },
+      // eventStartTime: localDataInput.eventStartTime,
+      // eventNotes: localDataInput.eventNotes,
+    }),
+  });
+  if (res.status === 201) {
+    console.log("create successfully");
+    return res;
+  } else {
+    console.log("error , failed to created");
+    return res;
+  }
+};

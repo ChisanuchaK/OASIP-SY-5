@@ -1,16 +1,96 @@
 <script setup>
+import { ref, computed, reactive } from 'vue';
 import { useRouter } from 'vue-router' //get params to script
-// let {params} = useRoute()
-// console.log(params)
+import Confirm from '../../components/Confirm.vue';
+import Cancel from '../../components/Cancel.vue';
+import { createUser } from '../../stores/book.js';
 
 const appRouter = useRouter();
+
+const localDataUser = reactive({
+  nameUser: "",
+  emailUser: "",
+  roleUser: "",
+})
+
+// const UserName = ref([]);
+// const roleLists = ref();
+
+const isInvalid = ref(false);
+const cancelDialogStatus = ref(false);
+const confirmDialogStatus = ref(false);
+const regexEmail = "[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,3}";
+// const roleIndexSelect = ref();
+// const localPresentTime = moment.utc().local().format("YYYY-MM-DDTHH:mm");
+
+//status pop-up
+const changeCancelDialogShow = () => {
+  cancelDialogStatus.value = true;
+}
+
+const changeCancelDialogClose = () => {
+  cancelDialogStatus.value = false;
+}
+
+const cancelCreateUser = () => {
+  cancelDialogStatus.value = false;
+  appRouter.push({ name: 'SignIn' })
+}
+
+const changeConfirmDialogShow = () => {
+  confirmDialogStatus.value = true;
+}
+
+const changeConfirmDialogClose = () => {
+  confirmDialogStatus.value = false;
+}
+
+const createUserSuccess = async (dataOfUser) => {
+  dataOfUser.nameUser.trim();
+  dataOfUser.emailUser.trim();
+  alert("create user success!!!");
+  confirmDialogStatus.value = false;
+  appRouter.push({ name: 'Home' });
+  await createUser(dataOfUser);
+}
+//
+
+//check invalid from input
+const inputNameIsEmpty = computed(() => {
+    return (isInvalid.value && localDataUser.nameUser.trim() == "");
+});
+const inputNameIsOver = computed(() => {
+    return (isInvalid.value && localDataUser.nameUser.length > 100);
+});
+
+
+const inputEmailIsEmpty = computed(() => {
+    return isInvalid.value && localDataUser.emailUser.trim() == ""
+});
+const inputEmailIsInvalid = computed(() => {
+    if (localDataUser.emailUser.trim() == "" || localDataUser.emailUser.trim() == null) {
+        return '';
+    }
+    if (!(localData.bookingEmail.match(regexEmail))) {
+        return isInvalid.value && (!(localDataUser.emailUser.match(regexEmail)));
+    }
+});
+const inputEmailIsOver = computed(() => {
+    return isInvalid.value && localDataUser.emailUser.length > 50;
+});
+
+const inputRoleIsEmpty = computed(() => {
+    return isInvalid.value && (localDataUser.roleUser == null || localDataUser.roleUser == undefined || localDataUser.roleUser.trim() == "" || localDataUser.roleUser.length == 0 );
+});
+
+//
 
 const goBackToHome = () => appRouter.push({ name: 'SignIn' });
 </script>
 
 <template>
   <div>
-    <div @click="goBackToHome()" class="absolute bg-white rounded left-[2%] p-1 hover:bg-[#E9E9E9]">
+    <div @click="changeCancelDialogShow" class="absolute bg-white rounded left-[2%] p-1 hover:bg-[#E9E9E9]">
       <!-- <router-link :to="{ name: 'UserList' }"> </router-link> -->
       <svg width="50px" height="50px" viewBox="0 0 12 24">
         <path fill="#000000"
@@ -32,7 +112,7 @@ const goBackToHome = () => appRouter.push({ name: 'SignIn' });
       <div class="grid grid-rows-8 grid-cols-12">
         <div class="row-start-1 col-start-7 h-[100px] w-[100px]"></div>
         <div class="row-start-1 row-end-9 col-start-1 col-end-2 bg-[#F24052] rounded-l-lg"></div>
-        <div class="row-start-1 row-end-9 col-start-2 col-end-7 bg-[#8BBDDB] flex">
+        <div class="grid row-start-1 row-end-9 col-start-2 col-end-6 bg-[#8BBDDB] content-center">
           <img class="m-auto" src="../../../public/images/peoples01.jpg" alt="peoples" />
         </div>
 
@@ -45,10 +125,10 @@ const goBackToHome = () => appRouter.push({ name: 'SignIn' });
           <p class="text-[18px]">Create Your Account with the form below .</p>
         </div>
 
-        <div class="row-start-3 col-start-7 col-end-10 mx-auto w-[90%]">
+        <div class="row-start-3 col-start-6 col-end-9 mx-auto w-[90%]">
           <form>
             <div class="relative">
-              <input
+              <input v-model="localDataUser.nameUser"
                 class="border rounded-md border-solid border-[#D9D9D9] w-full p-2 hover:bg-[#F2F2F2] transition delay-75"
                 type="text" />
               <label class="placeholder text-[#D9D9D9]">Name</label>
@@ -59,24 +139,27 @@ const goBackToHome = () => appRouter.push({ name: 'SignIn' });
           </form>
         </div>
 
+        <div class="row-start-3 col-start-9 w-[90%] text-[#D9D9D9]">
+          {{localDataUser.nameUser.length}}/100
+        </div>
+
         <div class="row-start-3 col-start-10 col-end-12 mx-auto w-[80%]">
           <div class="relative">
-            <select
-              class="border rounded-md border-solid border-[#D9D9D9] w-full p-2 hover:bg-[#F2F2F2] transition delay-75"
+            <select v-model="localDataUser.roleUser"
+              class="border rounded-md border-solid border-[#D9D9D9] w-full p-2 hover:bg-[#F2F2F2] transition delay-75 text-center"
               name="" id="">
-              <option value=""></option>
-              <option value="Admin">Admin</option>
-              <option value="Lecturer">Lecturer</option>
-              <option value="Student">Student</option>
+              <option value="admin">Admin</option>
+              <option value="lecturer">Lecturer</option>
+              <option value="student">Student</option>
             </select>
-            <label v-if="false" class="text-red-500"> *name is invalid </label>
+            <label v-if="false" class="text-red-500"> *&nbsp;please choose <br> &nbsp;&nbsp; your role</label>
           </div>
         </div>
 
-        <div class="row-start-4 col-start-7 col-end-10 mx-auto w-[90%]">
+        <div class="row-start-4 col-start-6 col-end-9 mx-auto w-[90%]">
           <form>
             <div class="relative">
-              <input
+              <input v-model="localDataUser.emailUser"
                 class="border rounded-md border-solid border-[#D9D9D9] w-full p-2 hover:bg-[#F2F2F2] transition delay-75"
                 type="text" />
               <label class="placeholder text-[#D9D9D9]">Email</label>
@@ -85,6 +168,10 @@ const goBackToHome = () => appRouter.push({ name: 'SignIn' });
               </label>
             </div>
           </form>
+        </div>
+
+        <div class="row-start-4 col-start-9 w-[90%] text-[#D9D9D9]">
+          {{localDataUser.emailUser.length}}/100
         </div>
 
         <!-- <div class="row-start-5 col-start-7 col-end-10  mx-auto w-[90%] ">
@@ -116,7 +203,7 @@ const goBackToHome = () => appRouter.push({ name: 'SignIn' });
                 </div> -->
 
         <div class="relative row-start-7 col-start-7 col-end-12 justify-center flex w-full">
-          <button
+          <button @click="changeConfirmDialogShow"
             class="rounded-md bg-[#105E99] text-[#ffffff] w-[70%] m-auto p-2 hover:bg-[#004980] transition delay-75">
             Create your account
           </button>
@@ -127,6 +214,12 @@ const goBackToHome = () => appRouter.push({ name: 'SignIn' });
         </div>
 
         <div class="row-start-1 row-end-9 col-start-12 col-end-13 bg-[#105E99] rounded-r-lg"></div>
+
+        <Cancel v-if="cancelDialogStatus" @onClickCancelNo="changeCancelDialogClose"
+          @onClickCancelYes="cancelCreateUser" />
+        <Confirm v-if="confirmDialogStatus" @onClickConfirmNo="changeConfirmDialogClose"
+          @onClickConfirmYes="createUserSuccess(localDataUser)" />
+
       </div>
     </div>
   </div>
@@ -195,9 +288,10 @@ const goBackToHome = () => appRouter.push({ name: 'SignIn' });
 
 .placeholder {
   position: absolute;
-  top: 10px;
+  top: -10px;
   left: 8px;
   font-size: 14px;
+  background-color: #fff;
   padding: 0px 5px;
   color: #666;
   transition: 0.3s;
@@ -205,10 +299,8 @@ const goBackToHome = () => appRouter.push({ name: 'SignIn' });
 }
 
 input:focus+.placeholder {
-  top: -10px;
   font-size: 12px;
   color: #105e99;
-  background-color: #fff;
 }
 
 input:focus {

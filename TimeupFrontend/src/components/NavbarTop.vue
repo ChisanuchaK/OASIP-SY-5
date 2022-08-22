@@ -11,7 +11,7 @@
             <img
               src="../../public/images/logo.png"
               class="mr-3 h-12"
-              alt="TimeUp-Logo"
+              alt="TimeUp-logo"
             />
             <span
               class="self-center text-xl font-semibold whitespace-nowrap text-black uppercase"

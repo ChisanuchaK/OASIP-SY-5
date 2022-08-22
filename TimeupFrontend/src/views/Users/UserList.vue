@@ -6,19 +6,21 @@ import UserLists from '../../components/Users/LoopUserLists.vue';
 import {getAllUsers} from '../../stores/book.js';
 
 const userListAlls = ref([]);
+// const userListAllsToUse = ref();
+
+const filterUserList = (idUserDelete) => {
+  userListAlls.value = userListAlls.value.filter((user) => (user.idUser != idUserDelete))
+}
 
 onBeforeMount(async () => {
   const getUsers = await getAllUsers();
  userListAlls.value = await getUsers.json();
-  // const getAllBooks = await getBookings();
-  // bookingLists.value = await getAllBooks.json();
-  // bookingLists.value = descOrder();
-  // const getAllCategory = await getEventCategory();
-  // categoryLists.value = await getAllCategory.json();
+  userListAlls.value.map((user) => {
+    user.deleteDialogStatus = ref(false)
+    user.cancelDialogStatus = ref(false)
+    user.confirmDialogStatus = ref(false)
+  })
 
-  // bookingLists.value.map((booking) => {
-  //   booking.statusShow = ref(false)
-  // })
 })
 
 </script>
@@ -27,7 +29,7 @@ onBeforeMount(async () => {
   <div>
     <NavbarTop />
     <!-- <div class="text-white">{{userListAlls}}</div> -->
-      <UserLists :userLists="userListAlls"/>
+      <UserLists :userLists="userListAlls" @idUserForDelete="filterUserList"/>
     <NavbarBottom />
   </div>
 </template>
