@@ -5,6 +5,7 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.springframework.boot.context.properties.bind.DefaultValue;
 import sit.int221.TimeUpBackend.Entities.RoleUser;
 
 import javax.persistence.UniqueConstraint;
@@ -26,7 +27,5 @@ public class UserDTOPOST {
     @Email(regexp = "[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,3}",
             flags =  Pattern.Flag.CASE_INSENSITIVE)
     private String emailUser;
-    @NotNull(message = "role null")
-    
     private RoleUser roleUser;
 }

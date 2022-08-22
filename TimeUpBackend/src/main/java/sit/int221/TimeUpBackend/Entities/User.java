@@ -26,7 +26,7 @@ public class User {
     private String emailUser;
 
     @Enumerated(EnumType.STRING)
-    @Column(name = "role", nullable = false)
+    @Column(name = "role")
     private RoleUser roleUser;
 
     @CreationTimestamp

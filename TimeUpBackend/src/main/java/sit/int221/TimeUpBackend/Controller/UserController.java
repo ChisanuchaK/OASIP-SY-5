@@ -24,17 +24,17 @@ public class UserController {
     @Autowired
     private UserService userService;
 
-    @GetMapping("/{name-user}")
-    public List<UserDTOGET> getUserByName(@Valid @RequestParam String nameUser){
-        return  userService.getUserByName(nameUser);
-    }
+//    @GetMapping("/{name-user}")
+//    public List<UserDTOGET> getUserByName(@Valid @RequestParam String nameUser){
+//        return  userService.getUserByName(nameUser);
+//    }
     @GetMapping("")
     public List<User> getAllUser(){
         return userService.getAllUser();
     }
 
     @GetMapping("/{id}")
-    public User getUserByID(@PathVariable Integer id){return  userService.getUserByID(id);}
+    public UserDTOGET getUserByID(@PathVariable int id){return  userService.getUserByID(id);}
 
     @PostMapping("")
     @ResponseStatus(HttpStatus.CREATED)

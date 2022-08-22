@@ -2,17 +2,14 @@ package sit.int221.TimeUpBackend.Service;
 
 import org.modelmapper.ModelMapper;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
-import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 import sit.int221.TimeUpBackend.DTOS.UserDTOGET;
 import sit.int221.TimeUpBackend.DTOS.UserDTOPOST;
 import sit.int221.TimeUpBackend.DTOS.UserDTOPUT;
 import sit.int221.TimeUpBackend.Entities.RoleUser;
 import sit.int221.TimeUpBackend.Entities.User;
 import sit.int221.TimeUpBackend.Repository.UserRepository;
-
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -35,21 +32,38 @@ public class UserService {
     return userRepository.findAll();
    }
 
-   public  User getUserByID(Integer id){
-       return userRepository.findById(id).orElseThrow(()->
+   public  UserDTOGET getUserByID(Integer id){
+       User user =  userRepository.findById(id).orElseThrow(()->
                new ResponseStatusException(HttpStatus.NOT_FOUND));
+
+       return  modelMapper.map(user , UserDTOGET.class );
    }
 
 
 
    //post
     public User createUser(UserDTOPOST userDTOPOST) {
+        RoleUser[] roleUser = RoleUser.values();
         User user = new User();
-        user.setNameUser(userDTOPOST.getNameUser().trim());
-        user.setEmailUser(userDTOPOST.getEmailUser().trim());
-        user.setRoleUser(userDTOPOST.getRoleUser());
-     return    userRepository.saveAndFlush(user);
-    }
+        if (userDTOPOST.getRoleUser() == null){
+            user.setNameUser(userDTOPOST.getNameUser().trim());
+            user.setEmailUser(userDTOPOST.getEmailUser().trim());
+            user.setRoleUser(RoleUser.student);
+            return userRepository.saveAndFlush(user);
+        }
+        else {
+            for (int i = 0 ; i < roleUser.length ; i++){
+                if (roleUser[i].equals(userDTOPOST.getRoleUser())){
+                    user.setNameUser(userDTOPOST.getNameUser().trim());
+                    user.setEmailUser(userDTOPOST.getEmailUser().trim());
+                    user.setRoleUser(userDTOPOST.getRoleUser());
+                    return userRepository.saveAndFlush(user);
+                }
+            }
+        }
+           return null;
+            }
+
 
 
     //update
