@@ -50,12 +50,17 @@ public class UserController {
     public void deleteUserById(@PathVariable Integer id){
         userService.deleteUser(id);
     }
+
+    @DeleteMapping("")
+    public void deleteAllUser(){userService.deleteAllUser();}
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     @ExceptionHandler(MethodArgumentNotValidException.class)
     public Map<String, String> handleValidationExceptions(
             MethodArgumentNotValidException ex) {
         return getStringStringMap(ex);
     }
+
+
 
 
 

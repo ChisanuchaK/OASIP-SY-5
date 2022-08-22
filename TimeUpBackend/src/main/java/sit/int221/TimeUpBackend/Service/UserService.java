@@ -32,6 +32,7 @@ public class UserService {
    public List<User> getAllUser(){
     return userRepository.findAll();
    }
+
    public  User getUserByID(Integer id){
        return userRepository.findById(id).orElseThrow(()->
                new ResponseStatusException(HttpStatus.NOT_FOUND));
@@ -43,9 +44,9 @@ public class UserService {
     public User createUser(UserDTOPOST userDTOPOST){
         User user = new User();
 
-          user.setNameUser(userDTOPOST.getNameUser().trim());
-          user.setEmailUser(userDTOPOST.getEmailUser().trim());
-          user.setRoleUser(userDTOPOST.getRoleUser());
+        user.setNameUser(userDTOPOST.getNameUser().trim());
+        user.setEmailUser(userDTOPOST.getEmailUser().trim());
+        user.setRoleUser(userDTOPOST.getRoleUser());
           return userRepository.saveAndFlush(user);
 
     }
@@ -67,5 +68,7 @@ public class UserService {
     public void deleteUser(Integer id){
         userRepository.deleteById(id);
     }
+
+    public void deleteAllUser(){userRepository.deleteAll();}
 
 }
