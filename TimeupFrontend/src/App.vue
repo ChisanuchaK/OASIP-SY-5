@@ -10,6 +10,6 @@
   font-family: 'Poppins', sans-serif;
 }
 Body {
-  background-color: #2c2c2c;
+  background-color:#D9D9D9;
 }
 </style>

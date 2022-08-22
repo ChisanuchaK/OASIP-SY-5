@@ -3,23 +3,19 @@ import { useRouter } from 'vue-router' //get params to script
 // let {params} = useRoute()
 // console.log(params)
 
-const appRouter = useRouter()
+const appRouter = useRouter();
 
-const goBackToHome = () => appRouter.push({ name: 'SignIn' })
+const goBackToHome = () => appRouter.push({ name: 'SignIn' });
 </script>
 
 <template>
   <div>
-    <div
-      @click="goBackToHome()"
-      class="absolute bg-white rounded left-[2%] p-1 hover:bg-[#E9E9E9]"
-    >
+    <div @click="goBackToHome()" class="absolute bg-white rounded left-[2%] p-1 hover:bg-[#E9E9E9]">
       <!-- <router-link :to="{ name: 'UserList' }"> </router-link> -->
       <svg width="50px" height="50px" viewBox="0 0 12 24">
-        <path
-          fill="#000000"
-          d="M9.125 21.1L.7 12.7q-.15-.15-.212-.325Q.425 12.2.425 12t.063-.375Q.55 11.45.7 11.3l8.425-8.425q.35-.35.875-.35t.9.375q.375.375.375.875t-.375.875L3.55 12l7.35 7.35q.35.35.35.862q0 .513-.375.888t-.875.375q-.5 0-.875-.375Z"
-        ></path>
+        <path fill="#000000"
+          d="M9.125 21.1L.7 12.7q-.15-.15-.212-.325Q.425 12.2.425 12t.063-.375Q.55 11.45.7 11.3l8.425-8.425q.35-.35.875-.35t.9.375q.375.375.375.875t-.375.875L3.55 12l7.35 7.35q.35.35.35.862q0 .513-.375.888t-.875.375q-.5 0-.875-.375Z">
+        </path>
       </svg>
 
       <!-- <svg
@@ -35,25 +31,13 @@ const goBackToHome = () => appRouter.push({ name: 'SignIn' })
     <div class="bg-white rounded-xl mt-[100px] m-auto w-[1200px] h-[800px]">
       <div class="grid grid-rows-8 grid-cols-12">
         <div class="row-start-1 col-start-7 h-[100px] w-[100px]"></div>
-        <div
-          class="row-start-1 row-end-9 col-start-1 col-end-2 bg-[#F24052] rounded-l-lg"
-        ></div>
-        <div
-          class="row-start-1 row-end-9 col-start-2 col-end-7 bg-[#8BBDDB] flex"
-        >
-          <img
-            class="m-auto"
-            src="../../../images/../public/images/peoples01.jpg"
-            alt="peoples"
-          />
+        <div class="row-start-1 row-end-9 col-start-1 col-end-2 bg-[#F24052] rounded-l-lg"></div>
+        <div class="row-start-1 row-end-9 col-start-2 col-end-7 bg-[#8BBDDB] flex">
+          <img class="m-auto" src="../../../public/images/peoples01.jpg" alt="peoples" />
         </div>
 
         <div class="row-start-1 col-start-8 col-end-10 m-auto flex">
-          <img
-            class="w-[56px] items-right mr-4"
-            src="../../../public/images/logo.png"
-            alt="logo"
-          />
+          <img class="w-[56px] items-right mr-4" src="../../../public/images/logo.png" alt="logo" />
           <div class="font-bold uppercase text-center text-[30px]">time-up</div>
         </div>
 
@@ -66,8 +50,7 @@ const goBackToHome = () => appRouter.push({ name: 'SignIn' })
             <div class="relative">
               <input
                 class="border rounded-md border-solid border-[#D9D9D9] w-full p-2 hover:bg-[#F2F2F2] transition delay-75"
-                type="text"
-              />
+                type="text" />
               <label class="placeholder text-[#D9D9D9]">Name</label>
               <label v-if="false" class="text-red-500">
                 *name is invalid
@@ -80,9 +63,7 @@ const goBackToHome = () => appRouter.push({ name: 'SignIn' })
           <div class="relative">
             <select
               class="border rounded-md border-solid border-[#D9D9D9] w-full p-2 hover:bg-[#F2F2F2] transition delay-75"
-              name=""
-              id=""
-            >
+              name="" id="">
               <option value=""></option>
               <option value="Admin">Admin</option>
               <option value="Lecturer">Lecturer</option>
@@ -97,8 +78,7 @@ const goBackToHome = () => appRouter.push({ name: 'SignIn' })
             <div class="relative">
               <input
                 class="border rounded-md border-solid border-[#D9D9D9] w-full p-2 hover:bg-[#F2F2F2] transition delay-75"
-                type="text"
-              />
+                type="text" />
               <label class="placeholder text-[#D9D9D9]">Email</label>
               <label v-if="false" class="text-red-500">
                 *email is invalid
@@ -135,12 +115,9 @@ const goBackToHome = () => appRouter.push({ name: 'SignIn' })
                     </form>
                 </div> -->
 
-        <div
-          class="relative row-start-7 col-start-7 col-end-12 justify-center flex w-full"
-        >
+        <div class="relative row-start-7 col-start-7 col-end-12 justify-center flex w-full">
           <button
-            class="rounded-md bg-[#105E99] text-[#ffffff] w-[70%] m-auto p-2 hover:bg-[#004980] transition delay-75"
-          >
+            class="rounded-md bg-[#105E99] text-[#ffffff] w-[70%] m-auto p-2 hover:bg-[#004980] transition delay-75">
             Create your account
           </button>
 
@@ -149,9 +126,7 @@ const goBackToHome = () => appRouter.push({ name: 'SignIn' })
           </label>
         </div>
 
-        <div
-          class="row-start-1 row-end-9 col-start-12 col-end-13 bg-[#105E99] rounded-r-lg"
-        ></div>
+        <div class="row-start-1 row-end-9 col-start-12 col-end-13 bg-[#105E99] rounded-r-lg"></div>
       </div>
     </div>
   </div>
@@ -209,14 +184,14 @@ const goBackToHome = () => appRouter.push({ name: 'SignIn' })
     box-shadow: 0px 0px 10px 0px #666;
 } */
 
-.input {
+/* .input {
   padding: 10px;
   width: 100%;
   max-width: 300px;
   box-sizing: border-box;
   outline: none;
   border: 1px solid #04aa6d;
-}
+} */
 
 .placeholder {
   position: absolute;
@@ -229,7 +204,7 @@ const goBackToHome = () => appRouter.push({ name: 'SignIn' })
   pointer-events: none;
 }
 
-input:focus + .placeholder {
+input:focus+.placeholder {
   top: -10px;
   font-size: 12px;
   color: #105e99;

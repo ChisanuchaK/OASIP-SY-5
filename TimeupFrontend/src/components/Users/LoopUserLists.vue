@@ -5,7 +5,11 @@ const props = defineProps({
   userLists: {
     type: Array,
     required: true
-  }
+  },
+    statusUser: {
+        type: String,
+        default: "Not Have a User"
+    }
 })
 
 const userAlls = computed(() => props.userLists)
@@ -79,14 +83,22 @@ const userAlls = computed(() => props.userLists)
         <div class="row-start-1 col-start-11 col-span-1">edit</div>
         <div class="row-start-1 col-start-12 col-span-1">delete</div>
       </div>
-      <!-- <div v-if=""></div> -->
-      <div class="scroller w-full h-[300px] bg-[#D9D9D9]">
+      <!-- <div v-if="!(userAlls == '')">
+      {{props.statusUser}}
+      </div> -->
+  <div v-if="(userAlls == '')" class="grid grid-flow-row grid-cols-1 w-full h-[300px] bg-[#E9E9E9] content-center justify-items-center">
+    <div class="col-span-1 text-[128px] uppercase text-[#D9D9D9]">
+    {{props.statusUser}}
+    </div>
+  </div>
+
+      <div v-else class="scroller w-full h-[300px] bg-[#E9E9E9]">
         <div
-          class="grid grid-flow-row grid-cols-12 content-center justify-items-center p-1 my-[2px] bg-white text-[16px] text-center"
+          class="grid grid-flow-row grid-cols-12 content-center justify-items-center p-1 my-[2px] bg-white text-[16px] text-center hover:bg-[#F2F2F2] "
           v-for="(userList, index) in userAlls"
           :key="index"
         >
-          <div class="grid ow-start-1 col-start-1 col-span-1">
+          <div class="grid row-start-1 col-start-1 col-span-1">
             {{ userList.idUser }}
           </div>
           <div class="row-start-1 col-start-2 col-end-4 col-span-2 w-[80%]">
