@@ -2,8 +2,10 @@ package sit.int221.TimeUpBackend.Service;
 
 import org.modelmapper.ModelMapper;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
+import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 import sit.int221.TimeUpBackend.DTOS.UserDTOGET;
 import sit.int221.TimeUpBackend.DTOS.UserDTOPOST;
 import sit.int221.TimeUpBackend.DTOS.UserDTOPUT;
@@ -41,15 +43,14 @@ public class UserService {
 
 
    //post
-    public User createUser(UserDTOPOST userDTOPOST){
+    public User createUser(UserDTOPOST userDTOPOST) {
         User user = new User();
-
         user.setNameUser(userDTOPOST.getNameUser().trim());
         user.setEmailUser(userDTOPOST.getEmailUser().trim());
         user.setRoleUser(userDTOPOST.getRoleUser());
-          return userRepository.saveAndFlush(user);
-
+     return    userRepository.saveAndFlush(user);
     }
+
 
     //update
     public User updateUser(UserDTOPUT  userDTOPUT  , Integer id){

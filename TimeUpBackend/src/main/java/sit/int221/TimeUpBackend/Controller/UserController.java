@@ -2,6 +2,7 @@ package sit.int221.TimeUpBackend.Controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.*;
 import sit.int221.TimeUpBackend.DTOS.UserDTOGET;
@@ -37,7 +38,7 @@ public class UserController {
 
     @PostMapping("")
     @ResponseStatus(HttpStatus.CREATED)
-    public User createUser( @Valid @RequestBody UserDTOPOST userDTOPOST){
+    public User createUser(@Valid @RequestBody UserDTOPOST userDTOPOST){
         return  userService.createUser(userDTOPOST);
     }
 

@@ -54,16 +54,17 @@ ENGINE = InnoDB;
 -- -----------------------------------------------------
 -- Table `TimeUp`.`user`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `TimeUp`.`user` (
-`iduser` INT NOT NULL AUTO_INCREMENT,
-`name` VARCHAR(100) NOT NULL,
-`email` VARCHAR(50) NOT NULL,
-`role` enum ('admin', 'lecturer', 'student'),
-`createdOn` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
-`updatedOn` TIMESTAMP NOT NULL ON UPDATE CURRENT_TIMESTAMP,
-primary key (`iduser`),
-unique index `name` (`name` asc) visible,
-CONSTRAINT User UNIQUE (`iduser`,`email`)
+CREATE TABLE IF NOT EXISTS TimeUp.user (
+iduser INT NOT NULL AUTO_INCREMENT,
+name VARCHAR(100) NOT NULL,
+email VARCHAR(50) NOT NULL,
+role enum ('admin', 'lecturer', 'student'),
+createdOn TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+updatedOn TIMESTAMP NOT NULL ON UPDATE CURRENT_TIMESTAMP,
+primary key (iduser),
+unique index name (name asc) visible,
+unique index email (email) visible
+
 )
 ENGINE = InnoDB;
 
