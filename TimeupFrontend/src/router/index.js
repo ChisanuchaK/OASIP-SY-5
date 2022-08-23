@@ -10,7 +10,7 @@ import SignUp from '../views/Users/SignUp.vue'
 import DetailUser from '../views/Users/DetailUser.vue'
 import EditUser from '../views/Users/EditUser.vue'
 
-const history = createWebHistory(`${import.meta.env.VITE_ROUTER_URL}`);
+const history = createWebHistory(`${import.meta.env.VITE_ROUTER_URL}`)
 // const history = createWebHistory();
 const routes = [
   {
@@ -42,21 +42,24 @@ const routes = [
     path: '/userList',
     name: 'UserList',
     component: UserList
-  },{
+  },
+  {
     path: '/sign-in',
     name: 'SignIn',
     component: SignIn
-  },{
+  },
+  {
     path: '/sign-up',
     name: 'SignUp',
     component: SignUp
-  },{
-    path: '/userlist/detailuser/:idUser' ,
+  },
+  {
+    path: '/userlist/detailuser/:idUser',
     name: 'DetailUser',
     component: DetailUser
-  }
-  ,{
-    path: '/userlist/edituser/:idUser' ,
+  },
+  {
+    path: '/userlist/edituser/:idUser',
     name: 'EditUser',
     component: EditUser
   }
