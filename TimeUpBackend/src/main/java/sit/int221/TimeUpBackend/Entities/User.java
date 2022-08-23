@@ -7,6 +7,7 @@ import org.hibernate.annotations.UpdateTimestamp;
 
 import javax.persistence.*;
 import java.sql.Timestamp;
+import java.time.Instant;
 
 @Entity
 @Setter
@@ -29,11 +30,9 @@ public class User {
     @Column(name = "role")
     private RoleUser roleUser;
 
-    @CreationTimestamp
-    @Column(name = "createdOn" , nullable = false)
-    private Timestamp createOn;
+    @Column(name = "createdOn" , nullable = false , insertable = false , updatable = false)
+    private Instant createOn;
 
-    @UpdateTimestamp
-    @Column(name = "updatedOn" , nullable = false)
-    private Timestamp updateOn;
+    @Column(name = "updatedOn" , nullable = false , insertable = false ,  updatable = false)
+    private Instant updateOn;
 }

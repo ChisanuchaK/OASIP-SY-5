@@ -9,6 +9,7 @@ import sit.int221.TimeUpBackend.Entities.RoleUser;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import java.sql.Timestamp;
+import java.time.Instant;
 
 @Getter
 @Setter
@@ -24,6 +25,6 @@ public class UserDTOGET {
     @NotNull(message = "role null")
 
     private RoleUser roleUser;
-    private Timestamp createOn;
-    private Timestamp updateOn;
+    private Instant createOn;
+    private Instant updateOn;
 }

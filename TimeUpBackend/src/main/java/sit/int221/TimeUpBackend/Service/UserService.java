@@ -61,6 +61,7 @@ public class UserService {
                     user.setNameUser(userDTOPOST.getNameUser().trim());
                     user.setEmailUser(userDTOPOST.getEmailUser().trim());
                     user.setRoleUser(userDTOPOST.getRoleUser());
+                    System.out.println(userDTOPOST.getRoleUser());
                     return userRepository.saveAndFlush(user);
                 }
             }
