@@ -21,4 +21,5 @@ public class UserDTOPUT {
     @NotNull
     @Size(min = 1 , max = 50 , message = "size must be between 1 and 50")
     private String emailUser;
+    private RoleUser roleUser;
 }

@@ -61,7 +61,6 @@ public class UserService {
                     user.setNameUser(userDTOPOST.getNameUser().trim());
                     user.setEmailUser(userDTOPOST.getEmailUser().trim());
                     user.setRoleUser(userDTOPOST.getRoleUser());
-                    System.out.println(userDTOPOST.getRoleUser());
                     return userRepository.saveAndFlush(user);
                 }
             }
@@ -74,9 +73,11 @@ public class UserService {
     //update
     public User updateUser(UserDTOPUT  userDTOPUT  , Integer id){
         User user = userRepository.findById(id).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
-        if (!(userDTOPUT.getNameUser().equals(user.getNameUser())&& userDTOPUT.getEmailUser().equals(user.getEmailUser()))){
+        if (!(userDTOPUT.getNameUser().equals(user.getNameUser())&& userDTOPUT.getEmailUser().equals(user.getEmailUser())
+            && (userDTOPUT.getRoleUser().equals(user.getRoleUser())))){
             user.setNameUser(userDTOPUT.getNameUser().trim());
             user.setEmailUser(userDTOPUT.getEmailUser().trim());
+            user.setRoleUser(userDTOPUT.getRoleUser());
             return userRepository.saveAndFlush(user);
         }
         else{
