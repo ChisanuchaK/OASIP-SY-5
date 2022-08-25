@@ -16,6 +16,7 @@ import java.time.Instant;
 @AllArgsConstructor
 @NoArgsConstructor
 public class UserDTOGET {
+    private Integer idBooking;
     @NotNull
     @Size(min = 1 , max = 100 , message = "size must be between 1 and 100")
     private String nameUser;
