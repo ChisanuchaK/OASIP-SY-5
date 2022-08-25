@@ -27,5 +27,6 @@ public class UserDTOPOST {
     @Email(regexp = "[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,3}",
             flags =  Pattern.Flag.CASE_INSENSITIVE)
     private String emailUser;
+    private String password;
     private RoleUser roleUser;
 }
