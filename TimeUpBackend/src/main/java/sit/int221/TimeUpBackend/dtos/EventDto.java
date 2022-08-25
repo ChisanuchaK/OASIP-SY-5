@@ -1,11 +1,11 @@
-package sit.int221.TimeUpBackend.DTOS;
+package sit.int221.TimeUpBackend.dtos;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import sit.int221.TimeUpBackend.Entities.EventCategory;
+import sit.int221.TimeUpBackend.entities.EventCategory;
 
 import java.time.Instant;
 
@@ -13,7 +13,7 @@ import java.time.Instant;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class EventDTO {
+public class EventDto {
     private Integer idBooking;
     private Instant eventStartTime;
     private Integer eventDuration;

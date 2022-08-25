@@ -1,4 +1,4 @@
-package sit.int221.TimeUpBackend.Service;
+package sit.int221.TimeUpBackend.service;
 
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -8,11 +8,11 @@ import org.springframework.stereotype.Service;
 
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.server.ResponseStatusException;
-import sit.int221.TimeUpBackend.DTOS.*;
-import sit.int221.TimeUpBackend.Entities.Event;
-import sit.int221.TimeUpBackend.Entities.EventCategory;
-import sit.int221.TimeUpBackend.Repository.EventRepository;
-import sit.int221.TimeUpBackend.Repository.EventCategoryRepository;
+import sit.int221.TimeUpBackend.dtos.*;
+import sit.int221.TimeUpBackend.entities.Event;
+import sit.int221.TimeUpBackend.entities.EventCategory;
+import sit.int221.TimeUpBackend.repositories.EventRepository;
+import sit.int221.TimeUpBackend.repositories.EventCategoryRepository;
 
 import java.util.*;
 import java.util.stream.Collectors;
@@ -27,25 +27,25 @@ public class EventService {
     private ModelMapper modelMapper = new ModelMapper();
 
     //    get
-    public List<EventDTO> getAllEvent(){
+    public List<EventDto> getAllEvent(){
         List<Event>bookings= eventRepository.findAll();
-        return bookings.stream().map(e -> modelMapper.map(e, EventDTO.class)).collect(Collectors.toList());
+        return bookings.stream().map(e -> modelMapper.map(e, EventDto.class)).collect(Collectors.toList());
     }
 
-    public EventMoreDetailDTO getEventDetailDTOById(Integer id){
+    public EventMoreDetailDto getEventDetailDTOById(Integer id){
         Event bookings= eventRepository.findById(id).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
-        return modelMapper.map(bookings , EventMoreDetailDTO.class);
+        return modelMapper.map(bookings , EventMoreDetailDto.class);
     }
-    public List<EventDTO> getEventByIdCategory(@PathVariable Integer id){
+    public List<EventDto> getEventByIdCategory(@PathVariable Integer id){
             EventCategory eventCategory = eventCategoryRepository.findById(id).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
             List<Event> bookingList = eventRepository.findAllByEventCategoryEventCategoryId(eventCategory.getEventCategoryId());
-        return bookingList.stream().map(e -> modelMapper.map(e, EventDTO.class)).collect(Collectors.toList());
+        return bookingList.stream().map(e -> modelMapper.map(e, EventDto.class)).collect(Collectors.toList());
     }
     // post
 
-    public ResponseEntity create( EventPOSTDTO eventPOSTDTO) {
-        Event booking = modelMapper.map(eventPOSTDTO , Event.class);
-        EventCategory eventCategory = eventCategoryRepository.findById(eventPOSTDTO.getEventCategory().getEventCategoryId()).orElseThrow(()
+    public ResponseEntity create( EventPostDto eventPostDto) {
+        Event booking = modelMapper.map(eventPostDto , Event.class);
+        EventCategory eventCategory = eventCategoryRepository.findById(eventPostDto.getEventCategory().getEventCategoryId()).orElseThrow(()
                 -> new ResponseStatusException(HttpStatus.NOT_FOUND));
         booking.setEventDuration(eventCategory.getEventDuration());
         List<Event> checkCompare = eventRepository.findAllByEventCategoryEventCategoryId(booking.getEventCategory().getEventCategoryId());
@@ -82,7 +82,7 @@ public class EventService {
     }
 
     //put
-    public ResponseEntity editEvent(EventPUTDTO editEventPutDTO, int id) {
+    public ResponseEntity editEvent(EventPutDto editEventPutDTO, int id) {
 
         Event event = eventRepository.findById(id).orElseThrow( ()->{
             return new ResponseStatusException(HttpStatus.NOT_FOUND);

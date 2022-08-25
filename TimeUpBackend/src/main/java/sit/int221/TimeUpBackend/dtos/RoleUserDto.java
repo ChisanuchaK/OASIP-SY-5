@@ -1,16 +1,16 @@
-package sit.int221.TimeUpBackend.DTOS;
+package sit.int221.TimeUpBackend.dtos;
 
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import sit.int221.TimeUpBackend.Entities.RoleUser;
+import sit.int221.TimeUpBackend.entities.RoleUser;
 
 @Getter
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class RoleUserDTO {
+public class RoleUserDto {
     private RoleUser roleUser;
 }

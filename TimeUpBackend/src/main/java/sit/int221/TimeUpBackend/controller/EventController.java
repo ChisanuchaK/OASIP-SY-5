@@ -1,18 +1,18 @@
-package sit.int221.TimeUpBackend.Controller;
+package sit.int221.TimeUpBackend.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.*;
-import sit.int221.TimeUpBackend.DTOS.*;
-import sit.int221.TimeUpBackend.Service.EventService;
+import sit.int221.TimeUpBackend.dtos.*;
+import sit.int221.TimeUpBackend.service.EventService;
 
 import javax.validation.Valid;
 import java.util.List;
 import java.util.Map;
 
-import static sit.int221.TimeUpBackend.Controller.EventCategoryController.getStringStringMap;
+import static sit.int221.TimeUpBackend.controller.EventCategoryController.getStringStringMap;
 
 @RestController
 @RequestMapping("/api/event")
@@ -22,23 +22,23 @@ public class EventController {
     private EventService eventService;
 
     @GetMapping("")
-    public List<EventDTO> getAllEvent(){
+    public List<EventDto> getAllEvent(){
         return eventService.getAllEvent();
     }
 
     @GetMapping("/{id}")
-    public EventMoreDetailDTO getBEventById(@PathVariable Integer id){
+    public EventMoreDetailDto getBEventById(@PathVariable Integer id){
         return eventService.getEventDetailDTOById(id);
     }
 
     @GetMapping("/{id}/category")
-    public List<EventDTO> getAllEventByIdCategory(@PathVariable Integer id){
+    public List<EventDto> getAllEventByIdCategory(@PathVariable Integer id){
         return eventService.getEventByIdCategory(id);
     }
 
     @PostMapping("")
     @ResponseStatus(HttpStatus.CREATED)
-    public ResponseEntity createEvent(@Valid @RequestBody EventPOSTDTO newBooking){
+    public ResponseEntity createEvent(@Valid @RequestBody EventPostDto newBooking){
         return eventService.create(newBooking);
     }
 
@@ -49,7 +49,7 @@ public class EventController {
 
 
     @PutMapping("/{id}")
-    public ResponseEntity editEvent(@Valid @RequestBody EventPUTDTO editBooking , @PathVariable int id ){
+    public ResponseEntity editEvent(@Valid @RequestBody EventPutDto editBooking , @PathVariable int id ){
         return eventService.editEvent(editBooking , id);
     }
 

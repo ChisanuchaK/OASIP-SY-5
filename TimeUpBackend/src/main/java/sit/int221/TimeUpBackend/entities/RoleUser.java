@@ -1,4 +1,4 @@
-package sit.int221.TimeUpBackend.Entities;
+package sit.int221.TimeUpBackend.entities;
 
 
 public enum RoleUser {

@@ -1,4 +1,4 @@
-package sit.int221.TimeUpBackend.DTOS;
+package sit.int221.TimeUpBackend.dtos;
 
 
 import lombok.AllArgsConstructor;
@@ -15,7 +15,7 @@ import java.time.Instant;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class EventPUTDTO {
+public class EventPutDto {
 
     @Future(message = "must be a future date and not present time !!" )
     @NotNull

@@ -1,14 +1,12 @@
-package sit.int221.TimeUpBackend.DTOS;
+package sit.int221.TimeUpBackend.dtos;
 
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import org.springframework.boot.context.properties.bind.DefaultValue;
-import sit.int221.TimeUpBackend.Entities.RoleUser;
+import sit.int221.TimeUpBackend.entities.RoleUser;
 
-import javax.persistence.UniqueConstraint;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
@@ -18,7 +16,7 @@ import javax.validation.constraints.Size;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class UserDTOPOST {
+public class UserPostDto {
     @NotNull
     @Size(min = 1 , max = 100 , message = "size must be between 1 and 100")
     private String nameUser;

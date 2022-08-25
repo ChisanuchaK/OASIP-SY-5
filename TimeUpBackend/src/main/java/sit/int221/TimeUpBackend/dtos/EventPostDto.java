@@ -1,20 +1,19 @@
-package sit.int221.TimeUpBackend.DTOS;
+package sit.int221.TimeUpBackend.dtos;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import org.hibernate.validator.constraints.UniqueElements;
-import sit.int221.TimeUpBackend.Entities.EventCategory;
+import sit.int221.TimeUpBackend.entities.EventCategory;
 
 import javax.validation.constraints.*;
 import java.time.Instant;
 
 @Getter
 @Setter
-@NoArgsConstructor
 @AllArgsConstructor
-public class EventPOSTDTO {
+@NoArgsConstructor
+public class EventPostDto {
     @Future(message = "must be a future date and not present time !!" )
     @NotNull
     private Instant eventStartTime;

@@ -1,22 +1,20 @@
-package sit.int221.TimeUpBackend.Controller;
+package sit.int221.TimeUpBackend.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.server.ResponseStatusException;
-import sit.int221.TimeUpBackend.DTOS.*;
-import sit.int221.TimeUpBackend.Entities.RoleUser;
-import sit.int221.TimeUpBackend.Entities.User;
-import sit.int221.TimeUpBackend.Service.UserService;
+import sit.int221.TimeUpBackend.dtos.*;
+import sit.int221.TimeUpBackend.entities.RoleUser;
+import sit.int221.TimeUpBackend.entities.User;
+import sit.int221.TimeUpBackend.service.UserService;
 
 import javax.validation.Valid;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-import static sit.int221.TimeUpBackend.Controller.EventCategoryController.getStringStringMap;
+import static sit.int221.TimeUpBackend.controller.EventCategoryController.getStringStringMap;
 
 @RestController
 @RequestMapping("/api/user")
@@ -26,12 +24,12 @@ public class UserController {
     private UserService userService;
 
     @GetMapping("")
-    public List<User> getAllUser(){
+    public List<UserGetDto> getAllUser(){
         return userService.getAllUser();
     }
 
     @GetMapping("/{id}")
-    public UserDTOGET getUserByID(@PathVariable int id){return  userService.getUserByID(id);}
+    public UserGetDto getUserByID(@PathVariable int id){return  userService.getUserByID(id);}
 
     @GetMapping("/role")
     public ArrayList<RoleUser> getRole(){
@@ -40,17 +38,17 @@ public class UserController {
 
     @PostMapping("")
     @ResponseStatus(HttpStatus.CREATED)
-    public User createUser(@Valid @RequestBody UserDTOPOST userDTOPOST){
+    public User createUser(@Valid @RequestBody UserPostDto userDTOPOST){
         return  userService.createUser(userDTOPOST);
     }
 
     @PostMapping("/login")
-    public User login(@Valid @RequestBody LoginDTO loginDTO){
+    public User login(@Valid @RequestBody LoginDto loginDTO){
         return  userService.LogInUser(loginDTO);
     }
 
     @PutMapping("/{id}")
-    public User updateUser(@Valid @RequestBody UserDTOPUT userDTOPUT , @PathVariable Integer id){
+    public User updateUser(@Valid @RequestBody UserPutDto userDTOPUT , @PathVariable Integer id){
         return userService.updateUser(userDTOPUT , id);
     }
 

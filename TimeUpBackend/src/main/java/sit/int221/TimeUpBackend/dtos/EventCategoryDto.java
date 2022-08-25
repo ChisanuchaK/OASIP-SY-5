@@ -1,4 +1,4 @@
-package sit.int221.TimeUpBackend.DTOS;
+package sit.int221.TimeUpBackend.dtos;
 
 
 import lombok.AllArgsConstructor;
@@ -15,7 +15,7 @@ import javax.validation.constraints.Size;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class EventCategoryDTO {
+public class EventCategoryDto {
 
     @NotNull
     @Size(min = 1 , max = 500 , message = "size must be between 1 and 100")

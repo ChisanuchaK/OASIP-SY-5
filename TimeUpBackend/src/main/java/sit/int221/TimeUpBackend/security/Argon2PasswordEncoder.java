@@ -1,4 +1,4 @@
-package sit.int221.TimeUpBackend.Security;
+package sit.int221.TimeUpBackend.security;
 
 
 import de.mkammerer.argon2.Argon2;

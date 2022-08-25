@@ -1,4 +1,4 @@
-package sit.int221.TimeUpBackend.Controller;
+package sit.int221.TimeUpBackend.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -6,9 +6,9 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.*;
-import sit.int221.TimeUpBackend.DTOS.EventCategoryDTO;
-import sit.int221.TimeUpBackend.Entities.EventCategory;
-import sit.int221.TimeUpBackend.Service.EventCategoryService;
+import sit.int221.TimeUpBackend.dtos.EventCategoryDto;
+import sit.int221.TimeUpBackend.entities.EventCategory;
+import sit.int221.TimeUpBackend.service.EventCategoryService;
 
 import javax.validation.Valid;
 import java.util.HashMap;
@@ -34,7 +34,7 @@ public class EventCategoryController {
 
 
     @PutMapping("/{id}")
-    public ResponseEntity editEventCategory(@Valid  @RequestBody EventCategoryDTO editEventCategory , @PathVariable Integer id){
+    public ResponseEntity editEventCategory(@Valid  @RequestBody EventCategoryDto editEventCategory , @PathVariable Integer id){
         return eventCategoryService.editEventCategory(editEventCategory , id);
     }
 

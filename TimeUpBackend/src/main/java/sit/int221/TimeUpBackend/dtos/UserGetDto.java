@@ -1,22 +1,21 @@
-package sit.int221.TimeUpBackend.DTOS;
+package sit.int221.TimeUpBackend.dtos;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import sit.int221.TimeUpBackend.Entities.RoleUser;
+import sit.int221.TimeUpBackend.entities.RoleUser;
 
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
-import java.sql.Timestamp;
 import java.time.Instant;
 
 @Getter
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class UserDTOGET {
-    private Integer idBooking;
+public class UserGetDto {
+    private Integer idUser;
     @NotNull
     @Size(min = 1 , max = 100 , message = "size must be between 1 and 100")
     private String nameUser;

@@ -1,4 +1,4 @@
-package sit.int221.TimeUpBackend.Entities;
+package sit.int221.TimeUpBackend.entities;
 
 import lombok.Getter;
 import lombok.Setter;

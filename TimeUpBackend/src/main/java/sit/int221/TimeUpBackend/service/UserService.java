@@ -1,19 +1,17 @@
-package sit.int221.TimeUpBackend.Service;
+package sit.int221.TimeUpBackend.service;
 
 import org.modelmapper.ModelMapper;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.server.ResponseStatusException;
-import sit.int221.TimeUpBackend.DTOS.LoginDTO;
-import sit.int221.TimeUpBackend.DTOS.UserDTOGET;
-import sit.int221.TimeUpBackend.DTOS.UserDTOPOST;
-import sit.int221.TimeUpBackend.DTOS.UserDTOPUT;
-import sit.int221.TimeUpBackend.Entities.RoleUser;
-import sit.int221.TimeUpBackend.Entities.User;
-import sit.int221.TimeUpBackend.Repository.UserRepository;
-import sit.int221.TimeUpBackend.Security.Argon2PasswordEncoder;
+import sit.int221.TimeUpBackend.dtos.LoginDto;
+import sit.int221.TimeUpBackend.dtos.UserGetDto;
+import sit.int221.TimeUpBackend.dtos.UserPostDto;
+import sit.int221.TimeUpBackend.dtos.UserPutDto;
+import sit.int221.TimeUpBackend.entities.RoleUser;
+import sit.int221.TimeUpBackend.entities.User;
+import sit.int221.TimeUpBackend.repositories.UserRepository;
+import sit.int221.TimeUpBackend.security.Argon2PasswordEncoder;
 
 import java.util.*;
 import java.util.stream.Collectors;
@@ -29,37 +27,34 @@ public class UserService {
 
 
     //get
-    public List<UserDTOGET> getUserByName(String nameUser){
+    public List<UserGetDto> getUserByName(String nameUser){
         List<User> user = userRepository.findAllByNameUserOrderByNameUserDesc(nameUser);
-        return user.stream().map(e -> modelMapper.map(e, UserDTOGET.class)).collect(Collectors.toList());
+        return user.stream().map(e -> modelMapper.map(e, UserGetDto.class)).collect(Collectors.toList());
    }
-//   public List<UserDTOGET> getAllUser(){
-//        List<User> user = userRepository.findAll();
-//       return user.stream().map(e -> modelMapper.map(e, UserDTOGET.class)).collect(Collectors.toList());
-//   }
-    public List<User> getAllUser(){
-        return userRepository.findAll();
-    }
+   public List<UserGetDto> getAllUser(){
+        List<User> user = userRepository.findAll();
+       return user.stream().map(e -> modelMapper.map(e, UserGetDto.class)).collect(Collectors.toList());
+   }
 
-   public  UserDTOGET getUserByID(Integer id){
+   public UserGetDto getUserByID(Integer id){
        User user =  userRepository.findById(id).orElseThrow(()->
                new ResponseStatusException(HttpStatus.NOT_FOUND));
 
-       return  modelMapper.map(user , UserDTOGET.class );
+       return  modelMapper.map(user , UserGetDto.class );
    }
    public ArrayList<RoleUser> getAllRole(){
         RoleUser[] roleUser   = RoleUser.values();
        return (ArrayList<RoleUser>) Arrays.stream(roleUser).collect(Collectors.toList());
    }
 
-   public User LogInUser(LoginDTO loginDTO){
+   public User LogInUser(LoginDto loginDTO){
         User user = userRepository.findByEmailUser(loginDTO.getEmailUser());
       if(user != null){
           if((encoder.matches(loginDTO.getPassword(), user.getPassword())) && (loginDTO.getEmailUser().equals(user.getEmailUser())) ){
               throw new ResponseStatusException(HttpStatus.OK , "password matched");
           }
           else {
-              throw new ResponseStatusException(HttpStatus.UNAUTHORIZED , "password not matched");
+            throw new  ResponseStatusException(HttpStatus.UNAUTHORIZED , "password not matched");
           }
       }
       else {
@@ -68,7 +63,7 @@ public class UserService {
 
    }
    //post
-    public User createUser(UserDTOPOST userDTOPOST) {
+    public User createUser(UserPostDto userDTOPOST) {
         String encodePassword = encoder.encode(userDTOPOST.getPassword());
         System.out.println(encodePassword);
         RoleUser[] roleUser = RoleUser.values();
@@ -97,7 +92,7 @@ public class UserService {
 
 
     //update
-    public User updateUser(UserDTOPUT  userDTOPUT  , Integer id){
+    public User updateUser(UserPutDto userDTOPUT  , Integer id){
         User user = userRepository.findById(id).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
         if (!(userDTOPUT.getNameUser().equals(user.getNameUser())&& userDTOPUT.getEmailUser().equals(user.getEmailUser())
             && (userDTOPUT.getRoleUser().equals(user.getRoleUser())))){
