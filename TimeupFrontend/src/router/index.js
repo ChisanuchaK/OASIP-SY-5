@@ -10,7 +10,7 @@ import SignUp from '../views/Users/SignUp.vue'
 import DetailUser from '../views/Users/DetailUser.vue'
 import EditUser from '../views/Users/EditUser.vue'
 
-const history = createWebHistory(`${import.meta.env.VITE_ROUTER_URL}`)
+const history = createWebHistory(`${import.meta.env.VITE_ROUTER_URL}`);
 // const history = createWebHistory();
 const routes = [
   {
