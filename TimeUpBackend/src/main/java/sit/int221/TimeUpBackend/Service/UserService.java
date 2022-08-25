@@ -33,10 +33,13 @@ public class UserService {
         List<User> user = userRepository.findAllByNameUserOrderByNameUserDesc(nameUser);
         return user.stream().map(e -> modelMapper.map(e, UserDTOGET.class)).collect(Collectors.toList());
    }
-   public List<UserDTOGET> getAllUser(){
-        List<User> user = userRepository.findAll();
-       return user.stream().map(e -> modelMapper.map(e, UserDTOGET.class)).collect(Collectors.toList());
-   }
+//   public List<UserDTOGET> getAllUser(){
+//        List<User> user = userRepository.findAll();
+//       return user.stream().map(e -> modelMapper.map(e, UserDTOGET.class)).collect(Collectors.toList());
+//   }
+    public List<User> getAllUser(){
+        return userRepository.findAll();
+    }
 
    public  UserDTOGET getUserByID(Integer id){
        User user =  userRepository.findById(id).orElseThrow(()->
