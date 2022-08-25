@@ -48,13 +48,14 @@ public class UserService {
    //post
     public User createUser(UserDTOPOST userDTOPOST) {
         String encodePassword = encoder.encode(userDTOPOST.getPassword());
+        System.out.println(encodePassword);
         RoleUser[] roleUser = RoleUser.values();
         User user = new User();
         if (userDTOPOST.getRoleUser() == null){
             user.setNameUser(userDTOPOST.getNameUser().trim());
-            user.setPassword(encoder.encode(userDTOPOST.getPassword()));
-            user.setEmailUser(encodePassword);
-            user.setRoleUser(RoleUser.student);
+            user.setEmailUser(userDTOPOST.getEmailUser().trim());
+            user.setRoleUser(userDTOPOST.getRoleUser());
+            user.setPassword(encodePassword);
             return userRepository.saveAndFlush(user);
         }
         else {
@@ -63,7 +64,7 @@ public class UserService {
                     user.setNameUser(userDTOPOST.getNameUser().trim());
                     user.setEmailUser(userDTOPOST.getEmailUser().trim());
                     user.setRoleUser(userDTOPOST.getRoleUser());
-                    user.setEmailUser(encodePassword);
+                    user.setPassword(encodePassword);
                     return userRepository.saveAndFlush(user);
                 }
             }
