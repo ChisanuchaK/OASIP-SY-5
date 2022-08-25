@@ -182,3 +182,29 @@ export const createUser = async (localDataInput) => {
     return res
   }
 }
+
+//edit user
+export const editUser = async (localDataInput) => {
+  const res = await fetch(
+    `${import.meta.env.VITE_BASE_URL}/user/${localDataInput.idUser}`,
+    {
+      method: 'PUT',
+      headers: {
+        'content-type': 'application/json'
+      },
+      body: JSON.stringify({
+        nameUser: localDataInput.nameUser,
+        emailUser: localDataInput.emailUser,
+        roleUser: localDataInput.roleUser
+      })
+    }
+  )
+
+  if (res.status === 200) {
+    console.log('edited successfully')
+    return res
+  } else {
+    console.log('error, cannot be added')
+    return res
+  }
+}

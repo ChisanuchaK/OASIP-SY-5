@@ -5,25 +5,25 @@ import Confirm from '../../components/Confirm.vue'
 import Cancel from '../../components/Cancel.vue'
 import { createUser, getAllUsers } from '../../stores/book.js'
 
-const appRouter = useRouter()
-
+const appRouter = useRouter();
+const goBackToHome = () => appRouter.push({ name: 'SignIn' });
 const localDataUser = reactive({
   nameUser: '',
   emailUser: '',
-  roleUser: ''
+  roleUser: 'student'
 })
 
-const userListAlls = ref([])
+const userListAlls = ref([]);
 // const UserName = ref([]);
 // const roleLists = ref();
 
-const isInvalid = ref(false)
-const nameIsDuplicate = ref(false)
-const emailIsDuplicate = ref(false)
+const isInvalid = ref(false);
+const nameIsDuplicate = ref(false);
+const emailIsDuplicate = ref(false);
 
-const cancelDialogStatus = ref(false)
-const confirmDialogStatus = ref(false)
-const regexEmail = '[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,3}'
+const cancelDialogStatus = ref(false);
+const confirmDialogStatus = ref(false);
+const regexEmail = '[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,3}';
 // const roleIndexSelect = ref();
 // const localPresentTime = moment.utc().local().format("YYYY-MM-DDTHH:mm");
 
@@ -79,43 +79,20 @@ const createUserSuccess = async (dataOfUser) => {
   dataOfUser.emailUser = dataOfUser.emailUser.trim()
   alert('create user success!!!')
   confirmDialogStatus.value = false
-  appRouter.push({ name: 'SignIn' })
+  // appRouter.push({ name: 'SignIn' })
+  appRouter.push({ name: 'Home' })
   await createUser(dataOfUser)
 }
 
-// const createBookingEvent = async (localDataInput) => {
-//   const res = await createBooking(localDataInput)
-//   if (res.status === 201) {
-//     alert(
-//       `Create successfully \n Category ID :  ${
-//         localData.eventCategory.eventCategoryId
-//       } \n CategoryName : ${
-//         categoryList.value[categoryIndexSelect.value].eventCategoryName
-//       } \n Date : ${localData.eventStartTime} \n Booking name :  ${
-//         localData.bookingName
-//       }`
-//     )
-//     console.log(
-//       `Create successfully \n Category ID :  ${localDataInput.eventCategory.eventCategoryId} \n Date : ${localDataInput.eventStartTime} \n Booking name :  ${localDataInput.bookingName}`
-//     )
-//     localDataInput.bookingName = ''
-//     localDataInput.bookingEmail = ''
-//     categoryIndexSelect.value = undefined
-//     localDataInput.eventDuration = ''
-//     dateIndexSelect.value = localPresentTime
-//     localDataInput.eventNotes = ''
-//   } else {
-//     console.log('error , failed to created')
-//   }
-//   confirmDialogStatus.value = false
-// }
-
-//
-
 //check invalid from input
-const inputNameIsEmpty = computed(() => {
+const inputNameIsInvalid = computed(() => {
   return isInvalid.value && localDataUser.nameUser.trim() == ''
 })
+
+const inputNameIsEmpty = computed(() => {
+  return isInvalid.value && localDataUser.nameUser.length == 0
+})
+
 const inputNameIsOver = computed(() => {
   return isInvalid.value && localDataUser.nameUser.length > 100
 })
@@ -138,15 +115,16 @@ const inputNameIsDuplicate = computed(() => {
 })
 
 const inputEmailIsEmpty = computed(() => {
-  return isInvalid.value && localDataUser.emailUser.trim() == ''
+  return isInvalid.value && localDataUser.emailUser.trim() == '' ||
+    localDataUser.emailUser.trim() == null
 })
 const inputEmailIsInvalid = computed(() => {
-  if (
-    localDataUser.emailUser.trim() == '' ||
-    localDataUser.emailUser.trim() == null
-  ) {
-    return ''
-  }
+  // if (
+  //   localDataUser.emailUser.trim() == '' ||
+  //   localDataUser.emailUser.trim() == null
+  // ) {
+  //   return ''
+  // }
   if (!localDataUser.emailUser.match(regexEmail)) {
     return isInvalid.value && !localDataUser.emailUser.match(regexEmail)
   }
@@ -184,7 +162,7 @@ const inputRoleIsEmpty = computed(() => {
 
 //
 
-const goBackToHome = () => appRouter.push({ name: 'SignIn' })
+
 
 onBeforeMount(async () => {
   const allUsers = await getAllUsers()
@@ -195,16 +173,12 @@ onBeforeMount(async () => {
 
 <template>
   <div>
-    <div
-      @click="changeCancelDialogShow"
-      class="absolute bg-white rounded left-[2%] p-1 hover:bg-[#E9E9E9]"
-    >
+    <div @click="changeCancelDialogShow" class="absolute bg-white rounded left-[2%] p-1 hover:bg-[#E9E9E9]">
       <!-- <router-link :to="{ name: 'UserList' }"> </router-link> -->
       <svg width="50px" height="50px" viewBox="0 0 12 24">
-        <path
-          fill="#000000"
-          d="M9.125 21.1L.7 12.7q-.15-.15-.212-.325Q.425 12.2.425 12t.063-.375Q.55 11.45.7 11.3l8.425-8.425q.35-.35.875-.35t.9.375q.375.375.375.875t-.375.875L3.55 12l7.35 7.35q.35.35.35.862q0 .513-.375.888t-.875.375q-.5 0-.875-.375Z"
-        ></path>
+        <path fill="#000000"
+          d="M9.125 21.1L.7 12.7q-.15-.15-.212-.325Q.425 12.2.425 12t.063-.375Q.55 11.45.7 11.3l8.425-8.425q.35-.35.875-.35t.9.375q.375.375.375.875t-.375.875L3.55 12l7.35 7.35q.35.35.35.862q0 .513-.375.888t-.875.375q-.5 0-.875-.375Z">
+        </path>
       </svg>
 
       <!-- <svg
@@ -220,25 +194,13 @@ onBeforeMount(async () => {
     <div class="bg-white rounded-xl mt-[100px] m-auto w-[1200px] h-[800px]">
       <div class="grid grid-rows-8 grid-cols-12">
         <div class="row-start-1 col-start-7 h-[100px] w-[100px]"></div>
-        <div
-          class="row-start-1 row-end-9 col-start-1 col-end-2 bg-[#F24052] rounded-l-lg"
-        ></div>
-        <div
-          class="grid row-start-1 row-end-9 col-start-2 col-end-6 bg-[#8BBDDB] content-center"
-        >
-          <img
-            class="m-auto"
-            src="../../../public/images/peoples01.jpg"
-            alt="peoples"
-          />
+        <div class="row-start-1 row-end-9 col-start-1 col-end-2 bg-[#F24052] rounded-l-lg"></div>
+        <div class="grid row-start-1 row-end-9 col-start-2 col-end-6 bg-[#8BBDDB] content-center">
+          <img class="m-auto" src="../../../public/images/peoples01.jpg" alt="peoples" />
         </div>
 
         <div class="row-start-1 col-start-8 col-end-10 m-auto flex">
-          <img
-            class="w-[56px] items-right mr-4"
-            src="../../../public/images/logo.png"
-            alt="logo"
-          />
+          <img class="w-[56px] items-right mr-4" src="../../../public/images/logo.png" alt="logo" />
           <div class="font-bold uppercase text-center text-[30px]">time-up</div>
         </div>
 
@@ -249,25 +211,39 @@ onBeforeMount(async () => {
         <div class="row-start-3 col-start-6 col-end-9 mx-auto w-[90%]">
           <form>
             <div class="relative">
-              <input
-                :style="{
-                  'border-color':
-                    inputNameIsEmpty || inputNameIsOver || inputNameIsDuplicate
-                      ? 'red'
-                      : ''
-                }"
-                v-model="localDataUser.nameUser"
-                class="border rounded-md border-solid border-[#D9D9D9] w-full p-2 hover:bg-[#F2F2F2] transition delay-75"
-                type="text"
-              />
-              <label class="placeholder text-[#D9D9D9]">Name</label>
-              <label
-                v-if="
+              <input :style="{
+                'border-color':
                   inputNameIsEmpty || inputNameIsOver || inputNameIsDuplicate
-                "
-                class="text-red-500"
-              >
-                *name is invalid
+                    ? 'red'
+                    : ''
+              }" v-model="localDataUser.nameUser"
+                class="border rounded-md border-solid border-[#D9D9D9] w-full p-2 hover:bg-[#F2F2F2] transition delay-75"
+                type="text" />
+              <label class="placeholder text-[#D9D9D9]">Name</label>
+              <label v-if="
+                inputNameIsEmpty || inputNameIsOver || inputNameIsDuplicate
+              " class="text-red-500 text-[14px]">
+                *
+              </label>
+              <label v-if="
+                inputNameIsInvalid
+              " class="text-red-500 text-[14px]">
+                name is invalid.
+              </label>
+              <label v-if="
+                inputNameIsEmpty
+              " class="text-red-500 text-[14px]">
+                please enter your name.
+              </label>
+              <label v-if="
+                inputNameIsOver
+              " class="text-red-500 text-[14px]">
+                over limit of input name.
+              </label>
+              <label v-if="
+                inputNameIsDuplicate
+              " class="text-red-500 text-[14px]">
+                *name is already to use.
               </label>
             </div>
           </form>
@@ -279,55 +255,48 @@ onBeforeMount(async () => {
 
         <div class="row-start-3 col-start-10 col-end-12 mx-auto w-[80%]">
           <div class="relative">
-            <select
-              :style="{
-                'border-color': inputRoleIsEmpty ? 'red' : ''
-              }"
-              v-model="localDataUser.roleUser"
+            <select :style="{
+              'border-color': inputRoleIsEmpty ? 'red' : ''
+            }" v-model="localDataUser.roleUser"
               class="border rounded-md border-solid border-[#D9D9D9] w-full p-2 hover:bg-[#F2F2F2] transition delay-75 text-center"
-              name=""
-              id=""
-            >
-              <option value="" selected hidden>role</option>
+              name="" id="">
+              <!-- <option value="" selected hidden>role</option> -->
               <option value="admin">Admin</option>
               <option value="lecturer">Lecturer</option>
               <option value="student">Student</option>
             </select>
-            <label v-if="inputRoleIsEmpty" class="text-red-500">
+            <label v-if="inputRoleIsEmpty" class="text-red-500 text-[14px]">
               *&nbsp;please choose <br />
-              &nbsp;&nbsp; your role</label
-            >
+              &nbsp;&nbsp; your role</label>
           </div>
         </div>
 
         <div class="row-start-4 col-start-6 col-end-9 mx-auto w-[90%]">
           <form>
             <div class="relative">
-              <input
-                :style="{
-                  'border-color':
-                    inputEmailIsDuplicate ||
+              <input :style="{
+                'border-color':
+                  inputEmailIsDuplicate ||
                     inputEmailIsEmpty ||
                     inputEmailIsInvalid ||
                     inputEmailIsOver
-                      ? 'red'
-                      : ''
-                }"
-                v-model="localDataUser.emailUser"
+                    ? 'red'
+                    : ''
+              }" v-model="localDataUser.emailUser"
                 class="border rounded-md border-solid border-[#D9D9D9] w-full p-2 hover:bg-[#F2F2F2] transition delay-75"
-                type="text"
-              />
+                type="text" />
               <label class="placeholder text-[#D9D9D9]">Email</label>
-              <label
-                v-if="
-                  inputEmailIsDuplicate ||
-                  inputEmailIsEmpty ||
-                  inputEmailIsInvalid ||
-                  inputEmailIsOver
-                "
-                class="text-red-500"
-              >
-                *email is invalid
+              <label v-if="inputEmailIsEmpty" class="text-red-500 text-[14px]">
+                please enter your email.
+              </label>
+              <label v-if="inputEmailIsInvalid" class="text-red-500 text-[14px]">
+                email is invalid form.
+              </label>
+              <label v-if="inputEmailIsOver" class="text-red-500 text-[14px]">
+over limit of input email.
+              </label>
+              <label v-if="inputEmailIsDuplicate" class="text-red-500 text-[14px]">
+                email is already to use.
               </label>
             </div>
           </form>
@@ -365,70 +334,53 @@ onBeforeMount(async () => {
                     </form>
                 </div> -->
 
-        <div
-          class="relative row-start-7 col-start-7 col-end-12 justify-center flex w-full"
-        >
-          <button
-            :disabled="
-              inputNameIsEmpty ||
-              inputNameIsOver ||
-              inputNameIsDuplicate ||
-              inputRoleIsEmpty ||
-              inputEmailIsDuplicate ||
-              inputEmailIsEmpty ||
-              inputEmailIsInvalid ||
-              inputEmailIsOver
-            "
-            :style="{
-              'border-color':
-                inputNameIsEmpty ||
-                inputNameIsOver ||
-                inputNameIsDuplicate ||
-                inputRoleIsEmpty ||
-                inputEmailIsDuplicate ||
-                inputEmailIsEmpty ||
-                inputEmailIsInvalid ||
-                inputEmailIsOver
-                  ? 'red'
-                  : ''
-            }"
-            @click="changeConfirmDialogShow"
-            class="rounded-md bg-[#105E99] text-[#ffffff] w-[70%] m-auto p-2 hover:bg-[#004980] transition delay-75 disabled:opacity-50"
-          >
+        <div class="relative row-start-7 col-start-7 col-end-12 justify-center flex w-full">
+          <button :disabled="
+            inputNameIsEmpty ||
+            inputNameIsOver ||
+            inputNameIsDuplicate ||
+            inputRoleIsEmpty ||
+            inputEmailIsDuplicate ||
+            inputEmailIsEmpty ||
+            inputEmailIsInvalid ||
+            inputEmailIsOver
+          " :style="{
+  'border-color':
+    inputNameIsEmpty ||
+      inputNameIsOver ||
+      inputNameIsDuplicate ||
+      inputRoleIsEmpty ||
+      inputEmailIsDuplicate ||
+      inputEmailIsEmpty ||
+      inputEmailIsInvalid ||
+      inputEmailIsOver
+      ? 'red'
+      : ''
+}" @click="changeConfirmDialogShow"
+            class="rounded-md bg-[#105E99] text-[#ffffff] w-[70%] m-auto p-2 hover:bg-[#004980] transition delay-75 disabled:opacity-50">
             Create your account
           </button>
 
-          <label
-            v-if="
-              inputNameIsEmpty ||
-              inputNameIsOver ||
-              inputNameIsDuplicate ||
-              inputRoleIsEmpty ||
-              inputEmailIsDuplicate ||
-              inputEmailIsEmpty ||
-              inputEmailIsInvalid ||
-              inputEmailIsOver
-            "
-            class="absolute text-red-500 top-[70px]"
-          >
+          <label v-if="
+            inputNameIsEmpty ||
+            inputNameIsOver ||
+            inputNameIsDuplicate ||
+            inputRoleIsEmpty ||
+            inputEmailIsDuplicate ||
+            inputEmailIsEmpty ||
+            inputEmailIsInvalid ||
+            inputEmailIsOver
+          " class="absolute text-red-500 top-[70px] text-[14px]">
             *something in form is invalid.
           </label>
         </div>
 
-        <div
-          class="row-start-1 row-end-9 col-start-12 col-end-13 bg-[#105E99] rounded-r-lg"
-        ></div>
+        <div class="row-start-1 row-end-9 col-start-12 col-end-13 bg-[#105E99] rounded-r-lg"></div>
 
-        <Cancel
-          v-if="cancelDialogStatus"
-          @onClickCancelNo="changeCancelDialogClose"
-          @onClickCancelYes="cancelCreateUser"
-        />
-        <Confirm
-          v-if="confirmDialogStatus"
-          @onClickConfirmNo="changeConfirmDialogClose"
-          @onClickConfirmYes="createUserSuccess(localDataUser)"
-        />
+        <Cancel v-if="cancelDialogStatus" @onClickCancelNo="changeCancelDialogClose"
+          @onClickCancelYes="cancelCreateUser" />
+        <Confirm v-if="confirmDialogStatus" @onClickConfirmNo="changeConfirmDialogClose"
+          @onClickConfirmYes="createUserSuccess(localDataUser)" />
       </div>
     </div>
   </div>
@@ -507,7 +459,7 @@ onBeforeMount(async () => {
   pointer-events: none;
 }
 
-input:focus + .placeholder {
+input:focus+.placeholder {
   font-size: 12px;
   color: #105e99;
 }
