@@ -2,12 +2,11 @@ package sit.int221.TimeUpBackend.Controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.*;
-import sit.int221.TimeUpBackend.DTOS.RoleUserDTO;
-import sit.int221.TimeUpBackend.DTOS.UserDTOGET;
-import sit.int221.TimeUpBackend.DTOS.UserDTOPOST;
-import sit.int221.TimeUpBackend.DTOS.UserDTOPUT;
+import org.springframework.web.server.ResponseStatusException;
+import sit.int221.TimeUpBackend.DTOS.*;
 import sit.int221.TimeUpBackend.Entities.RoleUser;
 import sit.int221.TimeUpBackend.Entities.User;
 import sit.int221.TimeUpBackend.Service.UserService;
@@ -27,7 +26,7 @@ public class UserController {
     private UserService userService;
 
     @GetMapping("")
-    public List<User> getAllUser(){
+    public List<UserDTOGET> getAllUser(){
         return userService.getAllUser();
     }
 
@@ -43,6 +42,11 @@ public class UserController {
     @ResponseStatus(HttpStatus.CREATED)
     public User createUser(@Valid @RequestBody UserDTOPOST userDTOPOST){
         return  userService.createUser(userDTOPOST);
+    }
+
+    @PostMapping("/login")
+    public User login(@Valid @RequestBody LoginDTO loginDTO){
+        return  userService.LogInUser(loginDTO);
     }
 
     @PutMapping("/{id}")

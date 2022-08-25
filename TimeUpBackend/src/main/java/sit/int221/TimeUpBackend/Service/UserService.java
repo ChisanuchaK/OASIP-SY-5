@@ -1,10 +1,12 @@
 package sit.int221.TimeUpBackend.Service;
 
-import de.mkammerer.argon2.Argon2;
 import org.modelmapper.ModelMapper;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.server.ResponseStatusException;
+import sit.int221.TimeUpBackend.DTOS.LoginDTO;
 import sit.int221.TimeUpBackend.DTOS.UserDTOGET;
 import sit.int221.TimeUpBackend.DTOS.UserDTOPOST;
 import sit.int221.TimeUpBackend.DTOS.UserDTOPUT;
@@ -31,8 +33,9 @@ public class UserService {
         List<User> user = userRepository.findAllByNameUserOrderByNameUserDesc(nameUser);
         return user.stream().map(e -> modelMapper.map(e, UserDTOGET.class)).collect(Collectors.toList());
    }
-   public List<User> getAllUser(){
-    return userRepository.findAll();
+   public List<UserDTOGET> getAllUser(){
+        List<User> user = userRepository.findAll();
+       return user.stream().map(e -> modelMapper.map(e, UserDTOGET.class)).collect(Collectors.toList());
    }
 
    public  UserDTOGET getUserByID(Integer id){
@@ -44,6 +47,22 @@ public class UserService {
    public ArrayList<RoleUser> getAllRole(){
         RoleUser[] roleUser   = RoleUser.values();
        return (ArrayList<RoleUser>) Arrays.stream(roleUser).collect(Collectors.toList());
+   }
+
+   public User LogInUser(LoginDTO loginDTO){
+        User user = userRepository.findByEmailUser(loginDTO.getEmailUser());
+      if(user != null){
+          if((encoder.matches(loginDTO.getPassword(), user.getPassword())) && (loginDTO.getEmailUser().equals(user.getEmailUser())) ){
+              throw new ResponseStatusException(HttpStatus.OK , "password matched");
+          }
+          else {
+              throw new ResponseStatusException(HttpStatus.UNAUTHORIZED , "password not matched");
+          }
+      }
+      else {
+          throw new ResponseStatusException(HttpStatus.NOT_FOUND , "404 not found");
+      }
+
    }
    //post
     public User createUser(UserDTOPOST userDTOPOST) {
@@ -81,7 +100,7 @@ public class UserService {
             && (userDTOPUT.getRoleUser().equals(user.getRoleUser())))){
             user.setNameUser(userDTOPUT.getNameUser().trim());
             user.setEmailUser(userDTOPUT.getEmailUser().trim());
-            user.setPassword(userDTOPUT.getPassword());
+//            user.setPassword(userDTOPUT.getPassword());
             user.setRoleUser(userDTOPUT.getRoleUser());
             return userRepository.saveAndFlush(user);
         }
