@@ -293,7 +293,7 @@ onBeforeMount(async () => {
                 email is invalid form.
               </label>
               <label v-if="inputEmailIsOver" class="text-red-500 text-[14px]">
-over limit of input email.
+                over limit of input email.
               </label>
               <label v-if="inputEmailIsDuplicate" class="text-red-500 text-[14px]">
                 email is already to use.
@@ -303,36 +303,40 @@ over limit of input email.
         </div>
 
         <div class="row-start-4 col-start-9 w-[90%] text-[#D9D9D9]">
-          {{ localDataUser.emailUser.length }}/100
+          {{ localDataUser.emailUser.length }}/50
         </div>
 
-        <!-- <div class="row-start-5 col-start-7 col-end-10  mx-auto w-[90%] ">
-                    <form>
-                        <div class="relative">
-                            <input
-                                class="border rounded-md border-solid border-[#D9D9D9] w-full p-2 hover:bg-[#F2F2F2] transition delay-75"
-                                type="password" />
-                            <label class="placeholder text-[#D9D9D9]">Password</label>
-                            <label v-if="false"  class="text-red-500">
-                                *password is invalid
-                            </label>
-                        </div>
-                    </form>
-                </div>
+        <div class="row-start-5 col-start-6 col-end-9  mx-auto w-[90%] ">
+          <form>
+            <div class="relative">
+              <input
+                class="border rounded-md border-solid border-[#D9D9D9] w-full p-2 hover:bg-[#F2F2F2] transition delay-75"
+                type="password" />
+              <label class="placeholder text-[#D9D9D9]">Password</label>
+              <label v-if="false" class="text-red-500">
+                *password is invalid
+              </label>
+            </div>
+          </form>
+        </div>
 
-                <div class="row-start-6 col-start-7 col-end-10  mx-auto w-[90%] ">
-                    <form>
-                        <div class="relative">
-                            <input
-                                class="border rounded-md border-solid border-[#D9D9D9] w-full p-2 hover:bg-[#F2F2F2] transition delay-75"
-                                type="password" />
-                            <label class="placeholder text-[#D9D9D9]">Confirm Password</label>
-                            <label v-if="false"  class="text-red-500">
-                                *Confirm password is invalid
-                            </label>
-                        </div>
-                    </form>
-                </div> -->
+        <div class="row-start-5 col-start-9 w-[90%] text-[#D9D9D9]">
+          {{ localDataUser.emailUser.length }}/14
+        </div>
+
+        <div class="row-start-6 col-start-6 col-end-9  mx-auto w-[90%] ">
+          <form>
+            <div class="relative">
+              <input
+                class="border rounded-md border-solid border-[#D9D9D9] w-full p-2 hover:bg-[#F2F2F2] transition delay-75"
+                type="password" />
+              <label class="placeholder text-[#D9D9D9]">Confirm Password</label>
+              <label v-if="false" class="text-red-500">
+                *Confirm password is invalid
+              </label>
+            </div>
+          </form>
+        </div>
 
         <div class="relative row-start-7 col-start-7 col-end-12 justify-center flex w-full">
           <button :disabled="

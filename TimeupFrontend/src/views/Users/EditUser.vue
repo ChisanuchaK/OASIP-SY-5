@@ -100,6 +100,7 @@ const changeConfirmDialogShow = (user) => {
     })
   ) {
     isInvalid.value = true;
+    console.log('Name and email is valid.');
   } else {
     isInvalid.value = false;
   }
@@ -112,17 +113,16 @@ const changeConfirmDialogShow = (user) => {
     isInvalid.value = false;
   }
   // }
-  console.log('Name and email is valid.');
 };
 
 const editUserSuccess = async (dataOfUser) => {
   dataOfUser.nameUser = dataOfUser.nameUser.trim();
   dataOfUser.emailUser = dataOfUser.emailUser.trim();
+  await editUser(dataOfUser);
   alert('create user success!!!');
   confirmDialogStatus.value = false;
-  // appRouter.push({ name: 'SignIn' })
   appRouter.push({ name: 'UserList' });
-  await editUser(dataOfUser);
+  
 };
 
 const checkValue = (event) => {
@@ -170,6 +170,9 @@ const inputEmailIsEmpty = computed(() => {
   );
 });
 const inputEmailIsInvalid = computed(() => {
+  if(localDataUser.emailUser.trim() == ''){
+    return '';
+  }
   if (!localDataUser.emailUser.match(regexEmail)) {
     return isInvalid.value && !localDataUser.emailUser.match(regexEmail);
   }
@@ -209,14 +212,14 @@ const inputRoleIsEmpty = computed(() => {
 
 const checkInputNameInvalid = () => {
   // console.log(localDataUser);
-  if (localDataUser.nameUser.length != 0) {
+  // if (localDataUser.nameUser.length != 0) {
     let errorInputName = '';
-    if (inputNameIsInvalid.value) {
-      console.log(isInvalid.value + '' + inputNameIsInvalid.value);
-      console.log(localDataUser);
-      errorInputName += ' name is invalid.';
-    }
-    if (inputNameIsEmpty.value) {
+    // if (inputNameIsInvalid.value) {
+    //   console.log(isInvalid.value + '' + inputNameIsInvalid.value);
+    //   console.log(localDataUser);
+    //   errorInputName += ' name is invalid.';
+    // }
+    if (inputNameIsEmpty.value || inputNameIsInvalid.value) {
       errorInputName += ' please enter your name.';
     }
     if (inputNameIsOver.value) {
@@ -232,16 +235,16 @@ const checkInputNameInvalid = () => {
       inputNameIsEmpty.value
     )
       return '*' + errorInputName;
-  }
+  // }
 };
 
 const checkInputEmailInvalid = () => {
   // console.log(localDataUser);
-  if (localDataUser.emailUser.length != 0) {
+  // if (localDataUser.emailUser.length != 0) {
     let errorInputEmail = '';
     if (inputEmailIsInvalid.value) {
-      console.log(isInvalid.value + '' + inputNameIsInvalid.value);
-      console.log(localDataUser);
+      // console.log(isInvalid.value + '' + inputNameIsInvalid.value);
+      // console.log(localDataUser);
       errorInputEmail += ' email is invalid.';
     }
     if (inputEmailIsEmpty.value) {
@@ -260,7 +263,7 @@ const checkInputEmailInvalid = () => {
       inputEmailIsEmpty.value
     )
       return '*' + errorInputEmail;
-  }
+  // }
 };
 
 onBeforeMount(async () => {
