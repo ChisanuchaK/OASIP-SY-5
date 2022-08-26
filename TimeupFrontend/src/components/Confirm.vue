@@ -20,9 +20,9 @@ const closeCancel = (event) => {
                         Are your sure to confirm this ?
                     </div>
                     <div class="grid grid-flow-row grid-cols-4 ">
-                        <button class="col-start-1 p-3 bg-[#F24052] text-white rounded-lg"
+                        <button class="col-start-1 p-3 bg-[#00A28B] text-white rounded-lg"
                             @click="$emit('onClickConfirmNo')">No</button>
-                        <button class="col-start-4 p-3 bg-[#00A28B] text-white rounded-lg justify-start"
+                        <button class="col-start-4 p-3 bg-[#F24052] text-white rounded-lg justify-start"
                             @click="[$emit('onClickConfirmYes')]"> Yes </button>
 
                     </div>

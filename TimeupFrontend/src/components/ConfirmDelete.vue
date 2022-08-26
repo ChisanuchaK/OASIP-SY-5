@@ -36,9 +36,9 @@ const closeDelete = (event) => {
                     {{ bookingDelete.bookingName }}
                 </div>
                 <div class="grid grid-flow-row grid-cols-4 ">
-                    <button class="col-start-1 p-3 bg-[#499D6B] text-white rounded-lg"
+                    <button class="col-start-1 p-3 bg-[#00A28B] text-white rounded-lg"
                         @click="$emit('onConfirmDelete', bookingDelete.idBooking, bookingDelete, bookingLoop)">confirm</button>
-                    <button class="col-start-4 p-3 bg-[#F97473] text-white rounded-lg justify-start"
+                    <button class="col-start-4 p-3 bg-[#F24052] text-white rounded-lg justify-start"
                         @click="$emit('onCancelDelete')">cancel</button>
                 </div>
             </div>

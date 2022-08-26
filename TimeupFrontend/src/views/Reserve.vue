@@ -165,13 +165,13 @@ onBeforeMount(async () => {
     <div>
         <NavbarTop />
 
-        <div class="mt-24 mb-8 uppercase w-3/4 m-auto text-center text-4xl font-bold text-white"> select scheduled</div>
+        <div class="mt-24 mb-8 uppercase w-3/4 m-auto text-center text-4xl font-bold text-black underline decoration-[#50ABCB]"> select scheduled</div>
         <div class="w-[80%] m-auto h-auto mb-24">
             <div class="bg-white text-xl rounded-xl font-bold">
                 <div class="m-auto w-1/2 text-center pt-5">Enter Your Details
                 </div>
                 <div class="grid grid-flow-row grid-cols-9 p-5 gap-3">
-                    <div class="row-start-1 col-start-1 col-span-3 ">Scheduled Category :</div>
+                    <div class="row-start-1 col-start-1 col-span-3  ">Scheduled Category :</div>
                     <div class="row-start-2 col-start-1 col-end-4 col-span-3">
                         <select class="bg-gray-200 rounded w-full border" v-model="categoryIndexSelect"
                             :style="{ 'border-color': isInputCategory ? 'red' : 'white' }" @change="handleSelect()">
@@ -251,7 +251,7 @@ onBeforeMount(async () => {
                         </label>
                     </div>
                     <div class="row-start-7 col-start-8 col-span-1"> <button @click="changeConfirmDialog"
-                            class="w-full h-full m-auto  bg-[#499D6B] text-white rounded-lg">
+                            class="w-full h-full m-auto  bg-[#00A28B] text-white rounded-lg">
                             create </button>
                     </div>
                     <div class="row-start-8 col-start-8 py-2 col-span-2 text-red-500" v-show="isInputName || isInputNameOver || isInputEmail || isInputEmailVaild || isInputEmailOver
@@ -260,7 +260,7 @@ onBeforeMount(async () => {
                     </div>
 
                     <div class="row-start-7 col-start-9 col-span-1"> <button @click="changeCancelDialogTrue"
-                            class="w-full h-full m-auto py-2  bg-[#F97473] text-white rounded-lg">
+                            class="w-full h-full m-auto py-2  bg-[#F24052] text-white rounded-lg">
                             cancel </button> </div>
                 </div>
                 <Cancel v-if="cancelDialog" @onClickCancelNo="changeCancelDialogFalse" @onClickCancelYes="reset" />

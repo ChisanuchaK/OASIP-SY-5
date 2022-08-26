@@ -108,7 +108,7 @@ onBeforeMount(async () => {
   <div>
     <NavbarTop />
     <div class="text-center text-xl mt-24 mb-10">
-      <h1 class="uppercase font-bold text-[#ffffff] text-4xl">Booking Lists</h1>
+      <h1 class="uppercase font-bold text-black underline decoration-[#50ABCB] text-4xl">Booking Lists</h1>
     </div>
 
     <FilterBar :categorys="categoryLists" @getChageCategory="filterBookFromCategory" @getAllEvent="filterAllEvent"

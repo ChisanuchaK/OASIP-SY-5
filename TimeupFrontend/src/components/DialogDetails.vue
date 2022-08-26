@@ -112,11 +112,11 @@ onBeforeMount(async () => {
                             }}</textarea>
                     </div>
                     <div class="row-start-9 mt-5 col-start-1">
-                        <button class="bg-[#499D6B] text-white rounded-lg w-6/12 h-full m-auto py-2"
+                        <button class="bg-[#00A28B] text-white rounded-lg w-6/12 h-full m-auto py-2"
                             @click="changeEditDialog(bookingsDetails)">edit</button>
                     </div>
                     <div class="row-start-9 mt-5 col-start-2">
-                        <button class="bg-[#F97473] text-white rounded-lg w-6/12 h-full m-auto py-2"
+                        <button class="bg-[#F24052] text-white rounded-lg w-6/12 h-full m-auto py-2"
                             @click="changeDeleteDialog(bookingsDetails)">delete</button>
                     </div>
 

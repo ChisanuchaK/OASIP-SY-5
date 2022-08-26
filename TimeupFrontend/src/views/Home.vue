@@ -8,19 +8,19 @@ import NavbarBottom from '../components/NavbarBottom.vue';
   <div>
     <NavbarTop />
     <NavbarBottom />
-    <div class="text-left text-[52px] text-white fixed top-1/3 left-1/4 ">
+    <div class="text-left text-[52px] text-black fixed top-1/3 left-1/4 ">
       T I M E - U P<br>
       <p class="text-[26px]">At your fingertips, <br>
         consulting is simple and convenient.</p>
       <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px; padding-top: 25px;">
         <button
-          class="bg-[#105E99]  border-3 border-sky-500 text-white rounded-full font-bold p-2 hover: transform transition ease-in-out delay-10 hover:-translate-y-3 text-[16px] hover:bg-[#00A28B]">
+          class="bg-[#105E99]  border-3 border-sky-500 text-white rounded-full font-bold p-2 hover: transform transition ease-in-out delay-10 hover:-translate-y-3 text-[16px] hover:bg-[#008EDE]">
           <a href="./Reserve">
             <p> New Booking</p>
           </a>
         </button>
         <button
-          class="bg-[#105E99]  border-3 border-sky-500 text-white rounded-full font-bold p-2 hover: transform transition ease-in-out delay-10 hover:-translate-y-3 text-[16px] hover:bg-[#00A28B]">
+          class="bg-[#105E99]  border-3 border-sky-500 text-white rounded-full font-bold p-2 hover: transform transition ease-in-out delay-10 hover:-translate-y-3 text-[16px] hover:bg-[#008EDE]">
           <a href="./BookingList">
             <p> Booking List</p>
           </a>

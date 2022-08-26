@@ -119,7 +119,7 @@
 .router-link-active.menu {
   color: rgb(255, 255, 255);
   text-decoration: underline;
-  background-color: #6b6b6b;
+  background-color: #50ABCB;
   border-radius: 8.5px;
 }
 

@@ -64,19 +64,19 @@ const colorBg = (categorys) => {
  
 <template>
     <div class="grid grid-flow-row grid-cols-10 w-[90%] mb-10 m-auto gap-2 ">
-        <button class="row-start-1 col-start-1  col-span-1 w-full  p-2 bg-[#E2DDDD] rounded-xl uppercase font-bold"
+        <button class="row-start-1 col-start-1  col-span-1 w-full  p-2 bg-gray-200 border-4 border-[#50ABCB] hover:bg-[#50ABCB] rounded-xl uppercase font-bold drop-shadow-md"
             @click="getAllEvent">all-event</button>
-        <button class="row-start-1 col-start-2  col-span-1 w-full  p-2 bg-[#E2DDDD] rounded-xl uppercase font-bold"
+        <button class="row-start-1 col-start-2  col-span-1 w-full  p-2 bg-gray-200 border-4 border-[#50ABCB] hover:bg-[#50ABCB] rounded-xl uppercase font-bold drop-shadow-md"
             @click="getChangeToPast">past-event</button>
-        <button class="row-start-1 col-start-3  col-span-1 w-full  p-2 bg-[#E2DDDD] rounded-xl uppercase font-bold"
+        <button class="row-start-1 col-start-3  col-span-1 w-full  p-2 bg-gray-200 border-4 border-[#50ABCB] hover:bg-[#50ABCB] rounded-xl uppercase font-bold drop-shadow-md"
             @click="getChangeToUpcoming">upcoming-event</button>
 
-        <input class="row-start-1 col-start-8  col-span-1 w-full  p-2 bg-[#E2DDDD] rounded-xl uppercase font-bold"
+        <input class="row-start-1 col-start-8  col-span-1 w-full  p-2 bg-gray-200 border-4 border-[#50ABCB] hover:bg-[#50ABCB] rounded-xl uppercase font-bold drop-shadow-md"
             type="date" name="" id="" v-model="time" @change="getChangeByDateTime(time)">
 
-        <div class="row-start-1 col-start-9 col-span-2 w-full  p-2 bg-[#E2DDDD] rounded-xl uppercase">
+        <div class="row-start-1 col-start-9 col-span-2 w-full  p-2 bg-gray-200 border-4 border-[#50ABCB] hover:bg-[#50ABCB] rounded-xl uppercase drop-shadow-md">
                
-            <select class="p-2 bg-[#E2DDDD] rounded w-full font-bold" v-model="categoryIndexSelect"
+            <select class="p-2 bg-gray-200 hover:bg-[#50ABCB] rounded w-full font-bold" v-model="categoryIndexSelect"
                 @change="getChangeCategory()">
                 <option value="" selected hidden >Select category</option>
                 <option v-for="(category, indexs) in categoryLists" :value="indexs" :key="indexs">

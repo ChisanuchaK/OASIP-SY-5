@@ -68,12 +68,12 @@ onBeforeMount(async () => {
 
     <div>
         <div>
-            <div v-if="bookingLists == ''" class="flex flex-warp justify-center bg-gray-800 text-white text-xl">
+            <div v-if="bookingLists == ''" class="flex flex-warp justify-center bg-[#105E99] text-white text-xl">
                 {{ props.statusScheduled }}
             </div>
 
             <div v-if="!(bookingLists == '')" class="grid grid-flow-row grid-cols-1 mb-24">
-                <div class="w-[90%] m-auto mb-1 bg-[#E2DDDD] rounded-lg  p-2 text-center px-2">
+                <div class="w-[90.6%] m-auto mb-1 bg-[#105E99] text-white rounded-lg  p-2 text-center px-2">
                     <div class="grid grid-flow-row grid-cols-12 flex p-1 ">
                         <div class="row-start-1 col-start-1 col-end-3 col-span-2  uppercase text-lg font-bold">date
                         </div>
@@ -106,7 +106,7 @@ onBeforeMount(async () => {
                                 }}
                             </div>
 
-                            <div class="row-start-1 col-start-5 col-end-7 p-1 mb-1.5 rounded-lg truncate"
+                            <div class="text-white row-start-1 col-start-5 col-end-7 p-1 mb-1.5 rounded-lg truncate"
                                 :style="[`background-color:${colorBg(booking)};`]">{{ booking.eventCategoryName
                                 }} </div>
 
@@ -122,10 +122,10 @@ onBeforeMount(async () => {
                             </div>
 
                             <button
-                                class="row-start-1 col-start-11 bg-[#74ABFF] text-white p-1 rounded-lg uppercase w-11/12 h-full m-auto"
+                                class="row-start-1 col-start-11 bg-[#50ABCB] text-white p-1 rounded-lg uppercase w-11/12 h-full m-auto"
                                 @click="changeSeeDetailsDialog(booking)">Detail</button>
                             <button
-                                class="row-start-1 col-start-12 bg-[red] text-white rounded-lg uppercase w-11/12 h-full m-auto"
+                                class="row-start-1 col-start-12 bg-[#F24052] text-white rounded-lg uppercase w-11/12 h-full m-auto"
                                 @click="changeDeleteDialog(booking)">delete</button>
 
                             <DialogDetails v-if="booking.statusClickSeeDetails"

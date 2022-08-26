@@ -23,7 +23,7 @@ const getEditCategoryValue = (editCategory) => {
 <template>
     <div class="mt-24 ">
         <div>
-            <div class="mb-10 uppercase text-4xl text-center font-bold text-[#ffffff]">
+            <div class="mb-10 uppercase text-4xl text-center font-bold text-black underline decoration-[#50ABCB]">
                 category List
             </div>
 
@@ -53,7 +53,7 @@ const getEditCategoryValue = (editCategory) => {
                         }}</textarea>
 
                     <button
-                        class="row-start-6 col-start-1 col-span-2 bg-[#74ABFF] rounded-b-xl text-white uppercase p-1"
+                        class="row-start-6 col-start-1 col-span-2 bg-[#00A28B] rounded-b-xl text-white uppercase p-1"
                         @click="changeEditDialogTrue(category)"> Edit </button>
 
                     <EditCategory v-if="category.statusEditDialog" :categorys="category" :categoryLists="categorys"

@@ -65,7 +65,7 @@ const deleteUserEvent = async (idUserToDelete, user) => {
       </div>
 
       <div class="grid row-start-2 col-start-4 justify-items-center content-center">
-        <button class="rounded-md bg-[#105E99] text-[#ffffff] w-[full] p-3 hover:bg-[#004980] transition delay-75">
+        <button class="rounded-md bg-[#105E99] text-[#ffffff] w-[full] p-3 hover:bg-[#50ABCB] transition delay-75">
           &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Find your account.
           &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
         </button>
@@ -92,7 +92,7 @@ const deleteUserEvent = async (idUserToDelete, user) => {
       </div> -->
       <div v-if="(userAlls == '')"
         class="grid grid-flow-row grid-cols-1 w-full h-[300px] bg-[#E9E9E9] content-center justify-items-center">
-        <div class="col-span-1 text-[128px] uppercase text-[#D9D9D9]">
+        <div class="col-span-1 text-[128px] uppercase text-[#50ABCB]">
           {{ props.statusUser }}
         </div>
       </div>
@@ -133,7 +133,7 @@ const deleteUserEvent = async (idUserToDelete, user) => {
           <div class="row-start-1 col-start-11 col-span-1">
             <router-link :to="{ name: 'EditUser', params: { idUser: userList.idUser } }">
               <button class="hover:bg-[#D9D9D9] rounded-sm">
-                <svg class="hover:text-[#00A28B]" width="2em" height="2em" viewBox="0 0 24 24">
+                <svg class="hover:text-[#007850]" width="2em" height="2em" viewBox="0 0 24 24">
                   <path fill="currentColor"
                     d="M3 17.46v3.04c0 .28.22.5.5.5h3.04c.13 0 .26-.05.35-.15L17.81 9.94l-3.75-3.75L3.15 17.1c-.1.1-.15.22-.15.36zM20.71 5.63l-2.34-2.34a.996.996 0 0 0-1.41 0l-1.83 1.83l3.75 3.75l1.83-1.83a.996.996 0 0 0 0-1.41z">
                   </path>
