@@ -2,15 +2,14 @@ package sit.int221.TimeUpBackend.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.*;
 import sit.int221.TimeUpBackend.dtos.*;
-import sit.int221.TimeUpBackend.entities.RoleUser;
 import sit.int221.TimeUpBackend.entities.User;
 import sit.int221.TimeUpBackend.service.UserService;
 
 import javax.validation.Valid;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -31,14 +30,9 @@ public class UserController {
     @GetMapping("/{id}")
     public UserGetDto getUserByID(@PathVariable int id){return  userService.getUserByID(id);}
 
-    @GetMapping("/role")
-    public ArrayList<RoleUser> getRole(){
-        return userService.getAllRole();
-    }
-
     @PostMapping("")
     @ResponseStatus(HttpStatus.CREATED)
-    public User createUser(@Valid @RequestBody UserPostDto userDTOPOST){
+    public ResponseEntity createUser(@Valid @RequestBody UserPostDto userDTOPOST){
         return  userService.createUser(userDTOPOST);
     }
 
@@ -48,7 +42,7 @@ public class UserController {
     }
 
     @PutMapping("/{id}")
-    public User updateUser(@Valid @RequestBody UserPutDto userDTOPUT , @PathVariable Integer id){
+    public ResponseEntity updateUser(@Valid @RequestBody UserPutDto userDTOPUT , @PathVariable Integer id){
         return userService.updateUser(userDTOPUT , id);
     }
 
@@ -60,6 +54,7 @@ public class UserController {
 
     @DeleteMapping("")
     public void deleteAllUser(){userService.deleteAllUser();}
+
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     @ExceptionHandler(MethodArgumentNotValidException.class)
     public Map<String, String> handleValidationExceptions(

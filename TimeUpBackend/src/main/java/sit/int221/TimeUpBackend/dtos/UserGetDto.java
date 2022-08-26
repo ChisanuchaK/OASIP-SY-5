@@ -4,9 +4,10 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import sit.int221.TimeUpBackend.entities.RoleUser;
 
+import javax.persistence.Lob;
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
 import java.time.Instant;
 
@@ -23,8 +24,9 @@ public class UserGetDto {
     @Size(min = 1 , max = 50 , message = "size must be between 1 and 50")
     private String emailUser;
     @NotNull(message = "role null")
-
-    private RoleUser roleUser;
+    @Pattern(regexp = "admin|student|lecturer", message = "admin,student,lecturer")
+    @Lob
+    private String roleUser;
     private Instant createOn;
     private Instant updateOn;
 }
