@@ -99,8 +99,7 @@ public class UserService {
 
     //update
     public ResponseEntity updateUser(UserPutDto userDTOPUT, Integer id) {
-        User checkUserDuplicate = userRepository.findById(id).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));;
-        if(checkDuplicate(userDTOPUT.getEmailUser() , userDTOPUT.getNameUser())  && !(userDTOPUT.getNameUser().equals(checkUserDuplicate.getNameUser()))){
+        if((checkDuplicate(userDTOPUT.getEmailUser() , userDTOPUT.getNameUser())) && !(checkDuplicate(userDTOPUT.getEmailUser(), userDTOPUT.getNameUser())) ){
             throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR , "username or email duplicate");
         }
        else{
