@@ -99,12 +99,15 @@ public class UserService {
 
     //update
     public ResponseEntity updateUser(UserPutDto userDTOPUT, Integer id) {
-        if(checkDuplicate(userDTOPUT.getEmailUser() , userDTOPUT.getNameUser())){
+        User checkUserDuplicate = userRepository.findById(id).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));;
+        if(checkDuplicate(userDTOPUT.getEmailUser() , userDTOPUT.getNameUser())  && !(userDTOPUT.getNameUser().equals(checkUserDuplicate.getNameUser()))){
             throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR , "username or email duplicate");
         }
        else{
            User user = userRepository.findById(id).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
-           if (!(userDTOPUT.getNameUser().equals(user.getNameUser()) && userDTOPUT.getEmailUser().equals(user.getEmailUser())
+           if ((userDTOPUT.getNameUser().equals(user.getNameUser()) && userDTOPUT.getEmailUser().equals(user.getEmailUser())
+                   && (userDTOPUT.getRoleUser().equals(user.getRoleUser())))
+           || !(userDTOPUT.getNameUser().equals(user.getNameUser()) && userDTOPUT.getEmailUser().equals(user.getEmailUser())
                    && (userDTOPUT.getRoleUser().equals(user.getRoleUser())))) {
                user.setNameUser(userDTOPUT.getNameUser().trim());
                user.setEmailUser(userDTOPUT.getEmailUser().trim());
