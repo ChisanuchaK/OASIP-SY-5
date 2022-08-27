@@ -34,7 +34,7 @@ const roleIndexSelect = ref();
 // const goBackToUserList = () => appRouter.push({ name: 'UserList' }); //use to test back to userlist.
 
 const localDataUser = reactive({
-  idUser : params.idUser,
+  idUser: params.idUser,
   nameUser: '',
   emailUser: '',
   roleUser: ''
@@ -122,23 +122,28 @@ const editUserSuccess = async (dataOfUser) => {
   alert('create user success!!!');
   confirmDialogStatus.value = false;
   appRouter.push({ name: 'UserList' });
-  
 };
 
 const checkValue = (event) => {
-  let selectedValue = event.target.value
-  localDataUser.roleUser = selectedValue
+  let selectedValue = event.target.value;
+  localDataUser.roleUser = selectedValue;
   console.log(localDataUser.roleUser);
   console.log(localDataUser.idUser);
-}
+};
 
 //check invalid from input
-const inputNameIsInvalid = computed(() => {
-  return isInvalid.value && localDataUser.nameUser.trim() == '';
-});
+// const inputNameIsInvalid = computed(() => {
+//   return (
+//     isInvalid.value &&
+//     (localDataUser.nameUser.trim() == '' || localDataUser.nameUser.length == 0)
+//   );
+// });
 
 const inputNameIsEmpty = computed(() => {
-  return isInvalid.value && localDataUser.nameUser.length == 0;
+  return (
+    isInvalid.value &&
+    (localDataUser.nameUser.trim() == '' || localDataUser.nameUser.length == 0)
+  );
 });
 const inputNameIsOver = computed(() => {
   return isInvalid.value && localDataUser.nameUser.length > 100;
@@ -165,12 +170,13 @@ const inputNameIsDuplicate = computed(() => {
 
 const inputEmailIsEmpty = computed(() => {
   return (
-    (isInvalid.value && localDataUser.emailUser.trim() == '') ||
-    localDataUser.emailUser.trim() == null
+    isInvalid.value &&
+    (localDataUser.emailUser.trim() == '' ||
+      localDataUser.emailUser.length == 0)
   );
 });
 const inputEmailIsInvalid = computed(() => {
-  if(localDataUser.emailUser.trim() == ''){
+  if (inputEmailIsEmpty.value) {
     return '';
   }
   if (!localDataUser.emailUser.match(regexEmail)) {
@@ -184,18 +190,18 @@ const inputEmailIsOver = computed(() => {
 const inputEmailIsDuplicate = computed(() => {
   for (let someUser of userListAlls.value) {
     if (params.idUser != someUser.idUser) {
-    if (
-      new String(localDataUser.emailUser).valueOf() ==
-      new String(someUser.emailUser).valueOf()
-    ) {
-      console.log('Duplicate email !');
-      emailIsDuplicate.value = true;
-      isInvalid.value = true;
-      break;
-    } else {
-      emailIsDuplicate.value = false;
+      if (
+        new String(localDataUser.emailUser).valueOf() ==
+        new String(someUser.emailUser).valueOf()
+      ) {
+        console.log('Duplicate email !');
+        emailIsDuplicate.value = true;
+        isInvalid.value = true;
+        break;
+      } else {
+        emailIsDuplicate.value = false;
+      }
     }
-  }
   }
   return isInvalid.value && emailIsDuplicate.value;
 });
@@ -213,56 +219,55 @@ const inputRoleIsEmpty = computed(() => {
 const checkInputNameInvalid = () => {
   // console.log(localDataUser);
   // if (localDataUser.nameUser.length != 0) {
-    let errorInputName = '';
-    // if (inputNameIsInvalid.value) {
-    //   console.log(isInvalid.value + '' + inputNameIsInvalid.value);
-    //   console.log(localDataUser);
-    //   errorInputName += ' name is invalid.';
-    // }
-    if (inputNameIsEmpty.value || inputNameIsInvalid.value) {
-      errorInputName += ' please enter your name.';
-    }
-    if (inputNameIsOver.value) {
-      errorInputName += ' over limit of input name.';
-    }
-    if (inputNameIsDuplicate.value) {
-      errorInputName += 'name is already to use.';
-    }
-    if (
-      inputNameIsInvalid.value ||
-      inputNameIsOver.value ||
-      inputNameIsDuplicate.value ||
-      inputNameIsEmpty.value
-    )
-      return '*' + errorInputName;
+  let errorInputName = '';
+  // if (inputNameIsInvalid.value) {
+  //   console.log(isInvalid.value + '' + inputNameIsInvalid.value);
+  //   console.log(localDataUser);
+  //   errorInputName += ' name is invalid.';
+  // }
+  if (inputNameIsEmpty.value) {
+    errorInputName += ' please enter your name.';
+  }
+  if (inputNameIsOver.value) {
+    errorInputName += ' over limit of input name.';
+  }
+  if (inputNameIsDuplicate.value) {
+    errorInputName += 'name is already to use.';
+  }
+  if (
+    inputNameIsOver.value ||
+    inputNameIsDuplicate.value ||
+    inputNameIsEmpty.value
+  )
+    return '*' + errorInputName;
   // }
 };
 
 const checkInputEmailInvalid = () => {
   // console.log(localDataUser);
   // if (localDataUser.emailUser.length != 0) {
-    let errorInputEmail = '';
-    if (inputEmailIsInvalid.value) {
-      // console.log(isInvalid.value + '' + inputNameIsInvalid.value);
-      // console.log(localDataUser);
-      errorInputEmail += ' email is invalid.';
-    }
-    if (inputEmailIsEmpty.value) {
-      errorInputEmail += ' please enter your email.';
-    }
-    if (inputEmailIsOver.value) {
-      errorInputEmail += ' over limit of input email.';
-    }
-    if (inputEmailIsDuplicate.value) {
-      errorInputEmail += 'email is already to use.';
-    }
-    if (
-      inputEmailIsInvalid.value ||
-      inputEmailIsOver.value ||
-      inputEmailIsDuplicate.value ||
-      inputEmailIsEmpty.value
-    )
-      return '*' + errorInputEmail;
+  let errorInputEmail = '';
+  if (inputEmailIsInvalid.value) {
+    // console.log(isInvalid.value + '' + inputNameIsInvalid.value);
+    // console.log(localDataUser);
+    errorInputEmail += ' email is invalid.';
+  }
+  if (inputEmailIsEmpty.value) {
+    errorInputEmail += ' please enter your email.';
+  }
+  if (inputEmailIsOver.value) {
+    errorInputEmail += ' over limit of input email.';
+  }
+  if (inputEmailIsDuplicate.value) {
+    errorInputEmail += 'email is already to use.';
+  }
+  if (
+    inputEmailIsInvalid.value ||
+    inputEmailIsOver.value ||
+    inputEmailIsDuplicate.value ||
+    inputEmailIsEmpty.value
+  )
+    return '*' + errorInputEmail;
   // }
 };
 
@@ -285,19 +290,26 @@ onBeforeMount(async () => {
     <NavbarTop />
     <NavbarBottom />
 
-    <div @click="changeCancelDialogShow(user)"
-      class="absolute top-[15%] bg-white rounded left-[2%] p-1 hover:bg-[#E9E9E9]">
+    <div
+      @click="changeCancelDialogShow(user)"
+      class="absolute top-[15%] bg-white rounded left-[2%] p-1 hover:bg-[#E9E9E9]"
+    >
       <svg width="50px" height="50px" viewBox="0 0 12 24">
-        <path fill="#000000"
-          d="M9.125 21.1L.7 12.7q-.15-.15-.212-.325Q.425 12.2.425 12t.063-.375Q.55 11.45.7 11.3l8.425-8.425q.35-.35.875-.35t.9.375q.375.375.375.875t-.375.875L3.55 12l7.35 7.35q.35.35.35.862q0 .513-.375.888t-.875.375q-.5 0-.875-.375Z">
-        </path>
+        <path
+          fill="#000000"
+          d="M9.125 21.1L.7 12.7q-.15-.15-.212-.325Q.425 12.2.425 12t.063-.375Q.55 11.45.7 11.3l8.425-8.425q.35-.35.875-.35t.9.375q.375.375.375.875t-.375.875L3.55 12l7.35 7.35q.35.35.35.862q0 .513-.375.888t-.875.375q-.5 0-.875-.375Z"
+        ></path>
       </svg>
     </div>
 
     <div class="bg-white w-[1000px] h-[600px] mt-[200px] m-auto rounded-xl">
       <div class="bg-[#50ABCB] w-full h-[100px] rounded-t-xl">
-        <div class="grid grid-rows-1 grid-flow-col h-full content-center justify-items-center">
-          <div class="col-start-1 col-span-1 uppercase m-auto text-[30px] text-white font-semibold">
+        <div
+          class="grid grid-rows-1 grid-flow-col h-full content-center justify-items-center"
+        >
+          <div
+            class="col-start-1 col-span-1 uppercase m-auto text-[30px] text-white font-semibold"
+          >
             User Id : {{ localDataUser.idUser }}
           </div>
 
@@ -311,20 +323,32 @@ onBeforeMount(async () => {
         </div>
       </div>
       <div class="w-full h-[450px] rounded-b-xl">
-        <div class="grid grid-rows-6 grid-cols-12 content-center justify-items-center">
+        <div
+          class="grid grid-rows-6 grid-cols-12 content-center justify-items-center"
+        >
           <!-- <div class="grid grid-rows-6 grid-cols-12"> -->
           <div class="row-start-2 row-end-4 col-start-2 col-end-5">
-            <img class="grid w-[150px] rounded-xl" src="../../../public/images/Spy.jpg" alt="spy" />
+            <img
+              class="grid w-[150px] rounded-xl"
+              src="../../../public/images/Spy.jpg"
+              alt="spy"
+            />
           </div>
-          <div class="grid row-start-1 col-start-6 col-end-8 content-center text-center text-[18px]">
+          <div
+            class="grid row-start-1 col-start-6 col-end-8 content-center text-center text-[18px]"
+          >
             Name user
           </div>
-          <div class="grid row-start-1 col-start-8 col-end-12 content-center text-center w-[90%]">
+          <div
+            class="grid row-start-1 col-start-8 col-end-12 content-center text-center w-[90%]"
+          >
             <form>
               <div class="relative">
-                <input v-model="localDataUser.nameUser"
+                <input
+                  v-model="localDataUser.nameUser"
                   class="border rounded-md border-solid border-[#D9D9D9] w-full p-2 hover:bg-[#F2F2F2] transition delay-75"
-                  type="text" />
+                  type="text"
+                />
                 <label class="placeholder text-[#D9D9D9]">name</label>
                 <label class="absolute text-red-500 left-0 top-[40px]">
                   {{ checkInputNameInvalid() }}
@@ -333,19 +357,27 @@ onBeforeMount(async () => {
             </form>
           </div>
 
-          <div class="grid row-start-1 col-start-12 content-center text-left text-[#D9D9D9] w-[90%]">
+          <div
+            class="grid row-start-1 col-start-12 content-center text-left text-[#D9D9D9] w-[90%]"
+          >
             {{ localDataUser.nameUser?.length || 0 }}/100
           </div>
 
-          <div class="grid row-start-2 col-start-6 col-end-8 content-center text-center text-[18px]">
+          <div
+            class="grid row-start-2 col-start-6 col-end-8 content-center text-center text-[18px]"
+          >
             Email
           </div>
-          <div class="grid row-start-2 col-start-8 col-end-12 content-center text-center w-[90%]">
+          <div
+            class="grid row-start-2 col-start-8 col-end-12 content-center text-center w-[90%]"
+          >
             <form>
               <div class="relative">
-                <input v-model="localDataUser.emailUser"
+                <input
+                  v-model="localDataUser.emailUser"
                   class="border rounded-md border-solid border-[#D9D9D9] w-full p-2 hover:bg-[#F2F2F2] transition delay-75"
-                  type="text" />
+                  type="text"
+                />
                 <label class="placeholder text-[#D9D9D9]">Email</label>
                 <label class="absolute text-red-500 left-0 top-[40px]">
                   {{ checkInputEmailInvalid() }}
@@ -353,19 +385,29 @@ onBeforeMount(async () => {
               </div>
             </form>
           </div>
-          <div class="grid row-start-2 col-start-12 content-center text-left text-[#D9D9D9] w-[90%]">
+          <div
+            class="grid row-start-2 col-start-12 content-center text-left text-[#D9D9D9] w-[90%]"
+          >
             {{ localDataUser.emailUser?.length || 0 }}/50
           </div>
 
-          <div class="grid row-start-3 col-start-6 col-end-8 content-center text-center text-[18px]">
+          <div
+            class="grid row-start-3 col-start-6 col-end-8 content-center text-center text-[18px]"
+          >
             role
           </div>
-          <div class="grid row-start-3 col-start-8 col-end-12 content-center w-[90%]">
+          <div
+            class="grid row-start-3 col-start-8 col-end-12 content-center w-[90%]"
+          >
             <div class="relative">
               <!-- <select :v-model="(user.roleUser == '' ? roleIndexSelect : user.roleUser )" -->
-              <select :v-model="localDataUser.roleUser" @change="checkValue($event)"
+              <select
+                :v-model="localDataUser.roleUser"
+                @change="checkValue($event)"
                 class="border rounded-md border-solid border-[#D9D9D9] w-full p-2 hover:bg-[#F2F2F2] transition delay-75 text-center"
-                name="" id="">
+                name=""
+                id=""
+              >
                 <!-- <option value=""></option> -->
                 <!-- <option v-for="(role,index) in roles" :value="role" v-bind:key="indexs">
                 {{role}}</option> -->
@@ -376,38 +418,52 @@ onBeforeMount(async () => {
               <!-- {{localDataUser.roleUser}} -->
             </div>
           </div>
-          <div class="grid row-start-4 col-start-6 col-end-8 content-center text-center text-[18px]">
+          <div
+            class="grid row-start-4 col-start-6 col-end-8 content-center text-center text-[18px]"
+          >
             createOn
           </div>
-          <div class="grid row-start-4 col-start-8 col-end-12 content-center text-center w-[90%]">
+          <div
+            class="grid row-start-4 col-start-8 col-end-12 content-center text-center w-[90%]"
+          >
             <form>
               <div class="relative">
-                <input disabled
+                <input
+                  disabled
                   class="border rounded-md border-solid border-[#D9D9D9] w-full p-2 hover:bg-[#F2F2F2] transition delay-75"
-                  type="text" :placeholder="`${moment(user.createOn)
-                .local()
-                .format('DD/MM/YYYY')} | ${moment(user.createOn)
-                  .local()
-                  .format('hh:mm A')}`" />
+                  type="text"
+                  :placeholder="`${moment(user.createOn)
+                    .local()
+                    .format('DD/MM/YYYY')} | ${moment(user.createOn)
+                    .local()
+                    .format('hh:mm A')}`"
+                />
               </div>
               <!-- {{ `${moment(user.createOn).local().format('DD/MM/YYYY')} |${moment(user.createOn).local().format('hh:mm A')}`}} -->
             </form>
           </div>
 
-          <div class="grid row-start-5 col-start-6 col-end-8 content-center text-center text-[18px]">
+          <div
+            class="grid row-start-5 col-start-6 col-end-8 content-center text-center text-[18px]"
+          >
             updateOn
           </div>
 
-          <div class="grid row-start-5 col-start-8 col-end-12 content-center text-center w-[90%]">
+          <div
+            class="grid row-start-5 col-start-8 col-end-12 content-center text-center w-[90%]"
+          >
             <form>
               <div class="relative">
-                <input disabled
+                <input
+                  disabled
                   class="border rounded-md border-solid border-[#D9D9D9] w-full p-2 hover:bg-[#F2F2F2] transition delay-75"
-                  type="text" :placeholder="`${moment(user.updateOn)
-                .local()
-                .format('DD/MM/YYYY')} | ${moment(user.updateOn)
-                  .local()
-                  .format('hh:mm A')}`" />
+                  type="text"
+                  :placeholder="`${moment(user.updateOn)
+                    .local()
+                    .format('DD/MM/YYYY')} | ${moment(user.updateOn)
+                    .local()
+                    .format('hh:mm A')}`"
+                />
               </div>
             </form>
           </div>
@@ -426,9 +482,13 @@ onBeforeMount(async () => {
                         </form>
                     </div> -->
 
-          <div class="relative grid row-start-6 col-start-6 col-end-9 content-center text-center w-full">
-            <button @click="changeCancelDialogShow(user)"
-              class="rounded-md bg-[#F24052] text-[#ffffff] w-[80%] m-auto p-2 hover:bg-[#D92739] transition delay-75">
+          <div
+            class="relative grid row-start-6 col-start-6 col-end-9 content-center text-center w-full"
+          >
+            <button
+              @click="changeCancelDialogShow(user)"
+              class="rounded-md bg-[#F24052] text-[#ffffff] w-[80%] m-auto p-2 hover:bg-[#D92739] transition delay-75"
+            >
               Cancel
             </button>
             <!-- <label v-if="false" class="absolute text-red-500 top-[70px]">
@@ -436,41 +496,53 @@ onBeforeMount(async () => {
                         </label> -->
           </div>
 
-          <div class="relative grid row-start-6 col-start-9 col-end-12 content-center text-center w-full">
-            <button :disabled="
-              inputNameIsInvalid ||
-              inputNameIsEmpty ||
-              inputNameIsOver ||
-              inputNameIsDuplicate ||
-              inputRoleIsEmpty ||
-              inputEmailIsDuplicate ||
-              inputEmailIsEmpty ||
-              inputEmailIsInvalid ||
-              inputEmailIsOver
-            " @click="changeConfirmDialogShow(user)"
-              class="rounded-md bg-[#00A28B] text-[#ffffff] w-[80%] m-auto p-2 hover:bg-[#017D6C] transition delay-75 disabled:bg-[#679790]">
+          <div
+            class="relative grid row-start-6 col-start-9 col-end-12 content-center text-center w-full"
+          >
+            <button
+              :disabled="
+                inputNameIsEmpty ||
+                inputNameIsOver ||
+                inputNameIsDuplicate ||
+                inputRoleIsEmpty ||
+                inputEmailIsDuplicate ||
+                inputEmailIsEmpty ||
+                inputEmailIsInvalid ||
+                inputEmailIsOver
+              "
+              @click="changeConfirmDialogShow(user)"
+              class="rounded-md bg-[#00A28B] text-[#ffffff] w-[80%] m-auto p-2 hover:bg-[#017D6C] transition delay-75 disabled:bg-[#679790]"
+            >
               Confirm
             </button>
 
-            <label v-if="
-              inputNameIsInvalid ||
-              inputNameIsEmpty ||
-              inputNameIsOver ||
-              inputNameIsDuplicate ||
-              inputRoleIsEmpty ||
-              inputEmailIsDuplicate ||
-              inputEmailIsEmpty ||
-              inputEmailIsInvalid ||
-              inputEmailIsOver
-            " class="absolute text-red-500 left-[22px] top-[70px] text-[14px]">
+            <label
+              v-if="
+                inputNameIsEmpty ||
+                inputNameIsOver ||
+                inputNameIsDuplicate ||
+                inputRoleIsEmpty ||
+                inputEmailIsDuplicate ||
+                inputEmailIsEmpty ||
+                inputEmailIsInvalid ||
+                inputEmailIsOver
+              "
+              class="absolute text-red-500 left-[22px] top-[70px] text-[14px]"
+            >
               *something in form is invalid.
             </label>
           </div>
 
-          <Cancel v-if="user.cancelDialogStatus" @onClickCancelNo="changeCancelDialogClose(user)"
-            @onClickCancelYes="cancelEditUser(user)" />
-          <Confirm v-if="user.confirmDialogStatus" @onClickConfirmNo="changeConfirmDialogClose(user)"
-            @onClickConfirmYes="editUserSuccess(localDataUser)" />
+          <Cancel
+            v-if="user.cancelDialogStatus"
+            @onClickCancelNo="changeCancelDialogClose(user)"
+            @onClickCancelYes="cancelEditUser(user)"
+          />
+          <Confirm
+            v-if="user.confirmDialogStatus"
+            @onClickConfirmNo="changeConfirmDialogClose(user)"
+            @onClickConfirmYes="editUserSuccess(localDataUser)"
+          />
         </div>
       </div>
     </div>
@@ -498,7 +570,7 @@ onBeforeMount(async () => {
   pointer-events: none;
 }
 
-input:focus+.placeholder {
+input:focus + .placeholder {
   font-size: 12px;
   color: #105e99;
 }
