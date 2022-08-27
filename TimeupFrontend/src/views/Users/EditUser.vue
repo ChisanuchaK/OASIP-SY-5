@@ -153,8 +153,8 @@ const inputNameIsDuplicate = computed(() => {
   for (let someUser of userListAlls.value) {
     if (params.idUser != someUser.idUser) {
       if (
-        new String(localDataUser.nameUser).valueOf() ==
-        new String(someUser.nameUser).valueOf()
+        new String(localDataUser.nameUser).valueOf().trim() ==
+        new String(someUser.nameUser).valueOf().trim()
       ) {
         console.log('Duplicate name !');
         nameIsDuplicate.value = true;
@@ -191,8 +191,8 @@ const inputEmailIsDuplicate = computed(() => {
   for (let someUser of userListAlls.value) {
     if (params.idUser != someUser.idUser) {
       if (
-        new String(localDataUser.emailUser).valueOf() ==
-        new String(someUser.emailUser).valueOf()
+        new String(localDataUser.emailUser).valueOf().trim() ==
+        new String(someUser.emailUser).valueOf().trim()
       ) {
         console.log('Duplicate email !');
         emailIsDuplicate.value = true;

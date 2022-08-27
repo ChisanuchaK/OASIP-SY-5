@@ -115,8 +115,8 @@ const inputNameIsOver = computed(() => {
 const inputNameIsDuplicate = computed(() => {
   for (let someUser of userListAlls.value) {
     if (
-      new String(localDataUser.nameUser).valueOf() ==
-      new String(someUser.nameUser).valueOf()
+      new String(localDataUser.nameUser).valueOf().trim() ==
+      new String(someUser.nameUser).valueOf().trim()
     ) {
       console.log('Duplicate name !');
       nameIsDuplicate.value = true;
@@ -151,8 +151,8 @@ const inputEmailIsOver = computed(() => {
 const inputEmailIsDuplicate = computed(() => {
   for (let someUser of userListAlls.value) {
     if (
-      new String(localDataUser.emailUser).valueOf() ==
-      new String(someUser.emailUser).valueOf()
+      new String(localDataUser.emailUser).valueOf().trim() ==
+      new String(someUser.emailUser).valueOf().trim()
     ) {
       console.log('Duplicate email !');
       emailIsDuplicate.value = true;
@@ -404,10 +404,10 @@ onBeforeMount(async () => {
                 class="placeholder text-[#D9D9D9]"
                 >Password</label
               >
-              <label v-if="inputPasswordIsEmpty" class="text-red-500">
+              <label v-if="inputPasswordIsEmpty" class="text-red-500 text-[14px]">
                 *please enter your password.
               </label>
-              <label v-if="inputPasswordIsInvalid" class="text-red-500">
+              <label v-if="inputPasswordIsInvalid" class="text-red-500 text-[14px]">
                 *password length minimum is 8.
               </label>
             </div>
@@ -438,7 +438,7 @@ onBeforeMount(async () => {
                 class="placeholder text-[#D9D9D9]"
                 >Confirm Password</label
               >
-              <label v-if="inputConfirmPasswordIsInvalid" class="text-red-500">
+              <label v-if="inputConfirmPasswordIsInvalid" class="text-red-500 text-[14px]">
                 *Confirm password is invalid.
               </label>
             </div>

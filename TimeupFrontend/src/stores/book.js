@@ -6,7 +6,7 @@ export const getBookings = async () => {
   if (res.status === 200) {
     console.log(res);
     return res;
-  } else console.log('error to getBookings');
+  } else console.log("error to getBookings");
 };
 
 //GetBy BookingId
@@ -18,32 +18,32 @@ export const getBookingId = async (bookingId) => {
     console.log(res);
     return await res.json();
   } else {
-    console.log('not found');
+    console.log("not found");
   }
 };
 
 // create Booking
 export const createBooking = async (localDataInput) => {
   const res = await fetch(`${import.meta.env.VITE_BASE_URL}/event`, {
-    method: 'POST',
+    method: "POST",
     headers: {
-      'content-type': 'application/json'
+      "content-type": "application/json",
     },
     body: JSON.stringify({
       bookingName: localDataInput.bookingName,
       bookingEmail: localDataInput.bookingEmail,
       eventCategory: {
-        eventCategoryId: localDataInput.eventCategory.eventCategoryId
+        eventCategoryId: localDataInput.eventCategory.eventCategoryId,
       },
       eventStartTime: localDataInput.eventStartTime,
-      eventNotes: localDataInput.eventNotes
-    })
+      eventNotes: localDataInput.eventNotes,
+    }),
   });
   if (res.status === 201) {
-    console.log('create successfully');
+    console.log("create successfully");
     return res;
   } else {
-    console.log('error , failed to created');
+    console.log("error , failed to created");
     return res;
   }
 };
@@ -53,21 +53,21 @@ export const editBooking = async (editData) => {
   const res = await fetch(
     `${import.meta.env.VITE_BASE_URL}/event/${editData.idBooking}`,
     {
-      method: 'PUT',
+      method: "PUT",
       headers: {
-        'content-type': 'application/json'
+        "content-type": "application/json",
       },
       body: JSON.stringify({
         eventStartTime: editData.eventStartTime,
-        eventNotes: editData.eventNotes
-      })
+        eventNotes: editData.eventNotes,
+      }),
     }
   );
   if (res.status === 200) {
-    console.log('edited successfully');
+    console.log("edited successfully");
     return res;
   } else {
-    console.log('error, cannot be added');
+    console.log("error, cannot be added");
     return res;
   }
 };
@@ -77,15 +77,15 @@ export const removeBooking = async (deleteBookingId, booking, loopBooking) => {
   const res = await fetch(
     `${import.meta.env.VITE_BASE_URL}/event/${deleteBookingId}`,
     {
-      method: 'DELETE'
+      method: "DELETE",
     }
   );
   if (res.status === 200) {
     booking.statusClickDelete = !booking.statusClickDelete;
     loopBooking.statusClickSeeDetails = !loopBooking.statusClickSeeDetails;
-    console.log('deleted success');
+    console.log("deleted success");
   } else {
-    console.log('error , cannot delete');
+    console.log("error , cannot delete");
   }
 };
 
@@ -97,7 +97,7 @@ export const getEventCategory = async () => {
   if (res.status === 200) {
     return res;
   } else {
-    alert('find not found !!');
+    alert("find not found !!");
     return res;
   }
 };
@@ -109,23 +109,23 @@ export const editCategory = async (editCategory) => {
       editCategory.eventCategoryId
     }`,
     {
-      method: 'PUT',
+      method: "PUT",
       headers: {
-        'content-type': 'application/json'
+        "content-type": "application/json",
       },
       body: JSON.stringify({
         eventCategoryName: editCategory.eventCategoryName.trim(),
         eventDuration: editCategory.eventDuration,
-        eventCategoryDescription: editCategory.eventCategoryDescription
-      })
+        eventCategoryDescription: editCategory.eventCategoryDescription,
+      }),
     }
   );
 
   if (res.status === 200) {
-    console.log('edited successfully');
+    console.log("edited successfully");
     return res;
   } else {
-    console.log('error, cannot be added');
+    console.log("error, cannot be added");
     return res;
   }
 };
@@ -136,7 +136,7 @@ export const getAllUsers = async () => {
   if (res.status === 200) {
     // console.log(res);
     return res;
-  } else console.log('error to getUserLists');
+  } else console.log("error to getUserLists");
 };
 
 //get User
@@ -145,7 +145,7 @@ export const getUser = async (idUser) => {
   if (res.status === 200) {
     // console.log(res);
     return await res.json();
-  } else console.log('error to getUserLists');
+  } else console.log("error to getUserLists");
 };
 
 // user Delete method
@@ -153,35 +153,35 @@ export const deletedUser = async (deletedUserId) => {
   const res = await fetch(
     `${import.meta.env.VITE_BASE_URL}/user/${deletedUserId}`,
     {
-      method: 'DELETE'
+      method: "DELETE",
     }
   );
   if (res.status === 200) {
-    console.log('deleted success');
+    console.log("deleted success");
   } else {
-    console.log('error , cannot delete');
+    console.log("error , cannot delete user");
   }
 };
 
 // create user
 export const createUser = async (localDataInput) => {
   const res = await fetch(`${import.meta.env.VITE_BASE_URL}/user`, {
-    method: 'POST',
+    method: "POST",
     headers: {
-      'content-type': 'application/json'
+      "content-type": "application/json",
     },
     body: JSON.stringify({
       nameUser: localDataInput.nameUser,
       emailUser: localDataInput.emailUser,
       roleUser: localDataInput.roleUser,
-      password: localDataInput.password
-    })
+      password: localDataInput.password,
+    }),
   });
   if (res.status === 201) {
-    console.log('create successfully');
+    console.log("create successfully");
     return res;
   } else {
-    console.log('error , failed to created');
+    console.log("error , failed to created");
     return res;
   }
 };
@@ -191,23 +191,45 @@ export const editUser = async (localDataInput) => {
   const res = await fetch(
     `${import.meta.env.VITE_BASE_URL}/user/${localDataInput.idUser}`,
     {
-      method: 'PUT',
+      method: "PUT",
       headers: {
-        'content-type': 'application/json'
+        "content-type": "application/json",
       },
       body: JSON.stringify({
         nameUser: localDataInput.nameUser,
         emailUser: localDataInput.emailUser,
-        roleUser: localDataInput.roleUser
-      })
+        roleUser: localDataInput.roleUser,
+      }),
     }
   );
 
   if (res.status === 200) {
-    console.log('edited successfully');
+    console.log("edited successfully.");
     return res;
   } else {
-    console.log('error, cannot be added');
+    console.log("error, cannot be edit.");
+    return res;
+  }
+};
+
+//login
+export const loginToUse = async (loginData) => {
+  const res = await fetch(`${import.meta.env.VITE_BASE_URL}/user/login`, {
+    method: "POST",
+    headers: {
+      "content-type": "application/json",
+    },
+    body: JSON.stringify({
+      emailUser: loginData.email,
+      password: loginData.password,
+    }),
+  });
+  if (res.status === 201) {
+    console.log("log-in successfully");
+    return res;
+  } else {
+    console.log("failed to log-in, email or password is invalid.");
+    // alert("failed to log-in, email or password is invalid.");
     return res;
   }
 };
