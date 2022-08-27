@@ -51,7 +51,7 @@ public class UserService {
         User user = userRepository.findByEmailUser(loginDTO.getEmailUser());
         if (user != null) {
             if ((encoder.matches(loginDTO.getPassword(), user.getPassword())) && (loginDTO.getEmailUser().equals(user.getEmailUser()))) {
-                throw new ResponseStatusException(HttpStatus.OK, "password matched");
+                throw new ResponseStatusException(HttpStatus.CREATED, "password matched");
             } else {
                 throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "password not matched");
             }
