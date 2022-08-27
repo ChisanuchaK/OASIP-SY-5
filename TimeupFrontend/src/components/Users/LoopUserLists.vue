@@ -78,7 +78,7 @@ const deleteUserEvent = async (idUserToDelete, user) => {
 
     <div class="grid grid-flow-row grid-cols-1">
       <div
-        class="grid grid-flow-row grid-cols-12 content-center justify-items-center p-1 bg-[#50ABCB] text-lg font-bold uppercase">
+        class="grid grid-flow-row grid-cols-12 content-center justify-items-center p-1 bg-[#50ABCB] text-lg text-white font-bold uppercase">
         <div class="row-start-1 col-start-1 col-span-1">No.</div>
         <div class="row-start-1 col-start-2 col-end-4 col-span-2">Name</div>
         <div class="row-start-1 col-start-4 col-end-7 col-span-3">Email</div>

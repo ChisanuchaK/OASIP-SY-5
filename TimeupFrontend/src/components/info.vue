@@ -6,7 +6,7 @@
     <div class="font-bold underline decoration-[#50ABCB] text-[40px]">Team Member</div> 
     <div class="grid grid-flow-row grid-cols-3 mt-10 ">
         <!-- -------------------------------------------------------------------------------------------------------------- -->
-        <div class="relative row-start-1 col-start-1 col-span-1 max-w-sm m-auto bg-[#FFFFFF] hover:scale-110 duration-500">
+        <div class="relative row-start-1 col-start-1 col-span-1 max-w-sm m-auto bg-transparent hover:scale-110 duration-500">
             <img class="rounded-full w-90 h-80 border-8 border-[#006BBB] shadow-2xl shadow-gray-500/90" src="../../public/images/kim.jpg" alt="picture"/> 
             <div class="p-5">
                 <h5 class="mb-2 font-bold tracking-tight text-[18px] text-right text-black">63130500023</h5>
@@ -21,7 +21,7 @@
             </div>
         </div>
          <!-- -------------------------------------------------------------------------------------------------------------- -->
-        <div class="relative row-start-1 col-start-2 col-span-1 max-w-sm m-auto bg-[#FFFFFF] hover:scale-110 duration-500">
+        <div class="relative row-start-1 col-start-2 col-span-1 max-w-sm m-auto bg-transparent hover:scale-110 duration-500">
             <img class="rounded-full w-90 h-80 border-8 border-[#006BBB] shadow-2xl shadow-gray-500/90" src="../../public/images/tle.jpg" alt="picture"/> 
             <div class="p-5">
                 <h5 class="mb-2 font-bold tracking-tight text-[18px] text-right text-black">63130500049</h5>
@@ -38,7 +38,7 @@
             </div>
         </div>
          <!-- -------------------------------------------------------------------------------------------------------------- -->
-        <div class="relative row-start-1 col-start-3 col-span-1 max-w-sm m-auto bg-[#FFFFFF] hover:scale-110 duration-500">
+        <div class="relative row-start-1 col-start-3 col-span-1 max-w-sm m-auto bg-transparent hover:scale-110 duration-500">
             <img class="rounded-full w-90 h-80 border-8 border-[#006BBB] shadow-2xl shadow-gray-500/90" src="../../public/images/Spy.jpg" alt="picture"/> 
             <div class="p-5">
                 <h5 class="mb-2 font-bold tracking-tight text-[18px] text-right text-black">63130500150</h5>
