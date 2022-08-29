@@ -36,9 +36,9 @@ public class UserController {
         return  userService.createUser(userDTOPOST);
     }
 
-    @PostMapping("/login")
-    public User login(@Valid @RequestBody LoginDto loginDTO){
-        return  userService.LogInUser(loginDTO);
+    @PostMapping("/match")
+    public User MatchUser(@Valid @RequestBody MatchDto matchDto){
+        return  userService.MatchUser(matchDto);
     }
 
     @PutMapping("/{id}")

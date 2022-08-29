@@ -14,12 +14,13 @@ import javax.validation.constraints.Size;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class LoginDto {
+public class MatchDto {
     @NotNull
     @Email(regexp = "[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,3}",
             flags =  Pattern.Flag.CASE_INSENSITIVE)
     private String emailUser;
 
+    @NotNull
     @Size(min = 8 , max = 14)
     private String password;
 }

@@ -25,6 +25,8 @@ public class UserPostDto {
             flags =  Pattern.Flag.CASE_INSENSITIVE)
     private String emailUser;
 
+
+    @NotNull
     @Size(min = 8 , max = 14)
     private String password;
 

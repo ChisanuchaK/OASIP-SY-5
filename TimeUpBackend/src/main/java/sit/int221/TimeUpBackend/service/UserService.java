@@ -5,7 +5,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
-import sit.int221.TimeUpBackend.dtos.LoginDto;
+import sit.int221.TimeUpBackend.dtos.MatchDto;
 import sit.int221.TimeUpBackend.dtos.UserGetDto;
 import sit.int221.TimeUpBackend.dtos.UserPostDto;
 import sit.int221.TimeUpBackend.dtos.UserPutDto;
@@ -47,16 +47,16 @@ public class UserService {
     }
 
 
-    public User LogInUser(LoginDto loginDTO) {
-        User user = userRepository.findByEmailUser(loginDTO.getEmailUser());
+    public User MatchUser(MatchDto matchDto) {
+        User user = userRepository.findByEmailUser(matchDto.getEmailUser());
         if (user != null) {
-            if ((encoder.matches(loginDTO.getPassword(), user.getPassword())) && (loginDTO.getEmailUser().equals(user.getEmailUser()))) {
+            if ((encoder.matches(matchDto.getPassword(), user.getPassword())) && (matchDto.getEmailUser().equals(user.getEmailUser()))) {
                 throw new ResponseStatusException(HttpStatus.CREATED, "password matched");
             } else {
                 throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "password not matched");
             }
         } else {
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "404 not found");
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "user not found");
         }
 
     }
