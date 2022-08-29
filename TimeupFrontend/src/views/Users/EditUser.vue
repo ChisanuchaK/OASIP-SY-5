@@ -119,7 +119,7 @@ const editUserSuccess = async (dataOfUser) => {
   dataOfUser.nameUser = dataOfUser.nameUser.trim();
   dataOfUser.emailUser = dataOfUser.emailUser.trim();
   await editUser(dataOfUser);
-  alert('create user success!!!');
+  alert('edit user success!!!');
   confirmDialogStatus.value = false;
   appRouter.push({ name: 'UserList' });
 };
