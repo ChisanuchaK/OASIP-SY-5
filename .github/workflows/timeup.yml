@@ -15,11 +15,12 @@ jobs:
 #         # See supported Node.js release schedule at https://nodejs.org/en/about/releases/
 
     steps:
+    - run: chmod 666 /home/spadmin/OASIP-SY-5/actions-runner/_work/OASIP-SY-5/OASIP-SY-5/mysql-data
     - uses: actions/checkout@v2
-#     - run: docker-compose rm -svf frontend backend reverse_proxy
-#     - run: docker ps
-#     - run: pwd
-#     - run: docker image rmi quay.io/chisanuchakim/oasip-sy-5-backend  quay.io/chisanuchakim/oasip-sy-5-fontend frontend backend
+    - run: docker-compose rm -svf frontend backend
+    - run: docker ps
+    - run: pwd
+    - run: docker image rmi quay.io/chisanuchakim/oasip-sy-5-backend  quay.io/chisanuchakim/oasip-sy-5-fontend frontend backend
     - run: cd /home/spadmin/OASIP-SY-5/actions-runner/_work/OASIP-SY-5/OASIP-SY-5
     - run: ls
     - run: docker build -t backend -f backend.Dockerfile .
@@ -28,4 +29,4 @@ jobs:
     - run: docker build -t frontend .
     - run: docker tag frontend quay.io/chisanuchakim/oasip-sy-5-fontend
     - run: docker push quay.io/chisanuchakim/oasip-sy-5-fontend
-    - run: docker-compose up -d backend frontend reverse_proxy
+    - run: docker-compose up -d backend frontend
