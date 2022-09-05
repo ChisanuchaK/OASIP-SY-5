@@ -214,7 +214,7 @@ export const editUser = async (localDataInput) => {
 
 //login
 export const loginToUse = async (loginData) => {
-  const res = await fetch(`${import.meta.env.VITE_BASE_URL}/user/login`, {
+  const res = await fetch(`${import.meta.env.VITE_BASE_URL}/login`, {
     method: "POST",
     headers: {
       "content-type": "application/json",
