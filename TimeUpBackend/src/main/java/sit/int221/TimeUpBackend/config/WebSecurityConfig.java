@@ -35,7 +35,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Autowired
     private PasswordEncoder passwordEncoder(){
-      return   new Argon2PasswordEncoder(14 , 30 , 1 , 65536 , 1);
+      return   new Argon2PasswordEncoder();
     };
 
     @Autowired

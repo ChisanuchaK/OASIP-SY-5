@@ -6,7 +6,7 @@ import de.mkammerer.argon2.Argon2Factory;
 
 public class Argon2PasswordEncoder  {
 
-    private static final Argon2 ARGON2 = Argon2Factory.create(Argon2Factory.Argon2Types.ARGON2d, 14, 30);
+    private static final Argon2 ARGON2 = Argon2Factory.create();
 
     private static final int ITERATIONS = 2;
     private static final int MEMORY= 65536;
