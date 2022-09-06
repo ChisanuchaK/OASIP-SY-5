@@ -224,12 +224,13 @@ export const loginToUse = async (loginData) => {
       password: loginData.password,
     }),
   });
-  if (res.status === 201) {
+  if (res.status === 200) {
     console.log("log-in successfully");
-    return res;
+    // console.log(res.json())
+    return res.json();
   } else {
     console.log("failed to log-in, email or password is invalid.");
     // alert("failed to log-in, email or password is invalid.");
-    return res;
+    return res.json();
   }
 };

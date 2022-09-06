@@ -32,7 +32,7 @@ public class JwtAuthenticationController {
     private JwtUserDetailsService userDetailsService;
 
     @RequestMapping(value = "/api/login", method = RequestMethod.POST)
-    public ResponseEntity<?> createAuthenticationToken(@RequestBody JwtRequest authenticationRequest) throws Exception {
+    public ResponseEntity createAuthenticationToken(@RequestBody JwtRequest authenticationRequest) throws Exception {
 
         authenticate(authenticationRequest.getEmailUser(), authenticationRequest.getPassword());
 
@@ -40,7 +40,7 @@ public class JwtAuthenticationController {
                 .loadUserByUsername(authenticationRequest.getEmailUser());
 
         final String token = jwtTokenUtil.generateToken(userDetails);
-
+        System.out.println("jjjj");
         return ResponseEntity.ok(new JwtResponse(token));
     }
 
