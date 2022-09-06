@@ -17,6 +17,7 @@ import static sit.int221.TimeUpBackend.controller.EventCategoryController.getStr
 
 @RestController
 @RequestMapping("/api/user")
+@CrossOrigin(origins = "*" , allowedHeaders = "*")
 public class UserController {
 
     @Autowired

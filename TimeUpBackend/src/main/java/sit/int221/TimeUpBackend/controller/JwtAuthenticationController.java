@@ -20,7 +20,7 @@ import sit.int221.TimeUpBackend.service.JwtUserDetailsService;
 
 
 @RestController
-@CrossOrigin
+@CrossOrigin(origins = "*" , allowedHeaders = "*")
 public class JwtAuthenticationController {
     @Autowired
     private AuthenticationManager authenticationManager;
