@@ -62,7 +62,7 @@ const confirmToLogin = async(dataForLogin) => {
   }
 
   const res = await loginToUse(dataForLogin);
-  if(res.status === 201){
+  if(res.status === 200){
     isInvalid.value = false;
     alert("Log in success !!");
     
