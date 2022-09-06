@@ -65,19 +65,24 @@ const confirmToLogin = async(dataForLogin) => {
   if(res.status === 200){
     isInvalid.value = false;
     alert("Log in success !!");
+    console.log("Log in success !!")
     
   }
   else if(res.status === 400){
     isInvalid.value = true;
     alert("please enter your email and password.")
+    console.log("please enter your email and password.")
   }
    else if(res.status === 401){
     isInvalid.value = true;
     alert("email or password is not match.")
+    
+    console.log("email or password is not match.")
   }
    else if(res.status === 404){
     isInvalid.value = true;
     alert("error , can not found")
+    console.log("error , can not found")
   }
 
   return '';
