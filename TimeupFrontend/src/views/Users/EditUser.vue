@@ -5,7 +5,7 @@ import NavbarTop from '../../components/NavbarTop.vue';
 import NavbarBottom from '../../components/NavbarBottom.vue';
 import Confirm from '../../components/Confirm.vue';
 import Cancel from '../../components/Cancel.vue';
-import { getUser, getAllUsers, editUser } from '../../stores/book.js';
+import { getUser, getAllUsers, editUser } from '../../stores/user.js';
 import moment from 'moment';
 
 const appRouter = useRouter();
@@ -274,7 +274,8 @@ const checkInputEmailInvalid = () => {
 onBeforeMount(async () => {
   const allUsers = await getAllUsers();
   userListAlls.value = await allUsers.json();
-  const userByIdEdit = await getUser(params.idUser).then((userFromId) => {
+  const userByIdEdit = await getUser(params.idUser);
+  const response = await userByIdEdit.json().then((userFromId) => {
     user.value = userFromId;
     // console.log(user.value);
     localDataUser.nameUser = user.value.nameUser;
@@ -282,6 +283,7 @@ onBeforeMount(async () => {
     localDataUser.roleUser = user.value.roleUser;
     // console.log(localDataUser);
   });
+  console.log(response);
 });
 </script>
 

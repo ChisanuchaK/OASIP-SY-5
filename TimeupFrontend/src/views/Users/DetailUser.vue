@@ -1,22 +1,22 @@
 <script setup>
-import { ref, onBeforeMount, onMounted, computed } from 'vue'
-import { useRouter, useRoute } from 'vue-router' //get params to script
-import NavbarTop from '../../components/NavbarTop.vue'
-import NavbarBottom from '../../components/NavbarBottom.vue'
-import { getUser } from '../../stores/book.js'
-import moment from 'moment'
+import { ref, onBeforeMount, onMounted, computed } from 'vue';
+import { useRouter, useRoute } from 'vue-router'; //get params to script
+import NavbarTop from '../../components/NavbarTop.vue';
+import NavbarBottom from '../../components/NavbarBottom.vue';
+import { getUser } from '../../stores/user.js';
+import moment from 'moment';
 
-const appRouter = useRouter()
-let { params } = useRoute()
+const appRouter = useRouter();
+let { params } = useRoute();
 
-const user = ref({})
+const user = ref({});
 
-const goBackToUserList = () => appRouter.push({ name: 'UserList' })
+const goBackToUserList = () => appRouter.push({ name: 'UserList' });
 
 onBeforeMount(async () => {
-  const userById = await getUser(params.idUser)
-  user.value = userById
-})
+  const userById = await getUser(params.idUser);
+  user.value = await userById.json();
+});
 </script>
 
 <template>

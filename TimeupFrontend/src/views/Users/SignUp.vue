@@ -3,7 +3,7 @@ import { ref, computed, reactive, onBeforeMount } from 'vue';
 import { useRouter } from 'vue-router'; //get params to script
 import Confirm from '../../components/Confirm.vue';
 import Cancel from '../../components/Cancel.vue';
-import { createUser, getAllUsers } from '../../stores/book.js';
+import { createUser, getAllUsers } from '../../stores/user.js';
 
 const appRouter = useRouter();
 const goBackToHome = () => appRouter.push({ name: 'SignIn' });
@@ -404,10 +404,16 @@ onBeforeMount(async () => {
                 class="placeholder text-[#D9D9D9]"
                 >Password</label
               >
-              <label v-if="inputPasswordIsEmpty" class="text-red-500 text-[14px]">
+              <label
+                v-if="inputPasswordIsEmpty"
+                class="text-red-500 text-[14px]"
+              >
                 *please enter your password.
               </label>
-              <label v-if="inputPasswordIsInvalid" class="text-red-500 text-[14px]">
+              <label
+                v-if="inputPasswordIsInvalid"
+                class="text-red-500 text-[14px]"
+              >
                 *password length minimum is 8.
               </label>
             </div>
@@ -438,7 +444,10 @@ onBeforeMount(async () => {
                 class="placeholder text-[#D9D9D9]"
                 >Confirm Password</label
               >
-              <label v-if="inputConfirmPasswordIsInvalid" class="text-red-500 text-[14px]">
+              <label
+                v-if="inputConfirmPasswordIsInvalid"
+                class="text-red-500 text-[14px]"
+              >
                 *Confirm password is invalid.
               </label>
             </div>
