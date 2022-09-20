@@ -9,6 +9,7 @@ import org.springframework.security.web.authentication.WebAuthenticationDetailsS
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 import sit.int221.TimeUpBackend.config.JwtTokenUtil;
+import sit.int221.TimeUpBackend.entities.JwtRequest;
 import sit.int221.TimeUpBackend.service.JwtUserDetailsService;
 
 import javax.servlet.FilterChain;
@@ -42,8 +43,14 @@ public class JwtRequestFilter extends OncePerRequestFilter {
                 username = jwtTokenUtil.getUsernameFromToken(jwtToken);
             } catch (IllegalArgumentException e) {
                 System.out.println("Unable to get JWT Token");
-            } catch (ExpiredJwtException e) {
-                System.out.println("JWT Token has expired");
+            } catch (ExpiredJwtException ex) {
+                String isRefreshToken = request.getHeader("isRefreshToken");
+                String requestURL = request.getRequestURL().toString();
+                // allow for Refresh Token creation if following conditions are true.
+                if (isRefreshToken != null && isRefreshToken.equals("true") && requestURL.contains("refreshtoken")) {
+                    allowForRefreshToken(ex, request);
+                } else
+                    request.setAttribute("exception", ex);
             }
         } else {
             logger.warn("JWT Token does not begin with Bearer String");
@@ -70,5 +77,22 @@ public class JwtRequestFilter extends OncePerRequestFilter {
         }
         chain.doFilter(request, response);
     }
+    private void allowForRefreshToken(ExpiredJwtException ex, HttpServletRequest request) {
+            // create a UsernamePasswordAuthenticationToken with null values.
+            UsernamePasswordAuthenticationToken usernamePasswordAuthenticationToken = new UsernamePasswordAuthenticationToken(
+                    null, null, null);
+            // After setting the Authentication in the context, we specify
+            // that the current user is authenticated. So it passes the
+            // Spring Security Configurations successfully.
+            SecurityContextHolder.getContext().setAuthentication(usernamePasswordAuthenticationToken);
+            // Set the claims so that in controller we will be using it to create
+            // new JWT
+            request.setAttribute("claims", ex.getClaims());
+
+
+        }
+
+
+
 }
 
