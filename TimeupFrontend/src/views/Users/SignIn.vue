@@ -69,7 +69,6 @@ const confirmToLogin = async (dataForLogin) => {
 
   const res = await loginToUse(dataForLogin);
   // console.log('Hello' + res.status);
-  console.log(res);
   if (res.status === 200) {
     isInvalid.value = false;
     alert('Log in success !!');
@@ -165,7 +164,7 @@ onBeforeMount(async () => {
               <label class="placeholder">Placeholder</label>
             </div> -->
             <div class="relative m-auto w-[90%]">
-              <input
+              <input 
                 :style="{
                   'border-color':
                     inputEmailIsEmpty || inputEmailIsInvalid || inputEmailIsOver
@@ -209,7 +208,7 @@ onBeforeMount(async () => {
         <div class="row-start-5 col-start-4 col-end-10">
           <form>
             <div class="relative mx-auto w-[90%]">
-              <input
+              <input 
                 :style="{
                   'border-color':
                     inputPasswordIsEmpty || inputPasswordIsInvalid ? 'red' : ''
@@ -257,7 +256,7 @@ onBeforeMount(async () => {
             <button
               class="rounded-md bg-[#105E99] text-[#ffffff] w-full m-auto p-2 hover:bg-[#004980] transition delay-75"
             >
-              Create Account
+              Sign-Up
             </button>
           </router-link>
         </div>

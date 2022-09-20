@@ -10,12 +10,12 @@ const appRouter = useRouter();
 let { params } = useRoute();
 
 const user = ref({});
-
+const responseGetUser = ref({});
 const goBackToUserList = () => appRouter.push({ name: 'UserList' });
 
 onBeforeMount(async () => {
-  const userById = await getUser(params.idUser);
-  user.value = await userById.json();
+  responseGetUser.value = await getUser(params.idUser);
+  user.value = responseGetUser.value.data;
 });
 </script>
 

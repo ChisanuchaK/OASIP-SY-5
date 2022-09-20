@@ -6,6 +6,10 @@ import Confirm from "../components/Confirm.vue";
 import NavbarTop from '../components/NavbarTop.vue';
 import NavbarBottom from '../components/NavbarBottom.vue';
 import { getEventCategory, createBooking, getBookings } from "../stores/book.js";
+import PleaseLogInDialog from '../components/PleaseLogInDialog.vue';
+
+const getToken = localStorage.getItem('token');
+const pageName = ref('use RESERVE');
 
 const bookingLists = ref([]);
 const categoryList = ref([]);
@@ -268,6 +272,7 @@ onBeforeMount(async () => {
                 <Confirm v-if="createDialog" @onClickConfirmNo="closeConfirmDialog"
                     @onClickConfirmYes="createBookingEvent(localData)" />
             </div>
+            <PleaseLogInDialog v-if="!getToken" :pageName="pageName"/>
         </div>
         <NavbarBottom />
     </div>

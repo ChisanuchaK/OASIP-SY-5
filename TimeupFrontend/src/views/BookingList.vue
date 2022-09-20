@@ -6,6 +6,10 @@ import LoopBookingList from '../components/LoopBookingList.vue';
 import FilterBar from '../components/FilterBar.vue';
 import { getBookings, getEventCategory } from '../stores/book.js';
 import moment from 'moment';
+import PleaseLogInDialog from '../components/PleaseLogInDialog.vue';
+
+const getToken = localStorage.getItem('token');
+const pageName = ref('view BOOKING-LIST');
 
 const bookingLists = ref([]);
 const categoryLists = ref([]);
@@ -137,6 +141,7 @@ onBeforeMount(async () => {
       @idDialogDetails="filterList"
       @EditIdFromDialog="filterEditBooking"
     />
+    <PleaseLogInDialog v-if="!getToken" :pageName="pageName"/>
     <NavbarBottom />
   </div>
 </template>

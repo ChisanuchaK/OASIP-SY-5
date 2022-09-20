@@ -1,5 +1,7 @@
 // ---------------------------------------- ALL FETCH API ----------------------------------------
-
+const createResponse = (status, data) => {
+  return { status: status, data: data };
+};
 //Get All Booking
 export const getBookings = async () => {
   const res = await fetch(`${import.meta.env.VITE_HTTPS_URL}/event`, {
@@ -105,7 +107,8 @@ export const getEventCategory = async () => {
   if (res.status === 200) {
     return res;
   } else {
-    alert('find not found !! form getEventCategory');
+    // alert('find not found !! form getEventCategory');
+    console.log('find not found !! form getEventCategory');
     return res;
   }
 };
