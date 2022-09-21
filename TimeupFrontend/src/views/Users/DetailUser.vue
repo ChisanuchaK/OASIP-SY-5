@@ -1,10 +1,10 @@
 <script setup>
 import { ref, onBeforeMount, onMounted, computed } from 'vue';
 import { useRouter, useRoute } from 'vue-router'; //get params to script
-import NavbarTop from '../../components/NavbarTop.vue';
-import NavbarBottom from '../../components/NavbarBottom.vue';
 import { getUser } from '../../stores/user.js';
 import moment from 'moment';
+import NavbarTop from '../../components/NavbarTop.vue';
+import NavbarBottom from '../../components/NavbarBottom.vue';
 
 const appRouter = useRouter();
 let { params } = useRoute();
@@ -21,9 +21,8 @@ onBeforeMount(async () => {
 
 <template>
   <div>
-    <NavbarTop />
-    <NavbarBottom />
-
+    <NavbarTop/>
+    <NavbarBottom/>
     <div
       @click="goBackToUserList()"
       class="absolute top-[15%] bg-white rounded left-[2%] p-1 hover:bg-[#E9E9E9]"

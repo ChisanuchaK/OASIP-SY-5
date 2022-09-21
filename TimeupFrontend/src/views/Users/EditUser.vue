@@ -1,12 +1,12 @@
 <script setup>
 import { ref, onBeforeMount, onMounted, computed, reactive } from 'vue';
 import { useRouter, useRoute } from 'vue-router';
-import NavbarTop from '../../components/NavbarTop.vue';
-import NavbarBottom from '../../components/NavbarBottom.vue';
 import Confirm from '../../components/Confirm.vue';
 import Cancel from '../../components/Cancel.vue';
 import { getUser, getAllUsers, editUser } from '../../stores/user.js';
 import moment from 'moment';
+import NavbarTop from '../../components/NavbarTop.vue';
+import NavbarBottom from '../../components/NavbarBottom.vue';
 
 const appRouter = useRouter();
 let { params } = useRoute();
@@ -296,9 +296,8 @@ onBeforeMount(async () => {
 
 <template>
   <div>
-    <NavbarTop />
-    <NavbarBottom />
-
+    <NavbarTop/>
+    <NavbarBottom/>
     <div @click="changeCancelDialogShow(user)"
       class="absolute top-[15%] bg-white rounded left-[2%] p-1 hover:bg-[#E9E9E9]">
       <svg width="50px" height="50px" viewBox="0 0 12 24">

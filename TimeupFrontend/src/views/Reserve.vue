@@ -3,12 +3,12 @@ import { ref, computed, onBeforeMount, reactive } from 'vue'
 import moment from "moment";
 import Cancel from "../components/Cancel.vue";
 import Confirm from "../components/Confirm.vue";
-import NavbarTop from '../components/NavbarTop.vue';
-import NavbarBottom from '../components/NavbarBottom.vue';
 import { getEventCategory, createBooking, getBookings } from "../stores/book.js";
 import PleaseLogInDialog from '../components/PleaseLogInDialog.vue';
+import NavbarTop from '../components/NavbarTop.vue';
+import NavbarBottom from '../components/NavbarBottom.vue';
 
-const getToken = localStorage.getItem('token');
+const getToken = localStorage.getItem('accessToken');
 const pageName = ref('use RESERVE');
 
 const bookingLists = ref([]);
@@ -167,8 +167,8 @@ onBeforeMount(async () => {
  
 <template>
     <div>
-        <NavbarTop />
-
+        <NavbarTop/>
+        <NavbarBottom/>
         <div class="mt-24 mb-8 uppercase w-3/4 m-auto text-center text-4xl font-bold text-black underline decoration-[#50ABCB]"> select scheduled</div>
         <div class="w-[80%] m-auto h-auto mb-24">
             <div class="bg-white text-xl rounded-xl font-bold">
@@ -274,7 +274,6 @@ onBeforeMount(async () => {
             </div>
             <PleaseLogInDialog v-if="!getToken" :pageName="pageName"/>
         </div>
-        <NavbarBottom />
     </div>
 </template>
  

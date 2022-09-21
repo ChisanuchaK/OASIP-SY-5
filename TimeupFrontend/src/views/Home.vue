@@ -1,13 +1,18 @@
 <script setup>
+import { onBeforeMount, onBeforeUpdate } from 'vue';
 import NavbarTop from '../components/NavbarTop.vue';
 import NavbarBottom from '../components/NavbarBottom.vue';
 
+
+
+onBeforeMount(async()=>{
+})
 </script>
- 
+
 <template>
   <div>
-    <NavbarTop />
-    <NavbarBottom />
+    <NavbarTop/>
+    <NavbarBottom/>
     <div class="text-left text-[52px] text-black fixed top-1/3 left-1/4">
       T I M E - U P<br>
       <p class="text-[26px]">At your fingertips, <br>

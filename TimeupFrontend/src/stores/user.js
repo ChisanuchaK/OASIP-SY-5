@@ -12,7 +12,7 @@ const createResponse = (status, data) => {
 export const getAllUsers = async () => {
   const res = await fetch(`${import.meta.env.VITE_HTTPS_URL}/user`, {
     headers: {
-      Authorization: `Bearer ${localStorage.getItem("token")}`,
+      Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
     },
   });
   //   console.log(res);
@@ -23,6 +23,13 @@ export const getAllUsers = async () => {
     const response = await res.json();
     return createResponse(res.status, response);
     // return res;
+  } else if (res.status === 401) {
+    if (await getRefreshToken()) {
+      console.log("can use refreshToken");
+      return getAllUsers();
+    } else {
+      console.log("please SignIn");
+    }
   } else {
     console.log("error to getUserLists");
     // alert("please sign-in");
@@ -36,13 +43,20 @@ export const getAllUsers = async () => {
 export const getUser = async (idUser) => {
   const res = await fetch(`${import.meta.env.VITE_HTTPS_URL}/user/${idUser}`, {
     headers: {
-      Authorization: `Bearer ${localStorage.getItem("token")}`,
+      Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
     },
   });
   if (res.status === 200) {
     const response = await res.json();
     return createResponse(res.status, response);
     // return res;
+  } else if (res.status === 401) {
+    if (await getRefreshToken()) {
+      console.log("can use refreshToken");
+      return getUser();
+    } else {
+      console.log("please SignIn");
+    }
   } else {
     console.log("error to getUserLists");
     const response = res.json();
@@ -57,7 +71,7 @@ export const deletedUser = async (deletedUserId) => {
     {
       method: "DELETE",
       headers: {
-        Authorization: `Bearer ${localStorage.getItem("token")}`,
+        Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
       },
     }
   );
@@ -66,9 +80,16 @@ export const deletedUser = async (deletedUserId) => {
     // const response = await res.json();
     // return createResponse(res.status, response);
     return res;
+  } else if (res.status === 401) {
+    if (await getRefreshToken()) {
+      console.log("can use refreshToken");
+      return deletedUser();
+    } else {
+      console.log("please SignIn");
+    }
   } else {
-    return res;
     console.log("error , cannot delete user");
+    return res;
   }
 };
 
@@ -78,7 +99,7 @@ export const createUser = async (localDataInput) => {
     method: "POST",
     headers: {
       "content-type": "application/json",
-      Authorization: `Bearer ${localStorage.getItem("token")}`,
+      Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
     },
     body: JSON.stringify({
       nameUser: localDataInput.nameUser,
@@ -92,6 +113,13 @@ export const createUser = async (localDataInput) => {
     const response = await res.json();
     return createResponse(res.status, response);
     // return res;
+  } else if (res.status === 401) {
+    if (await getRefreshToken()) {
+      console.log("can use refreshToken");
+      return createUser(localDataInput);
+    } else {
+      console.log("please SignIn");
+    }
   } else {
     console.log("error , failed to created");
     // const response = res.json();
@@ -108,7 +136,7 @@ export const editUser = async (localDataInput) => {
       method: "PUT",
       headers: {
         "content-type": "application/json",
-        Authorization: `Bearer ${localStorage.getItem("token")}`,
+        Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
       },
       body: JSON.stringify({
         nameUser: localDataInput.nameUser,
@@ -120,6 +148,13 @@ export const editUser = async (localDataInput) => {
   if (res.status === 200) {
     console.log("edited successfully.");
     return res;
+  } else if (res.status === 401) {
+    if (await getRefreshToken()) {
+      console.log("can use refreshToken");
+      return editUser(localDataInput);
+    } else {
+      console.log("please SignIn");
+    }
   } else {
     console.log("error, cannot be edit.");
     return res;
@@ -142,9 +177,10 @@ export const loginToUse = async (loginData) => {
   console.log("status : " + res.status);
   if (res.status === 200) {
     const response = await res.json();
-    // console.log(response.token);
+
     console.log("log-in successfully");
-    localStorage.setItem("token", response.token);
+    localStorage.setItem("accessToken", response.accessToken);
+    localStorage.setItem("refreshToken", response.refreshToken);
     return createResponse(res.status, response);
   } else {
     console.log("failed to log-in, email or password is invalid.");
@@ -153,5 +189,27 @@ export const loginToUse = async (loginData) => {
     // return res;
     // alert("failed to log-in, email or password is invalid.");
     // return createResponse(res.status, res);
+  }
+};
+
+const getRefreshToken = async () => {
+  const res = await fetch(`${import.meta.env.VITE_HTTPS_URL}/refreshtoken`, {
+    headers: {
+      Authorization: `Bearer ${localStorage.getItem("refreshToken")}`,
+    },
+  });
+  // const response = res.json();
+  // console.log(response.accessToken);
+  // console.log(response.refreshToken);
+  // console.log(res);
+  if (res.status === 200) {
+    console.log("success to get refreshtoken");
+    const response = await res.json();
+    localStorage.setItem("accessToken", response.accessToken);
+    localStorage.setItem("refreshToken", response.refreshToken);
+    return true;
+  } else {
+    console.log("error to get refreshtoken");
+    return false;
   }
 };

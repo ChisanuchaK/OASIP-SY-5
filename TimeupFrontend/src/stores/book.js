@@ -6,15 +6,15 @@ const createResponse = (status, data) => {
 export const getBookings = async () => {
   const res = await fetch(`${import.meta.env.VITE_HTTPS_URL}/event`, {
     headers: {
-      Authorization: `Bearer ${localStorage.getItem('token')}`
-    }
+      Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
+    },
   });
   if (res.status === 200) {
     console.log(res);
     // console.log(await res.json());
     return res;
   } else {
-    console.log('error to getBookings');
+    console.log("error to getBookings");
     return res;
   }
 };
@@ -28,32 +28,33 @@ export const getBookingId = async (bookingId) => {
     console.log(res);
     return await res.json();
   } else {
-    console.log('not found');
+    console.log("not found");
   }
 };
 
 // create Booking
 export const createBooking = async (localDataInput) => {
   const res = await fetch(`${import.meta.env.VITE_HTTPS_URL}/event`, {
-    method: 'POST',
+    method: "POST",
     headers: {
-      'content-type': 'application/json'
+      "content-type": "application/json",
+      Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
     },
     body: JSON.stringify({
       bookingName: localDataInput.bookingName,
       bookingEmail: localDataInput.bookingEmail,
       eventCategory: {
-        eventCategoryId: localDataInput.eventCategory.eventCategoryId
+        eventCategoryId: localDataInput.eventCategory.eventCategoryId,
       },
       eventStartTime: localDataInput.eventStartTime,
-      eventNotes: localDataInput.eventNotes
-    })
+      eventNotes: localDataInput.eventNotes,
+    }),
   });
   if (res.status === 201) {
-    console.log('create successfully');
+    console.log("create successfully");
     return res;
   } else {
-    console.log('error , failed to created');
+    console.log("error , failed to created");
     return res;
   }
 };
@@ -63,21 +64,22 @@ export const editBooking = async (editData) => {
   const res = await fetch(
     `${import.meta.env.VITE_HTTPS_URL}/event/${editData.idBooking}`,
     {
-      method: 'PUT',
+      method: "PUT",
       headers: {
-        'content-type': 'application/json'
+        "content-type": "application/json",
+        Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
       },
       body: JSON.stringify({
         eventStartTime: editData.eventStartTime,
-        eventNotes: editData.eventNotes
-      })
+        eventNotes: editData.eventNotes,
+      }),
     }
   );
   if (res.status === 200) {
-    console.log('edited successfully');
+    console.log("edited successfully");
     return res;
   } else {
-    console.log('error, cannot be added');
+    console.log("error, cannot be added");
     return res;
   }
 };
@@ -87,28 +89,36 @@ export const removeBooking = async (deleteBookingId, booking, loopBooking) => {
   const res = await fetch(
     `${import.meta.env.VITE_HTTPS_URL}/event/${deleteBookingId}`,
     {
-      method: 'DELETE'
+      method: "DELETE",
+      headers: {
+        Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
+      },
     }
   );
   if (res.status === 200) {
     booking.statusClickDelete = !booking.statusClickDelete;
     loopBooking.statusClickSeeDetails = !loopBooking.statusClickSeeDetails;
-    console.log('deleted success');
+    console.log("deleted success");
   } else {
-    console.log('error , cannot delete');
+    console.log("error , cannot delete");
   }
 };
 
 //get All Category
 export const getEventCategory = async () => {
   const res = await fetch(
-    `${import.meta.env.VITE_HTTPS_URL}/admin/event-category`
+    `${import.meta.env.VITE_HTTPS_URL}/admin/event-category`,
+    {
+      headers: {
+        Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
+      },
+    }
   );
   if (res.status === 200) {
     return res;
   } else {
     // alert('find not found !! form getEventCategory');
-    console.log('find not found !! form getEventCategory');
+    console.log("find not found !! form getEventCategory");
     return res;
   }
 };
@@ -120,23 +130,24 @@ export const editCategory = async (editCategory) => {
       editCategory.eventCategoryId
     }`,
     {
-      method: 'PUT',
+      method: "PUT",
       headers: {
-        'content-type': 'application/json'
+        "content-type": "application/json",
+        Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
       },
       body: JSON.stringify({
         eventCategoryName: editCategory.eventCategoryName.trim(),
         eventDuration: editCategory.eventDuration,
-        eventCategoryDescription: editCategory.eventCategoryDescription
-      })
+        eventCategoryDescription: editCategory.eventCategoryDescription,
+      }),
     }
   );
 
   if (res.status === 200) {
-    console.log('edited successfully');
+    console.log("edited successfully");
     return res;
   } else {
-    console.log('error, cannot be added');
+    console.log("error, cannot be added");
     return res;
   }
 };
