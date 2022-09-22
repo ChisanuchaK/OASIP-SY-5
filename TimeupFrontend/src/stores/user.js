@@ -53,12 +53,12 @@ export const getUser = async (idUser) => {
   } else if (res.status === 401) {
     if (await getRefreshToken()) {
       console.log("can use refreshToken");
-      return getUser();
+      return getUser(idUser);
     } else {
       console.log("please SignIn");
     }
   } else {
-    console.log("error to getUserLists");
+    console.log("error to getUser");
     const response = res.json();
     return createResponse(res.status, response);
   }
@@ -83,7 +83,7 @@ export const deletedUser = async (deletedUserId) => {
   } else if (res.status === 401) {
     if (await getRefreshToken()) {
       console.log("can use refreshToken");
-      return deletedUser();
+      return deletedUser(deletedUserId);
     } else {
       console.log("please SignIn");
     }
@@ -110,9 +110,9 @@ export const createUser = async (localDataInput) => {
   });
   if (res.status === 201) {
     console.log("create successfully");
-    const response = await res.json();
-    return createResponse(res.status, response);
-    // return res;
+    // const response = await res.json();
+    // return createResponse(res.status, response);
+    return res;
   } else if (res.status === 401) {
     if (await getRefreshToken()) {
       console.log("can use refreshToken");
@@ -147,6 +147,8 @@ export const editUser = async (localDataInput) => {
   );
   if (res.status === 200) {
     console.log("edited successfully.");
+    // const response = await res.json();
+    // return createResponse(res.status, response);
     return res;
   } else if (res.status === 401) {
     if (await getRefreshToken()) {

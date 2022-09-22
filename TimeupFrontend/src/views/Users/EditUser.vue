@@ -277,11 +277,13 @@ onBeforeMount(async () => {
   responseGetAllUser.value = await getAllUsers();
   userListAlls.value = await responseGetAllUser.value.data;
   responseGetUser.value = await getUser(params.idUser);
+  user.value = responseGetUser.value.data;
+  console.log(user.value);
   // console.log(responseGetUser.value.data);
   localDataUser.nameUser = responseGetUser.value.data.nameUser;
   localDataUser.emailUser = responseGetUser.value.data.emailUser;
   localDataUser.roleUser = responseGetUser.value.data.roleUser;
-
+  console.log(localDataUser);
   // const response = await responseGetUser.value.data.then((userFromId) => {
   //   user.value = userFromId;
   //   // console.log(user.value);
@@ -376,12 +378,13 @@ onBeforeMount(async () => {
           <div class="grid row-start-3 col-start-8 col-end-12 content-center w-[90%]">
             <div class="relative">
               <!-- <select :v-model="(user.roleUser == '' ? roleIndexSelect : user.roleUser )" -->
-              <select :v-model="localDataUser.roleUser" @change="checkValue($event)"
+              <select v-model="localDataUser.roleUser" @change="checkValue($event)"
                 class="border rounded-md border-solid border-[#D9D9D9] w-full p-2 hover:bg-[#F2F2F2] transition delay-75 text-center"
                 name="" id="">
                 <!-- <option value=""></option> -->
                 <!-- <option v-for="(role,index) in roles" :value="role" v-bind:key="indexs">
                 {{role}}</option> -->
+                <!-- <option value="admin"> {{localDataUser.roleUser}}</option> -->
                 <option value="admin">Admin</option>
                 <option value="lecturer">Lecturer</option>
                 <option value="student">Student</option>
