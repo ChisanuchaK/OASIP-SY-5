@@ -1,14 +1,12 @@
 <script setup>
 import { ref, computed, onBeforeMount, onBeforeUpdate } from 'vue';
-import { useRouter, useRoute} from 'vue-router';
+import { useRouter } from 'vue-router';
 import Confirm from './Confirm.vue';
 // import { onBeforeMount, ref } from 'vue';
 // import { loginToUse } from '../stores/user.js';
 
 // const responseLoginUser = ref({});
 // const statusLogInUser = ref('');
-
-const route = useRoute();
 const appRouter = useRouter();
 
 const showDropdown = () => {
@@ -18,7 +16,9 @@ const showDropdown = () => {
     return false;
   }
 }
+
 // const getToken = ref(localStorage.getItem('accessToken'));
+
 // const accessToken = ref(showDropdown());
 const getToken = computed(() => showDropdown());
 
@@ -35,11 +35,7 @@ const signOutUser = () => {
   signOutStatus.value = false;
   localStorage.clear();
   alert("SignOut Success.");
-  if(route.path == '/'){
-    location.reload();
-  }else{
-    appRouter.push({ name: 'Home' });
-  }
+  appRouter.push({ name: 'Home' });
 }
 
 onBeforeUpdate(async () => {

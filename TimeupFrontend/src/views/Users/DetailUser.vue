@@ -8,7 +8,6 @@ import NavbarBottom from '../../components/NavbarBottom.vue';
 
 const appRouter = useRouter();
 let { params } = useRoute();
-console.log(params);
 
 const user = ref({});
 const responseGetUser = ref({});
@@ -16,10 +15,7 @@ const goBackToUserList = () => appRouter.push({ name: 'UserList' });
 
 onBeforeMount(async () => {
   responseGetUser.value = await getUser(params.idUser);
-  console.log(responseGetUser.value);
-  if(responseGetUser.value.status == 200){  
   user.value = responseGetUser.value.data;
-  }else ;
 });
 </script>
 

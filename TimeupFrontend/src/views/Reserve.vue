@@ -8,11 +8,9 @@ import PleaseLogInDialog from '../components/PleaseLogInDialog.vue';
 import NavbarTop from '../components/NavbarTop.vue';
 import NavbarBottom from '../components/NavbarBottom.vue';
 
-const getToken = localStorage.getItem('refreshToken');
+const getToken = localStorage.getItem('accessToken');
 const pageName = ref('use RESERVE');
 
-const responseGetAllBooking = ref({});
-const responseGetAllCategory = ref({});
 const bookingLists = ref([]);
 const categoryList = ref([]);
 const categoryIndexSelect = ref();
@@ -159,10 +157,10 @@ const createBookingEvent = async (localDataInput) => {
 
 //fetch data
 onBeforeMount(async () => {
-    responseGetAllBooking.value = await getBookings();
-    bookingLists.value = await responseGetAllBooking.value.data;
-    responseGetAllCategory.value = await getEventCategory();
-    categoryList.value = await responseGetAllCategory.value.data;
+    const getAllBooks = await getBookings();
+    bookingLists.value = await getAllBooks.json();
+    const getAllCategory = await getEventCategory();
+    categoryList.value = await getAllCategory.json();
 })
 
 </script>

@@ -7,13 +7,12 @@ import NavbarTop from '../components/NavbarTop.vue';
 import NavbarBottom from '../components/NavbarBottom.vue';
 
 const categoryLists = ref([]);
-const responseGetAllCategory = ref({});
-const getToken = localStorage.getItem('refreshToken');
+const getToken = localStorage.getItem('accessToken');
 const pageName = ref('view CATEGORY-LIST');
 
 onBeforeMount(async () => {
-  responseGetAllCategory.value = await getEventCategory();
-  categoryLists.value = await responseGetAllCategory.value.data;
+  const getAllCategory = await getEventCategory();
+  categoryLists.value = await getAllCategory.json();
   console.log(categoryLists.value);
   categoryLists.value.map((category) => {
     category.statusConfirmDialog = ref(false)
