@@ -3,8 +3,6 @@ import { onBeforeMount, onBeforeUpdate } from 'vue';
 import NavbarTop from '../components/NavbarTop.vue';
 import NavbarBottom from '../components/NavbarBottom.vue';
 
-
-
 onBeforeMount(async()=>{
 })
 </script>
