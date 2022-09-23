@@ -1,28 +1,68 @@
-<script setup></script>
+<script setup>
+import { ref, computed, onBeforeMount, onBeforeUpdate } from 'vue';
+import { useRouter } from 'vue-router';
+import Confirm from './Confirm.vue';
+// import { onBeforeMount, ref } from 'vue';
+// import { loginToUse } from '../stores/user.js';
+
+// const responseLoginUser = ref({});
+// const statusLogInUser = ref('');
+const appRouter = useRouter();
+
+const showDropdown = () => {
+  if (localStorage.getItem('refreshToken')) {
+    return true;
+  } else {
+    return false;
+  }
+}
+
+// const getToken = ref(localStorage.getItem('accessToken'));
+
+// const accessToken = ref(showDropdown());
+const getToken = computed(() => showDropdown());
+
+const isLogIn = ref(false);
+
+const signOutStatus = ref(false);
+const changeSignOutStatusTrue = () => {
+  signOutStatus.value = true
+}
+const changeSignOutStatusFalse = () => {
+  signOutStatus.value = false
+}
+const signOutUser = () => {
+  signOutStatus.value = false;
+  localStorage.clear();
+  alert("SignOut Success.");
+  appRouter.push({ name: 'Home' });
+}
+
+onBeforeUpdate(async () => {
+  showDropdown();
+})
+// console.log(localStorage.getItem('token'));
+
+</script>
 
 <template>
   <!-- <div class="overflow-hidden fixed top-0 w-full"> -->
-  <div class="fixed top-0 w-full">
-    <nav class="px-2 py-2.5 bg-[#E5E5E5]">
-      <!-- <div class="container flex flex-wrap justify-between items-center mx-auto"> -->
-      <div class="flex items-center justify-between mx-auto">
-        <div class="flex justify-start">
-          <router-link to="/" class="flex">
-            <img
-              src="../../public/images/logo.png"
-              class="mr-3 h-12"
-              alt="TimeUp-logo"
-            />
-            <span
-              class="self-center text-xl font-semibold whitespace-nowrap text-black uppercase"
-              >Time-Up</span
-            >
-          </router-link>
-        </div>
+  <div>
+    <Confirm v-if="signOutStatus" @onClickConfirmNo="changeSignOutStatusFalse" @onClickConfirmYes="signOutUser" />
+    <div class="fixed top-0 w-full">
+      <nav class="px-2 py-2.5 bg-[#E5E5E5]">
+        <!-- <div class="container flex flex-wrap justify-between items-center mx-auto"> -->
+        <div class="flex items-center justify-between mx-auto">
+          <div class="flex justify-start">
+            <router-link to="/" class="flex">
+              <img src="../../public/images/logo.png" class="mr-3 h-12" alt="TimeUp-logo" />
+              <span class="self-center text-xl font-semibold whitespace-nowrap text-black uppercase">Time-Up</span>
+            </router-link>
+          </div>
 
-        <div class="md:block md:w-auto">
-          <ul class="flex flex-row md:space-x-8 text-sm font-medium">
-            <!-- <li class="">
+          <div class="md:block md:w-auto">
+            <ul class="flex flex-row md:space-x-8 text-sm font-medium">
+              <!-- <li class="">
               <router-link
                 :to="{name: 'EditUser'}"
                 class="block py-2 pr-4 pl-3 hover:bg-[#50ABCB] hover:rounded-lg hover:text-white hover:underline-offset-2 hover:underline uppercase menu"
@@ -38,47 +78,70 @@
                 DetailUser</router-link
               >
             </li> -->
-            <li class="">
-              <router-link
-                to="/"
-                class="block py-2 pr-4 pl-3 hover:bg-[#50ABCB] hover:rounded-lg hover:text-white hover:underline-offset-2 hover:underline uppercase menu"
-              >
-                Home</router-link
-              >
-            </li>
-            <li>
-              <router-link
-                to="/aboutus"
-                class="block py-2 pr-4 pl-3 hover:bg-[#50ABCB] hover:rounded-lg hover:text-white hover:text-white hover:underline-offset-2 hover:underline uppercase menu"
-              >
-                About</router-link
-              >
-            </li>
-            <li>
-              <router-link
-                to="/categoryList"
-                class="block py-2 pr-4 pl-3 hover:bg-[#50ABCB] hover:rounded-lg hover:text-white hover:text-white hover:underline-offset-2 hover:underline uppercase menu"
-              >
-                Category-List</router-link
-              >
-            </li>
-            <li>
-              <router-link
-                to="/Reserve"
-                class="block py-2 pr-4 pl-3 hover:bg-[#50ABCB] hover:rounded-lg hover:text-white hover:text-white hover:underline-offset-2 hover:underline uppercase menu"
-              >
-                New booking</router-link
-              >
-            </li>
-            <li>
-              <router-link
-                to="/bookingList"
-                class="block py-2 pr-4 pl-3 hover:bg-[#50ABCB] hover:rounded-lg hover:text-white hover:text-white hover:underline-offset-2 hover:underline uppercase menu"
-              >
-                Booking-List</router-link
-              >
-            </li>
-            <li class="dropdown">
+              <li class="">
+                <router-link :to="{ name: 'Home' }"
+                  class="block py-2 pr-4 pl-3 hover:bg-[#50ABCB] hover:rounded-lg hover:text-white hover:underline-offset-2 hover:underline uppercase menu">
+                  Home</router-link>
+              </li>
+              <li>
+                <router-link :to="{ name: 'AboutUs' }"
+                  class="block py-2 pr-4 pl-3 hover:bg-[#50ABCB] hover:rounded-lg hover:text-white hover:text-white hover:underline-offset-2 hover:underline uppercase menu">
+                  About</router-link>
+              </li>
+              <li>
+                <router-link :to="{ name: 'CategoryList' }"
+                  class="block py-2 pr-4 pl-3 hover:bg-[#50ABCB] hover:rounded-lg hover:text-white hover:text-white hover:underline-offset-2 hover:underline uppercase menu">
+                  Category-List</router-link>
+              </li>
+              <li>
+                <router-link :to="{ name: 'Reserve' }"
+                  class="block py-2 pr-4 pl-3 hover:bg-[#50ABCB] hover:rounded-lg hover:text-white hover:text-white hover:underline-offset-2 hover:underline uppercase menu">
+                  New booking</router-link>
+              </li>
+              <li>
+                <router-link :to="{ name: 'BookingList' }"
+                  class="block py-2 pr-4 pl-3 hover:bg-[#50ABCB] hover:rounded-lg hover:text-white hover:text-white hover:underline-offset-2 hover:underline uppercase menu">
+                  Booking-List</router-link>
+              </li>
+              <li class="dropdown">
+                <router-link :to="{ name: 'UserList' }"
+                  class="block py-2 pr-4 pl-3 hover:bg-[#50ABCB] hover:rounded-lg hover:text-white hover:text-white hover:underline-offset-2 hover:underline uppercase menu">
+                  User-List</router-link>
+              </li>
+              <li v-show="getToken" class="dropdown">
+                <!-- v-if="localStorage.getItem('token') != undefined || localStorage.getItem('token') != ''" -->
+                <!-- <button
+                class="block py-2 pr-4 pl-3 hover:bg-[#50ABCB] hover:rounded-lg hover:text-white hover:text-white hover:underline-offset-2 hover:underline uppercase menu font-medium">
+                Sign-Out</button> -->
+                <div
+                  class="Users flex py-2 pr-4 pl-3 hover:bg-[#50ABCB] hover:rounded-lg hover:text-white hover:text-white hover:underline-offset-2 hover:underline uppercase menu">
+                  <p class="px-[20px]">User</p>
+                  <svg class="dropdownButton" width="20px" height="20px" viewBox="0 0 24 24">
+                    <path fill="#000000" d="m7 10l5 5l5-5z"></path>
+                  </svg>
+                </div>
+                <div class="dropdown-content uppercase">
+                  <router-link
+                    class="hover:bg-[#50ABCB] hover:rounded-sm hover:text-white hover:text-white hover:underline-offset-2 hover:underline uppercase"
+                    :to="{ name: 'SignUp' }">Sign-Up</router-link>
+                  <!-- <router-link
+                  class="hover:bg-[#50ABCB] hover:rounded-sm hover:text-white hover:text-white hover:underline-offset-2 hover:underline uppercase"
+                  :to="{ name: 'UserList' }"
+                  >LogOut</router-link
+                > -->
+                  <button @click="changeSignOutStatusTrue"
+                    class="block py-2 pr-4 pl-3 hover:bg-[#50ABCB] hover:rounded-lg hover:text-white hover:text-white hover:underline-offset-2 hover:underline uppercase menu font-medium">
+                    Sign-Out</button>
+                </div>
+              </li>
+
+              <li v-show="!getToken" class="dropdown">
+                <router-link :to="{ name: 'SignIn' }"
+                  class="block py-2 pr-4 pl-3 hover:bg-[#50ABCB] hover:rounded-lg hover:text-white hover:text-white hover:underline-offset-2 hover:underline uppercase menu">
+                  Sign-In</router-link>
+              </li>
+
+              <!-- <li class="dropdown">
               <div
                 class="Users flex py-2 pr-4 pl-3 hover:bg-[#50ABCB] hover:rounded-lg hover:text-white hover:text-white hover:underline-offset-2 hover:underline uppercase menu"
               >
@@ -93,25 +156,34 @@
                 </svg>
               </div>
               <div class="dropdown-content uppercase">
-                <!-- <a href="#">Link 1</a>
-                <a href="#">Link 2</a>
-                <a href="#">Link 3</a> -->
                 <router-link
                   class="hover:bg-[#50ABCB] hover:rounded-sm hover:text-white hover:text-white hover:underline-offset-2 hover:underline uppercase"
-                  :to="{ name: 'SignIn' }"
-                  >Sign-In</router-link
+                  :to="{ name: 'SignUp' }"
+                  >Sign-Up</router-link
                 >
                 <router-link
                   class="hover:bg-[#50ABCB] hover:rounded-sm hover:text-white hover:text-white hover:underline-offset-2 hover:underline uppercase"
                   :to="{ name: 'UserList' }"
-                  >Userlist</router-link
+                  >LogOut</router-link
                 >
+                <button
+                class="block py-2 pr-4 pl-3 hover:bg-[#50ABCB] hover:rounded-lg hover:text-white hover:text-white hover:underline-offset-2 hover:underline uppercase menu font-medium">
+                Sign-Out</button>
               </div>
-            </li>
-          </ul>
+            </li> -->
+
+              <!-- <li class="dropdown">
+              <button
+                class="block py-2 pr-4 pl-3 hover:bg-[#50ABCB] hover:rounded-lg hover:text-white hover:text-white hover:underline-offset-2 hover:underline uppercase menu font-medium">
+              {{localStorage.getItem('token')}}
+              {{getToken}}
+              </button>
+            </li> -->
+            </ul>
+          </div>
         </div>
-      </div>
-    </nav>
+      </nav>
+    </div>
   </div>
 </template>
 

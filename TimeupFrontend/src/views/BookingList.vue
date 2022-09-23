@@ -1,11 +1,15 @@
 <script setup>
 import { ref, onBeforeMount, onMounted, computed } from 'vue';
-import NavbarTop from '../components/NavbarTop.vue';
-import NavbarBottom from '../components/NavbarBottom.vue';
 import LoopBookingList from '../components/LoopBookingList.vue';
 import FilterBar from '../components/FilterBar.vue';
 import { getBookings, getEventCategory } from '../stores/book.js';
 import moment from 'moment';
+import PleaseLogInDialog from '../components/PleaseLogInDialog.vue';
+import NavbarTop from '../components/NavbarTop.vue';
+import NavbarBottom from '../components/NavbarBottom.vue';
+
+const getToken = localStorage.getItem('accessToken');
+const pageName = ref('view BOOKING-LIST');
 
 const bookingLists = ref([]);
 const categoryLists = ref([]);
@@ -113,7 +117,8 @@ onBeforeMount(async () => {
 </script>
 <template>
   <div>
-    <NavbarTop />
+    <NavbarTop/>
+    <NavbarBottom/>
     <div class="text-center text-xl mt-24 mb-10">
       <h1
         class="uppercase font-bold text-black underline decoration-[#50ABCB] text-4xl"
@@ -137,7 +142,7 @@ onBeforeMount(async () => {
       @idDialogDetails="filterList"
       @EditIdFromDialog="filterEditBooking"
     />
-    <NavbarBottom />
+    <PleaseLogInDialog v-if="!getToken" :pageName="pageName"/>
   </div>
 </template>
 <style></style>

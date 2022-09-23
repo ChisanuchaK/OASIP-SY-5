@@ -9,6 +9,7 @@ import org.springframework.security.web.authentication.WebAuthenticationDetailsS
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 import sit.int221.TimeUpBackend.config.JwtTokenUtil;
+import sit.int221.TimeUpBackend.entities.JwtRequest;
 import sit.int221.TimeUpBackend.service.JwtUserDetailsService;
 
 import javax.servlet.FilterChain;
@@ -48,9 +49,17 @@ public class JwtRequestFilter extends OncePerRequestFilter {
                 // allow for Refresh Token creation if following conditions are true.
                 if (isRefreshToken != null && isRefreshToken.equals("true") && requestURL.contains("refreshtoken")) {
                     allowForRefreshToken(ex, request);
+
                 } else {
                     logger.warn("JWT Token does not begin with Bearer String");
                 }
+
+                } else
+                    request.setAttribute("exception", ex);
+            }
+        } else {
+            logger.warn("JWT Token does not begin with Bearer String");
+        }
 
                 // Once we get the token validate it.
                 if (username != null && SecurityContextHolder.getContext().getAuthentication() == null) {
@@ -89,5 +98,22 @@ public class JwtRequestFilter extends OncePerRequestFilter {
         request.setAttribute("claims", ex.getClaims());
 
     }
+    private void allowForRefreshToken(ExpiredJwtException ex, HttpServletRequest request) {
+            // create a UsernamePasswordAuthenticationToken with null values.
+            UsernamePasswordAuthenticationToken usernamePasswordAuthenticationToken = new UsernamePasswordAuthenticationToken(
+                    null, null, null);
+            // After setting the Authentication in the context, we specify
+            // that the current user is authenticated. So it passes the
+            // Spring Security Configurations successfully.
+            SecurityContextHolder.getContext().setAuthentication(usernamePasswordAuthenticationToken);
+            // Set the claims so that in controller we will be using it to create
+            // new JWT
+            request.setAttribute("claims", ex.getClaims());
+
+
+        }
+
+
+
 }
 
