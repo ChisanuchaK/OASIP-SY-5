@@ -25,6 +25,7 @@ import sit.int221.TimeUpBackend.service.JwtUserDetailsService;
 
 import javax.servlet.http.HttpServletRequest;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -53,6 +54,9 @@ public class JwtAuthenticationController {
                 final String accessToken = jwtTokenUtil.generateToken(userDetails);
                 final String refreshToken = jwtTokenUtil.doGenerateRefreshToken(userDetails.getUsername());
                 Map<String , String> tokens = new HashMap<>();
+                tokens.put("userEmail" , user.getEmailUser());
+                tokens.put("userName" , user.getNameUser());
+                tokens.put("userRole" , user.getRoleUser());
                 tokens.put("accessToken" , accessToken);
                 tokens.put("refreshToken" , refreshToken);
                 return ResponseEntity.ok(tokens);
