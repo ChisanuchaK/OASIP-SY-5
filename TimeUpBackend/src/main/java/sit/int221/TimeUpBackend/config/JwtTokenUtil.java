@@ -1,12 +1,12 @@
 package sit.int221.TimeUpBackend.config;
 
 import java.io.Serializable;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 import java.util.function.Function;
 
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
 
@@ -61,6 +61,16 @@ public class JwtTokenUtil implements Serializable {
     //generate token for user
     public String generateToken(UserDetails userDetails) {
         Map<String, Object> claims = new HashMap<>();
+        Collection<? extends GrantedAuthority> roles = userDetails.getAuthorities();
+        if (roles.contains(new SimpleGrantedAuthority("admin"))) {
+            claims.put("admin", true);
+        }
+        if (roles.contains(new SimpleGrantedAuthority("student"))) {
+            claims.put("student", true);
+        }
+        if (roles.contains(new SimpleGrantedAuthority("lecturer"))) {
+            claims.put("lecturer", true);
+        }
         return doGenerateToken(claims, userDetails.getUsername());
     }
 
@@ -79,5 +89,22 @@ public class JwtTokenUtil implements Serializable {
     public Boolean validateToken(String token, UserDetails userDetails) {
         final String username = getUsernameFromToken(token);
         return (username.equals(userDetails.getUsername()) && !isTokenExpired(token));
+    }
+    public List<SimpleGrantedAuthority> getRolesFromToken(String authToken) {
+        List<SimpleGrantedAuthority> roles = null;
+        Claims claims = Jwts.parser().setSigningKey(secret).parseClaimsJws(authToken).getBody();
+        Boolean admin = claims.get("admin", Boolean.class);
+        Boolean student = claims.get("student", Boolean.class);
+        Boolean lecturer = claims.get("lecturer", Boolean.class);
+        if (admin != null && admin == true) {
+            roles = Arrays.asList(new SimpleGrantedAuthority("admin"));
+        }
+        if (student != null && student == true) {
+            roles = Arrays.asList(new SimpleGrantedAuthority("student"));
+        }
+        if (lecturer != null && lecturer == true) {
+            roles = Arrays.asList(new SimpleGrantedAuthority("lecturer"));
+        }
+        return roles;
     }
 }

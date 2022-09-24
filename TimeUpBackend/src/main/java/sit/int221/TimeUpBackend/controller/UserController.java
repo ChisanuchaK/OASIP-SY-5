@@ -26,14 +26,17 @@ public class UserController {
 
 
     @GetMapping("")
+    @PreAuthorize("hasAuthority('admin')")
     public List<UserGetDto> getAllUser(){
         return userService.getAllUser();
     }
 
     @GetMapping("/{id}")
+    @PreAuthorize("hasAnyAuthority('admin' , 'student')")
     public UserGetDto getUserByID(@PathVariable int id){return  userService.getUserByID(id);}
 
     @PostMapping("")
+    @PreAuthorize("hasAuthority('admin')")
     @ResponseStatus(HttpStatus.CREATED)
     public ResponseEntity createUser(@Valid @RequestBody UserPostDto userDTOPOST){
         return  userService.createUser(userDTOPOST);
@@ -46,17 +49,20 @@ public class UserController {
     }
 
     @PutMapping("/{id}")
+    @PreAuthorize("hasAuthority('admin')")
     public ResponseEntity updateUser(@Valid @RequestBody UserPutDto userDTOPUT , @PathVariable Integer id){
         return userService.updateUser(userDTOPUT , id);
     }
 
 
     @DeleteMapping("/{id}")
+    @PreAuthorize("hasAuthority('admin')")
     public void deleteUserById(@PathVariable Integer id){
         userService.deleteUser(id);
     }
 
     @DeleteMapping("")
+    @PreAuthorize("hasAuthority('admin')")
     public void deleteAllUser(){userService.deleteAllUser();}
 
     @ResponseStatus(HttpStatus.BAD_REQUEST)

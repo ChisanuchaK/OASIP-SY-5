@@ -25,33 +25,39 @@ public class EventController {
 
     @Autowired
     private EventService eventService;
-
     @GetMapping("")
+    @PreAuthorize("hasAuthority('admin')")
     public List<EventDto> getAllEvent(){
         return eventService.getAllEvent();
     }
+
     @GetMapping("/{id}")
+    @PreAuthorize("hasAnyAuthority('admin' , 'student')")
     public EventMoreDetailDto getBEventById(@PathVariable Integer id){
         return eventService.getEventDetailDTOById(id);
     }
+
     @GetMapping("/{id}/category")
+    @PreAuthorize("hasAuthority('admin')")
     public List<EventDto> getAllEventByIdCategory(@PathVariable Integer id){
         return eventService.getEventByIdCategory(id);
     }
 
     @PostMapping("")
+    @PreAuthorize("hasAnyAuthority('admin' , 'student')")
     @ResponseStatus(HttpStatus.CREATED)
     public ResponseEntity createEvent(@Valid @RequestBody EventPostDto newBooking){
         return eventService.create(newBooking);
     }
 
     @DeleteMapping("/{id}")
+    @PreAuthorize("hasAnyAuthority('admin' , 'student')")
     public void deleteEventById(@PathVariable Integer id){
         eventService.delete(id);
     }
 
-
     @PutMapping("/{id}")
+    @PreAuthorize("hasAnyAuthority('admin' , 'student')")
     public ResponseEntity editEvent(@Valid @RequestBody EventPutDto editBooking , @PathVariable int id ){
         return eventService.editEvent(editBooking , id);
     }

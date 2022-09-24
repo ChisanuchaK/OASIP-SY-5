@@ -5,6 +5,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PostAuthorize;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
+import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.*;
@@ -25,18 +27,19 @@ import java.util.Map;
 public class EventCategoryController {
     @Autowired
     private EventCategoryService eventCategoryService;
+
     @GetMapping("")
     public List<EventCategory> getAllCategory(){
         return eventCategoryService.getAllCategory();
     }
     @PostMapping("")
+    @PreAuthorize("hasAnyAuthority('admin')")
     @ResponseStatus(HttpStatus.CREATED)
     public EventCategory createEventCategory(@Valid  @RequestBody EventCategory newEventCategory){
         return  eventCategoryService.create(newEventCategory);
     }
-
-
     @PutMapping("/{id}")
+    @PreAuthorize("hasAuthority('admin')")
     public ResponseEntity editEventCategory(@Valid  @RequestBody EventCategoryDto editEventCategory , @PathVariable Integer id){
         return eventCategoryService.editEventCategory(editEventCategory , id);
     }
