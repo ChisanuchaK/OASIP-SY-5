@@ -277,13 +277,20 @@ onBeforeMount(async () => {
   responseGetAllUser.value = await getAllUsers();
   userListAlls.value = await responseGetAllUser.value.data;
   responseGetUser.value = await getUser(params.idUser);
+<<<<<<< HEAD
   user.value = responseGetUser.value.data;
   console.log(user.value);
+=======
+>>>>>>> e68bf99f029f839b3128d4974e130d7b8b5218ac
   // console.log(responseGetUser.value.data);
   localDataUser.nameUser = responseGetUser.value.data.nameUser;
   localDataUser.emailUser = responseGetUser.value.data.emailUser;
   localDataUser.roleUser = responseGetUser.value.data.roleUser;
+<<<<<<< HEAD
   console.log(localDataUser);
+=======
+
+>>>>>>> e68bf99f029f839b3128d4974e130d7b8b5218ac
   // const response = await responseGetUser.value.data.then((userFromId) => {
   //   user.value = userFromId;
   //   // console.log(user.value);
@@ -378,7 +385,11 @@ onBeforeMount(async () => {
           <div class="grid row-start-3 col-start-8 col-end-12 content-center w-[90%]">
             <div class="relative">
               <!-- <select :v-model="(user.roleUser == '' ? roleIndexSelect : user.roleUser )" -->
+<<<<<<< HEAD
               <select v-model="localDataUser.roleUser" @change="checkValue($event)"
+=======
+              <select :v-model="localDataUser.roleUser" @change="checkValue($event)"
+>>>>>>> e68bf99f029f839b3128d4974e130d7b8b5218ac
                 class="border rounded-md border-solid border-[#D9D9D9] w-full p-2 hover:bg-[#F2F2F2] transition delay-75 text-center"
                 name="" id="">
                 <!-- <option value=""></option> -->

@@ -53,12 +53,20 @@ export const getUser = async (idUser) => {
   } else if (res.status === 401) {
     if (await getRefreshToken()) {
       console.log("can use refreshToken");
+<<<<<<< HEAD
       return getUser(idUser);
+=======
+      return getUser();
+>>>>>>> e68bf99f029f839b3128d4974e130d7b8b5218ac
     } else {
       console.log("please SignIn");
     }
   } else {
+<<<<<<< HEAD
     console.log("error to getUser");
+=======
+    console.log("error to getUserLists");
+>>>>>>> e68bf99f029f839b3128d4974e130d7b8b5218ac
     const response = res.json();
     return createResponse(res.status, response);
   }
@@ -83,7 +91,11 @@ export const deletedUser = async (deletedUserId) => {
   } else if (res.status === 401) {
     if (await getRefreshToken()) {
       console.log("can use refreshToken");
+<<<<<<< HEAD
       return deletedUser(deletedUserId);
+=======
+      return deletedUser();
+>>>>>>> e68bf99f029f839b3128d4974e130d7b8b5218ac
     } else {
       console.log("please SignIn");
     }
@@ -110,9 +122,15 @@ export const createUser = async (localDataInput) => {
   });
   if (res.status === 201) {
     console.log("create successfully");
+<<<<<<< HEAD
     // const response = await res.json();
     // return createResponse(res.status, response);
     return res;
+=======
+    const response = await res.json();
+    return createResponse(res.status, response);
+    // return res;
+>>>>>>> e68bf99f029f839b3128d4974e130d7b8b5218ac
   } else if (res.status === 401) {
     if (await getRefreshToken()) {
       console.log("can use refreshToken");
@@ -147,8 +165,11 @@ export const editUser = async (localDataInput) => {
   );
   if (res.status === 200) {
     console.log("edited successfully.");
+<<<<<<< HEAD
     // const response = await res.json();
     // return createResponse(res.status, response);
+=======
+>>>>>>> e68bf99f029f839b3128d4974e130d7b8b5218ac
     return res;
   } else if (res.status === 401) {
     if (await getRefreshToken()) {

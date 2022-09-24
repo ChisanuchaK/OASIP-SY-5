@@ -1,14 +1,21 @@
 <script setup>
 import { ref, computed, onBeforeMount, onBeforeUpdate } from 'vue';
+<<<<<<< HEAD
 import { useRouter, useRoute} from 'vue-router';
+=======
+import { useRouter } from 'vue-router';
+>>>>>>> e68bf99f029f839b3128d4974e130d7b8b5218ac
 import Confirm from './Confirm.vue';
 // import { onBeforeMount, ref } from 'vue';
 // import { loginToUse } from '../stores/user.js';
 
 // const responseLoginUser = ref({});
 // const statusLogInUser = ref('');
+<<<<<<< HEAD
 
 const route = useRoute();
+=======
+>>>>>>> e68bf99f029f839b3128d4974e130d7b8b5218ac
 const appRouter = useRouter();
 
 const showDropdown = () => {
@@ -18,7 +25,13 @@ const showDropdown = () => {
     return false;
   }
 }
+<<<<<<< HEAD
 // const getToken = ref(localStorage.getItem('accessToken'));
+=======
+
+// const getToken = ref(localStorage.getItem('accessToken'));
+
+>>>>>>> e68bf99f029f839b3128d4974e130d7b8b5218ac
 // const accessToken = ref(showDropdown());
 const getToken = computed(() => showDropdown());
 
@@ -35,11 +48,15 @@ const signOutUser = () => {
   signOutStatus.value = false;
   localStorage.clear();
   alert("SignOut Success.");
+<<<<<<< HEAD
   if(route.path == '/'){
     location.reload();
   }else{
     appRouter.push({ name: 'Home' });
   }
+=======
+  appRouter.push({ name: 'Home' });
+>>>>>>> e68bf99f029f839b3128d4974e130d7b8b5218ac
 }
 
 onBeforeUpdate(async () => {

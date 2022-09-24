@@ -7,6 +7,12 @@ import { getEventCategory, createBooking, getBookings } from "../stores/book.js"
 import PleaseLogInDialog from '../components/PleaseLogInDialog.vue';
 import NavbarTop from '../components/NavbarTop.vue';
 import NavbarBottom from '../components/NavbarBottom.vue';
+<<<<<<< HEAD
+=======
+
+const getToken = localStorage.getItem('accessToken');
+const pageName = ref('use RESERVE');
+>>>>>>> e68bf99f029f839b3128d4974e130d7b8b5218ac
 
 const getToken = localStorage.getItem('refreshToken');
 const pageName = ref('use RESERVE');

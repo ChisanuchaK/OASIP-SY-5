@@ -3,6 +3,11 @@ import { onBeforeMount, onBeforeUpdate } from 'vue';
 import NavbarTop from '../components/NavbarTop.vue';
 import NavbarBottom from '../components/NavbarBottom.vue';
 
+<<<<<<< HEAD
+=======
+
+
+>>>>>>> e68bf99f029f839b3128d4974e130d7b8b5218ac
 onBeforeMount(async()=>{
 })
 </script>

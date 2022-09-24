@@ -16,10 +16,14 @@ const goBackToUserList = () => appRouter.push({ name: 'UserList' });
 
 onBeforeMount(async () => {
   responseGetUser.value = await getUser(params.idUser);
+<<<<<<< HEAD
   console.log(responseGetUser.value);
   if(responseGetUser.value.status == 200){  
   user.value = responseGetUser.value.data;
   }else ;
+=======
+  user.value = responseGetUser.value.data;
+>>>>>>> e68bf99f029f839b3128d4974e130d7b8b5218ac
 });
 </script>
 

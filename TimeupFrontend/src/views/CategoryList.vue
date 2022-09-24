@@ -7,8 +7,12 @@ import NavbarTop from '../components/NavbarTop.vue';
 import NavbarBottom from '../components/NavbarBottom.vue';
 
 const categoryLists = ref([]);
+<<<<<<< HEAD
 const responseGetAllCategory = ref({});
 const getToken = localStorage.getItem('refreshToken');
+=======
+const getToken = localStorage.getItem('accessToken');
+>>>>>>> e68bf99f029f839b3128d4974e130d7b8b5218ac
 const pageName = ref('view CATEGORY-LIST');
 
 onBeforeMount(async () => {

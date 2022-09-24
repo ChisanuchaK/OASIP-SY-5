@@ -7,6 +7,12 @@ import moment from 'moment';
 import PleaseLogInDialog from '../components/PleaseLogInDialog.vue';
 import NavbarTop from '../components/NavbarTop.vue';
 import NavbarBottom from '../components/NavbarBottom.vue';
+<<<<<<< HEAD
+=======
+
+const getToken = localStorage.getItem('accessToken');
+const pageName = ref('view BOOKING-LIST');
+>>>>>>> e68bf99f029f839b3128d4974e130d7b8b5218ac
 
 const getToken = localStorage.getItem('refreshToken');
 const pageName = ref('view BOOKING-LIST');
@@ -127,8 +133,13 @@ onBeforeMount(async () => {
 </script>
 <template>
   <div>
+<<<<<<< HEAD
     <NavbarTop />
     <NavbarBottom />
+=======
+    <NavbarTop/>
+    <NavbarBottom/>
+>>>>>>> e68bf99f029f839b3128d4974e130d7b8b5218ac
     <div class="text-center text-xl mt-24 mb-10">
       <h1 class="uppercase font-bold text-black underline decoration-[#50ABCB] text-4xl">
         Booking Lists
@@ -138,9 +149,19 @@ onBeforeMount(async () => {
     <FilterBar :categorys="categoryLists" @getChageCategory="filterBookFromCategory" @getAllEvent="filterAllEvent"
       @getPastEvent="filterPastEvent" @getUpComingEvent="filterUpComingEvent" @getDateTime="filterByDateTime" />
 
+<<<<<<< HEAD
     <LoopBookingList :statusScheduled="statusScheduledBL" :bookingLists="bookingLists" @idDialogDetails="filterList"
       @EditIdFromDialog="filterEditBooking" />
     <PleaseLogInDialog v-if="!getToken" :pageName="pageName" />
+=======
+    <LoopBookingList
+      :statusScheduled="statusScheduledBL"
+      :bookingLists="bookingLists"
+      @idDialogDetails="filterList"
+      @EditIdFromDialog="filterEditBooking"
+    />
+    <PleaseLogInDialog v-if="!getToken" :pageName="pageName"/>
+>>>>>>> e68bf99f029f839b3128d4974e130d7b8b5218ac
   </div>
 </template>
 <style>

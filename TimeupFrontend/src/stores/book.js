@@ -21,8 +21,12 @@ export const getBookings = async () => {
     }
   } else {
     console.log("error to getBookings");
+<<<<<<< HEAD
     const response = res.json();
     return createResponse(res.status, response);
+=======
+    return res;
+>>>>>>> e68bf99f029f839b3128d4974e130d7b8b5218ac
   }
 };
 
@@ -53,9 +57,13 @@ export const getBookingId = async (bookingId) => {
       console.log("please SignIn");
     }
   } else {
+<<<<<<< HEAD
     console.log("error to getBooking");
     const response = res.json();
     return createResponse(res.status, response);
+=======
+    console.log("not found");
+>>>>>>> e68bf99f029f839b3128d4974e130d7b8b5218ac
   }
 };
 
@@ -86,8 +94,11 @@ export const createBooking = async (localDataInput) => {
   // }
   if (res.status === 201) {
     console.log("create successfully");
+<<<<<<< HEAD
     // const response = await res.json();
     // return createResponse(res.status, response);
+=======
+>>>>>>> e68bf99f029f839b3128d4974e130d7b8b5218ac
     return res;
   } else if (res.status === 401) {
     if (await getRefreshToken()) {
@@ -97,7 +108,11 @@ export const createBooking = async (localDataInput) => {
       console.log("please SignIn");
     }
   } else {
+<<<<<<< HEAD
     console.log("error to getBooking");
+=======
+    console.log("error , failed to created");
+>>>>>>> e68bf99f029f839b3128d4974e130d7b8b5218ac
     return res;
     // const response = res.json();
     // return createResponse(res.status, response);
@@ -128,9 +143,13 @@ export const editBooking = async (editData) => {
   //   return res;
   // }
   if (res.status === 200) {
+<<<<<<< HEAD
     console.log("create successfully");
     // const response = await res.json();
     // return createResponse(res.status, response);
+=======
+    console.log("edited successfully");
+>>>>>>> e68bf99f029f839b3128d4974e130d7b8b5218ac
     return res;
   } else if (res.status === 401) {
     if (await getRefreshToken()) {
@@ -140,7 +159,11 @@ export const editBooking = async (editData) => {
       console.log("please SignIn");
     }
   } else {
+<<<<<<< HEAD
     console.log("error to editBooking");
+=======
+    console.log("error, cannot be added");
+>>>>>>> e68bf99f029f839b3128d4974e130d7b8b5218ac
     return res;
   }
 };
@@ -167,6 +190,7 @@ export const removeBooking = async (deleteBookingId, booking, loopBooking) => {
     console.log("deleted success");
     booking.statusClickDelete = !booking.statusClickDelete;
     loopBooking.statusClickSeeDetails = !loopBooking.statusClickSeeDetails;
+<<<<<<< HEAD
     return res;
   } else if (res.status === 401) {
     if (await getRefreshToken()) {
@@ -178,6 +202,11 @@ export const removeBooking = async (deleteBookingId, booking, loopBooking) => {
   } else {
     console.log("error , cannot delete");
     return res;
+=======
+    console.log("deleted success");
+  } else {
+    console.log("error , cannot delete");
+>>>>>>> e68bf99f029f839b3128d4974e130d7b8b5218ac
   }
 };
 
@@ -210,7 +239,12 @@ export const getEventCategory = async () => {
       console.log("please SignIn");
     }
   } else {
+<<<<<<< HEAD
     console.log("error to getCategory");
+=======
+    // alert('find not found !! form getEventCategory');
+    console.log("find not found !! form getEventCategory");
+>>>>>>> e68bf99f029f839b3128d4974e130d7b8b5218ac
     return res;
   }
 };
@@ -228,9 +262,15 @@ export const editCategory = async (editCategoryData) => {
         Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
       },
       body: JSON.stringify({
+<<<<<<< HEAD
         eventCategoryName: editCategoryData.eventCategoryName.trim(),
         eventDuration: editCategoryData.eventDuration,
         eventCategoryDescription: editCategoryData.eventCategoryDescription,
+=======
+        eventCategoryName: editCategory.eventCategoryName.trim(),
+        eventDuration: editCategory.eventDuration,
+        eventCategoryDescription: editCategory.eventCategoryDescription,
+>>>>>>> e68bf99f029f839b3128d4974e130d7b8b5218ac
       }),
     }
   );
@@ -252,7 +292,11 @@ export const editCategory = async (editCategoryData) => {
       console.log("please SignIn");
     }
   } else {
+<<<<<<< HEAD
     console.log("error to editCategory");
+=======
+    console.log("error, cannot be added");
+>>>>>>> e68bf99f029f839b3128d4974e130d7b8b5218ac
     return res;
   }
 };

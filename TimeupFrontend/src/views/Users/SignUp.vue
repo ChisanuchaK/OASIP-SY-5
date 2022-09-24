@@ -19,7 +19,11 @@ const localDataUser = reactive({
 const userListAlls = ref([]);
 const responseGetAllUser = ({});
 const responseCreateUser = ({});
+<<<<<<< HEAD
 const getToken = localStorage.getItem('refreshToken');
+=======
+const getToken = localStorage.getItem('accessToken');
+>>>>>>> e68bf99f029f839b3128d4974e130d7b8b5218ac
 const pageName = ref('SIGN-UP');
 // const UserName = ref([]);
 // const roleLists = ref();
