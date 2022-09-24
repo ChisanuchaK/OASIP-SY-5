@@ -1,12 +1,20 @@
 <script setup>
 import { ref, onBeforeMount, onMounted, computed } from 'vue';
-import NavbarTop from '../components/NavbarTop.vue';
-import NavbarBottom from '../components/NavbarBottom.vue';
 import LoopBookingList from '../components/LoopBookingList.vue';
 import FilterBar from '../components/FilterBar.vue';
 import { getBookings, getEventCategory } from '../stores/book.js';
 import moment from 'moment';
+import PleaseLogInDialog from '../components/PleaseLogInDialog.vue';
+import NavbarTop from '../components/NavbarTop.vue';
+import NavbarBottom from '../components/NavbarBottom.vue';
 
+const getToken = localStorage.getItem('refreshToken');
+const pageName = ref('view BOOKING-LIST');
+
+
+const statusGetAllBookings = ref();
+const responseGetAllBookings = ref({});
+const responseGetAllCategory = ref({});
 const bookingLists = ref([]);
 const categoryLists = ref([]);
 const statusScheduledBL = ref();
@@ -24,10 +32,10 @@ const filterEditBooking = (editId) => {
   bookingLists.value = bookingLists.value.map((booking) =>
     booking.idBooking === editId.idBooking
       ? {
-          ...booking,
-          eventStartTime: editId.eventStartTime,
-          eventNotes: editId.eventNotes
-        }
+        ...booking,
+        eventStartTime: editId.eventStartTime,
+        eventNotes: editId.eventNotes
+      }
       : booking
   );
   console.log(editId);
@@ -37,8 +45,8 @@ const filterEditBooking = (editId) => {
 // ---------------------------- filter-bar ----------------------------------------
 const filterBookFromCategory = async (filterData) => {
   statusScheduledBL.value = 'No Scheduled Events';
-  const getAllBooks = await getBookings();
-  bookingLists.value = await getAllBooks.json();
+  responseGetAllBookings.value = await getBookings();
+  bookingLists.value = await responseGetAllBookings.value.data;
   bookingLists.value = descOrder();
   bookingLists.value = bookingLists.value.filter((booking) => {
     return booking.eventCategoryId == filterData;
@@ -47,15 +55,17 @@ const filterBookFromCategory = async (filterData) => {
 };
 const filterAllEvent = async () => {
   statusScheduledBL.value = 'No Scheduled Events';
-  const getAllBooks = await getBookings();
-  bookingLists.value = await getAllBooks.json();
+  responseGetAllBookings.value = await getBookings();
+  bookingLists.value = await responseGetAllBookings.value.data;
   bookingLists.value = descOrder();
   bookingLists.value = bookingLists.value;
 };
 const filterPastEvent = async () => {
   statusScheduledBL.value = 'No Past Events';
-  const getAllBooks = await getBookings();
-  bookingLists.value = await getAllBooks.json();
+  // const getAllBooks = await getBookings();
+  // bookingLists.value = await getAllBooks.json();
+  responseGetAllBookings.value = await getBookings();
+  bookingLists.value = await responseGetAllBookings.value.data;
   bookingLists.value = descOrder();
   bookingLists.value = bookingLists.value.filter((booking) => {
     return (
@@ -66,8 +76,10 @@ const filterPastEvent = async () => {
 const filterUpComingEvent = async () => {
   statusScheduledBL.value = 'No On-Going';
   bookingLists.value = ascOrder();
-  const getAllBooks = await getBookings();
-  bookingLists.value = await getAllBooks.json();
+  // const getAllBooks = await getBookings();
+  // bookingLists.value = await getAllBooks.json();
+  responseGetAllBookings.value = await getBookings();
+  bookingLists.value = await responseGetAllBookings.value.data;
   bookingLists.value = ascOrder();
   bookingLists.value = bookingLists.value.filter((booking) => {
     return (
@@ -77,8 +89,10 @@ const filterUpComingEvent = async () => {
 };
 const filterByDateTime = async (time) => {
   statusScheduledBL.value = 'No Scheduled Events';
-  const getAllBooks = await getBookings();
-  bookingLists.value = await getAllBooks.json();
+  // const getAllBooks = await getBookings();
+  // bookingLists.value = await getAllBooks.json();
+  responseGetAllBookings.value = await getBookings();
+  bookingLists.value = await responseGetAllBookings.value.data;
   bookingLists.value = ascOrder();
   bookingLists.value = bookingLists.value.filter((booking) => {
     return moment(booking.eventStartTime).local().format('YYYY-MM-DD') == time;
@@ -98,11 +112,11 @@ const descOrder = () =>
 
 //fetch data
 onBeforeMount(async () => {
-  const getAllBooks = await getBookings();
-  bookingLists.value = await getAllBooks.json();
+  responseGetAllBookings.value = await getBookings();
+  bookingLists.value = responseGetAllBookings.value.data;
   bookingLists.value = descOrder();
-  const getAllCategory = await getEventCategory();
-  categoryLists.value = await getAllCategory.json();
+  responseGetAllCategory.value = await getEventCategory();
+  categoryLists.value = responseGetAllCategory.value.data;
 
   bookingLists.value.map((booking) => {
     booking.statusClickSeeDetails = ref(false);
@@ -114,30 +128,21 @@ onBeforeMount(async () => {
 <template>
   <div>
     <NavbarTop />
+    <NavbarBottom />
     <div class="text-center text-xl mt-24 mb-10">
-      <h1
-        class="uppercase font-bold text-black underline decoration-[#50ABCB] text-4xl"
-      >
+      <h1 class="uppercase font-bold text-black underline decoration-[#50ABCB] text-4xl">
         Booking Lists
       </h1>
     </div>
 
-    <FilterBar
-      :categorys="categoryLists"
-      @getChageCategory="filterBookFromCategory"
-      @getAllEvent="filterAllEvent"
-      @getPastEvent="filterPastEvent"
-      @getUpComingEvent="filterUpComingEvent"
-      @getDateTime="filterByDateTime"
-    />
+    <FilterBar :categorys="categoryLists" @getChageCategory="filterBookFromCategory" @getAllEvent="filterAllEvent"
+      @getPastEvent="filterPastEvent" @getUpComingEvent="filterUpComingEvent" @getDateTime="filterByDateTime" />
 
-    <LoopBookingList
-      :statusScheduled="statusScheduledBL"
-      :bookingLists="bookingLists"
-      @idDialogDetails="filterList"
-      @EditIdFromDialog="filterEditBooking"
-    />
-    <NavbarBottom />
+    <LoopBookingList :statusScheduled="statusScheduledBL" :bookingLists="bookingLists" @idDialogDetails="filterList"
+      @EditIdFromDialog="filterEditBooking" />
+    <PleaseLogInDialog v-if="!getToken" :pageName="pageName" />
   </div>
 </template>
-<style></style>
+<style>
+
+</style>

@@ -3,6 +3,8 @@ package sit.int221.TimeUpBackend.controller;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PostAuthorize;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.*;
@@ -10,6 +12,8 @@ import sit.int221.TimeUpBackend.dtos.EventCategoryDto;
 import sit.int221.TimeUpBackend.entities.EventCategory;
 import sit.int221.TimeUpBackend.service.EventCategoryService;
 
+import javax.annotation.security.PermitAll;
+import javax.annotation.security.RolesAllowed;
 import javax.validation.Valid;
 import java.util.HashMap;
 import java.util.List;
@@ -21,12 +25,10 @@ import java.util.Map;
 public class EventCategoryController {
     @Autowired
     private EventCategoryService eventCategoryService;
-
     @GetMapping("")
     public List<EventCategory> getAllCategory(){
         return eventCategoryService.getAllCategory();
     }
-
     @PostMapping("")
     @ResponseStatus(HttpStatus.CREATED)
     public EventCategory createEventCategory(@Valid  @RequestBody EventCategory newEventCategory){

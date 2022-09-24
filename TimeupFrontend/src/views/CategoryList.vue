@@ -1,15 +1,19 @@
 <script setup>
 import { ref, onBeforeMount } from 'vue'
-import NavbarTop from "../components/NavbarTop.vue";
-import NavbarBottom from "../components/NavbarBottom.vue";
 import LoopCategoryList from '../components/LoopCategoryList.vue';
 import { getEventCategory } from '../stores/book.js';
+import PleaseLogInDialog from '../components/PleaseLogInDialog.vue';
+import NavbarTop from '../components/NavbarTop.vue';
+import NavbarBottom from '../components/NavbarBottom.vue';
 
 const categoryLists = ref([]);
+const responseGetAllCategory = ref({});
+const getToken = localStorage.getItem('refreshToken');
+const pageName = ref('view CATEGORY-LIST');
 
 onBeforeMount(async () => {
-  const getAllCategory = await getEventCategory();
-  categoryLists.value = await getAllCategory.json();
+  responseGetAllCategory.value = await getEventCategory();
+  categoryLists.value = await responseGetAllCategory.value.data;
   console.log(categoryLists.value);
   categoryLists.value.map((category) => {
     category.statusConfirmDialog = ref(false)
@@ -32,11 +36,11 @@ const filterEditCategory = (editCategory) => {
  
 <template>
   <div>
-    <NavbarTop />
-
+    <NavbarTop/>
+    <NavbarBottom/>
     <LoopCategoryList :categorysLists="categoryLists.sort((a, b) => b.eventCategoryId - a.eventCategoryId)"
       @EditCategoryIdFromEdit="filterEditCategory" />
-    <NavbarBottom />
+    <PleaseLogInDialog v-if="!getToken" :pageName="pageName"/>
   </div>
 </template>
  

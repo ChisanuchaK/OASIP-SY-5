@@ -18,6 +18,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.NoOpPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.web.bind.annotation.PostMapping;
 import sit.int221.TimeUpBackend.filter.JwtRequestFilter;
 
 @Configuration
@@ -60,7 +61,9 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         // We don't need CSRF for this example
         httpSecurity.cors().and().csrf().disable()
                 // dont authenticate this particular request
-                .authorizeRequests().antMatchers("/api/login" , "/api/refreshtoken").permitAll().
+                .authorizeRequests().antMatchers("/api/login" , "/api/refreshtoken" ).permitAll().
+                antMatchers("/api/admin/event-category").permitAll().
+
                 // all other requests need to be authenticated
                         anyRequest().authenticated().and().
 

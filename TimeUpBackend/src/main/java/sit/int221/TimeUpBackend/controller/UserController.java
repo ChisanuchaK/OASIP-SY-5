@@ -3,6 +3,7 @@ package sit.int221.TimeUpBackend.controller;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.*;
 import sit.int221.TimeUpBackend.dtos.*;
@@ -22,6 +23,7 @@ public class UserController {
 
     @Autowired
     private UserService userService;
+
 
     @GetMapping("")
     public List<UserGetDto> getAllUser(){

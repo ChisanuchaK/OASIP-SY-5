@@ -11,6 +11,7 @@ export default defineConfig({
   //       //       // target: "http://intproj21.sit.kmutt.ac.th",
   //       // target: 'http://ip21sy5.sit.kmutt.ac.th/'
   //       target: 'https://intproj21.sit.kmutt.ac.th/sy5/'
+  //       //target: 'http://localhost:8443'
   //       //       changeOrigin: true,
   //       //       secure: false,
   //       //       // rewrite: (path) => path.replace(/^\/api/, ""),
