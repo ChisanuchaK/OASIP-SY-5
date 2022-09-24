@@ -7,21 +7,13 @@ import NavbarTop from '../components/NavbarTop.vue';
 import NavbarBottom from '../components/NavbarBottom.vue';
 
 const categoryLists = ref([]);
-<<<<<<< HEAD
-<<<<<<< HEAD
 const responseGetAllCategory = ref({});
 const getToken = localStorage.getItem('refreshToken');
-=======
-const getToken = localStorage.getItem('accessToken');
->>>>>>> e68bf99f029f839b3128d4974e130d7b8b5218ac
-=======
-const getToken = localStorage.getItem('accessToken');
->>>>>>> parent of 0b0be68 (update-fe-refreshToken-03-finish)
 const pageName = ref('view CATEGORY-LIST');
 
 onBeforeMount(async () => {
-  const getAllCategory = await getEventCategory();
-  categoryLists.value = await getAllCategory.json();
+  responseGetAllCategory.value = await getEventCategory();
+  categoryLists.value = await responseGetAllCategory.value.data;
   console.log(categoryLists.value);
   categoryLists.value.map((category) => {
     category.statusConfirmDialog = ref(false)

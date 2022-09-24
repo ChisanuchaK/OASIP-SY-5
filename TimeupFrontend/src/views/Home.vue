@@ -3,16 +3,6 @@ import { onBeforeMount, onBeforeUpdate } from 'vue';
 import NavbarTop from '../components/NavbarTop.vue';
 import NavbarBottom from '../components/NavbarBottom.vue';
 
-<<<<<<< HEAD
-<<<<<<< HEAD
-=======
-
-
->>>>>>> e68bf99f029f839b3128d4974e130d7b8b5218ac
-=======
-
-
->>>>>>> parent of 0b0be68 (update-fe-refreshToken-03-finish)
 onBeforeMount(async()=>{
 })
 </script>

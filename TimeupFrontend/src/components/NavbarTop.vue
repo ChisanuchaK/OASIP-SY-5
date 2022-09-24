@@ -1,28 +1,14 @@
 <script setup>
 import { ref, computed, onBeforeMount, onBeforeUpdate } from 'vue';
-<<<<<<< HEAD
-<<<<<<< HEAD
 import { useRouter, useRoute} from 'vue-router';
-=======
-import { useRouter } from 'vue-router';
->>>>>>> e68bf99f029f839b3128d4974e130d7b8b5218ac
-=======
-import { useRouter } from 'vue-router';
->>>>>>> parent of 0b0be68 (update-fe-refreshToken-03-finish)
 import Confirm from './Confirm.vue';
 // import { onBeforeMount, ref } from 'vue';
 // import { loginToUse } from '../stores/user.js';
 
 // const responseLoginUser = ref({});
 // const statusLogInUser = ref('');
-<<<<<<< HEAD
-<<<<<<< HEAD
 
 const route = useRoute();
-=======
->>>>>>> e68bf99f029f839b3128d4974e130d7b8b5218ac
-=======
->>>>>>> parent of 0b0be68 (update-fe-refreshToken-03-finish)
 const appRouter = useRouter();
 
 const showDropdown = () => {
@@ -32,19 +18,7 @@ const showDropdown = () => {
     return false;
   }
 }
-<<<<<<< HEAD
-<<<<<<< HEAD
 // const getToken = ref(localStorage.getItem('accessToken'));
-=======
-
-// const getToken = ref(localStorage.getItem('accessToken'));
-
->>>>>>> e68bf99f029f839b3128d4974e130d7b8b5218ac
-=======
-
-// const getToken = ref(localStorage.getItem('accessToken'));
-
->>>>>>> parent of 0b0be68 (update-fe-refreshToken-03-finish)
 // const accessToken = ref(showDropdown());
 const getToken = computed(() => showDropdown());
 
@@ -61,19 +35,11 @@ const signOutUser = () => {
   signOutStatus.value = false;
   localStorage.clear();
   alert("SignOut Success.");
-<<<<<<< HEAD
-<<<<<<< HEAD
   if(route.path == '/'){
     location.reload();
   }else{
     appRouter.push({ name: 'Home' });
   }
-=======
-  appRouter.push({ name: 'Home' });
->>>>>>> e68bf99f029f839b3128d4974e130d7b8b5218ac
-=======
-  appRouter.push({ name: 'Home' });
->>>>>>> parent of 0b0be68 (update-fe-refreshToken-03-finish)
 }
 
 onBeforeUpdate(async () => {

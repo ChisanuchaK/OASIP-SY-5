@@ -10,44 +10,52 @@ export const getBookings = async () => {
     },
   });
   if (res.status === 200) {
-    console.log(res);
-    // console.log(await res.json());
-    return res;
+    const response = await res.json();
+    return createResponse(res.status, response);
+  } else if (res.status === 401) {
+    if (await getRefreshToken()) {
+      console.log("can use refreshToken");
+      return getBookings();
+    } else {
+      console.log("please SignIn");
+    }
   } else {
     console.log("error to getBookings");
-<<<<<<< HEAD
-<<<<<<< HEAD
     const response = res.json();
     return createResponse(res.status, response);
-=======
-    return res;
->>>>>>> e68bf99f029f839b3128d4974e130d7b8b5218ac
-=======
-    return res;
->>>>>>> parent of 0b0be68 (update-fe-refreshToken-03-finish)
   }
 };
 
 //GetBy BookingId
 export const getBookingId = async (bookingId) => {
   const res = await fetch(
-    `${import.meta.env.VITE_HTTPS_URL}/event/${bookingId}`
+    `${import.meta.env.VITE_HTTPS_URL}/event/${bookingId}`,
+    {
+      headers: {
+        Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
+      },
+    }
   );
+  // if (res.status === 200) {
+  //   console.log(res);
+  //   return await res.json();
+  // } else {
+  //   console.log("not found");
+  // }
   if (res.status === 200) {
-    console.log(res);
-    return await res.json();
+    const response = await res.json();
+    return createResponse(res.status, response);
+  } else if (res.status === 401) {
+    if (await getRefreshToken()) {
+      console.log("can use refreshToken");
+      return getBookingId(bookingId);
+    } else {
+      console.log("please SignIn");
+    }
   } else {
-<<<<<<< HEAD
-<<<<<<< HEAD
     console.log("error to getBooking");
     const response = res.json();
     return createResponse(res.status, response);
-=======
-    console.log("not found");
->>>>>>> e68bf99f029f839b3128d4974e130d7b8b5218ac
-=======
-    console.log("not found");
->>>>>>> parent of 0b0be68 (update-fe-refreshToken-03-finish)
   }
 };
 
@@ -69,28 +77,30 @@ export const createBooking = async (localDataInput) => {
       eventNotes: localDataInput.eventNotes,
     }),
   });
+  // if (res.status === 201) {
+  //   console.log("create successfully");
+  //   return res;
+  // } else {
+  //   console.log("error , failed to created");
+  //   return res;
+  // }
   if (res.status === 201) {
     console.log("create successfully");
-<<<<<<< HEAD
-<<<<<<< HEAD
     // const response = await res.json();
     // return createResponse(res.status, response);
-=======
->>>>>>> e68bf99f029f839b3128d4974e130d7b8b5218ac
-=======
->>>>>>> parent of 0b0be68 (update-fe-refreshToken-03-finish)
     return res;
+  } else if (res.status === 401) {
+    if (await getRefreshToken()) {
+      console.log("can use refreshToken");
+      return createBooking(localDataInput);
+    } else {
+      console.log("please SignIn");
+    }
   } else {
-<<<<<<< HEAD
-<<<<<<< HEAD
     console.log("error to getBooking");
-=======
-    console.log("error , failed to created");
->>>>>>> e68bf99f029f839b3128d4974e130d7b8b5218ac
-=======
-    console.log("error , failed to created");
->>>>>>> parent of 0b0be68 (update-fe-refreshToken-03-finish)
     return res;
+    // const response = res.json();
+    // return createResponse(res.status, response);
   }
 };
 
@@ -110,29 +120,27 @@ export const editBooking = async (editData) => {
       }),
     }
   );
+  // if (res.status === 200) {
+  //   console.log("edited successfully");
+  //   return res;
+  // } else {
+  //   console.log("error, cannot be added");
+  //   return res;
+  // }
   if (res.status === 200) {
-<<<<<<< HEAD
-<<<<<<< HEAD
     console.log("create successfully");
     // const response = await res.json();
     // return createResponse(res.status, response);
-=======
-    console.log("edited successfully");
->>>>>>> e68bf99f029f839b3128d4974e130d7b8b5218ac
-=======
-    console.log("edited successfully");
->>>>>>> parent of 0b0be68 (update-fe-refreshToken-03-finish)
     return res;
+  } else if (res.status === 401) {
+    if (await getRefreshToken()) {
+      console.log("can use refreshToken");
+      return editBooking(editData);
+    } else {
+      console.log("please SignIn");
+    }
   } else {
-<<<<<<< HEAD
-<<<<<<< HEAD
     console.log("error to editBooking");
-=======
-    console.log("error, cannot be added");
->>>>>>> e68bf99f029f839b3128d4974e130d7b8b5218ac
-=======
-    console.log("error, cannot be added");
->>>>>>> parent of 0b0be68 (update-fe-refreshToken-03-finish)
     return res;
   }
 };
@@ -148,11 +156,17 @@ export const removeBooking = async (deleteBookingId, booking, loopBooking) => {
       },
     }
   );
+  // if (res.status === 200) {
+  //   booking.statusClickDelete = !booking.statusClickDelete;
+  //   loopBooking.statusClickSeeDetails = !loopBooking.statusClickSeeDetails;
+  //   console.log("deleted success");
+  // } else {
+  //   console.log("error , cannot delete");
+  // }
   if (res.status === 200) {
+    console.log("deleted success");
     booking.statusClickDelete = !booking.statusClickDelete;
     loopBooking.statusClickSeeDetails = !loopBooking.statusClickSeeDetails;
-<<<<<<< HEAD
-<<<<<<< HEAD
     return res;
   } else if (res.status === 401) {
     if (await getRefreshToken()) {
@@ -164,16 +178,6 @@ export const removeBooking = async (deleteBookingId, booking, loopBooking) => {
   } else {
     console.log("error , cannot delete");
     return res;
-=======
-    console.log("deleted success");
-  } else {
-    console.log("error , cannot delete");
->>>>>>> e68bf99f029f839b3128d4974e130d7b8b5218ac
-=======
-    console.log("deleted success");
-  } else {
-    console.log("error , cannot delete");
->>>>>>> parent of 0b0be68 (update-fe-refreshToken-03-finish)
   }
 };
 
@@ -187,29 +191,35 @@ export const getEventCategory = async () => {
       },
     }
   );
+  // if (res.status === 200) {
+  //   return res;
+  // } else {
+  //   // alert('find not found !! form getEventCategory');
+  //   console.log("find not found !! form getEventCategory");
+  //   return res;
+  // }
   if (res.status === 200) {
-    return res;
+    console.log("create successfully");
+    const response = await res.json();
+    return createResponse(res.status, response);
+  } else if (res.status === 401) {
+    if (await getRefreshToken()) {
+      console.log("can use refreshToken");
+      return getEventCategory();
+    } else {
+      console.log("please SignIn");
+    }
   } else {
-<<<<<<< HEAD
-<<<<<<< HEAD
     console.log("error to getCategory");
-=======
-    // alert('find not found !! form getEventCategory');
-    console.log("find not found !! form getEventCategory");
->>>>>>> e68bf99f029f839b3128d4974e130d7b8b5218ac
-=======
-    // alert('find not found !! form getEventCategory');
-    console.log("find not found !! form getEventCategory");
->>>>>>> parent of 0b0be68 (update-fe-refreshToken-03-finish)
     return res;
   }
 };
 
 // edit category
-export const editCategory = async (editCategory) => {
+export const editCategory = async (editCategoryData) => {
   const res = await fetch(
     `${import.meta.env.VITE_HTTPS_URL}/admin/event-category/${
-      editCategory.eventCategoryId
+      editCategoryData.eventCategoryId
     }`,
     {
       method: "PUT",
@@ -218,39 +228,50 @@ export const editCategory = async (editCategory) => {
         Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
       },
       body: JSON.stringify({
-<<<<<<< HEAD
-<<<<<<< HEAD
         eventCategoryName: editCategoryData.eventCategoryName.trim(),
         eventDuration: editCategoryData.eventDuration,
         eventCategoryDescription: editCategoryData.eventCategoryDescription,
-=======
-        eventCategoryName: editCategory.eventCategoryName.trim(),
-        eventDuration: editCategory.eventDuration,
-        eventCategoryDescription: editCategory.eventCategoryDescription,
->>>>>>> e68bf99f029f839b3128d4974e130d7b8b5218ac
-=======
-        eventCategoryName: editCategory.eventCategoryName.trim(),
-        eventDuration: editCategory.eventDuration,
-        eventCategoryDescription: editCategory.eventCategoryDescription,
->>>>>>> parent of 0b0be68 (update-fe-refreshToken-03-finish)
       }),
     }
   );
-
+  // if (res.status === 200) {
+  //   console.log("edited successfully");
+  //   return res;
+  // } else {
+  //   console.log("error, cannot be added");
+  //   return res;
+  // }
   if (res.status === 200) {
     console.log("edited successfully");
     return res;
+  } else if (res.status === 401) {
+    if (await getRefreshToken()) {
+      console.log("can use refreshToken");
+      return editCategory(editCategoryData);
+    } else {
+      console.log("please SignIn");
+    }
   } else {
-<<<<<<< HEAD
-<<<<<<< HEAD
     console.log("error to editCategory");
-=======
-    console.log("error, cannot be added");
->>>>>>> e68bf99f029f839b3128d4974e130d7b8b5218ac
-=======
-    console.log("error, cannot be added");
->>>>>>> parent of 0b0be68 (update-fe-refreshToken-03-finish)
     return res;
+  }
+};
+
+const getRefreshToken = async () => {
+  const res = await fetch(`${import.meta.env.VITE_HTTPS_URL}/refreshtoken`, {
+    headers: {
+      Authorization: `Bearer ${localStorage.getItem("refreshToken")}`,
+    },
+  });
+  if (res.status === 200) {
+    console.log("success to get refreshtoken");
+    const response = await res.json();
+    localStorage.setItem("accessToken", response.accessToken);
+    localStorage.setItem("refreshToken", response.refreshToken);
+    return true;
+  } else {
+    console.log("error to get refreshtoken");
+    return false;
   }
 };
 

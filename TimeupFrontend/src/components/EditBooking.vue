@@ -22,7 +22,9 @@ const note = ref(someBooking.value.eventNotes);
 
 const bookingPresentTime = ref(moment.utc(someBooking.value.eventStartTime).local().format("YYYY-MM-DDTHH:mm"));
 const categoryList = ref([]);
+const responseGetAllCategory = ref({});
 const bookingLists = ref([]);
+const responseGetAllBookings = ref({});
 
 let isInvalid = ref(false);
 let isOverlap = ref(false);
@@ -144,10 +146,14 @@ const editBookingEvent = async (editData, bookingEdit, loopEdit) => {
 
 //fetch data
 onBeforeMount(async () => {
-    const getAllBooks = await getBookings();
-    bookingLists.value = await getAllBooks.json();
-    const getAllCategory = await getEventCategory();
-    categoryList.value = await getAllCategory.json();
+    // const getAllBooks = await getBookings();
+    // bookingLists.value = await getAllBooks.json();
+    // const getAllCategory = await getEventCategory();
+    // categoryList.value = await getAllCategory.json();
+    responseGetAllBookings.value = await getBookings();
+    bookingLists.value = responseGetAllBookings.value.data;
+    responseGetAllCategory.value = await getEventCategory();
+    categoryList.value = await responseGetAllCategory.value.data;
     console.log(bookingLists.value);
     console.log(categoryList.value);
     console.log(someBooking.value);

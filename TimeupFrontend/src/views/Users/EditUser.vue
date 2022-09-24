@@ -277,27 +277,13 @@ onBeforeMount(async () => {
   responseGetAllUser.value = await getAllUsers();
   userListAlls.value = await responseGetAllUser.value.data;
   responseGetUser.value = await getUser(params.idUser);
-<<<<<<< HEAD
-<<<<<<< HEAD
   user.value = responseGetUser.value.data;
   console.log(user.value);
-=======
->>>>>>> e68bf99f029f839b3128d4974e130d7b8b5218ac
-=======
->>>>>>> parent of 0b0be68 (update-fe-refreshToken-03-finish)
   // console.log(responseGetUser.value.data);
   localDataUser.nameUser = responseGetUser.value.data.nameUser;
   localDataUser.emailUser = responseGetUser.value.data.emailUser;
   localDataUser.roleUser = responseGetUser.value.data.roleUser;
-<<<<<<< HEAD
-<<<<<<< HEAD
   console.log(localDataUser);
-=======
-
->>>>>>> e68bf99f029f839b3128d4974e130d7b8b5218ac
-=======
-
->>>>>>> parent of 0b0be68 (update-fe-refreshToken-03-finish)
   // const response = await responseGetUser.value.data.then((userFromId) => {
   //   user.value = userFromId;
   //   // console.log(user.value);
@@ -392,20 +378,13 @@ onBeforeMount(async () => {
           <div class="grid row-start-3 col-start-8 col-end-12 content-center w-[90%]">
             <div class="relative">
               <!-- <select :v-model="(user.roleUser == '' ? roleIndexSelect : user.roleUser )" -->
-<<<<<<< HEAD
-<<<<<<< HEAD
               <select v-model="localDataUser.roleUser" @change="checkValue($event)"
-=======
-              <select :v-model="localDataUser.roleUser" @change="checkValue($event)"
->>>>>>> e68bf99f029f839b3128d4974e130d7b8b5218ac
-=======
-              <select :v-model="localDataUser.roleUser" @change="checkValue($event)"
->>>>>>> parent of 0b0be68 (update-fe-refreshToken-03-finish)
                 class="border rounded-md border-solid border-[#D9D9D9] w-full p-2 hover:bg-[#F2F2F2] transition delay-75 text-center"
                 name="" id="">
                 <!-- <option value=""></option> -->
                 <!-- <option v-for="(role,index) in roles" :value="role" v-bind:key="indexs">
                 {{role}}</option> -->
+                <!-- <option value="admin"> {{localDataUser.roleUser}}</option> -->
                 <option value="admin">Admin</option>
                 <option value="lecturer">Lecturer</option>
                 <option value="student">Student</option>
