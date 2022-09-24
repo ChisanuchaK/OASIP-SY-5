@@ -15,7 +15,6 @@ const props = defineProps({
 
 // booking form for-loop and fetch to get detail from id 
 const bookingsDetails = ref([]);
-const responseGetBooking = ref({});
 
 // booking form for-loop
 const loopBooking = computed(() => props.bookings);
@@ -51,9 +50,7 @@ const removeBookingEvent = async (deleteBookingId, booking, loopBooking) => {
 
 //fetch data
 onBeforeMount(async () => {
-    responseGetBooking.value = await getBookingId(props.bookings.idBooking);
-    bookingsDetails.value = responseGetBooking.value.data;
-    console.log(bookingsDetails.value);
+    bookingsDetails.value = await getBookingId(props.bookings.idBooking);
     // console.log(bookingsDetails.value);
 });
 

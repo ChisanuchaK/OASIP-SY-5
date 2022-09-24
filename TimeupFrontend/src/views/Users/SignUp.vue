@@ -20,10 +20,14 @@ const userListAlls = ref([]);
 const responseGetAllUser = ({});
 const responseCreateUser = ({});
 <<<<<<< HEAD
+<<<<<<< HEAD
 const getToken = localStorage.getItem('refreshToken');
 =======
 const getToken = localStorage.getItem('accessToken');
 >>>>>>> e68bf99f029f839b3128d4974e130d7b8b5218ac
+=======
+const getToken = localStorage.getItem('accessToken');
+>>>>>>> parent of 0b0be68 (update-fe-refreshToken-03-finish)
 const pageName = ref('SIGN-UP');
 // const UserName = ref([]);
 // const roleLists = ref();

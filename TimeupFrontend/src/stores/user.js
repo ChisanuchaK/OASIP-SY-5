@@ -54,19 +54,27 @@ export const getUser = async (idUser) => {
     if (await getRefreshToken()) {
       console.log("can use refreshToken");
 <<<<<<< HEAD
+<<<<<<< HEAD
       return getUser(idUser);
 =======
       return getUser();
 >>>>>>> e68bf99f029f839b3128d4974e130d7b8b5218ac
+=======
+      return getUser();
+>>>>>>> parent of 0b0be68 (update-fe-refreshToken-03-finish)
     } else {
       console.log("please SignIn");
     }
   } else {
 <<<<<<< HEAD
+<<<<<<< HEAD
     console.log("error to getUser");
 =======
     console.log("error to getUserLists");
 >>>>>>> e68bf99f029f839b3128d4974e130d7b8b5218ac
+=======
+    console.log("error to getUserLists");
+>>>>>>> parent of 0b0be68 (update-fe-refreshToken-03-finish)
     const response = res.json();
     return createResponse(res.status, response);
   }
@@ -92,10 +100,14 @@ export const deletedUser = async (deletedUserId) => {
     if (await getRefreshToken()) {
       console.log("can use refreshToken");
 <<<<<<< HEAD
+<<<<<<< HEAD
       return deletedUser(deletedUserId);
 =======
       return deletedUser();
 >>>>>>> e68bf99f029f839b3128d4974e130d7b8b5218ac
+=======
+      return deletedUser();
+>>>>>>> parent of 0b0be68 (update-fe-refreshToken-03-finish)
     } else {
       console.log("please SignIn");
     }
@@ -123,6 +135,7 @@ export const createUser = async (localDataInput) => {
   if (res.status === 201) {
     console.log("create successfully");
 <<<<<<< HEAD
+<<<<<<< HEAD
     // const response = await res.json();
     // return createResponse(res.status, response);
     return res;
@@ -131,6 +144,11 @@ export const createUser = async (localDataInput) => {
     return createResponse(res.status, response);
     // return res;
 >>>>>>> e68bf99f029f839b3128d4974e130d7b8b5218ac
+=======
+    const response = await res.json();
+    return createResponse(res.status, response);
+    // return res;
+>>>>>>> parent of 0b0be68 (update-fe-refreshToken-03-finish)
   } else if (res.status === 401) {
     if (await getRefreshToken()) {
       console.log("can use refreshToken");
@@ -166,10 +184,13 @@ export const editUser = async (localDataInput) => {
   if (res.status === 200) {
     console.log("edited successfully.");
 <<<<<<< HEAD
+<<<<<<< HEAD
     // const response = await res.json();
     // return createResponse(res.status, response);
 =======
 >>>>>>> e68bf99f029f839b3128d4974e130d7b8b5218ac
+=======
+>>>>>>> parent of 0b0be68 (update-fe-refreshToken-03-finish)
     return res;
   } else if (res.status === 401) {
     if (await getRefreshToken()) {

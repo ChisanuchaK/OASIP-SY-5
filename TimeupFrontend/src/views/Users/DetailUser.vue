@@ -8,7 +8,6 @@ import NavbarBottom from '../../components/NavbarBottom.vue';
 
 const appRouter = useRouter();
 let { params } = useRoute();
-console.log(params);
 
 const user = ref({});
 const responseGetUser = ref({});
@@ -17,6 +16,7 @@ const goBackToUserList = () => appRouter.push({ name: 'UserList' });
 onBeforeMount(async () => {
   responseGetUser.value = await getUser(params.idUser);
 <<<<<<< HEAD
+<<<<<<< HEAD
   console.log(responseGetUser.value);
   if(responseGetUser.value.status == 200){  
   user.value = responseGetUser.value.data;
@@ -24,6 +24,9 @@ onBeforeMount(async () => {
 =======
   user.value = responseGetUser.value.data;
 >>>>>>> e68bf99f029f839b3128d4974e130d7b8b5218ac
+=======
+  user.value = responseGetUser.value.data;
+>>>>>>> parent of 0b0be68 (update-fe-refreshToken-03-finish)
 });
 </script>
 

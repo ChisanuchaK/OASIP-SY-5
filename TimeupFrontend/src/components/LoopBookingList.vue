@@ -19,7 +19,6 @@ const props = defineProps({
 
 const bookingList = computed(() => props.bookingLists);
 const categorys = ref([]);
-const responseGetAllCategory = ref({});
 
 //---------------------------pop-up-dialog-------------------------------------
 const changeSeeDetailsDialog = (booking) => {
@@ -59,8 +58,8 @@ const removeBookingEvent = async (deleteBookingId, booking, loopBooking) => {
 
 //fetch data
 onBeforeMount(async () => {
-    responseGetAllCategory.value = await getEventCategory();
-    categorys.value = await responseGetAllCategory.value.data;
+    const getAllCategory = await getEventCategory();
+    categorys.value = await getAllCategory.json();
 })
 
 </script>
