@@ -52,8 +52,12 @@ const removeBookingEvent = async (deleteBookingId, booking, loopBooking) => {
 //fetch data
 onBeforeMount(async () => {
     responseGetBooking.value = await getBookingId(props.bookings.idBooking);
-    bookingsDetails.value = responseGetBooking.value.data;
-    console.log(bookingsDetails.value);
+    if(responseGetBooking.value.status === 200){
+        bookingsDetails.value = responseGetBooking.value.data;
+        console.log(bookingsDetails.value);
+    }else{
+        return ''
+    }
     // console.log(bookingsDetails.value);
 });
 

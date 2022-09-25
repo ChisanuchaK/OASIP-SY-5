@@ -16,9 +16,10 @@ const props = defineProps({
     }
 });
 
+
 const bookingToEdit = computed(() => props.bookingsDetailsEdit);
 const someBooking = ref(bookingToEdit);
-const note = ref(someBooking.value.eventNotes);
+const note = ref('');
 
 const bookingPresentTime = ref(moment.utc(someBooking.value.eventStartTime).local().format("YYYY-MM-DDTHH:mm"));
 const categoryList = ref([]);
@@ -35,6 +36,12 @@ let date = new Date();
 date.setMonth(date.getMonth() + 3);
 let maxlocalPresentTime = moment(date).format("YYYY-MM-DDTHH:mm");
 let maxdateIndexSelect = ref(maxlocalPresentTime);
+
+const checkNote = ()=>{
+    if(someBooking.value.eventNotes == null){
+        note.value = '';
+    }else note.value = someBooking.value.eventNotes;
+}
 
 let editData = reactive({
     idBooking: someBooking.value.idBooking,
@@ -150,10 +157,12 @@ onBeforeMount(async () => {
     // bookingLists.value = await getAllBooks.json();
     // const getAllCategory = await getEventCategory();
     // categoryList.value = await getAllCategory.json();
+
     responseGetAllBookings.value = await getBookings();
     bookingLists.value = responseGetAllBookings.value.data;
     responseGetAllCategory.value = await getEventCategory();
     categoryList.value = await responseGetAllCategory.value.data;
+    checkNote();
     console.log(bookingLists.value);
     console.log(categoryList.value);
     console.log(someBooking.value);
@@ -170,7 +179,7 @@ onBeforeMount(async () => {
                 <div class="w-36 m-auto text-1xl text-center">
                     ID : {{ someBooking.idBooking }}
                 </div>
-                
+
                 <img class="absolute top-0 right-0 text-4xl text-lg font-normal h-[30px] w-[30px] mt-3 mr-7 cursor-pointer"
                     @click="changeCancelDialogTrue(someBooking)" src="/images/cancel.png" alt="cancel" />
 
@@ -255,4 +264,5 @@ onBeforeMount(async () => {
 </template>
 
 <style scoped>
+
 </style>
