@@ -23,7 +23,7 @@ const getEmail = () => {
 
 const getName = () => {
     if (localStorage.getItem('userName') != undefined || localStorage.getItem('userName') != null) {
-        localData.bookingName = localStorage.getItem('userEmail')
+        localData.bookingName = localStorage.getItem('userName')
     } else {
         localData.bookingName = '';
     }
