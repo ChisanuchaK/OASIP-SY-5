@@ -1,7 +1,10 @@
-// ---------------------------------------- ALL FETCH API ----------------------------------------
+import { getRefreshToken } from "./user.js";
+
 const createResponse = (status, data) => {
   return { status: status, data: data };
 };
+// ---------------------------------------- ALL FETCH API ----------------------------------------
+
 //Get All Booking
 export const getBookings = async () => {
   const res = await fetch(`${import.meta.env.VITE_HTTPS_URL}/event`, {
@@ -198,6 +201,9 @@ export const getEventCategory = async () => {
   //   console.log("find not found !! form getEventCategory");
   //   return res;
   // }
+  if(res.status === 403){
+    return res;
+  }
   if (res.status === 200) {
     console.log("create successfully");
     const response = await res.json();
@@ -257,23 +263,23 @@ export const editCategory = async (editCategoryData) => {
   }
 };
 
-const getRefreshToken = async () => {
-  const res = await fetch(`${import.meta.env.VITE_HTTPS_URL}/refreshtoken`, {
-    headers: {
-      Authorization: `Bearer ${localStorage.getItem("refreshToken")}`,
-    },
-  });
-  if (res.status === 200) {
-    console.log("success to get refreshtoken");
-    const response = await res.json();
-    localStorage.setItem("accessToken", response.accessToken);
-    localStorage.setItem("refreshToken", response.refreshToken);
-    return true;
-  } else {
-    console.log("error to get refreshtoken");
-    return false;
-  }
-};
+// export const getRefreshToken = async () => {
+//   const res = await fetch(`${import.meta.env.VITE_HTTPS_URL}/refreshtoken`, {
+//     headers: {
+//       Authorization: `Bearer ${localStorage.getItem("refreshToken")}`,
+//     },
+//   });
+//   if (res.status === 200) {
+//     console.log("success to get refreshtoken");
+//     const response = await res.json();
+//     localStorage.setItem("accessToken", response.accessToken);
+//     localStorage.setItem("refreshToken", response.refreshToken);
+//     return true;
+//   } else {
+//     console.log("error to get refreshtoken");
+//     return false;
+//   }
+// };
 
 // //get User Alls
 // export const getAllUsers = async () => {

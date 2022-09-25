@@ -19,7 +19,9 @@ onBeforeMount(async () => {
   console.log(responseGetUser.value);
   if(responseGetUser.value.status == 200){  
   user.value = responseGetUser.value.data;
-  }else ;
+  }else {
+    appRouter.go(-1);
+  }
 });
 </script>
 

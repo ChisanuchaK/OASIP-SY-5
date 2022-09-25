@@ -5,7 +5,9 @@ import UserLists from '../../components/Users/LoopUserLists.vue';
 import { getAllUsers } from '../../stores/user.js';
 import NavbarTop from '../../components/NavbarTop.vue';
 import NavbarBottom from '../../components/NavbarBottom.vue';
+import { useRouter } from 'vue-router';
 
+const appRouter = useRouter();
 
 const userListAlls = ref([]);
 const statusGetAllUser = ref();
@@ -38,6 +40,7 @@ onBeforeMount(async () => {
     });
 }
 else{
+  appRouter.go(-1)
   // alert("please sign-n to view USER-LIST");
   // statusPleseSignIn.value = true
 }

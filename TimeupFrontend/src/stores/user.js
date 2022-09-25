@@ -1,8 +1,19 @@
-import { useRouter } from "vue-router";
+// import { reactive, ref } from "vue";
+// import { useRouter } from "vue-router";
 
 const createResponse = (status, data) => {
   return { status: status, data: data };
 };
+
+// const userData = reactive({
+//   userEmail:'',
+//   userName:'',
+//   userRole:''
+// });
+
+// const userLoginData = (userEmail, userName, userRole) => {
+//   return { userEmail: userEmail, userName:userName,userRole:userRole };
+// };
 
 // const router = () => {
 //   return useRouter();
@@ -29,6 +40,8 @@ export const getAllUsers = async () => {
       return getAllUsers();
     } else {
       console.log("please SignIn");
+      // alert("please sign-in");
+      // setTimeout(router().push({ name: "SignIn" }),5000);
     }
   } else {
     console.log("error to getUserLists");
@@ -176,13 +189,17 @@ export const loginToUse = async (loginData) => {
       password: loginData.password,
     }),
   });
-  console.log("status : " + res.status);
+  // console.log("status : " + res.status);
   if (res.status === 200) {
     const response = await res.json();
-
-    console.log("log-in successfully");
     localStorage.setItem("accessToken", response.accessToken);
     localStorage.setItem("refreshToken", response.refreshToken);
+
+    localStorage.setItem("userEmail", response.userEmail);
+    localStorage.setItem("userName", response.userName);
+    localStorage.setItem("userRole", response.userRole);
+
+    console.log("log-in successfully");
     return createResponse(res.status, response);
   } else {
     console.log("failed to log-in, email or password is invalid.");
@@ -194,7 +211,7 @@ export const loginToUse = async (loginData) => {
   }
 };
 
-const getRefreshToken = async () => {
+export const getRefreshToken = async () => {
   const res = await fetch(`${import.meta.env.VITE_HTTPS_URL}/refreshtoken`, {
     headers: {
       Authorization: `Bearer ${localStorage.getItem("refreshToken")}`,
@@ -215,3 +232,7 @@ const getRefreshToken = async () => {
     return false;
   }
 };
+
+
+
+// 👇️ named exports (same as code snippet above)

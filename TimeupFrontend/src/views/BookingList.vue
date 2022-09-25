@@ -114,6 +114,7 @@ const descOrder = () =>
 onBeforeMount(async () => {
   responseGetAllBookings.value = await getBookings();
   bookingLists.value = responseGetAllBookings.value.data;
+  console.log(bookingLists.value);
   bookingLists.value = descOrder();
   responseGetAllCategory.value = await getEventCategory();
   categoryLists.value = responseGetAllCategory.value.data;
@@ -127,20 +128,22 @@ onBeforeMount(async () => {
 </script>
 <template>
   <div>
-    <NavbarTop />
-    <NavbarBottom />
-    <div class="text-center text-xl mt-24 mb-10">
-      <h1 class="uppercase font-bold text-black underline decoration-[#50ABCB] text-4xl">
-        Booking Lists
-      </h1>
+    <div class="relative z-10">
+      <NavbarTop />
+      <NavbarBottom />
     </div>
+      <div class="text-center text-xl mt-24 mb-10">
+        <h1 class="uppercase font-bold text-black underline decoration-[#50ABCB] text-4xl">
+          Booking Lists
+        </h1>
+      </div>
 
-    <FilterBar :categorys="categoryLists" @getChageCategory="filterBookFromCategory" @getAllEvent="filterAllEvent"
-      @getPastEvent="filterPastEvent" @getUpComingEvent="filterUpComingEvent" @getDateTime="filterByDateTime" />
+      <FilterBar :categorys="categoryLists" @getChageCategory="filterBookFromCategory" @getAllEvent="filterAllEvent"
+        @getPastEvent="filterPastEvent" @getUpComingEvent="filterUpComingEvent" @getDateTime="filterByDateTime" />
 
-    <LoopBookingList :statusScheduled="statusScheduledBL" :bookingLists="bookingLists" @idDialogDetails="filterList"
-      @EditIdFromDialog="filterEditBooking" />
-    <PleaseLogInDialog v-if="!getToken" :pageName="pageName" />
+      <LoopBookingList :statusScheduled="statusScheduledBL" :bookingLists="bookingLists" @idDialogDetails="filterList"
+        @EditIdFromDialog="filterEditBooking" />
+      <PleaseLogInDialog v-if="!getToken" :pageName="pageName" />
   </div>
 </template>
 <style>

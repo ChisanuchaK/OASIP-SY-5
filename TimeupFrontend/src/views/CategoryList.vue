@@ -5,6 +5,9 @@ import { getEventCategory } from '../stores/book.js';
 import PleaseLogInDialog from '../components/PleaseLogInDialog.vue';
 import NavbarTop from '../components/NavbarTop.vue';
 import NavbarBottom from '../components/NavbarBottom.vue';
+import { useRouter } from 'vue-router';
+
+const appRouter = useRouter();
 
 const categoryLists = ref([]);
 const responseGetAllCategory = ref({});
@@ -13,14 +16,18 @@ const pageName = ref('view CATEGORY-LIST');
 
 onBeforeMount(async () => {
   responseGetAllCategory.value = await getEventCategory();
-  categoryLists.value = await responseGetAllCategory.value.data;
-  console.log(categoryLists.value);
-  categoryLists.value.map((category) => {
-    category.statusConfirmDialog = ref(false)
-    category.statusCancelDialog = ref(false)
-    category.statusEditDialog = ref(false)
-    category.statusEditSuccesDialog = ref(false)
-  })
+  if(responseGetAllCategory.value.status === 200){
+    categoryLists.value = await responseGetAllCategory.value.data;
+    console.log(categoryLists.value);
+    categoryLists.value.map((category) => {
+      category.statusConfirmDialog = ref(false)
+      category.statusCancelDialog = ref(false)
+      category.statusEditDialog = ref(false)
+      category.statusEditSuccesDialog = ref(false)
+    })
+  }else{
+    appRouter.go(-1);
+  }
 })
 
 const filterEditCategory = (editCategory) => {

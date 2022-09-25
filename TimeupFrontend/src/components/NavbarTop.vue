@@ -1,8 +1,7 @@
 <script setup>
-import { ref, computed, onBeforeMount, onBeforeUpdate } from 'vue';
-import { useRouter, useRoute} from 'vue-router';
+import { ref, computed, onBeforeMount, onBeforeUpdate, reactive } from 'vue';
+import { useRouter, useRoute } from 'vue-router';
 import Confirm from './Confirm.vue';
-// import { onBeforeMount, ref } from 'vue';
 // import { loginToUse } from '../stores/user.js';
 
 // const responseLoginUser = ref({});
@@ -11,16 +10,31 @@ import Confirm from './Confirm.vue';
 const route = useRoute();
 const appRouter = useRouter();
 
-const showDropdown = () => {
-  if (localStorage.getItem('refreshToken')) {
-    return true;
-  } else {
-    return false;
-  }
-}
-// const getToken = ref(localStorage.getItem('accessToken'));
+// const showDropdown = () => {
+//   if (localStorage.getItem('refreshToken')) {
+//     return true;
+//   } else {
+//     return false;
+//   }
+// }
+
 // const accessToken = ref(showDropdown());
-const getToken = computed(() => showDropdown());
+// const getToken = computed(() => showDropdown());
+
+const getUserLoginRole = ref(localStorage.getItem('userRole'));
+// console.log(getUserLoginRole);
+
+const roleOfUserLogin = computed(()=>{
+  return getUserLoginRole.value
+})
+
+const getToken = (localStorage.getItem('accessToken'));
+
+const userLoginData = reactive({
+  userEmail: localStorage.getItem('userEmail'),
+  userName: localStorage.getItem('userName'),
+  userRole: localStorage.getItem('userRole')
+})
 
 const isLogIn = ref(false);
 
@@ -35,15 +49,15 @@ const signOutUser = () => {
   signOutStatus.value = false;
   localStorage.clear();
   alert("SignOut Success.");
-  if(route.path == '/'){
+  if (route.path == '/') {
     location.reload();
-  }else{
+  } else {
     appRouter.push({ name: 'Home' });
   }
 }
 
-onBeforeUpdate(async () => {
-  showDropdown();
+onBeforeMount(async () => {
+  // showDropdown();
 })
 // console.log(localStorage.getItem('token'));
 
@@ -65,7 +79,7 @@ onBeforeUpdate(async () => {
           </div>
 
           <div class="md:block md:w-auto">
-            <ul class="flex flex-row md:space-x-8 text-sm font-medium">
+            <ul class="flex flex-row md:space-x-4 text-sm font-medium justify-end">
               <!-- <li class="">
               <router-link
                 :to="{name: 'EditUser'}"
@@ -93,7 +107,7 @@ onBeforeUpdate(async () => {
                   About</router-link>
               </li>
               <li>
-                <router-link :to="{ name: 'CategoryList' }"
+                <router-link :to="{ name: 'CategoryList' }" v-if="roleOfUserLogin != 'student'"
                   class="block py-2 pr-4 pl-3 hover:bg-[#50ABCB] hover:rounded-lg hover:text-white hover:text-white hover:underline-offset-2 hover:underline uppercase menu">
                   Category-List</router-link>
               </li>
@@ -103,29 +117,36 @@ onBeforeUpdate(async () => {
                   New booking</router-link>
               </li>
               <li>
-                <router-link :to="{ name: 'BookingList' }"
+                <router-link :to="{ name: 'BookingList' }" 
                   class="block py-2 pr-4 pl-3 hover:bg-[#50ABCB] hover:rounded-lg hover:text-white hover:text-white hover:underline-offset-2 hover:underline uppercase menu">
                   Booking-List</router-link>
               </li>
               <li class="dropdown">
-                <router-link :to="{ name: 'UserList' }"
+                <router-link :to="{ name: 'UserList' }" v-if="roleOfUserLogin != 'student'"
                   class="block py-2 pr-4 pl-3 hover:bg-[#50ABCB] hover:rounded-lg hover:text-white hover:text-white hover:underline-offset-2 hover:underline uppercase menu">
                   User-List</router-link>
               </li>
-              <li v-show="getToken" class="dropdown">
+              <li v-show="getToken" class="dropdown min-w-[160px] max-w-[160px]">
                 <!-- v-if="localStorage.getItem('token') != undefined || localStorage.getItem('token') != ''" -->
                 <!-- <button
                 class="block py-2 pr-4 pl-3 hover:bg-[#50ABCB] hover:rounded-lg hover:text-white hover:text-white hover:underline-offset-2 hover:underline uppercase menu font-medium">
                 Sign-Out</button> -->
+
                 <div
-                  class="Users flex py-2 pr-4 pl-3 hover:bg-[#50ABCB] hover:rounded-lg hover:text-white hover:text-white hover:underline-offset-2 hover:underline uppercase menu">
-                  <p class="px-[20px]">User</p>
+                  class="Users flex py-2 pr-4 pl-3 hover:bg-[#50ABCB] hover:rounded-lg hover:text-white hover:text-white hover:underline-offset-2 hover:underline uppercase menu justify-end">
+                  <p class="px-[20px] truncate">{{userLoginData.userName}}</p>
                   <svg class="dropdownButton" width="20px" height="20px" viewBox="0 0 24 24">
                     <path fill="#000000" d="m7 10l5 5l5-5z"></path>
                   </svg>
                 </div>
                 <div class="dropdown-content uppercase">
-                  <router-link
+                  <div class="lowercase">
+                    <p class="py-1">{{userLoginData.userEmail}}</p>
+                    <p class="py-1">{{userLoginData.userName}}</p>
+                    <p class="py-1">{{userLoginData.userRole}}</p>
+                  </div>
+
+                  <router-link v-if="roleOfUserLogin != 'student'"
                     class="hover:bg-[#50ABCB] hover:rounded-sm hover:text-white hover:text-white hover:underline-offset-2 hover:underline uppercase"
                     :to="{ name: 'SignUp' }">Sign-Up</router-link>
                   <!-- <router-link
@@ -133,9 +154,11 @@ onBeforeUpdate(async () => {
                   :to="{ name: 'UserList' }"
                   >LogOut</router-link
                 > -->
-                  <button @click="changeSignOutStatusTrue"
-                    class="block py-2 pr-4 pl-3 hover:bg-[#50ABCB] hover:rounded-lg hover:text-white hover:text-white hover:underline-offset-2 hover:underline uppercase menu font-medium">
-                    Sign-Out</button>
+                  <div class="block py-2 pr-4 pl-3 hover:bg-[#50ABCB] hover:text-white hover:text-white">
+                    <button @click="changeSignOutStatusTrue"
+                      class="uppercase menu font-medium  hover:underline-offset-2 hover:underline">
+                      Sign-Out</button>
+                  </div>
                 </div>
               </li>
 
@@ -144,7 +167,6 @@ onBeforeUpdate(async () => {
                   class="block py-2 pr-4 pl-3 hover:bg-[#50ABCB] hover:rounded-lg hover:text-white hover:text-white hover:underline-offset-2 hover:underline uppercase menu">
                   Sign-In</router-link>
               </li>
-
               <!-- <li class="dropdown">
               <div
                 class="Users flex py-2 pr-4 pl-3 hover:bg-[#50ABCB] hover:rounded-lg hover:text-white hover:text-white hover:underline-offset-2 hover:underline uppercase menu"
@@ -204,12 +226,13 @@ onBeforeUpdate(async () => {
 } */
 
 .dropdown-content {
+  text-align: center;
   display: none;
   position: absolute;
   /* right: 0; */
   background-color: #f9f9f9;
-  min-width: 122px;
-  max-width: 122px;
+  min-width: 158px;
+  max-width: 158px;
   border-radius: 2%;
   box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
   z-index: 1;

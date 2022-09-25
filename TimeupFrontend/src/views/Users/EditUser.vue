@@ -275,15 +275,19 @@ const checkInputEmailInvalid = () => {
 
 onBeforeMount(async () => {
   responseGetAllUser.value = await getAllUsers();
-  userListAlls.value = await responseGetAllUser.value.data;
   responseGetUser.value = await getUser(params.idUser);
-  user.value = responseGetUser.value.data;
-  console.log(user.value);
-  // console.log(responseGetUser.value.data);
-  localDataUser.nameUser = responseGetUser.value.data.nameUser;
-  localDataUser.emailUser = responseGetUser.value.data.emailUser;
-  localDataUser.roleUser = responseGetUser.value.data.roleUser;
-  console.log(localDataUser);
+  if (responseGetAllUser.value.status === 200 && responseGetUser.value.status === 200) {
+    userListAlls.value = await responseGetAllUser.value.data;
+
+    user.value = responseGetUser.value.data;
+    console.log(user.value);
+    localDataUser.nameUser = responseGetUser.value.data.nameUser;
+    localDataUser.emailUser = responseGetUser.value.data.emailUser;
+    localDataUser.roleUser = responseGetUser.value.data.roleUser;
+    console.log(localDataUser);
+  }else{
+    appRouter.go(-1);
+  }
   // const response = await responseGetUser.value.data.then((userFromId) => {
   //   user.value = userFromId;
   //   // console.log(user.value);
@@ -298,8 +302,8 @@ onBeforeMount(async () => {
 
 <template>
   <div>
-    <NavbarTop/>
-    <NavbarBottom/>
+    <NavbarTop />
+    <NavbarBottom />
     <div @click="changeCancelDialogShow(user)"
       class="absolute top-[15%] bg-white rounded left-[2%] p-1 hover:bg-[#E9E9E9]">
       <svg width="50px" height="50px" viewBox="0 0 12 24">
@@ -376,21 +380,26 @@ onBeforeMount(async () => {
             role
           </div>
           <div class="grid row-start-3 col-start-8 col-end-12 content-center w-[90%]">
-            <div class="relative">
-              <!-- <select :v-model="(user.roleUser == '' ? roleIndexSelect : user.roleUser )" -->
+
+            <!-- <select :v-model="(user.roleUser == '' ? roleIndexSelect : user.roleUser )" -->
+            <!-- <div class="relative">
               <select v-model="localDataUser.roleUser" @change="checkValue($event)"
                 class="border rounded-md border-solid border-[#D9D9D9] w-full p-2 hover:bg-[#F2F2F2] transition delay-75 text-center"
                 name="" id="">
-                <!-- <option value=""></option> -->
-                <!-- <option v-for="(role,index) in roles" :value="role" v-bind:key="indexs">
-                {{role}}</option> -->
-                <!-- <option value="admin"> {{localDataUser.roleUser}}</option> -->
                 <option value="admin">Admin</option>
                 <option value="lecturer">Lecturer</option>
                 <option value="student">Student</option>
               </select>
-              <!-- {{localDataUser.roleUser}} -->
-            </div>
+            </div> -->
+            
+            <form>
+              <div class="relative">
+                <input disabled
+                  class="border rounded-md border-solid border-[#D9D9D9] w-full p-2 hover:bg-[#F2F2F2] transition delay-75 text-center"
+                  type="text" :placeholder="`${localDataUser.roleUser}`" />
+              </div>
+            </form>
+
           </div>
           <div class="grid row-start-4 col-start-6 col-end-8 content-center text-center text-[18px]">
             createOn

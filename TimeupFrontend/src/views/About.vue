@@ -5,9 +5,15 @@ import NavbarBottom from '../components/NavbarBottom.vue';
 </script>
  
 <template>
-  <NavbarTop/>
+  <div>
+    <NavbarTop/>
   <NavbarBottom/>
-  <infoVue />
+    <div class="-z-10 relative">
+    <infoVue />
+    </div>
+  </div>
+  
+  
 </template>
  
 <style>
