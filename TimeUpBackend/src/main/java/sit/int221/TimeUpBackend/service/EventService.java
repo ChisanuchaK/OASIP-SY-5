@@ -2,39 +2,86 @@ package sit.int221.TimeUpBackend.service;
 
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.core.io.FileSystemResource;
+import org.springframework.http.HttpRange;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.mail.SimpleMailMessage;
+import org.springframework.mail.javamail.JavaMailSender;
+import org.springframework.mail.javamail.MimeMessageHelper;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.server.ResponseStatusException;
 import sit.int221.TimeUpBackend.dtos.*;
+import sit.int221.TimeUpBackend.entities.EmailDetails;
 import sit.int221.TimeUpBackend.entities.Event;
 import sit.int221.TimeUpBackend.entities.EventCategory;
+import sit.int221.TimeUpBackend.entities.User;
 import sit.int221.TimeUpBackend.repositories.EventRepository;
 import sit.int221.TimeUpBackend.repositories.EventCategoryRepository;
+import sit.int221.TimeUpBackend.repositories.UserRepository;
 
+import javax.mail.MessagingException;
+import javax.mail.internet.MimeMessage;
+import java.io.File;
+import java.lang.reflect.Type;
 import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
-public class EventService {
+public class EventService{
 
     @Autowired
     private EventRepository eventRepository;
     @Autowired
     private EventCategoryRepository eventCategoryRepository;
-    private ModelMapper modelMapper = new ModelMapper();
 
+    @Autowired
+    private UserRepository userRepository;
+
+    @Autowired
+    private EmailServiceImpl emailService;
+
+
+    private ModelMapper modelMapper = new ModelMapper();
     //    get
     public List<EventDto> getAllEvent(){
-        List<Event>bookings= eventRepository.findAll();
-        return bookings.stream().map(e -> modelMapper.map(e, EventDto.class)).collect(Collectors.toList());
+        UserDetails getCurrentAuthentication = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        System.out.println(getCurrentAuthentication);
+        User user = userRepository.findByEmailUser(getCurrentAuthentication.getUsername());
+        if(user.getRoleUser().equals("admin")){
+            List<Event>bookings= eventRepository.findAll();
+            return bookings.stream().map(e -> modelMapper.map(e, EventDto.class)).collect(Collectors.toList());
+        }
+        else if (user.getRoleUser().equals("student")){
+            List<Event> bookingsFromRoleUser = eventRepository.findAllByBookingEmail(getCurrentAuthentication.getUsername());
+            return bookingsFromRoleUser.stream().map(e -> modelMapper.map(e, EventDto.class)).collect(Collectors.toList());
+        }
+      throw  new ResponseStatusException(HttpStatus.BAD_REQUEST , "That the booking email must be the same as student's email");
     }
 
     public EventMoreDetailDto getEventDetailDTOById(Integer id){
-        Event bookings= eventRepository.findById(id).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
-        return modelMapper.map(bookings , EventMoreDetailDto.class);
+        UserDetails getCurrentAuthentication = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        User user = userRepository.findByEmailUser(getCurrentAuthentication.getUsername());
+        Event event = eventRepository.findById(id).orElseThrow(()-> new ResponseStatusException(HttpStatus.NOT_FOUND , "id event not found"));
+        if(user.getRoleUser().equals("admin")){
+            Event bookings= eventRepository.findById(id).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
+            return modelMapper.map(bookings , EventMoreDetailDto.class);
+        }
+        else if (user.getRoleUser().equals("student") && event.getBookingEmail().equals(getCurrentAuthentication.getUsername()) ){
+            Event bookings= eventRepository.findById(id).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
+                if(bookings.getBookingEmail().equals(getCurrentAuthentication.getUsername())){
+                    return modelMapper.map(bookings , EventMoreDetailDto.class);
+                }
+                else {
+                    throw new ResponseStatusException(HttpStatus.BAD_REQUEST , "This email permission denied");
+                }
+        }
+        throw new ResponseStatusException(HttpStatus.BAD_REQUEST , "This email permission denied");
     }
     public List<EventDto> getEventByIdCategory(@PathVariable Integer id){
             EventCategory eventCategory = eventCategoryRepository.findById(id).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
@@ -44,18 +91,46 @@ public class EventService {
     // post
 
     public ResponseEntity create( EventPostDto eventPostDto) {
+        UserDetails getCurrentAuthentication = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        User user = userRepository.findByEmailUser(getCurrentAuthentication.getUsername());
+        User checkUserByEmail = userRepository.findByEmailUser(eventPostDto.getBookingEmail());
         Event booking = modelMapper.map(eventPostDto , Event.class);
         EventCategory eventCategory = eventCategoryRepository.findById(eventPostDto.getEventCategory().getEventCategoryId()).orElseThrow(()
                 -> new ResponseStatusException(HttpStatus.NOT_FOUND));
-        booking.setEventDuration(eventCategory.getEventDuration());
         List<Event> checkCompare = eventRepository.findAllByEventCategoryEventCategoryId(booking.getEventCategory().getEventCategoryId());
-        if (!checkTimeOverLap(checkCompare , booking)){
-            eventRepository.save(booking);
-            return ResponseEntity.status(201).body("Inserted Successfully");
-        }
-        else {
-            throw  new ResponseStatusException(HttpStatus.BAD_REQUEST , "overlapped with other events");
-        }
+       if(user.getRoleUser().equals("admin")){
+            if(checkUserByEmail != null){
+                booking.setEventDuration(eventCategory.getEventDuration());
+                booking.setBookingEmail(eventPostDto.getBookingEmail());
+
+            }
+            else {
+                throw  new ResponseStatusException(HttpStatus.BAD_REQUEST , "email not register");
+            }
+           if (!checkTimeOverLap(checkCompare , booking)){
+               eventRepository.save(booking);
+               emailService.sendMailWithAttachment(eventPostDto);
+               return ResponseEntity.status(201).body("Inserted Successfully");
+           }
+           else {
+               throw  new ResponseStatusException(HttpStatus.BAD_REQUEST , "overlapped with other events");
+           }
+       }
+       else if (user.getRoleUser().equals("student") && user.getEmailUser().equals(eventPostDto.getBookingEmail())){
+               booking.setEventDuration(eventCategory.getEventDuration());
+               booking.setBookingEmail(getCurrentAuthentication.getUsername());
+           if (!checkTimeOverLap(checkCompare , booking)){
+               eventRepository.save(booking);
+               emailService.sendMailWithAttachment(eventPostDto);
+               return ResponseEntity.status(201).body("Inserted Successfully");
+           }
+           else {
+               throw  new ResponseStatusException(HttpStatus.BAD_REQUEST , "overlapped with other events");
+           }
+       }
+       else{
+           throw  new ResponseStatusException(HttpStatus.BAD_REQUEST , "email not register or if login too role student can't use email other");
+       }
 
     }
     public boolean checkTimeOverLap(List<Event> allEvent, Event event ) {
@@ -78,12 +153,26 @@ public class EventService {
     }
     // delete
     public void delete ( Integer id){
-        eventRepository.deleteById(id);
+        UserDetails getCurrentAuthentication = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        User user = userRepository.findByEmailUser(getCurrentAuthentication.getUsername());
+        Event event = eventRepository.findById(id).orElseThrow(()-> new ResponseStatusException(HttpStatus.NOT_FOUND , "Event not found"));
+        if(user.getRoleUser().equals("admin")){
+            eventRepository.deleteById(id);
+            throw new ResponseStatusException(HttpStatus.OK , "Delete" + " " + id +  " " + user.getEmailUser() + " "  +"successful");
+        }
+        else if (user.getRoleUser().equals("student") && event.getBookingEmail().equals(getCurrentAuthentication.getUsername())){
+            eventRepository.deleteById(id);
+            throw new ResponseStatusException(HttpStatus.OK , "Delete" + " " + id +  " " + user.getEmailUser() + " "  +"successful");
+        }
+        else {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST , "This email permission denied");
+        }
     }
 
     //put
     public ResponseEntity editEvent(EventPutDto editEventPutDTO, int id) {
-
+        UserDetails getCurrentAuthentication = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        User user = userRepository.findByEmailUser(getCurrentAuthentication.getUsername());
         Event event = eventRepository.findById(id).orElseThrow( ()->{
             return new ResponseStatusException(HttpStatus.NOT_FOUND);
         });
@@ -100,12 +189,21 @@ public class EventService {
                 modelMapper.map(editEventPutDTO , event);
 
         if ((!checkTimeOverLap(checkCompare , event))){
-                   eventRepository.saveAndFlush(event);
-                   return ResponseEntity.status(200).body("Edited Successfully");
+                 if(user.getRoleUser().equals("admin")){
+                     eventRepository.saveAndFlush(event);
+                     return ResponseEntity.status(200).body("Edited Successfully");
+                 }
+                 else if (user.getRoleUser().equals("student") && event.getBookingEmail().equals(user.getEmailUser())){
+                     eventRepository.saveAndFlush(event);
+                     return ResponseEntity.status(200).body("Edited Successfully");
+                 }
         }
         else {
             throw  new ResponseStatusException(HttpStatus.BAD_REQUEST , "overlapped with other events");
         }
 
+        throw  new ResponseStatusException(HttpStatus.BAD_REQUEST , "This email permission denied");
     }
+
+
 }

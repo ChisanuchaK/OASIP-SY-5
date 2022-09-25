@@ -29,12 +29,11 @@ public class EventCategoryController {
     private EventCategoryService eventCategoryService;
 
     @GetMapping("")
-    @PreAuthorize("hasAnyAuthority('admin')")
     public List<EventCategory> getAllCategory(){
         return eventCategoryService.getAllCategory();
     }
     @PostMapping("")
-    @PreAuthorize("hasAnyAuthority('admin')")
+    @PreAuthorize("hasAnyAuthority('admin' , 'student')")
     @ResponseStatus(HttpStatus.CREATED)
     public EventCategory createEventCategory(@Valid  @RequestBody EventCategory newEventCategory){
         return  eventCategoryService.create(newEventCategory);

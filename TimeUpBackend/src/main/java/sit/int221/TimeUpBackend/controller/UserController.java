@@ -8,6 +8,7 @@ import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.*;
 import sit.int221.TimeUpBackend.dtos.*;
 import sit.int221.TimeUpBackend.entities.User;
+import sit.int221.TimeUpBackend.service.EmailServiceImpl;
 import sit.int221.TimeUpBackend.service.UserService;
 
 import javax.validation.Valid;
@@ -26,19 +27,22 @@ public class UserController {
 
 
     @GetMapping("")
-    @PreAuthorize("hasAuthority('admin')")
-    public List<UserGetDto> getAllUser(){
+    @PreAuthorize("hasAnyAuthority('admin' , 'student')")
+    public ResponseEntity getAllUser(){
         return userService.getAllUser();
     }
 
     @GetMapping("/{id}")
     @PreAuthorize("hasAnyAuthority('admin' , 'student')")
-    public UserGetDto getUserByID(@PathVariable int id){return  userService.getUserByID(id);}
+    public UserGetDto getUserByID(@PathVariable int id){
+        return  userService.getUserByID(id);
+    }
 
     @PostMapping("")
     @PreAuthorize("hasAuthority('admin')")
     @ResponseStatus(HttpStatus.CREATED)
     public ResponseEntity createUser(@Valid @RequestBody UserPostDto userDTOPOST){
+
         return  userService.createUser(userDTOPOST);
     }
 

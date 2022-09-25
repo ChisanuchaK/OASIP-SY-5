@@ -66,7 +66,7 @@ public class JwtAuthenticationController {
             }
             }
             else{
-                throw new ResponseStatusException(HttpStatus.NOT_FOUND);
+                throw new ResponseStatusException(HttpStatus.NOT_FOUND , "email not found");
             }
         }
 

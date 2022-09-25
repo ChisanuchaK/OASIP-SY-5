@@ -9,6 +9,8 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.*;
 import sit.int221.TimeUpBackend.dtos.*;
+import sit.int221.TimeUpBackend.service.EmailService;
+import sit.int221.TimeUpBackend.service.EmailServiceImpl;
 import sit.int221.TimeUpBackend.service.EventService;
 
 import javax.validation.Valid;
@@ -25,8 +27,12 @@ public class EventController {
 
     @Autowired
     private EventService eventService;
+
+//    @Autowired
+//    private EmailServiceImpl emailService;
+
     @GetMapping("")
-    @PreAuthorize("hasAuthority('admin')")
+    @PreAuthorize("hasAnyAuthority('admin' , 'student')")
     public List<EventDto> getAllEvent(){
         return eventService.getAllEvent();
     }
@@ -47,6 +53,7 @@ public class EventController {
     @PreAuthorize("hasAnyAuthority('admin' , 'student')")
     @ResponseStatus(HttpStatus.CREATED)
     public ResponseEntity createEvent(@Valid @RequestBody EventPostDto newBooking){
+//        emailService.sendSimpleMail(newBooking);
         return eventService.create(newBooking);
     }
 

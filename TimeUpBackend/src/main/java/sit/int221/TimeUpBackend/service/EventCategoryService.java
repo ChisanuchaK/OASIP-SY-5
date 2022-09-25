@@ -6,6 +6,8 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 import sit.int221.TimeUpBackend.dtos.EventCategoryDto;
@@ -31,13 +33,19 @@ public class EventCategoryService {
     }
 
     public ResponseEntity editEventCategory(EventCategoryDto editEventCategory , Integer id){
-        EventCategory eventCategory = eventCategoryRepository.findById(id).orElseThrow( ()->{
-            return new ResponseStatusException(HttpStatus.NOT_FOUND);
-        });
+        UserDetails userDetails = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        if(userDetails.getUsername().equals("admin")){
+            EventCategory eventCategory = eventCategoryRepository.findById(id).orElseThrow(
+                    ()-> new ResponseStatusException(HttpStatus.NOT_FOUND , "id not found"));
 
             modelMapper.map(editEventCategory , eventCategory);
             eventCategoryRepository.saveAndFlush(eventCategory);
             return ResponseEntity.status(200).body("Edited Successfully");
+        }
+        else if (userDetails.getUsername().equals("student")){
+            throw  new ResponseStatusException(HttpStatus.BAD_GATEWAY , "this email permission denied");
+        }
+        throw  new ResponseStatusException(HttpStatus.BAD_GATEWAY , "this email permission denied");
         }
 
     }

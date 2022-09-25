@@ -28,4 +28,5 @@ public class EventPostDto {
     @NotEmpty
     @Size(min = 1 , max = 100 , message = "size must be between 1 and 100")
     private String bookingName;
+
 }

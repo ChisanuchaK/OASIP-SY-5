@@ -3,12 +3,11 @@ package sit.int221.TimeUpBackend.service;
 import org.modelmapper.ModelMapper;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
-import sit.int221.TimeUpBackend.dtos.MatchDto;
-import sit.int221.TimeUpBackend.dtos.UserGetDto;
-import sit.int221.TimeUpBackend.dtos.UserPostDto;
-import sit.int221.TimeUpBackend.dtos.UserPutDto;
+import sit.int221.TimeUpBackend.dtos.*;
 import sit.int221.TimeUpBackend.entities.User;
 import sit.int221.TimeUpBackend.repositories.UserRepository;
 import sit.int221.TimeUpBackend.security.Argon2PasswordEncoder;
@@ -34,16 +33,41 @@ public class UserService {
         return user.stream().map(e -> modelMapper.map(e, UserGetDto.class)).collect(Collectors.toList());
     }
 
-    public List<UserGetDto> getAllUser() {
-        List<User> user = userRepository.findAll();
-        return user.stream().map(e -> modelMapper.map(e, UserGetDto.class)).collect(Collectors.toList());
+    public ResponseEntity getAllUser() {
+        UserDetails userDetails = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        User userFull = userRepository.findByEmailUser(userDetails.getUsername());
+        if(userFull.getRoleUser().equals("admin")){
+            List<User> user = userRepository.findAll();
+             user.stream().map(e -> modelMapper.map(e, UserGetDto.class)).collect(Collectors.toList());
+             return ResponseEntity.ok(user);
+        }
+        else if (userFull.getRoleUser().equals("student") && userFull.getEmailUser().equals(userDetails.getUsername())){
+            User user = userRepository.findByEmailUser(userDetails.getUsername());
+             modelMapper.map(user , UserGetDto.class);
+            return ResponseEntity.ok(user);
+        }
+        throw new ResponseStatusException(HttpStatus.BAD_REQUEST);
     }
 
     public UserGetDto getUserByID(Integer id) {
-        User user = userRepository.findById(id).orElseThrow(() ->
-                new ResponseStatusException(HttpStatus.NOT_FOUND));
-
-        return modelMapper.map(user, UserGetDto.class);
+        UserDetails userDetails = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        User userFull = userRepository.findByEmailUser(userDetails.getUsername());
+        if(userFull.getRoleUser().equals("admin")){
+            User user = userRepository.findById(id).orElseThrow(() ->
+                    new ResponseStatusException(HttpStatus.NOT_FOUND));
+            return modelMapper.map(user, UserGetDto.class);
+        }
+        else if (userFull.getRoleUser().equals("student") && userFull.getEmailUser().equals(userDetails.getUsername())){
+            if(id == userFull.getIdUser()){
+                User user = userRepository.findById(userFull.getIdUser()).orElseThrow(() ->
+                        new ResponseStatusException(HttpStatus.NOT_FOUND));
+                return modelMapper.map(user, UserGetDto.class);
+            }
+            else {
+                throw new ResponseStatusException(HttpStatus.NOT_FOUND , "id not found or email permission denied");
+            }
+        }
+        throw new ResponseStatusException(HttpStatus.BAD_REQUEST);
     }
 
 

@@ -19,7 +19,7 @@ public class JwtTokenUtil implements Serializable {
 
     private static final long serialVersionUID = -2550185165626007488L;
 
-    public static final long JWT_TOKEN_VALIDITY =  60 * 1000;
+    public static final long JWT_TOKEN_VALIDITY =  30 * 60 * 1000;
     private int refreshExpirationDateInMs;
     @Value("${jwt.secret}")
     private String secret;
@@ -90,21 +90,5 @@ public class JwtTokenUtil implements Serializable {
         final String username = getUsernameFromToken(token);
         return (username.equals(userDetails.getUsername()) && !isTokenExpired(token));
     }
-    public List<SimpleGrantedAuthority> getRolesFromToken(String authToken) {
-        List<SimpleGrantedAuthority> roles = null;
-        Claims claims = Jwts.parser().setSigningKey(secret).parseClaimsJws(authToken).getBody();
-        Boolean admin = claims.get("admin", Boolean.class);
-        Boolean student = claims.get("student", Boolean.class);
-        Boolean lecturer = claims.get("lecturer", Boolean.class);
-        if (admin != null && admin == true) {
-            roles = Arrays.asList(new SimpleGrantedAuthority("admin"));
-        }
-        if (student != null && student == true) {
-            roles = Arrays.asList(new SimpleGrantedAuthority("student"));
-        }
-        if (lecturer != null && lecturer == true) {
-            roles = Arrays.asList(new SimpleGrantedAuthority("lecturer"));
-        }
-        return roles;
-    }
+
 }
