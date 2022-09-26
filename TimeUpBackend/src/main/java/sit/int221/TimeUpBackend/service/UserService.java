@@ -1,6 +1,7 @@
 package sit.int221.TimeUpBackend.service;
 
 import org.modelmapper.ModelMapper;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -26,6 +27,8 @@ public class UserService {
 
     Argon2PasswordEncoder encoder = new Argon2PasswordEncoder();
 
+    @Autowired
+    private EmailServiceImpl emailService;
 
     //get
     public List<UserGetDto> getUserByName(String nameUser) {
@@ -106,6 +109,7 @@ public class UserService {
                 user.setEmailUser(userDTOPOST.getEmailUser().trim());
                 user.setRoleUser("student");
                 user.setPassword(encodePassword);
+                emailService.sendSimpleMail(userDTOPOST);
                  userRepository.saveAndFlush(user);
                 return ResponseEntity.status(201).body("Create user Successfully");
             } else {
@@ -113,6 +117,7 @@ public class UserService {
                 user.setEmailUser(userDTOPOST.getEmailUser().trim());
                 user.setRoleUser(userDTOPOST.getRoleUser());
                 user.setPassword(encodePassword);
+                emailService.sendSimpleMail(userDTOPOST);
                 userRepository.saveAndFlush(user);
                 return ResponseEntity.status(201).body("Create user Successfully");
             }

@@ -43,9 +43,9 @@ public class EventService{
     @Autowired
     private UserRepository userRepository;
 
+
     @Autowired
     private EmailServiceImpl emailService;
-
 
     private ModelMapper modelMapper = new ModelMapper();
     //    get
