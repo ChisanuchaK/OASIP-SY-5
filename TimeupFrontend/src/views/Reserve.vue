@@ -9,9 +9,12 @@ import NavbarTop from '../components/NavbarTop.vue';
 import NavbarBottom from '../components/NavbarBottom.vue';
 
 const getToken = localStorage.getItem('refreshToken');
-const emailUserFromLogin = localStorage.getItem('userEmail');
-const nameUserFromLogin = localStorage.getItem('userName');
+const emailUserFromLogin = computed(() => localStorage.getItem('userEmail'));
+const nameUserFromLogin = computed(() => localStorage.getItem('userName'));
+const roleUserFromLogin = computed(() => localStorage.getItem('userRole'));
 const pageName = ref('use RESERVE');
+
+const statusCreateUser = ref();
 
 const getEmail = () => {
     if (localStorage.getItem('userEmail') != undefined || localStorage.getItem('userEmail') != null) {
@@ -32,13 +35,14 @@ const getName = () => {
 const responseGetAllBooking = ref({});
 const responseGetAllCategory = ref({});
 const bookingLists = ref([]);
-// const categoryList = ref([]);
-const categoryList = ref([{ eventCategoryId: 6, eventCategoryName: 'Other', eventDuration: 30, eventColor: '#DFDADA', eventCategoryDescription: 'ตารางนัดหมายนี้ใช้สำหรับนัดหมาย Clinic อิ่น' },
-{ eventCategoryId: 5, eventCategoryName: 'Server-side Clinic', eventDuration: 30, eventColor: '#FFA0A0', eventCategoryDescription: '' },
-{ eventCategoryId: 4, eventCategoryName: 'Client-side Clinic', eventDuration: 30, eventColor: '#B3F6C2', eventCategoryDescription: 'ตารางนัดหมายนี้ใช้สำหรับนัดหมาย client-side clinic ในวิชา INT221 integrated project I' },
-{ eventCategoryId: 3, eventCategoryName: 'Database Clinic', eventDuration: 15, eventColor: '#AFC8F9', eventCategoryDescription: 'ตารางนัดหมายนี้ใช้สำหรับนัดหมาย database clinic ในวิชา INT221 integrated project I' },
-{ eventCategoryId: 2, eventCategoryName: 'DevOps/Infra Clinic', eventDuration: 20, eventColor: '#FEE5A5', eventCategoryDescription: 'Use this event category for DevOps/Infra clinic.' },
-{ eventCategoryId: 1, eventCategoryName: 'Project management', eventDuration: 30, eventColor: '#AAA4A4' }])
+const categoryList = ref([]);
+// const categoryList = ref([{ eventCategoryId: 6, eventCategoryName: 'Other', eventDuration: 30, eventColor: '#DFDADA', eventCategoryDescription: 'ตารางนัดหมายนี้ใช้สำหรับนัดหมาย Clinic อิ่น' },
+// { eventCategoryId: 5, eventCategoryName: 'Server-side Clinic', eventDuration: 30, eventColor: '#FFA0A0', eventCategoryDescription: '' },
+// { eventCategoryId: 4, eventCategoryName: 'Client-side Clinic', eventDuration: 30, eventColor: '#B3F6C2', eventCategoryDescription: 'ตารางนัดหมายนี้ใช้สำหรับนัดหมาย client-side clinic ในวิชา INT221 integrated project I' },
+// { eventCategoryId: 3, eventCategoryName: 'Database Clinic', eventDuration: 15, eventColor: '#AFC8F9', eventCategoryDescription: 'ตารางนัดหมายนี้ใช้สำหรับนัดหมาย database clinic ในวิชา INT221 integrated project I' },
+// { eventCategoryId: 2, eventCategoryName: 'DevOps/Infra Clinic', eventDuration: 20, eventColor: '#FEE5A5', eventCategoryDescription: 'Use this event category for DevOps/Infra clinic.' },
+// { eventCategoryId: 1, eventCategoryName: 'Project management', eventDuration: 30, eventColor: '#AAA4A4' }])
+
 const categoryIndexSelect = ref();
 
 const localPresentTime = moment.utc().local().format("YYYY-MM-DDTHH:mm");
@@ -137,20 +141,27 @@ const isInputTimeOld = computed(() => {
 
 //check overlap 
 const isInputTime = computed(() => {
-    // const localEndTime = `${moment.utc(localData.eventStartTime).add(localData.eventDuration, 'm').format("YYYY-MM-DDTHH:mm:ss")}Z`;
-    // for (let booking of bookingLists.value) {
-    //     if (localData.eventCategory.eventCategoryId === booking.eventCategoryId) {
-    //         if ((localData.eventStartTime <= booking.eventEndTime) && (localEndTime >= booking.eventStartTime)) {
-    //             isOverlap.value = true
-    //             isInvalid.value = true
-    //             break;
-    //         } else {
-    //             isOverlap.value = false
-    //         }
-    //     }
-    // }
-    // console.log("overlap value " + isOverlap.value);
-    // return (isInvalid.value && isOverlap.value)   
+    if (roleUserFromLogin.value == 'admin') {
+        console.log("i am admin");
+        // const localEndTime = `${moment.utc(localData.eventStartTime).add(localData.eventDuration, 'm').format("YYYY-MM-DDTHH:mm:ss")}Z`;
+        // for (let booking of bookingLists.value) {
+        //     if (localData.eventCategory.eventCategoryId === booking.eventCategoryId) {
+        //         if ((localData.eventStartTime <= booking.eventEndTime) && (localEndTime >= booking.eventStartTime)) {
+        //             isOverlap.value = true
+        //             isInvalid.value = true
+        //             break;
+        //         } else {
+        //             isOverlap.value = false
+        //         }
+        //     }
+        // }
+        // console.log("overlap value " + isOverlap.value);
+        // return (isInvalid.value && isOverlap.value)
+    } else if (roleUserFromLogin.value == 'student') {
+        console.log("i am student");
+    } else if (roleUserFromLogin.value == 'lecturer') {
+        console.log("i am lecturer");
+    }
 });
 
 const reset = () => {
@@ -180,19 +191,22 @@ const createBookingEvent = async (localDataInput) => {
         dateIndexSelect.value = localPresentTime
         localDataInput.eventNotes = ""
     } else {
+        statusCreateUser.value = res.status;
+        console.log(statusCreateUser.value);
         console.log("error , failed to created");
     }
-    createDialog.value = !createDialog.value
+    // createDialog.value = !createDialog.value
+    createDialog.value = false
 };
 
 //fetch data
 onBeforeMount(async () => {
     getEmail();
     getName();
-    // responseGetAllBooking.value = await getBookings();
-    // bookingLists.value = await responseGetAllBooking.value.data;
-    // responseGetAllCategory.value = await getEventCategory();
-    // categoryList.value = await responseGetAllCategory.value.data;
+    responseGetAllBooking.value = await getBookings();
+    bookingLists.value = await responseGetAllBooking.value.data;
+    responseGetAllCategory.value = await getEventCategory();
+    categoryList.value = await responseGetAllCategory.value.data;
 })
 
 </script>
@@ -244,10 +258,10 @@ onBeforeMount(async () => {
                         <div class="row-start-4 col-start-1 col-end-4 col-span-3 ">
                             <form action=""> <input class="bg-gray-200 rounded w-full border" :max="maxdateIndexSelect"
                                     :min="localPresentTime" @change="handleTime()" type="datetime-local"
-                                    :style="{ 'border-color': isInputTime || isInputTimeOld ? 'red' : 'white' }"
+                                    :style="{ 'border-color': isInputTime || isInputTimeOld || (statusCreateUser == 400) ? 'red' : 'white' }"
                                     v-model="dateIndexSelect" />
                             </form>
-                            <label class="text-red-500" v-if="isInputTime">
+                            <label class="text-red-500" v-if="isInputTime || (statusCreateUser == 400)">
                                 *overlap
                             </label>
                             <label class="text-red-500" v-if="isInputTimeOld">

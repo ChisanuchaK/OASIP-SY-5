@@ -20,6 +20,7 @@ const userListAlls = ref([]);
 const responseGetAllUser = ({});
 const responseCreateUser = ({});
 const getToken = localStorage.getItem('refreshToken');
+const getUserRole = ref(localStorage.getItem('userRole')); 
 const pageName = ref('SIGN-UP');
 // const UserName = ref([]);
 // const roleLists = ref();
@@ -214,9 +215,13 @@ const checkRole = () => {
 //
 
 onBeforeMount(async () => {
+  if(getUserRole.value == 'student'){
+    appRouter.go(-1);
+  }
   responseGetAllUser.value = await getAllUsers();
   userListAlls.value = responseGetAllUser.value.data;
   // console.log(localDataUser.roleUser.length)
+  
 });
 </script>
 

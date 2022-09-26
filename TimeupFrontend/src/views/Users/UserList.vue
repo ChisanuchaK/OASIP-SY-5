@@ -15,6 +15,7 @@ const responseGetAllUser = ref({});
 // const statusPleseSignIn = ref(false);
 const getAccessToken = localStorage.getItem('accessToken');
 const getRefreshToken = localStorage.getItem('refreshToken');
+const getUserRole = ref(localStorage.getItem('userRole'));
 
 const pageName = ref('view USER-LIST');
 
@@ -25,6 +26,9 @@ const filterUserList = (idUserDelete) => {
 };
 
 onBeforeMount(async () => {
+  if(getUserRole.value == 'student'){
+    appRouter.go(-1);
+  }
   responseGetAllUser.value = await getAllUsers();
   // console.log(responseGetAllUser.value.data);
   if(responseGetAllUser.value.status == 200){  

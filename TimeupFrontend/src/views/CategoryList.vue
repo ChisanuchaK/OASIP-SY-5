@@ -11,10 +11,14 @@ const appRouter = useRouter();
 
 const categoryLists = ref([]);
 const responseGetAllCategory = ref({});
-const getToken = localStorage.getItem('refreshToken');
+const getToken = ref(localStorage.getItem('refreshToken'));
+const getUserRole = ref(localStorage.getItem('userRole'));
 const pageName = ref('view CATEGORY-LIST');
 
 onBeforeMount(async () => {
+  if(getUserRole.value == 'student'){
+    appRouter.go(-1);
+  }
   responseGetAllCategory.value = await getEventCategory();
   if(responseGetAllCategory.value.status === 200){
     categoryLists.value = await responseGetAllCategory.value.data;
