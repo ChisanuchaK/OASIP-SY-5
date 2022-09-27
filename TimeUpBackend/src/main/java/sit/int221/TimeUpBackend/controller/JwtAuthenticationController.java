@@ -57,6 +57,7 @@ public class JwtAuthenticationController {
                 tokens.put("userEmail" , user.getEmailUser());
                 tokens.put("userName" , user.getNameUser());
                 tokens.put("userRole" , user.getRoleUser());
+                tokens.put("idUser" , user.getIdUser().toString());
                 tokens.put("accessToken" , accessToken);
                 tokens.put("refreshToken" , refreshToken);
                 return ResponseEntity.ok(tokens);

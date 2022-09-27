@@ -51,7 +51,6 @@ public class EventService{
     //    get
     public List<EventDto> getAllEvent(){
         UserDetails getCurrentAuthentication = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        System.out.println(getCurrentAuthentication);
         User user = userRepository.findByEmailUser(getCurrentAuthentication.getUsername());
         if(user.getRoleUser().equals("admin")){
             List<Event>bookings= eventRepository.findAll();
@@ -201,9 +200,6 @@ public class EventService{
         else {
             throw  new ResponseStatusException(HttpStatus.BAD_REQUEST , "overlapped with other events");
         }
-
         throw  new ResponseStatusException(HttpStatus.BAD_REQUEST , "This email permission denied");
     }
-
-
 }
