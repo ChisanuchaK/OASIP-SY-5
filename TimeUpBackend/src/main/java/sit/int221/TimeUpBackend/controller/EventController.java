@@ -32,13 +32,13 @@ public class EventController {
 //    private EmailServiceImpl emailService;
 
     @GetMapping("")
-    @PreAuthorize("hasAnyAuthority('admin' , 'student')")
+    @PreAuthorize("hasAnyAuthority('admin' , 'student' , 'lecturer')")
     public List<EventDto> getAllEvent(){
         return eventService.getAllEvent();
     }
 
     @GetMapping("/{id}")
-    @PreAuthorize("hasAnyAuthority('admin' , 'student')")
+    @PreAuthorize("hasAnyAuthority('admin' , 'student' , 'lecturer')")
     public EventMoreDetailDto getBEventById(@PathVariable Integer id){
         return eventService.getEventDetailDTOById(id);
     }

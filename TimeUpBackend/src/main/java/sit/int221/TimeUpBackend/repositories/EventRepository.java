@@ -9,5 +9,6 @@ import java.util.List;
 public interface EventRepository extends JpaRepository<Event, Integer> {
    List<Event> findAllByEventCategoryEventCategoryId(Integer eventCategoryId);
    List<Event> findAllByBookingEmail(String bookingEmail);
+   Event findByBookingEmail(String bookingEmail);
 
 }
