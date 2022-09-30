@@ -2,12 +2,15 @@ package sit.int221.TimeUpBackend.service;
 
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
+import sit.int221.TimeUpBackend.config.CookieUtil;
+import sit.int221.TimeUpBackend.config.JwtTokenUtil;
 import sit.int221.TimeUpBackend.dtos.*;
 import sit.int221.TimeUpBackend.entities.User;
 import sit.int221.TimeUpBackend.repositories.UserRepository;
@@ -28,7 +31,13 @@ public class UserService {
     Argon2PasswordEncoder encoder = new Argon2PasswordEncoder();
 
     @Autowired
+    private CookieUtil cookieUtil;
+
+    @Autowired
     private EmailServiceImpl emailService;
+
+    @Autowired
+    private JwtTokenUtil jwtTokenUtil;
 
     //get
     public List<UserGetDto> getUserByName(String nameUser) {
@@ -157,5 +166,62 @@ public class UserService {
         userRepository.deleteAll();
     }
 
+    //login
+    public ResponseEntity<LoginResponse> login(LoginRequest loginRequest, String accessToken, String refreshToken) {
+        String email = loginRequest.getEmailUser();
+        User user = userRepository.findByEmailUser(email);
 
+        Boolean accessTokenValid = jwtTokenUtil.validateToken(accessToken);
+        Boolean refreshTokenValid = jwtTokenUtil.validateToken(refreshToken);
+
+        HttpHeaders responseHeaders = new HttpHeaders();
+        sit.int221.TimeUpBackend.dtos.Token newAccessToken;
+        sit.int221.TimeUpBackend.dtos.Token newRefreshToken;
+        if (!accessTokenValid && !refreshTokenValid) {
+            newAccessToken = jwtTokenUtil.generateAccessToken(user.getEmailUser());
+            newRefreshToken = jwtTokenUtil.generateRefreshToken(user.getEmailUser());
+            addAccessTokenCookie(responseHeaders, newAccessToken);
+            addRefreshTokenCookie(responseHeaders, newRefreshToken);
+        }
+
+        if (!accessTokenValid && refreshTokenValid) {
+            newAccessToken = jwtTokenUtil.generateAccessToken(user.getEmailUser());
+            addAccessTokenCookie(responseHeaders, newAccessToken);
+        }
+
+        if (accessTokenValid && refreshTokenValid) {
+            newAccessToken = jwtTokenUtil.generateAccessToken(user.getEmailUser());
+            newRefreshToken = jwtTokenUtil.generateRefreshToken(user.getEmailUser());
+            addAccessTokenCookie(responseHeaders, newAccessToken);
+            addRefreshTokenCookie(responseHeaders, newRefreshToken);
+        }
+
+        LoginResponse loginResponse = new LoginResponse(LoginResponse.SuccessFailure.SUCCESS, "Auth successful. Tokens are created in cookie.");
+        return ResponseEntity.ok().headers(responseHeaders).body(loginResponse);
+
+    }
+
+    public ResponseEntity<LoginResponse> refresh(String accessToken, String refreshToken) {
+        Boolean refreshTokenValid = jwtTokenUtil.validateToken(refreshToken);
+        if (!refreshTokenValid) {
+            throw new IllegalArgumentException("Refresh Token is invalid!");
+        }
+
+        String currentUserEmail = jwtTokenUtil.getUsernameFromToken(accessToken);
+
+        Token newAccessToken = jwtTokenUtil.generateAccessToken(currentUserEmail);
+        HttpHeaders responseHeaders = new HttpHeaders();
+        responseHeaders.add(HttpHeaders.SET_COOKIE, cookieUtil.createAccessTokenCookie(newAccessToken.getTokenValue(), newAccessToken.getDuration()).toString());
+
+        LoginResponse loginResponse = new LoginResponse(LoginResponse.SuccessFailure.SUCCESS, "Auth successful. Tokens are created in cookie.");
+        return ResponseEntity.ok().headers(responseHeaders).body(loginResponse);
+    }
+
+    private void addAccessTokenCookie(HttpHeaders httpHeaders, sit.int221.TimeUpBackend.dtos.Token token) {
+        httpHeaders.add(HttpHeaders.SET_COOKIE, cookieUtil.createAccessTokenCookie(token.getTokenValue(), token.getDuration()).toString());
+    }
+
+    private void addRefreshTokenCookie(HttpHeaders httpHeaders, sit.int221.TimeUpBackend.dtos.Token token) {
+        httpHeaders.add(HttpHeaders.SET_COOKIE, cookieUtil.createRefreshTokenCookie(token.getTokenValue(), token.getDuration()).toString());
+    }
 }
