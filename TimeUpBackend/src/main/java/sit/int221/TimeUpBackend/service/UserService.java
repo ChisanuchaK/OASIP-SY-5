@@ -170,7 +170,6 @@ public class UserService {
     public ResponseEntity<LoginResponse> login(LoginRequest loginRequest, String accessToken, String refreshToken) {
         String email = loginRequest.getEmailUser();
         User user = userRepository.findByEmailUser(email);
-
         Boolean accessTokenValid = jwtTokenUtil.validateToken(accessToken);
         Boolean refreshTokenValid = jwtTokenUtil.validateToken(refreshToken);
 
@@ -196,12 +195,14 @@ public class UserService {
             addRefreshTokenCookie(responseHeaders, newRefreshToken);
         }
 
-        LoginResponse loginResponse = new LoginResponse(LoginResponse.SuccessFailure.SUCCESS, "Auth successful. Tokens are created in cookie.");
+        LoginResponse loginResponse = new LoginResponse(LoginResponse.SuccessFailure.SUCCESS,  "Auth successful. Tokens are created in cookie." ,  user.getIdUser() , user.getRoleUser() , user.getEmailUser() , user.getNameUser());
         return ResponseEntity.ok().headers(responseHeaders).body(loginResponse);
 
     }
 
     public ResponseEntity<LoginResponse> refresh(String accessToken, String refreshToken) {
+        UserDetails getCurrentAuthentication = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        User user = userRepository.findByEmailUser(getCurrentAuthentication.getUsername());
         Boolean refreshTokenValid = jwtTokenUtil.validateToken(refreshToken);
         if (!refreshTokenValid) {
             throw new IllegalArgumentException("Refresh Token is invalid!");
@@ -213,7 +214,7 @@ public class UserService {
         HttpHeaders responseHeaders = new HttpHeaders();
         responseHeaders.add(HttpHeaders.SET_COOKIE, cookieUtil.createAccessTokenCookie(newAccessToken.getTokenValue(), newAccessToken.getDuration()).toString());
 
-        LoginResponse loginResponse = new LoginResponse(LoginResponse.SuccessFailure.SUCCESS, "Auth successful. Tokens are created in cookie.");
+        LoginResponse loginResponse = new LoginResponse(LoginResponse.SuccessFailure.SUCCESS, "Auth successful. Tokens are created in cookie." , user.getIdUser() , user.getRoleUser() , user.getEmailUser() , user.getNameUser());
         return ResponseEntity.ok().headers(responseHeaders).body(loginResponse);
     }
 

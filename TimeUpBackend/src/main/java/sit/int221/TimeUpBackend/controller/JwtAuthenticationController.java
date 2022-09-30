@@ -22,21 +22,12 @@ import sit.int221.TimeUpBackend.config.JwtTokenUtil;
 import sit.int221.TimeUpBackend.config.SecurityCipher;
 import sit.int221.TimeUpBackend.dtos.LoginRequest;
 import sit.int221.TimeUpBackend.dtos.LoginResponse;
-import sit.int221.TimeUpBackend.entities.JwtRequest;
-import sit.int221.TimeUpBackend.entities.User;
 import sit.int221.TimeUpBackend.repositories.UserRepository;
 import sit.int221.TimeUpBackend.security.Argon2PasswordEncoder;
 import sit.int221.TimeUpBackend.service.JwtUserDetailsService;
 import sit.int221.TimeUpBackend.service.UserService;
-
-
-import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
-
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
 
 
 @RestController
@@ -70,7 +61,6 @@ public class JwtAuthenticationController {
     ) {
         Authentication authentication = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(loginRequest.getEmailUser(), loginRequest.getPassword()));
         SecurityContextHolder.getContext().setAuthentication(authentication);
-
         String decryptedAccessToken = SecurityCipher.decrypt(accessToken);
         String decryptedRefreshToken = SecurityCipher.decrypt(refreshToken);
         return userService.login(loginRequest, decryptedAccessToken, decryptedRefreshToken);

@@ -12,7 +12,6 @@ import org.springframework.util.StringUtils;
 import org.springframework.web.filter.OncePerRequestFilter;
 import sit.int221.TimeUpBackend.config.JwtTokenUtil;
 import sit.int221.TimeUpBackend.config.SecurityCipher;
-import sit.int221.TimeUpBackend.entities.JwtRequest;
 import sit.int221.TimeUpBackend.service.JwtUserDetailsService;
 
 import javax.servlet.FilterChain;
