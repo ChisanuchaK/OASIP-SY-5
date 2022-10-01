@@ -76,7 +76,7 @@ public class JwtAuthenticationController {
             throw new Exception("INVALID_CREDENTIALS", e);
         }
     }
-    @PostMapping(value = "/api/refreshtoken", produces = MediaType.APPLICATION_JSON_VALUE)
+    @GetMapping(value = "/api/refreshtoken", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<LoginResponse> refreshToken(@CookieValue(name = "accessToken", required = false) String accessToken,
                                                       @CookieValue(name = "refreshToken", required = false) String refreshToken) {
         String decryptedAccessToken = SecurityCipher.decrypt(accessToken);
