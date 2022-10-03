@@ -195,7 +195,7 @@ public class UserService {
             addRefreshTokenCookie(responseHeaders, newRefreshToken);
         }
 
-        LoginResponse loginResponse = new LoginResponse(LoginResponse.SuccessFailure.SUCCESS,  "Auth successful. Tokens are created in cookie." ,  user.getIdUser() , user.getRoleUser() , user.getEmailUser() , user.getNameUser());
+        LoginResponse loginResponse = new LoginResponse(LoginResponse.SuccessFailure.SUCCESS,  "Auth successful. Tokens are created in cookie." ,  user.getIdUser() , user.getNameUser() , user.getEmailUser() , user.getRoleUser());
         return ResponseEntity.ok().headers(responseHeaders).body(loginResponse);
 
     }
@@ -214,7 +214,7 @@ public class UserService {
         HttpHeaders responseHeaders = new HttpHeaders();
         responseHeaders.add(HttpHeaders.SET_COOKIE, cookieUtil.createAccessTokenCookie(newAccessToken.getTokenValue(), newAccessToken.getDuration()).toString());
 
-        LoginResponse loginResponse = new LoginResponse(LoginResponse.SuccessFailure.SUCCESS, "Auth successful. Tokens are created in cookie." , user.getIdUser() , user.getRoleUser() , user.getEmailUser() , user.getNameUser());
+        LoginResponse loginResponse = new LoginResponse(LoginResponse.SuccessFailure.SUCCESS, "Auth successful. Tokens are created in cookie." ,user.getIdUser() , user.getNameUser() , user.getEmailUser() , user.getRoleUser());
         return ResponseEntity.ok().headers(responseHeaders).body(loginResponse);
     }
 

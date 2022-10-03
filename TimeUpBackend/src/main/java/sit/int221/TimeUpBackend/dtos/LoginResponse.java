@@ -18,6 +18,8 @@ public class LoginResponse {
     private String userEmail;
     @NotNull
     private String userRole;
+
+
     public enum SuccessFailure {
         SUCCESS, FAILURE
     }
