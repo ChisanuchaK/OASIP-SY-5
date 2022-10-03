@@ -14,6 +14,7 @@ import sit.int221.TimeUpBackend.dtos.EventCategoryDto;
 import sit.int221.TimeUpBackend.entities.EventCategory;
 import sit.int221.TimeUpBackend.entities.User;
 import sit.int221.TimeUpBackend.repositories.EventCategoryRepository;
+import sit.int221.TimeUpBackend.repositories.UserRepository;
 
 import java.util.List;
 
@@ -22,11 +23,11 @@ public class EventCategoryService {
     @Autowired
     private EventCategoryRepository eventCategoryRepository;
     private ModelMapper modelMapper = new ModelMapper();
-
+    @Autowired
+    private UserRepository userRepository;
     public  List<EventCategory> getAllCategory(){
         return eventCategoryRepository.findAll();
     }
-
 
     public EventCategory create(EventCategory newEventCategory){
         return eventCategoryRepository.saveAndFlush(newEventCategory);
@@ -34,7 +35,8 @@ public class EventCategoryService {
 
     public ResponseEntity editEventCategory(EventCategoryDto editEventCategory , Integer id){
         UserDetails userDetails = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        if(userDetails.getUsername().equals("admin")){
+        User user = userRepository.findByEmailUser(userDetails.getUsername());
+        if(user.getRoleUser().equals("admin")){
             EventCategory eventCategory = eventCategoryRepository.findById(id).orElseThrow(
                     ()-> new ResponseStatusException(HttpStatus.NOT_FOUND , "id not found"));
 
