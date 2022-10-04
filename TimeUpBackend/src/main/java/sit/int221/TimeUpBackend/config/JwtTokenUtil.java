@@ -4,6 +4,8 @@ import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.util.*;
+import java.util.function.Function;
+
 import io.jsonwebtoken.*;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -58,6 +60,26 @@ public class JwtTokenUtil  {
         Claims claims = Jwts.parser().setSigningKey(tokenSecret).parseClaimsJws(token).getBody();
         return LocalDateTime.ofInstant(claims.getExpiration().toInstant(), ZoneId.systemDefault());
     }
+
+    public Boolean isTokenExpired(String token) {
+        final Date expiration = getExpirationDateFromToken(token);
+        return expiration.before(new Date());
+    }
+
+    public Date getExpirationDateFromToken(String token) {
+        return getClaimFromToken(token, Claims::getExpiration);
+    }
+
+    public <T> T getClaimFromToken(String token, Function<Claims, T> claimsResolver) {
+        final Claims claims = getAllClaimsFromToken(token);
+        return claimsResolver.apply(claims);
+    }
+
+    private Claims getAllClaimsFromToken(String token) {
+        return Jwts.parser().setSigningKey(tokenSecret).parseClaimsJws(token).getBody();
+    }
+
+
     public boolean validateToken(String token) {
         try {
             Jwts.parser().setSigningKey(tokenSecret).parse(token);

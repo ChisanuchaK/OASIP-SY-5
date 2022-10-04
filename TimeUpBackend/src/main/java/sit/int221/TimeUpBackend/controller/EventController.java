@@ -50,10 +50,8 @@ public class EventController {
     }
 
     @PostMapping("")
-    @PreAuthorize("hasAnyAuthority('admin' , 'student')")
     @ResponseStatus(HttpStatus.CREATED)
     public ResponseEntity createEvent(@Valid @RequestBody EventPostDto newBooking){
-//        emailService.sendSimpleMail(newBooking);
         return eventService.create(newBooking);
     }
 

@@ -47,10 +47,10 @@ public class UserController {
     }
 
 
-    @PostMapping("/match")
-    public User MatchUser(@Valid @RequestBody MatchDto matchDto){
-        return  userService.MatchUser(matchDto);
-    }
+//    @PostMapping("/match")
+//    public User MatchUser(@Valid @RequestBody LoginRequest loginRequest){
+//        return  userService.MatchUser(loginRequest);
+//    }
 
     @PutMapping("/{id}")
     @PreAuthorize("hasAuthority('admin')")

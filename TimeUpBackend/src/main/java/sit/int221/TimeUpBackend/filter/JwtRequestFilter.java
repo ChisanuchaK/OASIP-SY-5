@@ -78,21 +78,24 @@ public class JwtRequestFilter extends OncePerRequestFilter {
     }
 
     private String getJwtFromCookie(HttpServletRequest request) {
-        Cookie[] cookies = request.getCookies();
-        for (Cookie cookie : cookies) {
-            if (accessTokenCookieName.equals(cookie.getName())) {
-                String accessToken = cookie.getValue();
-                if (accessToken == null) return null;
+        if (request.getCookies() != null) {
+            Cookie[] cookies = request.getCookies();
+            for (Cookie cookie : cookies) {
+                if (accessTokenCookieName.equals(cookie.getName())) {
+                    String accessToken = cookie.getValue();
+                    if (accessToken == null) return null;
 
-                return SecurityCipher.decrypt(accessToken);
+                    return SecurityCipher.decrypt(accessToken);
+                }
             }
         }
         return null;
     }
 
     private String getJwtToken(HttpServletRequest request, boolean fromCookie) {
-        if (fromCookie) return getJwtFromCookie(request);
-
+        if (fromCookie){
+            return getJwtFromCookie(request);
+        }
         return getJwtFromRequest(request);
     }
 

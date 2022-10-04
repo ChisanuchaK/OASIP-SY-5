@@ -5,16 +5,17 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 
 
-import javax.validation.constraints.Email;
-import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotNull;
+import javax.validation.constraints.*;
 
 @Data
 public class LoginRequest {
-    @NotBlank(message = "Email address cannot be empty")
-    @Email(message = "Please provide valid email address")
+    @NotNull
+    @Email(regexp = "[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,3}",
+            flags =  Pattern.Flag.CASE_INSENSITIVE)
     private String emailUser;
-    @NotBlank(message = "Password cannot be empty")
+
+    @NotNull
+    @Size(min = 8 , max = 14)
     private String password;
     }
 

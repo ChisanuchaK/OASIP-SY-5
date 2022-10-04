@@ -16,6 +16,8 @@ import sit.int221.TimeUpBackend.entities.User;
 import sit.int221.TimeUpBackend.repositories.UserRepository;
 import sit.int221.TimeUpBackend.security.Argon2PasswordEncoder;
 
+import java.text.SimpleDateFormat;
+import java.time.LocalDateTime;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -38,6 +40,11 @@ public class UserService {
 
     @Autowired
     private JwtTokenUtil jwtTokenUtil;
+
+    @Autowired
+    private JwtUserDetailsService userDetailsService;
+
+
 
     //get
     public List<UserGetDto> getUserByName(String nameUser) {
@@ -83,10 +90,10 @@ public class UserService {
     }
 
 
-    public User MatchUser(MatchDto matchDto) {
-        User user = userRepository.findByEmailUser(matchDto.getEmailUser());
+    public User MatchUser(LoginRequest loginRequest) {
+        User user = userRepository.findByEmailUser(loginRequest.getEmailUser());
         if (user != null) {
-            if ((encoder.matches(matchDto.getPassword(), user.getPassword())) && (matchDto.getEmailUser().equals(user.getEmailUser()))) {
+            if ((encoder.matches(loginRequest.getPassword(), user.getPassword())) && (loginRequest.getEmailUser().equals(user.getEmailUser()))) {
                 throw new ResponseStatusException(HttpStatus.OK, "password matched");
             } else {
                 throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "password not matched");
@@ -167,55 +174,40 @@ public class UserService {
     }
 
     //login
-    public ResponseEntity<LoginResponse> login(LoginRequest loginRequest, String accessToken, String refreshToken) {
+    public ResponseEntity<LoginResponse> login(LoginRequest loginRequest) {
         String email = loginRequest.getEmailUser();
         User user = userRepository.findByEmailUser(email);
-        Boolean accessTokenValid = jwtTokenUtil.validateToken(accessToken);
-        Boolean refreshTokenValid = jwtTokenUtil.validateToken(refreshToken);
-
         HttpHeaders responseHeaders = new HttpHeaders();
         sit.int221.TimeUpBackend.dtos.Token newAccessToken;
         sit.int221.TimeUpBackend.dtos.Token newRefreshToken;
-        if (!accessTokenValid && !refreshTokenValid) {
             newAccessToken = jwtTokenUtil.generateAccessToken(user.getEmailUser());
             newRefreshToken = jwtTokenUtil.generateRefreshToken(user.getEmailUser());
             addAccessTokenCookie(responseHeaders, newAccessToken);
             addRefreshTokenCookie(responseHeaders, newRefreshToken);
-        }
-
-        if (!accessTokenValid && refreshTokenValid) {
-            newAccessToken = jwtTokenUtil.generateAccessToken(user.getEmailUser());
-            addAccessTokenCookie(responseHeaders, newAccessToken);
-        }
-
-        if (accessTokenValid && refreshTokenValid) {
-            newAccessToken = jwtTokenUtil.generateAccessToken(user.getEmailUser());
-            newRefreshToken = jwtTokenUtil.generateRefreshToken(user.getEmailUser());
-            addAccessTokenCookie(responseHeaders, newAccessToken);
-            addRefreshTokenCookie(responseHeaders, newRefreshToken);
-        }
-
         LoginResponse loginResponse = new LoginResponse(LoginResponse.SuccessFailure.SUCCESS,  "Auth successful. Tokens are created in cookie." ,  user.getIdUser() , user.getNameUser() , user.getEmailUser() , user.getRoleUser());
         return ResponseEntity.ok().headers(responseHeaders).body(loginResponse);
 
     }
 
-    public ResponseEntity<LoginResponse> refresh(String accessToken, String refreshToken) {
-        UserDetails getCurrentAuthentication = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        User user = userRepository.findByEmailUser(getCurrentAuthentication.getUsername());
+    public ResponseEntity<LoginResponse> refresh( String refreshToken) {
         Boolean refreshTokenValid = jwtTokenUtil.validateToken(refreshToken);
         if (!refreshTokenValid) {
             throw new IllegalArgumentException("Refresh Token is invalid!");
         }
+        if(!(jwtTokenUtil.isTokenExpired(refreshToken)) ){
+            String email = jwtTokenUtil.getUsernameFromToken(refreshToken);
+            User user = userRepository.findByEmailUser(email);
+            final UserDetails userDetails = userDetailsService.loadUserByUsername(email);
+            Token newAccessToken = jwtTokenUtil.generateAccessToken(userDetails.getUsername());
+            HttpHeaders responseHeaders = new HttpHeaders();
+            responseHeaders.add(HttpHeaders.SET_COOKIE, cookieUtil.createAccessTokenCookie(newAccessToken.getTokenValue(), newAccessToken.getDuration()).toString());
+            LoginResponse loginResponse = new LoginResponse(LoginResponse.SuccessFailure.SUCCESS,  "Auth successful. Tokens are created in cookie." ,  user.getIdUser() , user.getNameUser() , user.getEmailUser() , user.getRoleUser());
+            return ResponseEntity.ok().headers(responseHeaders).body(loginResponse);
+        }
+    else{
+            throw new ResponseStatusException(HttpStatus.BAD_GATEWAY , "Login again");
+        }
 
-        String currentUserEmail = jwtTokenUtil.getUsernameFromToken(accessToken);
-
-        Token newAccessToken = jwtTokenUtil.generateAccessToken(currentUserEmail);
-        HttpHeaders responseHeaders = new HttpHeaders();
-        responseHeaders.add(HttpHeaders.SET_COOKIE, cookieUtil.createAccessTokenCookie(newAccessToken.getTokenValue(), newAccessToken.getDuration()).toString());
-
-        LoginResponse loginResponse = new LoginResponse(LoginResponse.SuccessFailure.SUCCESS, "Auth successful. Tokens are created in cookie." ,user.getIdUser() , user.getNameUser() , user.getEmailUser() , user.getRoleUser());
-        return ResponseEntity.ok().headers(responseHeaders).body(loginResponse);
     }
 
     private void addAccessTokenCookie(HttpHeaders httpHeaders, sit.int221.TimeUpBackend.dtos.Token token) {
