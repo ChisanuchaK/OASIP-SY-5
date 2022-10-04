@@ -67,16 +67,18 @@ public class EventService{
         UserDetails getCurrentAuthentication = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         User user = userRepository.findByEmailUser(getCurrentAuthentication.getUsername());
         Event event = eventRepository.findById(id).orElseThrow(()-> new ResponseStatusException(HttpStatus.NOT_FOUND , "id event not found"));
-        if(!(event.getBookingEmail().equals(user.getEmailUser()))){
-            throw  new ResponseStatusException(HttpStatus.FORBIDDEN , "email is not the same as student's email");
-        }
         if(user.getRoleUser().equals("admin")){
             Event bookings= eventRepository.findById(id).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
             return modelMapper.map(bookings , EventMoreDetailDto.class);
         }
-        else if (user.getRoleUser().equals("student") && event.getBookingEmail().equals(getCurrentAuthentication.getUsername()) ){
-            Event bookings= eventRepository.findById(id).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
-                    return modelMapper.map(bookings , EventMoreDetailDto.class);
+        else if (user.getRoleUser().equals("student") ){
+            if(!(event.getBookingEmail().equals(user.getEmailUser()))){
+                throw  new ResponseStatusException(HttpStatus.FORBIDDEN , "email is not the same as student's email");
+            }
+            else{
+                Event bookings= eventRepository.findById(id).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
+                return modelMapper.map(bookings , EventMoreDetailDto.class);
+            }
         }
         throw new ResponseStatusException(HttpStatus.BAD_REQUEST , "This email permission denied");
     }
@@ -161,16 +163,19 @@ public class EventService{
         UserDetails getCurrentAuthentication = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         User user = userRepository.findByEmailUser(getCurrentAuthentication.getUsername());
         Event event = eventRepository.findById(id).orElseThrow(()-> new ResponseStatusException(HttpStatus.NOT_FOUND , "Event not found"));
-        if(!(event.getBookingEmail().equals(user.getEmailUser()))){
-            throw  new ResponseStatusException(HttpStatus.FORBIDDEN , "email is not the same as student's email");
-        }
+
         if(user.getRoleUser().equals("admin")){
             eventRepository.deleteById(id);
             throw new ResponseStatusException(HttpStatus.OK , "Delete" + " " + id +  " " + user.getEmailUser() + " "  +"successful");
         }
-        else if (user.getRoleUser().equals("student") && event.getBookingEmail().equals(getCurrentAuthentication.getUsername())){
-               eventRepository.deleteById(id);
-               throw new ResponseStatusException(HttpStatus.OK , "Delete" + " " + id +  " " + user.getEmailUser() + " "  +"successful");
+        else if (user.getRoleUser().equals("student")){
+            if(!(event.getBookingEmail().equals(user.getEmailUser()))){
+                throw  new ResponseStatusException(HttpStatus.FORBIDDEN , "email is not the same as student's email");
+            }
+            else{
+                eventRepository.deleteById(id);
+                throw new ResponseStatusException(HttpStatus.OK , "Delete" + " " + id +  " " + user.getEmailUser() + " "  +"successful");
+            }
         }
         else {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST , "This email permission denied");
@@ -204,9 +209,14 @@ public class EventService{
                      eventRepository.saveAndFlush(event);
                      return ResponseEntity.status(200).body("Edited Successfully");
                  }
-                 else if (user.getRoleUser().equals("student") && event.getBookingEmail().equals(user.getEmailUser())){
-                        eventRepository.saveAndFlush(event);
-                        return ResponseEntity.status(200).body("Edited Successfully");
+                 else if (user.getRoleUser().equals("student")){
+                     if(!(event.getBookingEmail().equals(user.getEmailUser()))){
+                         throw  new ResponseStatusException(HttpStatus.FORBIDDEN , "email is not the same as student's email");
+                     }
+                     else{
+                         eventRepository.saveAndFlush(event);
+                         return ResponseEntity.status(200).body("Edited Successfully");
+                     }
                  }
         }
         else {
