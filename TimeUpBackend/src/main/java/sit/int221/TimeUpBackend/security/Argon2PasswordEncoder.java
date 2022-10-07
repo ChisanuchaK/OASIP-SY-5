@@ -6,18 +6,17 @@ import de.mkammerer.argon2.Argon2Factory;
 
 public class Argon2PasswordEncoder  {
 
-    private static final Argon2 ARGON2 = Argon2Factory.create();
+    private static final Argon2PasswordEncoder ARGON_2_PASSWORD_ENCODER = new Argon2PasswordEncoder();
 
-    private static final int ITERATIONS = 2;
-    private static final int MEMORY= 65536;
-    private static final int PARALLELISM = 1;
+    public Argon2PasswordEncoder argon2PasswordEncoder(){
+        return ARGON_2_PASSWORD_ENCODER;
+    }
 
     public String encode(final CharSequence rawPassword) {
-        final String hash = ARGON2.hash(ITERATIONS, MEMORY, PARALLELISM, rawPassword.toString());
-        return hash;
+        return ARGON_2_PASSWORD_ENCODER.encode(rawPassword.toString());
     }
 
     public boolean matches(CharSequence rawPassword, String encodedPassword) {
-        return ARGON2.verify(encodedPassword, rawPassword.toString());
+        return ARGON_2_PASSWORD_ENCODER.matches(encodedPassword, rawPassword.toString());
     }
 }

@@ -26,8 +26,6 @@ import javax.validation.Valid;
 @RestController
 @CrossOrigin(origins = "*" , allowedHeaders = "*")
 public class JwtAuthenticationController {
-    @Autowired
-    private AuthenticationManager authenticationManager;
 
     @Autowired
     private UserService userService;
@@ -37,20 +35,7 @@ public class JwtAuthenticationController {
 
     @PostMapping(value = "/api/login", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<LoginResponse> login(@Valid @RequestBody LoginRequest loginRequest) {
-        Authentication authentication = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(loginRequest.getEmailUser(), loginRequest.getPassword()));
-        SecurityContextHolder.getContext().setAuthentication(authentication);
         return userService.login(loginRequest);
-    }
-
-    private void authenticate(String username, String password) throws Exception {
-        try {
-            authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(username, password));
-        }
-        catch (DisabledException e) {
-            throw new Exception("USER_DISABLED", e);
-        } catch (BadCredentialsException e) {
-            throw new Exception("INVALID_CREDENTIALS", e);
-        }
     }
     @GetMapping(value = "/api/refreshtoken", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<LoginResponse> refreshToken(@CookieValue(name = "refreshToken", required = false) String refreshToken) {

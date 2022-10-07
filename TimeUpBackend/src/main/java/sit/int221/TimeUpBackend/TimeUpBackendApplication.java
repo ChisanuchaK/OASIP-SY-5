@@ -14,9 +14,5 @@ public class TimeUpBackendApplication {
 		SpringApplication.run(TimeUpBackendApplication.class, args);
 
 	}
-	@Bean
-	public PasswordEncoder passwordEncoder() {
-		return new Argon2PasswordEncoder();
-	}
 
 }

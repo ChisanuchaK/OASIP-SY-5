@@ -1,7 +1,6 @@
 package sit.int221.TimeUpBackend.config;
 
-import de.mkammerer.argon2.Argon2;
-import de.mkammerer.argon2.Argon2Factory;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -14,12 +13,10 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.argon2.Argon2PasswordEncoder;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.security.crypto.password.NoOpPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
-import org.springframework.web.bind.annotation.PostMapping;
 import sit.int221.TimeUpBackend.filter.JwtRequestFilter;
+
 
 @Configuration
 @EnableWebSecurity
@@ -39,11 +36,14 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     private JwtRequestFilter jwtRequestFilter;
 
     @Autowired
-    private PasswordEncoder passwordEncoder(){
-      return  new Argon2PasswordEncoder();
-    };
+    private Argon2PasswordEncoder argon2PasswordEncoder;
 
-    @Autowired
+    @Bean
+    public PasswordEncoder passwordEncoder(){
+        return argon2PasswordEncoder;
+    }
+
+    @Override
     public void configure(AuthenticationManagerBuilder auth) throws Exception {
         // configure AuthenticationManager so that it knows from where to load
         // user for matching credentials

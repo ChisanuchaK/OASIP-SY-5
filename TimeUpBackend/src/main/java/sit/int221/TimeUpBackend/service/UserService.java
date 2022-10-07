@@ -5,6 +5,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
@@ -44,6 +47,8 @@ public class UserService {
     @Autowired
     private JwtUserDetailsService userDetailsService;
 
+    @Autowired
+    private AuthenticationManager authenticationManager;
 
 
     //get
@@ -175,6 +180,8 @@ public class UserService {
 
     //login
     public ResponseEntity<LoginResponse> login(LoginRequest loginRequest) {
+        Authentication authentication = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(loginRequest.getEmailUser(), loginRequest.getPassword()));
+        SecurityContextHolder.getContext().setAuthentication(authentication);
         String email = loginRequest.getEmailUser();
         User user = userRepository.findByEmailUser(email);
         HttpHeaders responseHeaders = new HttpHeaders();
@@ -186,7 +193,6 @@ public class UserService {
             addRefreshTokenCookie(responseHeaders, newRefreshToken);
         LoginResponse loginResponse = new LoginResponse(LoginResponse.SuccessFailure.SUCCESS,  "Auth successful. Tokens are created in cookie." ,  user.getIdUser() , user.getNameUser() , user.getEmailUser() , user.getRoleUser());
         return ResponseEntity.ok().headers(responseHeaders).body(loginResponse);
-
     }
 
     public ResponseEntity<LoginResponse> refresh( String refreshToken) {
