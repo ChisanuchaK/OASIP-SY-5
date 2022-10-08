@@ -49,7 +49,6 @@ public class UserService {
     @Autowired
     private AuthenticationManager authenticationManager;
 
-
     //get
     public List<UserGetDto> getUserByName(String nameUser) {
         List<User> user = userRepository.findAllByNameUserOrderByNameUserDesc(nameUser);
@@ -76,9 +75,8 @@ public class UserService {
         UserDetails userDetails = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         User userFull = userRepository.findByEmailUser(userDetails.getUsername());
         if(userFull.getRoleUser().equals("admin")){
-            User user = userRepository.findById(id).orElseThrow(() ->
-                    new ResponseStatusException(HttpStatus.NOT_FOUND));
-            return modelMapper.map(user, UserGetDto.class);
+            User user = userRepository.findById(id).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
+            return modelMapper.map(user , UserGetDto.class);
         }
         else if (userFull.getRoleUser().equals("student") && userFull.getEmailUser().equals(userDetails.getUsername())){
             if(id == userFull.getIdUser()){
@@ -181,7 +179,7 @@ public class UserService {
     public ResponseEntity<LoginResponse> login(LoginRequest loginRequest) {
         Authentication authentication = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(loginRequest.getEmailUser(), loginRequest.getPassword()));
         SecurityContextHolder.getContext().setAuthentication(authentication);
-        String email = loginRequest.getEmailUser();
+        String email = loginRequest.getEmailUser().trim();
         User user = userRepository.findByEmailUser(email);
         HttpHeaders responseHeaders = new HttpHeaders();
         sit.int221.TimeUpBackend.dtos.Token newAccessToken;

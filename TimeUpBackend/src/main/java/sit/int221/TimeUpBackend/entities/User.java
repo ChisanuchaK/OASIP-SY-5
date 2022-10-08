@@ -29,8 +29,8 @@ public class User {
     @Column(name = "`role enum`")
     private String RoleUser;
     @Column(name = "createdOn", nullable = false)
-    private Instant createdOn;
+    private Instant createOn;
     @Column(name = "updatedOn", nullable = false)
-    private Instant updatedOn;
+    private Instant updateOn;
 
 }

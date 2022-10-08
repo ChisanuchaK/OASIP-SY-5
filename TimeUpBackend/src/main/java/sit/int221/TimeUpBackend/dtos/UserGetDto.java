@@ -29,6 +29,7 @@ public class UserGetDto {
     @Pattern(regexp = "admin|student|lecturer", message = "admin,student,lecturer")
     @Lob
     private String roleUser;
+
     private Instant createOn;
     private Instant updateOn;
 

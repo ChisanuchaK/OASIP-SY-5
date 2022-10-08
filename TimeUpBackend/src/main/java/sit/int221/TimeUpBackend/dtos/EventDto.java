@@ -23,7 +23,8 @@ public class EventDto {
     @JsonIgnore
     private User user;
     private String bookingName;
-    public String getBookingEmail(){return  user.getEmailUser();}
+    private String bookingEmail;
+    public String getUserEmail(){return  user.getEmailUser();}
     public String  getEventCategoryName(){
         return eventCategory.getEventCategoryName();
     }
