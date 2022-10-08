@@ -42,31 +42,56 @@ CREATE TABLE IF NOT EXISTS `TimeUp`.`booking` (
   `eventDuration` INT NOT NULL,
   `eventNotes` VARCHAR(500) NULL,
   `eventCategory` INT NOT NULL,
+  `user_iduser` INT NOT NULL,
   PRIMARY KEY (`idbooking`),
   INDEX `fk_booking_eventCategory_idx` (`eventCategory` ASC) VISIBLE,
   CONSTRAINT `fk_booking_eventCategory`
     FOREIGN KEY (`eventCategory`)
     REFERENCES `TimeUp`.`eventCategory` (`eventCategoryId`)
     ON DELETE NO ACTION
-    ON UPDATE NO ACTION)  
+    ON UPDATE NO ACTION,
+CONSTRAINT `fk_booking_user`
+    FOREIGN KEY (`user_iduser`) REFERENCES `TimeUp`.`user` (`iduser`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION
+    )  
 ENGINE = InnoDB;
 
 -- -----------------------------------------------------
 -- Table `TimeUp`.`user`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS TimeUp.user (
-iduser INT NOT NULL AUTO_INCREMENT,
-name VARCHAR(100) NOT NULL,
-email VARCHAR(50) NOT NULL,
-password VARCHAR(100) NOT NULL,
-role enum ('admin', 'lecturer', 'student'),
-createdOn TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
-updatedOn TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE  CURRENT_TIMESTAMP,
-primary key (iduser),
-unique index name (name asc) visible,
-unique index email (email) visible
+CREATE TABLE IF NOT EXISTS `TimeUp`.`user` (
+`iduser` INT NOT NULL AUTO_INCREMENT,
+`name` VARCHAR(100) NOT NULL,
+`email` VARCHAR(50) NOT NULL,
+`password` VARCHAR(100) NOT NULL,
+`role enum` enum ('admin', 'lecturer', 'student'),
+`createdOn` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+`updatedOn` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE  CURRENT_TIMESTAMP,
+primary key (`iduser`),
+unique index `name` (`name` asc) visible,
+unique index `email` (`email`) visible
 
 )
+ENGINE = InnoDB;
+
+-- -----------------------------------------------------
+-- Table `TimeUp`.`event_category_owner`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `TimeUp`.`eventCategoryOwner` (
+  `eventCategory_eventCategoryId` INT NOT NULL,
+  `user_iduser` INT NOT NULL,
+  PRIMARY KEY (`eventCategory_eventCategoryId`, `user_iduser`),
+  INDEX `fk_user_id` (`user_iduser` ASC) VISIBLE,
+  INDEX `fk_eventCategory_id` (`eventCategory_eventCategoryId` ASC) VISIBLE,
+  CONSTRAINT `fk_eventCategory_id`
+    FOREIGN KEY (`eventCategory_eventCategoryId`) REFERENCES `TimeUp`.`eventCategory` (`eventCategoryId`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION,
+  CONSTRAINT `fk_user_id`
+    FOREIGN KEY (`user_iduser`) REFERENCES `TimeUp`.`user` (`iduser`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION)
 ENGINE = InnoDB;
 
 CREATE user 'admin'@'%' IDENTIFIED  by 'admin123';
