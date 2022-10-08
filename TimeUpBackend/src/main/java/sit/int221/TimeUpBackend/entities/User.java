@@ -1,42 +1,36 @@
 package sit.int221.TimeUpBackend.entities;
 
+import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
 
 import javax.persistence.*;
-import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Pattern;
 import java.time.Instant;
 
-@Entity
 @Setter
 @Getter
+@Entity
 @Table(name = "user")
-
 public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "iduser", nullable = false)
     private Integer idUser;
 
-    @Column(name = "name", length = 100 ,nullable = false , unique = true)
+    @Column(name = "name", nullable = false, length = 100)
     private String nameUser;
 
-    @Column(name = "email", length = 50 ,nullable = false , unique = true)
+    @Column(name = "email", nullable = false, length = 50)
     private String emailUser;
 
-    @Column(name = "password", length = 90 ,nullable = false)
+    @Column(name = "password", nullable = false, length = 100)
     private String password;
+    @Lob
+    @Column(name = "`role enum`")
+    private String RoleUser;
+    @Column(name = "createdOn", nullable = false)
+    private Instant createdOn;
+    @Column(name = "updatedOn", nullable = false)
+    private Instant updatedOn;
 
-
-    //@Enumerated(EnumType.STRING)
-    @Column(name = "role")
-    private String roleUser;
-
-    @Column(name = "createdOn" , nullable = false , insertable = false , updatable = false)
-    private Instant createOn;
-
-    @Column(name = "updatedOn" , nullable = false , insertable = false ,  updatable = false)
-    private Instant updateOn;
 }

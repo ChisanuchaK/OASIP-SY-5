@@ -20,7 +20,6 @@ public class EventCategoryDto {
     @NotNull
     @Size(min = 1 , max = 500 , message = "size must be between 1 and 100")
     private String eventCategoryName;
-
     @NotNull
     @Min(1)
     @Max(480)

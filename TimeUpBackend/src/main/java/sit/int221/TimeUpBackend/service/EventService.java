@@ -2,14 +2,8 @@ package sit.int221.TimeUpBackend.service;
 
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.core.io.FileSystemResource;
-import org.springframework.http.HttpRange;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.mail.SimpleMailMessage;
-import org.springframework.mail.javamail.JavaMailSender;
-import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
@@ -17,7 +11,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.server.ResponseStatusException;
 import sit.int221.TimeUpBackend.dtos.*;
-import sit.int221.TimeUpBackend.entities.EmailDetails;
 import sit.int221.TimeUpBackend.entities.Event;
 import sit.int221.TimeUpBackend.entities.EventCategory;
 import sit.int221.TimeUpBackend.entities.User;
@@ -25,10 +18,6 @@ import sit.int221.TimeUpBackend.repositories.EventRepository;
 import sit.int221.TimeUpBackend.repositories.EventCategoryRepository;
 import sit.int221.TimeUpBackend.repositories.UserRepository;
 
-import javax.mail.MessagingException;
-import javax.mail.internet.MimeMessage;
-import java.io.File;
-import java.lang.reflect.Type;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -90,7 +79,7 @@ public class EventService{
     // post
 
     public ResponseEntity create( EventPostDto eventPostDto) {
-        User checkUserByEmail = userRepository.findByEmailUser(eventPostDto.getBookingEmail());
+        User checkUserByEmail = userRepository.findByIdUser(eventPostDto.getUser().getIdUser());
         Event booking = modelMapper.map(eventPostDto, Event.class);
         EventCategory eventCategory = eventCategoryRepository.findById(eventPostDto.getEventCategory().getEventCategoryId()).orElseThrow(()
                 -> new ResponseStatusException(HttpStatus.NOT_FOUND));
@@ -126,9 +115,9 @@ public class EventService{
                 } else {
                     throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "overlapped with other events");
                 }
-            } else if (user.getRoleUser().equals("student") && user.getEmailUser().equals(eventPostDto.getBookingEmail())) {
+            } else if (user.getRoleUser().equals("student") && user.getEmailUser().equals(checkUserByEmail.getEmailUser())) {
                 booking.setEventDuration(eventCategory.getEventDuration());
-                booking.setBookingEmail(getCurrentAuthentication.getUsername());
+                booking.setBookingEmail(checkUserByEmail.getEmailUser());
                 if (!checkTimeOverLap(checkCompare, booking)) {
                     eventRepository.save(booking);
                     emailService.sendMailWithAttachment(eventPostDto);

@@ -1,9 +1,11 @@
 package sit.int221.TimeUpBackend.dtos;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import sit.int221.TimeUpBackend.entities.User;
 
 import javax.persistence.Lob;
 import javax.validation.constraints.NotNull;
@@ -29,4 +31,5 @@ public class UserGetDto {
     private String roleUser;
     private Instant createOn;
     private Instant updateOn;
+
 }

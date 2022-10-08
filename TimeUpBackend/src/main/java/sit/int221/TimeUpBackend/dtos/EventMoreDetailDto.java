@@ -6,6 +6,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import sit.int221.TimeUpBackend.entities.EventCategory;
+import sit.int221.TimeUpBackend.entities.User;
 
 import java.time.Instant;
 
@@ -23,6 +24,8 @@ public class EventMoreDetailDto {
     private String bookingName;
     private String bookingEmail;
     private String eventNotes;
+    @JsonIgnore
+    private User user;
     public String  getEventCategoryName(){
         return eventCategory.getEventCategoryName();
     }

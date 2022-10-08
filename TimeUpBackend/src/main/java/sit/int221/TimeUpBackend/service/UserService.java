@@ -2,6 +2,7 @@ package sit.int221.TimeUpBackend.service;
 
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Bean;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -10,6 +11,7 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.crypto.argon2.Argon2PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 import sit.int221.TimeUpBackend.config.CookieUtil;
@@ -17,10 +19,6 @@ import sit.int221.TimeUpBackend.config.JwtTokenUtil;
 import sit.int221.TimeUpBackend.dtos.*;
 import sit.int221.TimeUpBackend.entities.User;
 import sit.int221.TimeUpBackend.repositories.UserRepository;
-import sit.int221.TimeUpBackend.security.Argon2PasswordEncoder;
-
-import java.text.SimpleDateFormat;
-import java.time.LocalDateTime;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -33,7 +31,8 @@ public class UserService {
         this.userRepository = userRepository;
     }
 
-    Argon2PasswordEncoder encoder = new Argon2PasswordEncoder();
+
+     Argon2PasswordEncoder encoder = new Argon2PasswordEncoder();
 
     @Autowired
     private CookieUtil cookieUtil;

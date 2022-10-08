@@ -10,7 +10,6 @@ import javax.mail.internet.MimeMessage;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
-import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -19,10 +18,10 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 import sit.int221.TimeUpBackend.dtos.EventPostDto;
 import sit.int221.TimeUpBackend.dtos.UserPostDto;
-import sit.int221.TimeUpBackend.entities.Event;
 import sit.int221.TimeUpBackend.entities.EventCategory;
+import sit.int221.TimeUpBackend.entities.User;
 import sit.int221.TimeUpBackend.repositories.EventCategoryRepository;
-import sit.int221.TimeUpBackend.repositories.EventRepository;
+import sit.int221.TimeUpBackend.repositories.UserRepository;
 
 @Service
 // Class
@@ -35,7 +34,8 @@ public class EmailServiceImpl implements EmailService {
     @Autowired
     private EventCategoryRepository eventCategoryRepository;
 
-
+    @Autowired
+    private UserRepository userRepository;
     @Value("${spring.mail.username}")
     private String sender;
     private static final String PATTERN_FORMAT = "EEE, d MMM yyyy HH:mm Z";
@@ -76,6 +76,7 @@ public class EmailServiceImpl implements EmailService {
     // To send an email with attachment
     @Override
     public String sendMailWithAttachment(EventPostDto event) {
+        User checkUserByEmail = userRepository.findByIdUser(event.getUser().getIdUser());
         EventCategory eventCategory = eventCategoryRepository.findById(event.getEventCategory().getEventCategoryId()).orElseThrow(
                 ()-> new ResponseStatusException(HttpStatus.NOT_FOUND));
         Instant getEventEndTime = event.getEventStartTime().plusMillis(eventCategory.getEventDuration() * 60000);
@@ -89,10 +90,10 @@ public class EmailServiceImpl implements EmailService {
             try {
                 mimeMessageHelper = new MimeMessageHelper(mimeMessage, true);
                 mimeMessageHelper.setFrom(sender);
-                mimeMessageHelper.setTo(event.getBookingEmail());
+                mimeMessageHelper.setTo(checkUserByEmail.getEmailUser());
                 mimeMessageHelper.setText("Booking name : "  + event.getBookingName() + "<br>"
                         + "Category : "  + eventCategory.getEventCategoryName()  + "<br>"
-                        + "Email : " + event.getBookingEmail()   + "<br>"
+                        + "Email : " + checkUserByEmail.getEmailUser()   + "<br>"
                         + "Start time : "  + startTime  + "<br>"
                         + "End time : "  + endTime  + "<br>"
                         + "Event note : " + event.getEventNotes() + "<br>" + "<br>"
@@ -116,10 +117,10 @@ public class EmailServiceImpl implements EmailService {
             try {
                 mimeMessageHelper = new MimeMessageHelper(mimeMessage, true);
                 mimeMessageHelper.setFrom(sender);
-                mimeMessageHelper.setTo(event.getBookingEmail());
+                mimeMessageHelper.setTo(checkUserByEmail.getEmailUser());
                 mimeMessageHelper.setText("Booking name : "  + getCurrentAuthentication.getUsername() + "<br>"
                         + "Category : "  + eventCategory.getEventCategoryName()  + "<br>"
-                        + "Email : " + getCurrentAuthentication.getUsername()   + "<br>"
+                        + "Email : " + checkUserByEmail.getEmailUser()   + "<br>"
                         + "Start time : "  + startTime  + "<br>"
                         + "End time : "  + endTime  + "<br>"
                         + "Event note : " + event.getEventNotes() + "<br>" + "<br>"

@@ -5,6 +5,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import sit.int221.TimeUpBackend.entities.EventCategory;
+import sit.int221.TimeUpBackend.entities.User;
 
 import javax.validation.constraints.*;
 import java.time.Instant;
@@ -29,4 +30,5 @@ public class EventPostDto {
     @Size(min = 1 , max = 100 , message = "size must be between 1 and 100")
     private String bookingName;
 
+    private User user;
 }

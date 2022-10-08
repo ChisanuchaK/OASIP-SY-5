@@ -1,6 +1,5 @@
 package sit.int221.TimeUpBackend.config;
 
-import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.util.*;

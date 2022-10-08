@@ -7,12 +7,9 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.*;
 import sit.int221.TimeUpBackend.dtos.*;
-import sit.int221.TimeUpBackend.entities.User;
-import sit.int221.TimeUpBackend.service.EmailServiceImpl;
 import sit.int221.TimeUpBackend.service.UserService;
 
 import javax.validation.Valid;
-import java.util.List;
 import java.util.Map;
 
 import static sit.int221.TimeUpBackend.controller.EventCategoryController.getStringStringMap;
@@ -39,7 +36,7 @@ public class UserController {
     }
 
     @PostMapping("")
-    @PreAuthorize("hasAuthority('admin')")
+//    @PreAuthorize("hasAuthority('admin')")
     @ResponseStatus(HttpStatus.CREATED)
     public ResponseEntity createUser(@Valid @RequestBody UserPostDto userDTOPOST){
 
