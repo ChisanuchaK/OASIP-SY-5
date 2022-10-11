@@ -36,7 +36,7 @@ public class UserController {
     }
 
     @PostMapping("")
-//    @PreAuthorize("hasAuthority('admin')")
+    @PreAuthorize("hasAuthority('admin')")
     @ResponseStatus(HttpStatus.CREATED)
     public ResponseEntity createUser(@Valid @RequestBody UserPostDto userDTOPOST){
 

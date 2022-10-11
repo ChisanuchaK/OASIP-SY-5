@@ -34,9 +34,6 @@ public class EventDto {
         }
     }
 
-    public int getUserId(){
-        return user.getIdUser();
-    }
     public String  getEventCategoryName(){
         return eventCategory.getEventCategoryName();
     }
