@@ -28,10 +28,9 @@ public class User {
     @Lob
     @Column(name = "`role enum`")
     private String RoleUser;
-    @Column(name = "createdOn" , nullable = false , insertable = false , updatable = false)
+    @Column(name = "createdOn", nullable = false)
     private Instant createOn;
-
-    @Column(name = "updatedOn" , nullable = false , insertable = false ,  updatable = false)
+    @Column(name = "updatedOn", nullable = false)
     private Instant updateOn;
 
 }
