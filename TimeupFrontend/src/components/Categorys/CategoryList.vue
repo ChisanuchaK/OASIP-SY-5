@@ -1,22 +1,25 @@
 <script setup>
 import { ref, onBeforeMount, computed } from 'vue';
 import EditCategory from './EditCategory.vue';
-const emits = defineEmits(["EditCategoryIdFromEdit"]);
+// ----- use when not use pinia
+// const emits = defineEmits(["EditCategoryIdFromEdit"]);
 const props = defineProps({
-    categorysLists: {
+    categoryLists: {
         type: [Object],
         default: {}
     }
 })
 
-const categorys = computed(() => props.categorysLists)
+const categorys = computed(() => props.categoryLists)
 
 const changeEditDialogTrue = (category) => {
     category.statusEditDialog = true
 }
-const getEditCategoryValue = (editCategory) => {
-    emits('EditCategoryIdFromEdit', editCategory)
-}
+
+// ----- use when not use pinia
+// const getEditCategoryValue = (editCategory) => {
+//     emits('EditCategoryIdFromEdit', editCategory)
+// }
 
 </script>
  
@@ -56,8 +59,8 @@ const getEditCategoryValue = (editCategory) => {
                         class="row-start-6 col-start-1 col-span-2 bg-[#00A28B] rounded-b-xl text-white uppercase p-1"
                         @click="changeEditDialogTrue(category)"> Edit </button>
 
-                    <EditCategory v-if="category.statusEditDialog" :categorys="category" :categoryLists="categorys"
-                        @EditCategoryId="getEditCategoryValue" />
+                    <EditCategory v-if="category.statusEditDialog" :categorys="category" :categoryLists="categorys"/>
+                        <!-- // ----- use when not use pinia @EditCategoryId="getEditCategoryValue"  -->
 
                 </div>
             </div>

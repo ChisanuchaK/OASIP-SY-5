@@ -13,12 +13,12 @@ const categoryLists = computed(() => props.categorys);
 const categoryList = ref(categoryLists);
 
 const categoryIndexSelect = ref('');
-const time = ref()
+const time = ref();
 
 const filterData = reactive({
     eventCategoryId: "",
     eventStartTime: ""
-})
+});
 
 const getChangeCategory = () => {
     filterData.eventCategoryId = categoryList.value[categoryIndexSelect.value].eventCategoryId
@@ -27,29 +27,30 @@ const getChangeCategory = () => {
     // console.log(time.value);
     emits('getChageCategory', filterData.eventCategoryId);
     
-}
+};
 
 const getAllEvent = () => {
     categoryIndexSelect.value = ''
     time.value = ''
     emits('getAllEvent');
-}
+};
 
 const getChangeToPast = () => {
     categoryIndexSelect.value = ''
     time.value = ''
     emits('getPastEvent');
-}
+};
+
 const getChangeToUpcoming = () => {
     categoryIndexSelect.value = ''
     time.value = ''
     emits('getUpComingEvent');
-}
+};
 
 const getChangeByDateTime = (times) => {
     categoryIndexSelect.value = ''
     emits('getDateTime',times);
-}
+};
 
 const colorBg = (categorys) => {
     for (let category of categoryList.value) {
@@ -58,10 +59,9 @@ const colorBg = (categorys) => {
         }
             
     }
-}
+};
 
 </script>
- 
 <template>
     <div class="grid grid-flow-row grid-cols-10 w-[90%] mb-10 m-auto gap-2 ">
         <button class="row-start-1 col-start-1  col-span-1 w-full  p-2 bg-gray-200 border-4 border-[#50ABCB] hover:bg-[#50ABCB] rounded-xl uppercase font-bold drop-shadow-md"

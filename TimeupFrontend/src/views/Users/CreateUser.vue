@@ -3,11 +3,26 @@ import { ref, computed, reactive, onBeforeMount } from 'vue';
 import { useRouter } from 'vue-router'; //get params to script
 import Confirm from '../../components/Confirm.vue';
 import Cancel from '../../components/Cancel.vue';
-import { createUser, getAllUsers } from '../../stores/user.js';
+import { userStore } from '../../stores/user.js';
 import PleaseLogInDialog from '../../components/PleaseLogInDialog.vue';
 
+
+const userSignInRes = userStore();
 const appRouter = useRouter();
-// const goBackToHome = () => appRouter.push({ name: 'SignIn' });
+
+userSignInRes.getRefreshToken().then(() => {
+  if (userSignInRole.value == 'student' || userSignInRole.value == 'lecturer' || userSignInRole.value == 'guest') {
+    appRouter.go(-1);
+  }
+});
+
+const goBackToHome = () => appRouter.push({ name: 'Home' });
+const goBack = () => appRouter.go(-1);
+
+userSignInRes.getAllUsers();
+
+const userSignInRole = computed(() => userSignInRes.signInUserData.userRole);
+
 const localDataUser = reactive({
   nameUser: '',
   emailUser: '',
@@ -16,14 +31,8 @@ const localDataUser = reactive({
   confirmPassword: ''
 });
 
-const userListAlls = ref([]);
-const responseGetAllUser = ({});
-const responseCreateUser = ({});
-const getToken = localStorage.getItem('refreshToken');
-const getUserRole = ref(localStorage.getItem('userRole')); 
+const userListAlls = computed(() => userSignInRes.users);
 const pageName = ref('SIGN-UP');
-// const UserName = ref([]);
-// const roleLists = ref();
 
 const isInvalid = ref(false);
 const nameIsDuplicate = ref(false);
@@ -46,8 +55,7 @@ const changeCancelDialogClose = () => {
 
 const cancelCreateUser = () => {
   cancelDialogStatus.value = false;
-  // appRouter.push({ name: 'SignIn' });
-  appRouter.go(-1);
+  goBack();
 };
 
 const changeConfirmDialogShow = () => {
@@ -91,9 +99,8 @@ const createUserSuccess = async (dataOfUser) => {
   dataOfUser.emailUser = dataOfUser.emailUser.trim();
   alert('create user success!!!');
   confirmDialogStatus.value = false;
-  // appRouter.push({ name: 'SignIn' })
-  appRouter.push({ name: 'Home' });
-  await createUser(dataOfUser);
+  userSignInRes.createUser(dataOfUser);
+  goBackToHome();
 };
 
 //check invalid from input
@@ -215,13 +222,13 @@ const checkRole = () => {
 //
 
 onBeforeMount(async () => {
-  if(getUserRole.value == 'student'){
-    appRouter.go(-1);
-  }
-  responseGetAllUser.value = await getAllUsers();
-  userListAlls.value = responseGetAllUser.value.data;
+  // if (userSignInRes.signInUserData.userRole == 'student') {
+  //   goBack();
+  // }
+  // await userSignInRes.getAllUsers();
+  // userListAlls.value = userSignInRes.users;
   // console.log(localDataUser.roleUser.length)
-  
+
 });
 </script>
 
@@ -416,21 +423,21 @@ onBeforeMount(async () => {
             inputPasswordIsInvalid ||
             inputConfirmPasswordIsInvalid
           " :style="{
-              'border-color':
-                inputNameIsEmpty ||
-                inputNameIsOver ||
-                inputNameIsDuplicate ||
-                inputRoleIsEmpty ||
-                inputEmailIsDuplicate ||
-                inputEmailIsEmpty ||
-                inputEmailIsInvalid ||
-                inputEmailIsOver ||
-                inputPasswordIsEmpty ||
-                inputPasswordIsInvalid ||
-                inputConfirmPasswordIsInvalid
-                  ? 'red'
-                  : ''
-            }" @click="changeConfirmDialogShow"
+            'border-color':
+              inputNameIsEmpty ||
+              inputNameIsOver ||
+              inputNameIsDuplicate ||
+              inputRoleIsEmpty ||
+              inputEmailIsDuplicate ||
+              inputEmailIsEmpty ||
+              inputEmailIsInvalid ||
+              inputEmailIsOver ||
+              inputPasswordIsEmpty ||
+              inputPasswordIsInvalid ||
+              inputConfirmPasswordIsInvalid
+                ? 'red'
+                : ''
+          }" @click="changeConfirmDialogShow"
             class="rounded-md bg-[#105E99] text-[#ffffff] w-[70%] m-auto p-2 hover:bg-[#004980] transition delay-75 disabled:opacity-50">
             Create your account
           </button>
@@ -460,7 +467,7 @@ onBeforeMount(async () => {
           @onClickConfirmYes="createUserSuccess(localDataUser)" />
       </div>
 
-      <PleaseLogInDialog v-if="!getToken" :pageName="pageName"/>
+      <!-- <PleaseLogInDialog v-if="userSignInRole == 'guest'" :pageName="pageName" /> -->
 
     </div>
   </div>

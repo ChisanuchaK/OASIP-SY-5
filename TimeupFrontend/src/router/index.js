@@ -1,68 +1,73 @@
-import { createRouter, createWebHistory } from 'vue-router';
-import Home from '../views/Home.vue';
-import BookingList from '../views/BookingList.vue';
-import About from '../views/About.vue';
-import Reserve from '../views/Reserve.vue';
-import CategoryList from '../views/CategoryList.vue';
-import UserList from '../views/Users/UserList.vue';
-import SignIn from '../views/Users/SignIn.vue';
-import SignUp from '../views/Users/SignUp.vue';
-import DetailUser from '../views/Users/DetailUser.vue';
-import EditUser from '../views/Users/EditUser.vue';
+import { createRouter, createWebHistory } from "vue-router";
+import Home from "../views/Home.vue";
+import About from "../views/About.vue";
+import CategoryLists from "../views/Categorys/CategoryLists.vue";
+import SignIn from "../views/Users/SignIn.vue";
+import CreateUser from "../views/Users/CreateUser.vue";
+import CreateBooking from "../views/Bookings/CreateBooking.vue";
+import BookingLists from "../views/Bookings/BookingLists.vue";
+import UserLists from "../views/Users/UserLists.vue";
+import UserDetail from "../views/Users/UserDetail.vue";
+import EditUser from "../views/Users/EditUser.vue"
 
 const history = createWebHistory(`${import.meta.env.VITE_ROUTER_URL}`);
 // const history = createWebHistory();
 const routes = [
   {
-    path: '/',
-    name: 'Home',
-    component: Home
+    path: "/",
+    name: "Home",
+    component: Home,
   },
   {
-    path: '/bookingList',
-    name: 'BookingList',
-    component: BookingList
+    path: "/about",
+    name: "About",
+    component: About,
   },
   {
-    path: '/aboutus',
-    name: 'AboutUs',
-    component: About
+    path: '/categorylists',
+    name: 'CategoryLists',
+    component: CategoryLists
   },
   {
-    path: '/Reserve',
-    name: 'Reserve',
-    component: Reserve
+    path: "/sign-in",
+    name: "SignIn",
+    component: SignIn,
   },
   {
-    path: '/CategoryList',
-    name: 'CategoryList',
-    component: CategoryList
+    path: '/createuser',
+    name: 'CreateUser',
+    component: CreateUser
+  },
+    {
+    path: '/createbooking',
+    name: 'CreateBooking',
+    component: CreateBooking
   },
   {
-    path: '/userList',
-    name: 'UserList',
-    component: UserList
+    path: '/bookinglists',
+    name: 'BookingLists',
+    component: BookingLists
   },
   {
-    path: '/sign-in',
-    name: 'SignIn',
-    component: SignIn
+    path: '/userlists',
+    name: 'UserLists',
+    component: UserLists
+  },
+    {
+    path: '/userlist/userdetail/:iduser',
+    name: 'UserDetail',
+    component: UserDetail
   },
   {
-    path: '/sign-up',
-    name: 'SignUp',
-    component: SignUp
-  },
-  {
-    path: '/userlist/detailuser/:idUser',
-    name: 'DetailUser',
-    component: DetailUser
-  },
-  {
-    path: '/userlist/edituser/:idUser',
+    path: '/userlist/edituser/:iduser',
     name: 'EditUser',
     component: EditUser
   }
+  // {
+  //   path: '/sign-up',
+  //   name: 'SignUp',
+  //   component: SignUp
+  // }
 ];
 
 const router = createRouter({ history, routes });

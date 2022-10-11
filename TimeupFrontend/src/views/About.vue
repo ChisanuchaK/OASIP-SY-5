@@ -1,20 +1,15 @@
 <script setup>
-import infoVue from '../components/info.vue';
-import NavbarTop from '../components/NavbarTop.vue';
-import NavbarBottom from '../components/NavbarBottom.vue';
+import InfoAbout from '../components/InfoAbout.vue';
 </script>
- 
+     
 <template>
-  <div>
-    <NavbarTop/>
-  <NavbarBottom/>
-    <div class="-z-10 relative">
-    <infoVue />
+    <div>
+        <InfoAbout  />
     </div>
-  </div>
-  
-  
+
+
 </template>
- 
+     
 <style>
+
 </style>

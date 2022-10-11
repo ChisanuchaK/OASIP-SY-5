@@ -1,34 +1,33 @@
 <script setup>
 import { ref, onBeforeMount, onMounted, computed } from 'vue';
 import { useRouter, useRoute } from 'vue-router'; //get params to script
-import { getUser } from '../../stores/user.js';
+import {userStore} from "../../stores/user.js";
+import PleaseLogInDialog from '../../components/PleaseLogInDialog.vue';
 import moment from 'moment';
-import NavbarTop from '../../components/NavbarTop.vue';
-import NavbarBottom from '../../components/NavbarBottom.vue';
 
+const userSignInRes = userStore();
 const appRouter = useRouter();
 let { params } = useRoute();
-console.log(params);
 
-const user = ref({});
-const responseGetUser = ref({});
-const goBackToUserList = () => appRouter.push({ name: 'UserList' });
-
-onBeforeMount(async () => {
-  responseGetUser.value = await getUser(params.idUser);
-  console.log(responseGetUser.value);
-  if(responseGetUser.value.status == 200){  
-  user.value = responseGetUser.value.data;
-  }else {
+userSignInRes.getRefreshToken().then(async () => {
+  if (userSignInRole.value == 'student' || userSignInRole.value == 'lecturer' || userSignInRole.value == 'guest') {
     appRouter.go(-1);
   }
+
+});
+
+userSignInRes.getUser(params.iduser);
+const userDetail = computed(()=> userSignInRes.userById);
+const goBackToUserList = () => appRouter.push({ name: 'UserLists' });
+
+const userSignInRole = computed(() => userSignInRes.signInUserData.userRole);
+
+onBeforeMount(async () => {
+  // userSignInRes.getUser(params.iduser);
 });
 </script>
 
 <template>
-  <div>
-    <NavbarTop/>
-    <NavbarBottom/>
     <div
       @click="goBackToUserList()"
       class="absolute top-[15%] bg-white rounded left-[2%] p-1 hover:bg-[#E9E9E9]"
@@ -50,7 +49,7 @@ onBeforeMount(async () => {
             class="col-start-1 col-span-1 uppercase m-auto text-[30px] text-white font-semibold"
           >
             <!-- User Id {{this.$route.params.idUser}} -->
-            User Id : {{ params.idUser }}
+            User Id : {{ params.iduser }}
           </div>
 
           <!-- <span class="col-start-4 col-span-1 dot"></span>
@@ -77,13 +76,13 @@ onBeforeMount(async () => {
           <div
             class="grid row-start-4 col-start-2 col-end-5 content-center text-center text-[18px]"
           >
-            {{ user.nameUser }}
+            {{ userDetail.nameUser }}
             <!-- {{user}} -->
           </div>
           <div
             class="grid row-start-5 col-start-2 col-end-5 text-center text-[30px] uppercase"
           >
-            {{ user.roleUser }}
+            {{ userDetail.roleUser }}
           </div>
           <div
             class="grid row-start-2 col-start-6 col-end-8 content-center text-center text-[18px]"
@@ -93,7 +92,7 @@ onBeforeMount(async () => {
           <div
             class="grid row-start-2 col-start-8 col-end-12 content-center text-center text-[18px]"
           >
-            {{ user.emailUser }}
+            {{ userDetail.emailUser }}
           </div>
           <div
             class="grid row-start-3 col-start-6 col-end-8 content-center text-center text-[18px]"
@@ -103,8 +102,8 @@ onBeforeMount(async () => {
           <div
             class="grid row-start-3 col-start-8 col-end-12 content-center text-center text-[18px]"
           >
-            {{ moment(user.createOn).local().format('DD/MM/YYYY') }} |
-            {{ moment(user.createOn).local().format('hh:mm A') }}
+            {{ moment(userDetail.createOn).local().format('DD/MM/YYYY') }} |
+            {{ moment(userDetail.createOn).local().format('hh:mm A') }}
           </div>
           <div
             class="grid row-start-4 col-start-6 col-end-8 content-center text-center text-[18px]"
@@ -114,13 +113,13 @@ onBeforeMount(async () => {
           <div
             class="grid row-start-4 col-start-8 col-end-12 content-center text-center text-[18px]"
           >
-            {{ moment(user.createOn).local().format('DD/MM/YYYY') }} |
-            {{ moment(user.updateOn).local().format('hh:mm A') }}
+            {{ moment(userDetail.createOn).local().format('DD/MM/YYYY') }} |
+            {{ moment(userDetail.updateOn).local().format('hh:mm A') }}
           </div>
         </div>
       </div>
+      <!-- <PleaseLogInDialog v-if="userSignInRole == 'guest'" :pageName="pageName" /> -->
     </div>
-  </div>
 </template>
 
 <style scoped>

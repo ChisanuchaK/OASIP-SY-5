@@ -1,41 +1,96 @@
 <script setup>
-import { ref, computed, onBeforeMount, reactive } from 'vue'
+import { ref, computed, onBeforeMount, reactive, onBeforeUpdate } from 'vue'
 import moment from "moment";
-import Cancel from "../components/Cancel.vue";
-import Confirm from "../components/Confirm.vue";
-import { getEventCategory, createBooking, getBookings } from "../stores/book.js";
-import PleaseLogInDialog from '../components/PleaseLogInDialog.vue';
-import NavbarTop from '../components/NavbarTop.vue';
-import NavbarBottom from '../components/NavbarBottom.vue';
+import Cancel from "../../components/Cancel.vue";
+import Confirm from "../../components/Confirm.vue";
+import { useRouter } from 'vue-router';
+import { userStore } from '../../stores/user.js';
+import { categoryStore } from '../../stores/category.js';
+import { bookStore } from '../../stores/book.js';
 
-const getToken = localStorage.getItem('refreshToken');
-const emailUserFromLogin = computed(() => localStorage.getItem('userEmail'));
-const nameUserFromLogin = computed(() => localStorage.getItem('userName'));
-const roleUserFromLogin = computed(() => localStorage.getItem('userRole'));
+const appRouter = useRouter();
+
+const userSignInRes = userStore();
+const categoryRes = categoryStore();
+const bookRes = bookStore();
+
+userSignInRes.getRefreshToken().then(() => {
+    if (userSignInRole.value == 'lecturer') {
+        appRouter.go(-1);
+    }
+    if (userSignInRole.value == 'student' || userSignInRole.value == 'lecturer') {
+        localData.bookingName = userSignInName.value;
+        localData.bookingEmail = userSignInEmail.value;
+        localData.userIdInSignIn = userSignInUserId.value;
+    } else {
+        localData.bookingEmail = "";
+    }
+});
+
+categoryRes.getEventCategory();
+userSignInRes.getAllUsers();
+const categoryList = computed(() => categoryRes.categorys);
+const userList = computed(() => userSignInRes.users);
+
+// await bookStore.getBookings();
+// const bookingLists = computed(()=> bookStore.bookings);
+
+// const currentUserData = computed(()=> {
+//     return {
+//         bookingName:userSignInRes.signInUserData.userName ,
+//         bookingEmail:userSignInRes.signInUserData.userEmail
+//     }
+// });
+// const name = ref(currentUserData.value.userName);
+
+const userSignInName = computed(() => userSignInRes.signInUserData.userName);
+const userSignInEmail = computed(() => userSignInRes.signInUserData.userEmail);
+const userSignInRole = computed(() => userSignInRes.signInUserData.userRole);
+const userSignInUserId = computed(() => userSignInRes.signInUserData.userId);
 const pageName = ref('use RESERVE');
+
 
 const statusCreateUser = ref();
 
-const getEmail = () => {
-    if (localStorage.getItem('userEmail') != undefined || localStorage.getItem('userEmail') != null) {
-        localData.bookingEmail = localStorage.getItem('userEmail')
-    } else {
-        localData.bookingEmail = '';
-    }
-}
+const bookingEmailIndexSelect = ref();
+const categoryIndexSelect = ref();
 
-const getName = () => {
-    if (localStorage.getItem('userName') != undefined || localStorage.getItem('userName') != null) {
-        localData.bookingName = localStorage.getItem('userName')
-    } else {
-        localData.bookingName = '';
-    }
-}
+const localPresentTime = moment.utc().local().format("YYYY-MM-DDTHH:mm");
+const dateIndexSelect = ref(localPresentTime);
 
-const responseGetAllBooking = ref({});
-const responseGetAllCategory = ref({});
-const bookingLists = ref([]);
-const categoryList = ref([]);
+
+
+let localData = reactive({
+    bookingName: "",
+    bookingEmail: "",
+    eventCategory: { eventCategoryId: "" },
+    eventStartTime: new Date(dateIndexSelect.value).toISOString(),
+    eventDuration: "",
+    eventNotes: "",
+    userIdInSignIn: "",
+});
+
+
+
+// const getEmail = () => {
+//     if (localStorage.getItem('userEmail') != undefined || localStorage.getItem('userEmail') != null) {
+//         localData.bookingEmail = localStorage.getItem('userEmail')
+//     } else {
+//         localData.bookingEmail = '';
+//     }
+// }
+
+// const getName = () => {
+//     if (localStorage.getItem('userName') != undefined || localStorage.getItem('userName') != null) {
+//         localData.bookingName = localStorage.getItem('userName')
+//     } else {
+//         localData.bookingName = '';
+//     }
+// }
+
+// const responseGetAllBooking = ref({});
+// const responseGetAllCategory = ref({});
+
 // const categoryList = ref([{ eventCategoryId: 6, eventCategoryName: 'Other', eventDuration: 30, eventColor: '#DFDADA', eventCategoryDescription: 'ตารางนัดหมายนี้ใช้สำหรับนัดหมาย Clinic อิ่น' },
 // { eventCategoryId: 5, eventCategoryName: 'Server-side Clinic', eventDuration: 30, eventColor: '#FFA0A0', eventCategoryDescription: '' },
 // { eventCategoryId: 4, eventCategoryName: 'Client-side Clinic', eventDuration: 30, eventColor: '#B3F6C2', eventCategoryDescription: 'ตารางนัดหมายนี้ใช้สำหรับนัดหมาย client-side clinic ในวิชา INT221 integrated project I' },
@@ -43,20 +98,7 @@ const categoryList = ref([]);
 // { eventCategoryId: 2, eventCategoryName: 'DevOps/Infra Clinic', eventDuration: 20, eventColor: '#FEE5A5', eventCategoryDescription: 'Use this event category for DevOps/Infra clinic.' },
 // { eventCategoryId: 1, eventCategoryName: 'Project management', eventDuration: 30, eventColor: '#AAA4A4' }])
 
-const categoryIndexSelect = ref();
-
-const localPresentTime = moment.utc().local().format("YYYY-MM-DDTHH:mm");
-const dateIndexSelect = ref(localPresentTime);
 const regexEmail = "[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,3}";
-
-let localData = reactive({
-    bookingName: '',
-    bookingEmail: '',
-    eventCategory: { eventCategoryId: "" },
-    eventStartTime: new Date(dateIndexSelect.value).toISOString(),
-    eventDuration: "",
-    eventNotes: "",
-});
 
 let date = new Date();
 date.setMonth(date.getMonth() + 3);
@@ -68,14 +110,23 @@ const isOverlap = ref(false);
 const cancelDialog = ref(false);
 const createDialog = ref(false);
 
-const handleSelect = () => {
+const handleCategorySelect = () => {
     localData.eventCategory.eventCategoryId = categoryList.value[categoryIndexSelect.value].eventCategoryId
     localData.eventDuration = categoryList.value[categoryIndexSelect.value].eventDuration
     // console.log(localData)
-    console.log(localData.eventCategory.eventCategoryId);
+    // console.log(localData.eventCategory.eventCategoryId);
 }
+
+const handleBookingEmailSelect = () => {
+    localData.bookingEmail = userList.value[bookingEmailIndexSelect.value].emailUser
+    localData.userIdInSignIn = userList.value[bookingEmailIndexSelect.value].idUser
+    // console.log(localData.bookingEmail);
+    // console.log(localData.userIdInSignIn);
+}
+
 const handleTime = () => {
-    localData.eventStartTime = new Date(dateIndexSelect.value).toISOString()
+    localData.eventStartTime = new Date(dateIndexSelect.value).toISOString();
+    statusCreateUser.value = '';
     // console.log(dateIndexSelect.value);
     // console.log(localData.eventStartTime);
     // console.log(`${moment.utc(localData.eventStartTime).add(localData.eventDuration, 'm').format("YYYY-MM-DDTHH:mm:ss")}Z`);
@@ -141,7 +192,7 @@ const isInputTimeOld = computed(() => {
 
 //check overlap 
 const isInputTime = computed(() => {
-    if (roleUserFromLogin.value == 'admin') {
+    if (userSignInRole.value == 'admin') {
         console.log("i am admin");
         // const localEndTime = `${moment.utc(localData.eventStartTime).add(localData.eventDuration, 'm').format("YYYY-MM-DDTHH:mm:ss")}Z`;
         // for (let booking of bookingLists.value) {
@@ -157,9 +208,9 @@ const isInputTime = computed(() => {
         // }
         // console.log("overlap value " + isOverlap.value);
         // return (isInvalid.value && isOverlap.value)
-    } else if (roleUserFromLogin.value == 'student') {
+    } else if (userSignInRole.value == 'student') {
         console.log("i am student");
-    } else if (roleUserFromLogin.value == 'lecturer') {
+    } else if (userSignInRole.value == 'lecturer') {
         console.log("i am lecturer");
     }
 });
@@ -167,29 +218,61 @@ const isInputTime = computed(() => {
 const reset = () => {
     // localData.bookingName = ""
     // localData.bookingEmail = ""
-    getName();
-    getEmail();
-    categoryIndexSelect.value = undefined
-    localData.eventDuration = ""
-    dateIndexSelect.value = localPresentTime
-    localData.eventNotes = ""
-    cancelDialog.value = !cancelDialog.value
+    // getName();
+    // getEmail();
+    if (userSignInRes.signInUserData.userRole == 'student' || userSignInRes.signInUserData.userRole == 'lecturer') {
+        localData.bookingName = userSignInName.value;
+        localData.bookingEmail = userSignInEmail.value;
+        categoryIndexSelect.value = undefined
+        localData.eventDuration = ""
+        dateIndexSelect.value = localPresentTime
+        localData.eventNotes = ""
+        cancelDialog.value = !cancelDialog.value
+    } else {
+        localData.bookingName = "";
+        bookingEmailIndexSelect.value = undefined
+        categoryIndexSelect.value = undefined
+        localData.eventDuration = ""
+        dateIndexSelect.value = localPresentTime
+        localData.eventNotes = ""
+        cancelDialog.value = !cancelDialog.value
+    }
 }
 
 //create new booking event
 const createBookingEvent = async (localDataInput) => {
-    const res = await createBooking(localDataInput);
+    // if(userSignInRes.signInUserData.userRole == 'admin'){
+    //     localData.bookingEmail.trim();
+    //     for(let user of userList.value){
+    //         if(user.emailUser == localData.bookingEmail){
+    //             localData.userIdInSignIn = user.idUser
+    //         }
+    //         console.log(user.emailUser);
+    //     }
+    // }
+    const res = await bookRes.createBooking(localDataInput);
     if (res.status === 201) {
         alert(`Create successfully \n Category ID :  ${localData.eventCategory.eventCategoryId} \n CategoryName : ${categoryList.value[categoryIndexSelect.value].eventCategoryName} \n Date : ${localData.eventStartTime} \n Booking name :  ${localData.bookingName}`)
         console.log(`Create successfully \n Category ID :  ${localDataInput.eventCategory.eventCategoryId} \n Date : ${localDataInput.eventStartTime} \n Booking name :  ${localDataInput.bookingName}`)
         // localDataInput.bookingName = ""
         // localDataInput.bookingEmail = ""
-        getName();
-        getEmail();
+        // getName();
+        // getEmail();
+        if (userSignInRes.signInUserData.userRole == 'student' || userSignInRes.signInUserData.userRole == 'lecturer') {
+        localData.bookingName = userSignInName.value;
+        localData.bookingEmail = userSignInEmail.value;
         categoryIndexSelect.value = undefined
-        localDataInput.eventDuration = ""
+        localData.eventDuration = ""
         dateIndexSelect.value = localPresentTime
-        localDataInput.eventNotes = ""
+        localData.eventNotes = ""
+    } else {
+        localData.bookingName = "";
+        bookingEmailIndexSelect.value = undefined
+        categoryIndexSelect.value = undefined
+        localData.eventDuration = ""
+        dateIndexSelect.value = localPresentTime
+        localData.eventNotes = ""
+    }
     } else {
         statusCreateUser.value = res.status;
         console.log(statusCreateUser.value);
@@ -201,21 +284,20 @@ const createBookingEvent = async (localDataInput) => {
 
 //fetch data
 onBeforeMount(async () => {
-    getEmail();
-    getName();
-    responseGetAllBooking.value = await getBookings();
-    bookingLists.value = await responseGetAllBooking.value.data;
-    responseGetAllCategory.value = await getEventCategory();
-    categoryList.value = await responseGetAllCategory.value.data;
+    //     getEmail();
+    //     getName();
+    //     responseGetAllBooking.value = await bookStgetBookings();
+    //     bookingLists.value = await responseGetAllBooking.value.data;
+    //     responseGetAllCategory.value = await getEventCategory();
+    //     categoryList.value = await responseGetAllCategory.value.data;
 })
+
+
 
 </script>
  
 <template>
     <div>
-        <NavbarTop />
-        <NavbarBottom />
-        <div>
             <div
                 class="mt-24 mb-8 uppercase w-3/4 m-auto text-center text-4xl font-bold text-black underline decoration-[#50ABCB]">
                 select scheduled</div>
@@ -227,7 +309,8 @@ onBeforeMount(async () => {
                         <div class="row-start-1 col-start-1 col-span-3  ">Scheduled Category :</div>
                         <div class="row-start-2 col-start-1 col-end-4 col-span-3">
                             <select class="bg-gray-200 rounded w-full border" v-model="categoryIndexSelect"
-                                :style="{ 'border-color': isInputCategory ? 'red' : 'white' }" @change="handleSelect()">
+                                :style="{ 'border-color': isInputCategory ? 'red' : 'white' }"
+                                @change="handleCategorySelect()">
                                 <option v-for="(res, indexs) in categoryList" :value="indexs" v-bind:key="indexs">{{
                                 res.eventCategoryName
                                 }}</option>
@@ -241,9 +324,8 @@ onBeforeMount(async () => {
                         </div>
                         <div class="row-start-1 col-start-9 col-span-1 text-right text-gray-400">
                             {{ localData.bookingName.length }}/100
-                            <!-- {{ nameUserFromLogin.length }}/100 -->
                         </div>
-                        <div class="row-start-2 col-start-7 col-end-10 col-span-3 "><input :disabled="getToken"
+                        <div class="row-start-2 col-start-7 col-end-10 col-span-3 "><input
                                 class="bg-gray-200 rounded w-full pb-0.5 pl-1 border disabled:text-gray-400" type="text"
                                 v-model="localData.bookingName"
                                 :style="{ 'border-color': (isInputName || isInputNameOver) ? 'red' : 'white' }" />
@@ -276,13 +358,35 @@ onBeforeMount(async () => {
                         <div class="row-start-3 col-start-7 col-span-1 ">Email :</div>
                         <div class="row-start-3 col-start-9 col-span-1 text-right text-gray-400">
                             {{ localData.bookingEmail.length }}/100
-                            <!-- {{ emailUserFromLogin.length }}/100 -->
                         </div>
 
-                        <div class="row-start-4 col-start-7 col-end-10 col-span-3 "><input :disabled="getToken"
+                        <div class="row-start-4 col-start-7 col-end-10 col-span-3 ">
+                            <!-- <input class="bg-gray-200 rounded w-full pb-0.5 pl-1 border disabled:text-gray-400"
+                                type="email" v-model="localData.bookingEmail" /> -->
+
+                            <select v-if="userSignInRole == 'admin'" v-model="bookingEmailIndexSelect"
+                                @change="handleBookingEmailSelect()"
+                                class=" bg-gray-200 rounded-md w-full pb-0.5 pl-1 border border-solid disabled:text-gray-400 border-[#D9D9D9] hover:bg-[#F2F2F2] transition delay-75 text-center"
+                                name="" id="">
+                                <!-- <option value="" selected hidden>role</option> -->
+                                <option v-for="(user,index) in userList" :key="index" :value="index">{{user.emailUser}}
+                                </option>
+                            </select>
+
+                            <!--                     <select class="bg-gray-200 rounded w-full border" v-model="categoryIndexSelect"
+                                :style="{ 'border-color': isInputCategory ? 'red' : 'white' }"
+                                @change="handleCategorySelect()">
+                                <option v-for="(res, index) in categoryList" :value="index" v-bind:key="index">{{
+                                res.eventCategoryName
+                                }}</option>
+                            </select> -->
+
+
+                            <input v-else :disabled="userSignInRole == 'student' || userSignInRole == 'lecturer'"
                                 class="bg-gray-200 rounded w-full pb-0.5 pl-1 border disabled:text-gray-400"
                                 type="email" v-model="localData.bookingEmail"
                                 :style="{ 'border-color': (isInputEmail || isInputEmailOver || isInputEmailVaild) ? 'red' : 'white' }" />
+
                             <label class="text-red-500" v-if="isInputEmail">
                                 *Please enter email
                             </label>
@@ -326,9 +430,7 @@ onBeforeMount(async () => {
                     <Confirm v-if="createDialog" @onClickConfirmNo="closeConfirmDialog"
                         @onClickConfirmYes="createBookingEvent(localData)" />
                 </div>
-                <!-- <PleaseLogInDialog v-if="!getToken" :pageName="pageName" /> -->
             </div>
-        </div>
     </div>
 </template>
  

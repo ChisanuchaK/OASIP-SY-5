@@ -1,72 +1,55 @@
 <script setup>
+import { storeToRefs } from 'pinia';
 import { ref, computed, onBeforeMount, onBeforeUpdate, reactive } from 'vue';
 import { useRouter, useRoute } from 'vue-router';
 import Confirm from './Confirm.vue';
-// import { loginToUse } from '../stores/user.js';
+import { userStore } from '../stores/user.js';
 
-// const responseLoginUser = ref({});
-// const statusLogInUser = ref('');
+const userSignInRes = userStore();
+// const signInStatus = computed(()=> userSignInRes.signInStatus);
+// const {signInStatus} = storeToRefs(userSignInRes);
+// console.log(signInStatus.value);
+
+// const signInUser = userSignInRes.signInUserData;
+// console.log(signInUser);
+
+const userSignInEmail = computed(() => userSignInRes.signInUserData.userEmail);
+const userSignInName = computed(() => userSignInRes.signInUserData.userName);
+const userSignInRole = computed(() => userSignInRes.signInUserData.userRole);
 
 const route = useRoute();
 const appRouter = useRouter();
 
-// const showDropdown = () => {
-//   if (localStorage.getItem('refreshToken')) {
-//     return true;
-//   } else {
-//     return false;
-//   }
-// }
+const dialogSignOutStatus = ref(false);
 
-// const accessToken = ref(showDropdown());
-// const getToken = computed(() => showDropdown());
+const changeSignOutStatusTrue = () => dialogSignOutStatus.value = true;
 
-const getUserLoginRole = ref(localStorage.getItem('userRole'));
-// console.log(getUserLoginRole);
+const changeSignOutStatusFalse = () => dialogSignOutStatus.value = false;
 
-const roleOfUserLogin = computed(()=>{
-  return getUserLoginRole.value
-})
-
-const getToken = (localStorage.getItem('accessToken'));
-
-const userLoginData = reactive({
-  userEmail: localStorage.getItem('userEmail'),
-  userName: localStorage.getItem('userName'),
-  userRole: localStorage.getItem('userRole')
-})
-
-const isLogIn = ref(false);
-
-const signOutStatus = ref(false);
-const changeSignOutStatusTrue = () => {
-  signOutStatus.value = true
-}
-const changeSignOutStatusFalse = () => {
-  signOutStatus.value = false
-}
-const signOutUser = () => {
-  signOutStatus.value = false;
-  localStorage.clear();
-  alert("SignOut Success.");
-  if (route.path == '/') {
-    location.reload();
-  } else {
-    appRouter.push({ name: 'Home' });
-  }
+const signOutOfUser = async () => {
+  const res = userSignInRes.signOutUser();
+  // console.log(res.status);
+  // if (res.status === 200) {
+    dialogSignOutStatus.value = false;
+    alert("SignOut Success.");
+    if (!(route.path == '/')) {
+      appRouter.push({ name: 'Home' });
+    } else {
+      return;
+    }
+  // }
 }
 
 onBeforeMount(async () => {
-  // showDropdown();
 })
-// console.log(localStorage.getItem('token'));
 
 </script>
 
 <template>
   <!-- <div class="overflow-hidden fixed top-0 w-full"> -->
-  <div>
-    <Confirm v-if="signOutStatus" @onClickConfirmNo="changeSignOutStatusFalse" @onClickConfirmYes="signOutUser" />
+  <div class="relative z-10">
+    <Confirm v-if="dialogSignOutStatus" @onClickConfirmNo="changeSignOutStatusFalse"
+      @onClickConfirmYes="signOutOfUser" />
     <div class="fixed top-0 w-full">
       <nav class="px-2 py-2.5 bg-[#E5E5E5]">
         <!-- <div class="container flex flex-wrap justify-between items-center mx-auto"> -->
@@ -102,31 +85,32 @@ onBeforeMount(async () => {
                   Home</router-link>
               </li>
               <li>
-                <router-link :to="{ name: 'AboutUs' }"
+                <router-link :to="{ name: 'About' }"
                   class="block py-2 pr-4 pl-3 hover:bg-[#50ABCB] hover:rounded-lg hover:text-white hover:text-white hover:underline-offset-2 hover:underline uppercase menu">
                   About</router-link>
               </li>
-              <li>
-                <router-link :to="{ name: 'CategoryList' }" v-if="roleOfUserLogin != 'student'"
+              <li
+                v-if="userSignInRes.signInUserData.userRole != 'student' && userSignInRes.signInUserData.userRole != 'guest'">
+                <router-link :to="{ name: 'CategoryLists' }"
                   class="block py-2 pr-4 pl-3 hover:bg-[#50ABCB] hover:rounded-lg hover:text-white hover:text-white hover:underline-offset-2 hover:underline uppercase menu">
                   Category-List</router-link>
               </li>
-              <li>
-                <router-link :to="{ name: 'Reserve' }"
+              <li v-if="userSignInRes.signInUserData.userRole != 'lecturer'">
+                <router-link :to="{ name: 'CreateBooking' }"
                   class="block py-2 pr-4 pl-3 hover:bg-[#50ABCB] hover:rounded-lg hover:text-white hover:text-white hover:underline-offset-2 hover:underline uppercase menu">
                   New booking</router-link>
               </li>
               <li>
-                <router-link :to="{ name: 'BookingList' }" 
+                <router-link :to="{ name: 'BookingLists' }"
                   class="block py-2 pr-4 pl-3 hover:bg-[#50ABCB] hover:rounded-lg hover:text-white hover:text-white hover:underline-offset-2 hover:underline uppercase menu">
                   Booking-List</router-link>
               </li>
-              <li class="dropdown">
-                <router-link :to="{ name: 'UserList' }" v-if="roleOfUserLogin != 'student'"
+              <li class="dropdown" v-if="userSignInRes.signInUserData.userRole != 'student' && userSignInRes.signInUserData.userRole != 'lecturer'">
+                <router-link :to="{ name: 'UserLists' }"
                   class="block py-2 pr-4 pl-3 hover:bg-[#50ABCB] hover:rounded-lg hover:text-white hover:text-white hover:underline-offset-2 hover:underline uppercase menu">
                   User-List</router-link>
               </li>
-              <li v-show="getToken" class="dropdown min-w-[160px] max-w-[160px]">
+              <li v-if="userSignInRes.signInStatus" class="dropdown min-w-[160px] max-w-[160px]">
                 <!-- v-if="localStorage.getItem('token') != undefined || localStorage.getItem('token') != ''" -->
                 <!-- <button
                 class="block py-2 pr-4 pl-3 hover:bg-[#50ABCB] hover:rounded-lg hover:text-white hover:text-white hover:underline-offset-2 hover:underline uppercase menu font-medium">
@@ -134,21 +118,21 @@ onBeforeMount(async () => {
 
                 <div
                   class="Users flex py-2 pr-4 pl-3 hover:bg-[#50ABCB] hover:rounded-lg hover:text-white hover:text-white hover:underline-offset-2 hover:underline uppercase menu justify-end">
-                  <p class="px-[20px] truncate">{{userLoginData.userName}}</p>
+                  <p class="px-[20px] truncate">{{userSignInRes.signInUserData.userName}}</p>
                   <svg class="dropdownButton" width="20px" height="20px" viewBox="0 0 24 24">
                     <path fill="#000000" d="m7 10l5 5l5-5z"></path>
                   </svg>
                 </div>
                 <div class="dropdown-content uppercase">
                   <div class="lowercase">
-                    <p class="py-1">{{userLoginData.userEmail}}</p>
-                    <p class="py-1">{{userLoginData.userName}}</p>
-                    <p class="py-1">{{userLoginData.userRole}}</p>
+                    <p class="py-1">{{userSignInEmail}}</p>
+                    <p class="py-1">{{userSignInName}}</p>
+                    <p class="py-1">{{userSignInRole}}</p>
                   </div>
 
-                  <router-link v-if="roleOfUserLogin != 'student'"
+                  <router-link v-if="userSignInRes.signInUserData.userRole == 'admin'"
                     class="hover:bg-[#50ABCB] hover:rounded-sm hover:text-white hover:text-white hover:underline-offset-2 hover:underline uppercase"
-                    :to="{ name: 'SignUp' }">Sign-Up</router-link>
+                    :to="{ name: 'CreateUser' }">Create-User</router-link>
                   <!-- <router-link
                   class="hover:bg-[#50ABCB] hover:rounded-sm hover:text-white hover:text-white hover:underline-offset-2 hover:underline uppercase"
                   :to="{ name: 'UserList' }"
@@ -162,49 +146,11 @@ onBeforeMount(async () => {
                 </div>
               </li>
 
-              <li v-show="!getToken" class="dropdown">
+              <li v-if="!(userSignInRes.signInStatus)" class="dropdown">
                 <router-link :to="{ name: 'SignIn' }"
                   class="block py-2 pr-4 pl-3 hover:bg-[#50ABCB] hover:rounded-lg hover:text-white hover:text-white hover:underline-offset-2 hover:underline uppercase menu">
                   Sign-In</router-link>
               </li>
-              <!-- <li class="dropdown">
-              <div
-                class="Users flex py-2 pr-4 pl-3 hover:bg-[#50ABCB] hover:rounded-lg hover:text-white hover:text-white hover:underline-offset-2 hover:underline uppercase menu"
-              >
-                <p class="px-[20px]">User</p>
-                <svg
-                  class="dropdownButton"
-                  width="20px"
-                  height="20px"
-                  viewBox="0 0 24 24"
-                >
-                  <path fill="#000000" d="m7 10l5 5l5-5z"></path>
-                </svg>
-              </div>
-              <div class="dropdown-content uppercase">
-                <router-link
-                  class="hover:bg-[#50ABCB] hover:rounded-sm hover:text-white hover:text-white hover:underline-offset-2 hover:underline uppercase"
-                  :to="{ name: 'SignUp' }"
-                  >Sign-Up</router-link
-                >
-                <router-link
-                  class="hover:bg-[#50ABCB] hover:rounded-sm hover:text-white hover:text-white hover:underline-offset-2 hover:underline uppercase"
-                  :to="{ name: 'UserList' }"
-                  >LogOut</router-link
-                >
-                <button
-                class="block py-2 pr-4 pl-3 hover:bg-[#50ABCB] hover:rounded-lg hover:text-white hover:text-white hover:underline-offset-2 hover:underline uppercase menu font-medium">
-                Sign-Out</button>
-              </div>
-            </li> -->
-
-              <!-- <li class="dropdown">
-              <button
-                class="block py-2 pr-4 pl-3 hover:bg-[#50ABCB] hover:rounded-lg hover:text-white hover:text-white hover:underline-offset-2 hover:underline uppercase menu font-medium">
-              {{localStorage.getItem('token')}}
-              {{getToken}}
-              </button>
-            </li> -->
             </ul>
           </div>
         </div>

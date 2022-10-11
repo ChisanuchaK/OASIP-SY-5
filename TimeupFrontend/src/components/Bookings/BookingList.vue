@@ -1,9 +1,11 @@
 <script setup>
 import { ref, onBeforeMount, computed } from 'vue'
 import moment from 'moment';
-import DialogDetails from './DialogDetails.vue';
-import ConfirmDelete from './ConfirmDelete.vue';
-import { getEventCategory, removeBooking } from "../stores/book.js";
+import BookingDetailDialog from './BookingDetailDialog.vue';
+import { bookStore } from '../../stores/book.js';
+import { categoryStore } from '../../stores/category.js';
+import DeleteBookingDialog from './DeleteBookingDialog.vue';
+
 
 const emits = defineEmits(["idDialogDetails", "EditIdFromDialog"])
 const props = defineProps({
@@ -17,15 +19,25 @@ const props = defineProps({
     }
 })
 
+const bookRes = bookStore();
+const categoryRes = categoryStore();
+
+categoryRes.getEventCategory();
+
 const bookingList = computed(() => props.bookingLists);
-const categorys = ref([]);
-const responseGetAllCategory = ref({});
+const categoryLists = computed(() => categoryRes.categorys);
 
 //---------------------------pop-up-dialog-------------------------------------
-const changeSeeDetailsDialog = (booking) => {
-    booking.statusClickSeeDetails = !booking.statusClickSeeDetails
+const showSeeDetailsDialog = (booking) => {
+    booking.statusClickSeeDetails = true;
+    bookRes.bookingById = [];
     // console.log(booking.statusClickSeeDetails);
 }
+
+const closeSeeDetailsDialog = (booking) => {
+    booking.statusClickSeeDetails = false;
+}
+
 const changeDeleteDialog = (booking) => {
     booking.statusClickDelete = !booking.statusClickDelete
     // console.log(booking.statusClickDelete);
@@ -34,7 +46,7 @@ const changeDeleteDialog = (booking) => {
 
 //set color
 const colorBg = (booking) => {
-    for (let category of categorys.value) {
+    for (let category of categoryLists.value) {
         if (booking.eventCategoryId == category.eventCategoryId) {
             return category.eventColor
         }
@@ -53,14 +65,12 @@ const getEditIdFromDialog = (EditId) => {
 // remove booking 
 const removeBookingEvent = async (deleteBookingId, booking, loopBooking) => {
     alert('Delete Booking Success!');
-    emits('idDialogDetails', deleteBookingId)
-    await removeBooking(deleteBookingId, booking, loopBooking)
+    // emits('idDialogDetails', deleteBookingId)
+    bookRes.removeBooking(deleteBookingId, booking, loopBooking)
 }
 
 //fetch data
 onBeforeMount(async () => {
-    responseGetAllCategory.value = await getEventCategory();
-    categorys.value = await responseGetAllCategory.value.data;
 })
 
 </script>
@@ -94,16 +104,16 @@ onBeforeMount(async () => {
                         <div class="grid grid-flow-row grid-cols-12 flex py-3 text-center px-2">
 
                             <div class="row-start-1 col-start-1 col-end-3 p-1 mb-1.5 rounded-lg ">{{
-                                    moment(booking.eventStartTime).local().format("DD MMMM YYYY")
+                            moment(booking.eventStartTime).local().format("DD MMMM YYYY")
                             }}</div>
 
                             <div class="row-start-1 col-start-3 col-end-5 p-1 mb-1.5 rounded-lg ">{{
-                                    moment(booking.eventStartTime).local().format('hh:mm A')
+                            moment(booking.eventStartTime).local().format('hh:mm A')
                             }}
                                 -
                                 {{
-                                        moment(booking.eventStartTime).local().add(booking.eventDuration, 'm')
-                                            .format('hh:mm A')
+                                moment(booking.eventStartTime).local().add(booking.eventDuration, 'm')
+                                .format('hh:mm A')
                                 }}
                             </div>
 
@@ -112,28 +122,31 @@ onBeforeMount(async () => {
                                 }} </div>
 
                             <div class="row-start-1 col-start-7 col-end-9 p-1 mb-1.5 rounded-lg ">{{
-                                    booking.eventDuration
+                            booking.eventDuration
                             }} minute </div>
 
                             <div class="row-start-1 col-start-9 col-end-11 p-1 mb-1.5 rounded-lg ">
                                 <p class="truncate">
-                                    {{ booking.bookingName
+                                    <!-- {{ booking.bookingName
+                                    }} -->
+                                    {{ booking.bookingEmail
                                     }}
                                 </p>
                             </div>
 
                             <button
                                 class="row-start-1 col-start-11 bg-[#50ABCB] text-white p-1 rounded-lg uppercase w-11/12 h-full m-auto"
-                                @click="changeSeeDetailsDialog(booking)">Detail</button>
+                                @click="showSeeDetailsDialog(booking)">Detail</button>
                             <button
                                 class="row-start-1 col-start-12 bg-[#F24052] text-white rounded-lg uppercase w-11/12 h-full m-auto"
                                 @click="changeDeleteDialog(booking)">delete</button>
 
-                            <DialogDetails v-if="booking.statusClickSeeDetails"
-                                @onCloseDetails="changeSeeDetailsDialog(booking)" :bookings="booking"
-                                @idConfirmDelete="getIdFromDialog" @EditIdFromEdit="getEditIdFromDialog" />
+                            <BookingDetailDialog v-if="booking.statusClickSeeDetails"
+                                @onCloseDetails="closeSeeDetailsDialog(booking)" :bookingDetailById="booking"
+                                :bookingLists="bookingLists" @idConfirmDelete="getIdFromDialog"
+                                @EditIdFromEdit="getEditIdFromDialog" />
 
-                            <ConfirmDelete v-if="booking.statusClickDelete" :bookingsFromDetails="booking"
+                            <DeleteBookingDialog v-if="booking.statusClickDelete" :bookingsFromDetails="booking"
                                 :bookingsFromLoopBookings="booking" @onCancelDelete="changeDeleteDialog(booking)"
                                 @onConfirmDelete="removeBookingEvent" />
                         </div>

@@ -1,9 +1,10 @@
 <script setup>
 import { ref, reactive, onBeforeMount, computed, onBeforeUpdate } from "vue";
-import Cancel from "./Cancel.vue";
-import Confirm from "./Confirm.vue";
-import { editCategory } from "../stores/book.js";
-const emits = defineEmits(["EditCategoryId"]);
+import Cancel from "../Cancel.vue";
+import Confirm from "../Confirm.vue";
+import { categoryStore } from "../../stores/category.js";
+// ----- use when not use pinia
+// const emits = defineEmits(["EditCategoryId"]);
 const props = defineProps({
     categorys: {
         type: Object,
@@ -15,9 +16,11 @@ const props = defineProps({
     }
 });
 
+const categoryRes = categoryStore();
+
 //some category form for-loop 
-const categoryList = computed(() => props.categorys);
-const category = ref(categoryList);
+const category = computed(() => props.categorys);
+// const category = ref(categoryList);
 
 //all categorys 
 const categoryListAlls = computed(() => props.categoryLists);
@@ -90,8 +93,8 @@ const changeCancelDialogTrue = (category) => {
     category.statusCancelDialog = true;
 }
 const changeEditDialogFalse = (category) => {
-    category.statusCancelDialog = !category.statusCancelDialog;
-    category.statusEditDialog = !category.statusEditDialog;
+    category.statusCancelDialog = false;
+    category.statusEditDialog = false;
 }
 const changeCreateDialogFalse = (category) => {
     category.statusConfirmDialog = false
@@ -116,15 +119,17 @@ const changeCreateDialogTrue = (category) => {
 
 //put category is edited 
 const editCategoryEvent = async (editCategoryitem, category) => {
-    const editEvent = await editCategory(editCategoryitem);
-    if (editEvent.status === 200) {
-        alert('Edit Category Success!');
-        category.statusConfirmDialog = !category.statusConfirmDialog;
-        category.statusEditDialog = !category.statusEditDialog;
-        category.statusEditSuccesDialog = !category.statusEditSuccesDialog;
-        emits('EditCategoryId', editCategoryitem);
+    categoryRes.editCategory(editCategoryitem,category);
+    // if (editEvent.status === 200) {
+
+        // ----- use when not use pinia
+        // alert('Edit Category Success!');
+        // category.statusConfirmDialog = !category.statusConfirmDialog;
+        // category.statusEditDialog = !category.statusEditDialog;
+        // category.statusEditSuccesDialog = !category.statusEditSuccesDialog;
+        // emits('EditCategoryId', editCategoryitem);
         // console.log('edited successfully');
-    }
+    // }
 }
 
 </script>
@@ -206,18 +211,17 @@ const editCategoryEvent = async (editCategoryitem, category) => {
                             over limit of Description!
                         </div>
                     </div>
+                    
                     <div class="row-start-9 mt-5 col-start-1">
+                        <button class="bg-[#F24052] text-white rounded-lg w-6/12 h-full m-auto py-2"
+                        @click="changeCancelDialogTrue(category)">cancel</button>
+                    </div>
+                    
+                    <div class="row-start-9 mt-5 col-start-2">
                         <button class="bg-[#00A28B] text-white rounded-lg w-6/12 h-full m-auto py-2"
                             @click="[changeCreateDialogTrue(category)]">confirm</button>
                     </div>
-
-
-                    <div class="row-start-9 mt-5 col-start-2">
-                        <button class="bg-[#F24052] text-white rounded-lg w-6/12 h-full m-auto py-2"
-                            @click="changeCancelDialogTrue(category)">cancel</button>
-                    </div>
-
-
+                    
                     <Cancel v-if="category.statusCancelDialog" @onClickCancelNo="changeCancelDialogFalse(category)"
                         @onClickCancelYes="changeEditDialogFalse(category)" />
 

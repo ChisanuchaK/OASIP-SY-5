@@ -1,11 +1,17 @@
 <script setup>
 import { ref, reactive, onBeforeMount, computed, onBeforeUpdate } from "vue";
 import moment from "moment";
-import Cancel from "./Cancel.vue";
-import Confirm from "./Confirm.vue";
-import { getEventCategory, editBooking, getBookings } from "../stores/book.js";
+import Cancel from "../Cancel.vue";
+import Confirm from "../Confirm.vue";
+import { bookStore } from '../../stores/book.js';
+import { categoryStore } from '../../stores/category.js';
+// import { getEventCategory, editBooking, getBookings } from "../stores/book.js";
 const emits = defineEmits(["EditbookingId"]);
 const props = defineProps({
+    bookingLists: {
+        type: [Object],
+        require: true
+    },
     bookingsDetailsEdit: {
         type: Object,
         require: true,
@@ -16,16 +22,21 @@ const props = defineProps({
     }
 });
 
+const bookRes = bookStore();
+const categoryRes = categoryStore();
 
 const bookingToEdit = computed(() => props.bookingsDetailsEdit);
 const someBooking = ref(bookingToEdit);
 const note = ref('');
 
+//getbook make web refresh.
+// bookRes.getBookings();
+// categoryRes.getEventCategory();
+
 const bookingPresentTime = ref(moment.utc(someBooking.value.eventStartTime).local().format("YYYY-MM-DDTHH:mm"));
-const categoryList = ref([]);
-const responseGetAllCategory = ref({});
-const bookingLists = ref([]);
-const responseGetAllBookings = ref({});
+const bookingLists = computed(() => props.bookingLists);
+// const categoryList = computed(() => categoryRes.categorys);
+
 
 let isInvalid = ref(false);
 let isOverlap = ref(false);
@@ -110,6 +121,7 @@ const changeCancelDialogTrue = (bookingEdit) => {
 const closeEditDialog = (bookingEdit) => {
     bookingEdit.cancelDialog = !bookingEdit.cancelDialog;
     bookingEdit.statusClickEdit = !bookingEdit.statusClickEdit;
+    console.log("hello");
 }
 const changeCreateDialogFalse = (bookingEdit) => {
     bookingEdit.createDialog = false
@@ -137,18 +149,18 @@ const changeCreateDialogTrue = (bookingEdit) => {
 
 // put bookings is edit
 const editBookingEvent = async (editData, bookingEdit, loopEdit) => {
-    const res = await editBooking(editData);
-    if (res.status === 200) {
-        alert('Edit Booking Success!');
-        bookingEdit.createDialog = !bookingEdit.createDialog;
-        bookingEdit.statusClickEdit = !bookingEdit.statusClickEdit;
-        loopEdit.statusClickSeeDetails = !loopEdit.statusClickSeeDetails;
-        emits('EditbookingId', editData)
-        console.log('edited successfully')
-    } else {
-        // bookingEdit.createDialog = !bookingEdit.createDialog;
-        console.log('error, cannot be added')
-    }
+    const res = bookRes.editBooking(editData, bookingEdit, loopEdit);
+    // if (res.status === 200) {
+    //     alert('Edit Booking Success!');
+    //     bookingEdit.createDialog = !bookingEdit.createDialog;
+    //     bookingEdit.statusClickEdit = !bookingEdit.statusClickEdit;
+    //     loopEdit.statusClickSeeDetails = !loopEdit.statusClickSeeDetails;
+    //     emits('EditbookingId', editData)
+    //     console.log('edited successfully')
+    // } else {
+    //     // bookingEdit.createDialog = !bookingEdit.createDialog;
+    //     console.log('error, cannot be added')
+    // }
 }
 
 //fetch data
@@ -158,14 +170,14 @@ onBeforeMount(async () => {
     // const getAllCategory = await getEventCategory();
     // categoryList.value = await getAllCategory.json();
 
-    responseGetAllBookings.value = await getBookings();
-    bookingLists.value = responseGetAllBookings.value.data;
-    responseGetAllCategory.value = await getEventCategory();
-    categoryList.value = await responseGetAllCategory.value.data;
+    // responseGetAllBookings.value = await getBookings();
+    // bookingLists.value = responseGetAllBookings.value.data;
+    // responseGetAllCategory.value = await getEventCategory();
+    // categoryList.value = await responseGetAllCategory.value.data;
     checkNote();
-    console.log(bookingLists.value);
-    console.log(categoryList.value);
-    console.log(someBooking.value);
+    // console.log(bookingLists.value);
+    // console.log(categoryList.value);
+    // console.log(someBooking.value);
 })
 
 
@@ -238,16 +250,17 @@ onBeforeMount(async () => {
                         </div>
 
                     </div>
+                    
                     <div class="row-start-9 mt-5 col-start-1">
-                        <button class="bg-[#00A28B] text-white rounded-lg w-6/12 h-full m-auto py-2"
-                            @click="[changeCreateDialogTrue(someBooking), sentEditData()]">confirm</button>
+                        <button class="bg-[#F24052] text-white rounded-lg w-6/12 h-full m-auto py-2"
+                        @click="changeCancelDialogTrue(someBooking)">cancel</button>
                     </div>
 
                     <div class="row-start-9 mt-5 col-start-2">
-                        <button class="bg-[#F24052] text-white rounded-lg w-6/12 h-full m-auto py-2"
-                            @click="changeCancelDialogTrue(someBooking)">cancel</button>
+                        <button class="bg-[#00A28B] text-white rounded-lg w-6/12 h-full m-auto py-2"
+                            @click="[changeCreateDialogTrue(someBooking), sentEditData()]">confirm</button>
                     </div>
-
+                    
                     <div class="text-red-500" v-show="isInputNotes || isInputTimeOlds || isInputTimes">
                         *some input is invalid
                     </div>
