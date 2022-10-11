@@ -23,6 +23,7 @@ public class EventDto {
     @JsonIgnore
     private User user;
     private String bookingName;
+
     private String bookingEmail;
     public String getBookingEmail(){
         if(user == null){
@@ -31,6 +32,10 @@ public class EventDto {
         else {
             return user.getEmailUser();
         }
+    }
+
+    public int getUserId(){
+        return user.getIdUser();
     }
     public String  getEventCategoryName(){
         return eventCategory.getEventCategoryName();

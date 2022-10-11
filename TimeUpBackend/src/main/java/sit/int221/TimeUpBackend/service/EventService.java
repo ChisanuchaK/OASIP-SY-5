@@ -180,9 +180,6 @@ public class EventService{
         Event event = eventRepository.findById(id).orElseThrow( ()->{
             return new ResponseStatusException(HttpStatus.NOT_FOUND);
         });
-        if(!(event.getBookingEmail().equals(user.getEmailUser()))){
-            throw  new ResponseStatusException(HttpStatus.FORBIDDEN , "email is not the same as student's email");
-        }
         List<Event> checkCompare = eventRepository.findAllByEventCategoryEventCategoryId(event.getEventCategory().getEventCategoryId());
         int i = 0;
         int index = 0;

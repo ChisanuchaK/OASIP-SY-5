@@ -26,6 +26,15 @@ public class EventMoreDetailDto {
     private String eventNotes;
     @JsonIgnore
     private User user;
+
+    public String getBookingEmail(){
+        if(user == null){
+            return  bookingEmail;
+        }
+        else {
+            return user.getEmailUser();
+        }
+    }
     public String  getEventCategoryName(){
         return eventCategory.getEventCategoryName();
     }
