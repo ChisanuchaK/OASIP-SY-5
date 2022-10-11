@@ -24,7 +24,14 @@ public class EventDto {
     private User user;
     private String bookingName;
     private String bookingEmail;
-    public String getUserEmail(){return  user.getEmailUser();}
+    public String getUserEmail(){
+       if(user == null){
+           return bookingEmail;
+       }
+    else{
+        return user.getEmailUser();
+       }
+    }
     public String  getEventCategoryName(){
         return eventCategory.getEventCategoryName();
     }

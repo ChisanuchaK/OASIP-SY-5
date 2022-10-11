@@ -76,7 +76,6 @@ public class EmailServiceImpl implements EmailService {
     // To send an email with attachment
     @Override
     public String sendMailWithAttachment(EventPostDto event) {
-        User checkUserByEmail = userRepository.findByIdUser(event.getUser().getIdUser());
         EventCategory eventCategory = eventCategoryRepository.findById(event.getEventCategory().getEventCategoryId()).orElseThrow(
                 ()-> new ResponseStatusException(HttpStatus.NOT_FOUND));
         Instant getEventEndTime = event.getEventStartTime().plusMillis(eventCategory.getEventDuration() * 60000);
@@ -90,10 +89,10 @@ public class EmailServiceImpl implements EmailService {
             try {
                 mimeMessageHelper = new MimeMessageHelper(mimeMessage, true);
                 mimeMessageHelper.setFrom(sender);
-                mimeMessageHelper.setTo(checkUserByEmail.getEmailUser());
+                mimeMessageHelper.setTo(event.getBookingEmail());
                 mimeMessageHelper.setText("Booking name : "  + event.getBookingName() + "<br>"
                         + "Category : "  + eventCategory.getEventCategoryName()  + "<br>"
-                        + "Email : " + checkUserByEmail.getEmailUser()   + "<br>"
+                        + "Email : " + event.getBookingEmail()   + "<br>"
                         + "Start time : "  + startTime  + "<br>"
                         + "End time : "  + endTime  + "<br>"
                         + "Event note : " + event.getEventNotes() + "<br>" + "<br>"
@@ -117,10 +116,10 @@ public class EmailServiceImpl implements EmailService {
             try {
                 mimeMessageHelper = new MimeMessageHelper(mimeMessage, true);
                 mimeMessageHelper.setFrom(sender);
-                mimeMessageHelper.setTo(checkUserByEmail.getEmailUser());
+                mimeMessageHelper.setTo(event.getBookingEmail());
                 mimeMessageHelper.setText("Booking name : "  + getCurrentAuthentication.getUsername() + "<br>"
                         + "Category : "  + eventCategory.getEventCategoryName()  + "<br>"
-                        + "Email : " + checkUserByEmail.getEmailUser()   + "<br>"
+                        + "Email : " + event.getBookingEmail()   + "<br>"
                         + "Start time : "  + startTime  + "<br>"
                         + "End time : "  + endTime  + "<br>"
                         + "Event note : " + event.getEventNotes() + "<br>" + "<br>"
