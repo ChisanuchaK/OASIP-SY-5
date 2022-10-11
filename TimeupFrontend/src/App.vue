@@ -12,7 +12,8 @@ onBeforeMount(async () => {
 </script>
 
 <template>
-  <div v-if="this.$route.name != 'CreateUser'">
+  <!-- <div v-if="this.$route.name != 'CreateUser'"> -->
+  <div>
     <NavbarTop/>
     <NavbarBottom />
   </div>
