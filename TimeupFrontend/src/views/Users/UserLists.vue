@@ -9,11 +9,12 @@ const appRouter = useRouter();
 
 const userSignInRes = userStore();
 
-userSignInRes.getRefreshToken().then(()=>{
-  if (userSignInRole.value == 'student' || userSignInRole.value == 'lecturer') {
-    appRouter.go(-1);
-  }
-})
+userSignInRes.getRefreshToken()
+// .then(()=>{
+//   if (userSignInRole.value == 'student' || userSignInRole.value == 'lecturer') {
+//     appRouter.go(-1);
+//   }
+// });
 
 userSignInRes.getAllUsers();
 const userLists = computed(() => userSignInRes.users);

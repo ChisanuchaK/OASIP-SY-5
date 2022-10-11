@@ -12,26 +12,29 @@ export const bookStore = defineStore("book", () => {
   //Get All Booking
   const getBookings = async () => {
     const res = await fetch(`${import.meta.env.VITE_HTTPS_URL}/event`);
-      if (res.status === 200) {
-        await store.getRefreshToken();
-        const response = await res.json();
-        bookings.value = response;
-        bookings.value.sort(
-          (a, b) => new Date(b.eventStartTime) - new Date(a.eventStartTime)
-        );
-        // return res;
-      } else if (res.status === 401) {
-        if (await store.getRefreshToken()) {
-          console.log("can use refreshToken");
-          return getBookings();
-        } else {
-          console.log("please SignIn");
-        }
+    if (store.signInUserData.userRole == "guest") {
+      bookings.value = [];
+      return;
+    } else if (res.status === 200) {
+      await store.getRefreshToken();
+      const response = await res.json();
+      bookings.value = response;
+      bookings.value.sort(
+        (a, b) => new Date(b.eventStartTime) - new Date(a.eventStartTime)
+      );
+      // return res;
+    } else if (res.status === 401) {
+      if (await store.getRefreshToken()) {
+        console.log("can use refreshToken");
+        return getBookings();
       } else {
-        console.log("error to getBookings");
-        const response = res.json();
-        return createResponse(res.status, response);
+        console.log("please SignIn");
       }
+    } else {
+      console.log("error to getBookings");
+      const response = res.json();
+      return res;
+    }
   };
 
   //GetBy BookingId
@@ -74,9 +77,9 @@ export const bookStore = defineStore("book", () => {
         },
         eventStartTime: localDataInput.eventStartTime,
         eventNotes: localDataInput.eventNotes,
-        user:{
-          idUser:localDataInput.userIdInSignIn
-        }
+        user: {
+          idUser: localDataInput.userIdInSignIn,
+        },
       }),
     });
     if (res.status === 201) {

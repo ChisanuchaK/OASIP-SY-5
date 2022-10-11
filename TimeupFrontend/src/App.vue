@@ -3,7 +3,6 @@ import { onBeforeMount } from 'vue';
 import NavbarTop from './components/NavbarTop.vue';
 import NavbarBottom from './components/NavbarBottom.vue';
 import { userStore } from './stores/user.js'
-
 const userSignInRes = userStore();
 userSignInRes.getRefreshToken();
 

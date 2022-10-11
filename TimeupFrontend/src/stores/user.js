@@ -34,8 +34,16 @@ export const userStore = defineStore("Users", () => {
   //get User Alls
   const getAllUsers = async () => {
     const res = await fetch(`${import.meta.env.VITE_HTTPS_URL}/user`);
-    console.log(res.status + " dsadsa");
-    if (res.status === 200) {
+    // console.log(res.status + " dsadsa");
+    if (signInUserData.userRole == "guest") {
+      users.value = [];
+      return;
+    } else if (
+      signInUserData.userRole == "student" ||
+      signInUserData.userRole == "lecturer"
+    ) {
+      appRouter.go(-1);
+    } else if (res.status === 200) {
       await getRefreshToken();
       const response = await res.json();
       users.value = response;
@@ -82,7 +90,7 @@ export const userStore = defineStore("Users", () => {
   };
 
   // user Delete method
-  const deletedUser = async (deletedUserId,user) => {
+  const deletedUser = async (deletedUserId, user) => {
     const res = await fetch(
       `${import.meta.env.VITE_HTTPS_URL}/user/${deletedUserId}`,
       {
@@ -93,7 +101,7 @@ export const userStore = defineStore("Users", () => {
       console.log("deleted success");
       await getRefreshToken();
       await getAllUsers();
-      alert('Delete User Success!!');
+      alert("Delete User Success!!");
       user.deleteDialogStatus = false;
       // const response = await res.json();
       // return createResponse(res.status, response);
@@ -148,7 +156,7 @@ export const userStore = defineStore("Users", () => {
   };
 
   //edit user
-  const editUser = async (localDataInput,user) => {
+  const editUser = async (localDataInput, user) => {
     const res = await fetch(
       `${import.meta.env.VITE_HTTPS_URL}/user/${localDataInput.idUser}`,
       {
