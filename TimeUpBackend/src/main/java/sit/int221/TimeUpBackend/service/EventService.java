@@ -79,7 +79,7 @@ public class EventService{
     // post
 
     public ResponseEntity create( EventPostDto eventPostDto) {
-        User checkUserByEmail = userRepository.findByIdUser(eventPostDto.getUser().getIdUser());
+        User checkUserByEmail = userRepository.findByEmailUser(eventPostDto.getBookingEmail());
         Event booking = modelMapper.map(eventPostDto, Event.class);
         EventCategory eventCategory = eventCategoryRepository.findById(eventPostDto.getEventCategory().getEventCategoryId()).orElseThrow(()
                 -> new ResponseStatusException(HttpStatus.NOT_FOUND));
@@ -104,6 +104,7 @@ public class EventService{
                 if (checkUserByEmail != null) {
                     booking.setEventDuration(eventCategory.getEventDuration());
                     booking.setBookingEmail(eventPostDto.getBookingEmail());
+                    booking.setUserIduser(checkUserByEmail);
 
                 } else {
                     throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "email not register");
@@ -118,6 +119,7 @@ public class EventService{
             } else if (user.getRoleUser().equals("student") && user.getEmailUser().equals(checkUserByEmail.getEmailUser())) {
                 booking.setEventDuration(eventCategory.getEventDuration());
                 booking.setBookingEmail(checkUserByEmail.getEmailUser());
+                booking.setUserIduser(checkUserByEmail);
                 if (!checkTimeOverLap(checkCompare, booking)) {
                     eventRepository.save(booking);
                     emailService.sendMailWithAttachment(eventPostDto);
