@@ -39,15 +39,10 @@ public class EventController {
 
     @GetMapping("/{id}")
     @PreAuthorize("hasAnyAuthority('admin' , 'student' , 'lecturer')")
-    public EventMoreDetailDto getBEventById(@PathVariable Integer id){
+    public EventMoreDetailDto getEventById(@PathVariable Integer id){
         return eventService.getEventDetailDTOById(id);
     }
 
-    @GetMapping("/{id}/category")
-    @PreAuthorize("hasAuthority('admin')")
-    public List<EventDto> getAllEventByIdCategory(@PathVariable Integer id){
-        return eventService.getEventByIdCategory(id);
-    }
 
     @PostMapping("")
     @ResponseStatus(HttpStatus.CREATED)

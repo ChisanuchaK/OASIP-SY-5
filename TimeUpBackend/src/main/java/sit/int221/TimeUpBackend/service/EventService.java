@@ -8,12 +8,10 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.server.ResponseStatusException;
 import sit.int221.TimeUpBackend.dtos.*;
-import sit.int221.TimeUpBackend.entities.Event;
-import sit.int221.TimeUpBackend.entities.EventCategory;
-import sit.int221.TimeUpBackend.entities.User;
+import sit.int221.TimeUpBackend.entities.*;
+import sit.int221.TimeUpBackend.repositories.EventCategoryOwnerRepository;
 import sit.int221.TimeUpBackend.repositories.EventRepository;
 import sit.int221.TimeUpBackend.repositories.EventCategoryRepository;
 import sit.int221.TimeUpBackend.repositories.UserRepository;
@@ -36,6 +34,9 @@ public class EventService{
     @Autowired
     private EmailServiceImpl emailService;
 
+    @Autowired
+    private EventCategoryOwnerRepository eventCategoryOwnerRepository;
+
     private ModelMapper modelMapper = new ModelMapper();
     //    get
     public List<EventDto> getAllEvent(){
@@ -48,8 +49,13 @@ public class EventService{
         else if (user.getRoleUser().equals("student")){
                 List<Event> bookingsFromRoleUser = eventRepository.findAllByBookingEmail(getCurrentAuthentication.getUsername());
                 return bookingsFromRoleUser.stream().map(e -> modelMapper.map(e, EventDto.class)).collect(Collectors.toList());
+        } else if (user.getRoleUser().equals("lecturer")) {
+            EventCategoryOwner eventCategoryOwner = eventCategoryOwnerRepository.findByUserIduser(user);
+            List<Event> bookingFromLecturerOwner = eventRepository.findAllByEventCategoryEventCategoryId(eventCategoryOwner.getEventcategoryEventcategory().getEventCategoryId());
+            return bookingFromLecturerOwner.stream().map(e -> modelMapper.map(e, EventDto.class)).collect(Collectors.toList());
         }
-      throw  new ResponseStatusException(HttpStatus.BAD_REQUEST , "That the booking email must be the same as student's email");
+
+        throw  new ResponseStatusException(HttpStatus.BAD_REQUEST , "That the booking email must be the same as student's email");
     }
 
     public EventMoreDetailDto getEventDetailDTOById(Integer id){
@@ -69,14 +75,18 @@ public class EventService{
                 return modelMapper.map(bookings , EventMoreDetailDto.class);
             }
         }
+        else if (user.getRoleUser().equals("lecturer")){
+            EventCategoryOwner eventCategoryOwner = eventCategoryOwnerRepository.findByUserIduser(user);
+            if(eventCategoryOwner.getEventcategoryEventcategory().getEventCategoryId() == event.getEventCategory().getEventCategoryId()){
+                Event bookings= eventRepository.findById(id).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
+                return modelMapper.map(bookings , EventMoreDetailDto.class);
+            }
+            else{
+                throw  new ResponseStatusException(HttpStatus.FORBIDDEN , "email is not the same as student's email");
+            }
+        }
         throw new ResponseStatusException(HttpStatus.BAD_REQUEST , "This email permission denied");
     }
-    public List<EventDto> getEventByIdCategory(@PathVariable Integer id){
-            EventCategory eventCategory = eventCategoryRepository.findById(id).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
-            List<Event> bookingList = eventRepository.findAllByEventCategoryEventCategoryId(eventCategory.getEventCategoryId());
-        return bookingList.stream().map(e -> modelMapper.map(e, EventDto.class)).collect(Collectors.toList());
-    }
-    // post
 
     public ResponseEntity create( EventPostDto eventPostDto) {
         User checkUserByEmail = userRepository.findByEmailUser(eventPostDto.getBookingEmail());
