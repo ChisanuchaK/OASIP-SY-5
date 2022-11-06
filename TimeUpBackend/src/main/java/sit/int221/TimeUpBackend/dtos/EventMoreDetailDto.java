@@ -35,6 +35,7 @@ public class EventMoreDetailDto {
             return user.getEmailUser();
         }
     }
+    private String file;
     public String  getEventCategoryName(){
         return eventCategory.getEventCategoryName();
     }

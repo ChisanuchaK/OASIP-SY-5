@@ -10,7 +10,10 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 import sit.int221.TimeUpBackend.dtos.EventCategoryDto;
 import sit.int221.TimeUpBackend.entities.EventCategory;
+import sit.int221.TimeUpBackend.entities.EventCategoryOwner;
+import sit.int221.TimeUpBackend.entities.EventCategoryOwnerId;
 import sit.int221.TimeUpBackend.entities.User;
+import sit.int221.TimeUpBackend.repositories.EventCategoryOwnerRepository;
 import sit.int221.TimeUpBackend.repositories.EventCategoryRepository;
 import sit.int221.TimeUpBackend.repositories.UserRepository;
 
@@ -23,6 +26,10 @@ public class EventCategoryService {
     private ModelMapper modelMapper = new ModelMapper();
     @Autowired
     private UserRepository userRepository;
+
+    @Autowired
+    private EventCategoryOwnerRepository eventCategoryOwnerRepository;
+
     public  List<EventCategory> getAllCategory(){
         return eventCategoryRepository.findAll();
     }
@@ -30,6 +37,23 @@ public class EventCategoryService {
     public EventCategory create(EventCategory newEventCategory){
         return eventCategoryRepository.saveAndFlush(newEventCategory);
     }
+
+//    public EventCategoryOwner addEventCategoryOwner(EventCategoryOwner categoryOwner){
+//            UserDetails userDetails = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+//            User user = userRepository.findByEmailUser(userDetails.getUsername());
+//            User checkUserByCategoryOwner = userRepository.findByIdUser(categoryOwner.getUserIduser().getIdUser());
+//            EventCategory eventCategory = eventCategoryRepository.findByEventCategoryId(categoryOwner.getEventcategoryEventcategory().getEventCategoryId());
+//        System.out.println(eventCategory.getEventCategoryId());
+//        System.out.println(checkUserByCategoryOwner.getIdUser());
+//            categoryOwner.setEventcategoryEventcategory(eventCategory);
+//            categoryOwner.setUserIduser(checkUserByCategoryOwner);
+//            if(user.getRoleUser().equals("admin")){
+//               return  eventCategoryOwnerRepository.saveAndFlush(categoryOwner);
+//            }
+//            else{
+//                throw new ResponseStatusException(HttpStatus.FORBIDDEN);
+//            }
+//    }
 
     public ResponseEntity editEventCategory(EventCategoryDto editEventCategory , Integer id){
         UserDetails userDetails = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
