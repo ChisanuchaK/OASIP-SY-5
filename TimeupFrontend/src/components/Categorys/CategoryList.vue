@@ -1,6 +1,7 @@
 <script setup>
 import { ref, onBeforeMount, computed } from 'vue';
 import EditCategory from './EditCategory.vue';
+import { userStore } from '../../stores/user.js';
 // ----- use when not use pinia
 // const emits = defineEmits(["EditCategoryIdFromEdit"]);
 const props = defineProps({
@@ -9,6 +10,10 @@ const props = defineProps({
         default: {}
     }
 })
+
+const userSignInRes = userStore();
+
+const userSignInRole = computed(() => userSignInRes.signInUserData.userRole);
 
 const categorys = computed(() => props.categoryLists)
 
@@ -32,7 +37,7 @@ const changeEditDialogTrue = (category) => {
 
             <div class="grid grid-cols-3 w-full mb-10">
                 <div v-for="(category, index) in categorys" :key="index"
-                    class="grid grid-flow-row grid-cols-2 mb-10 m-auto w-[90%] gap-2 text-center bg-white rounded-xl  font-bold">
+                    class="grid grid-flow-row grid-cols-2 mb-10 m-auto w-[90%] gap-2 text-center bg-white font-bold rounded-xl border border-[#E9E9E9]">
 
                     <div class="row-start-1 col-start-1 col-span-2 w-full rounded-t-xl text-2xl p-1 font-semibold "
                         :style="{ 'background-color': category.eventColor }">
@@ -55,12 +60,15 @@ const changeEditDialogTrue = (category) => {
                                     : category.eventCategoryDescription
                         }}</textarea>
 
-                    <button
+                    <button v-if="userSignInRole != 'lecturer'"
                         class="row-start-6 col-start-1 col-span-2 bg-[#00A28B] rounded-b-xl text-white uppercase p-1"
                         @click="changeEditDialogTrue(category)"> Edit </button>
 
-                    <EditCategory v-if="category.statusEditDialog" :categorys="category" :categoryLists="categorys"/>
-                        <!-- // ----- use when not use pinia @EditCategoryId="getEditCategoryValue"  -->
+                    <div v-else
+                        class="row-start-6 col-start-1 col-span-2 bg-[#D9D9D9] rounded-b-xl text-white uppercase p-1"></div>
+
+                    <EditCategory v-if="category.statusEditDialog" :categorys="category" :categoryLists="categorys" />
+                    <!-- // ----- use when not use pinia @EditCategoryId="getEditCategoryValue"  -->
 
                 </div>
             </div>
@@ -70,4 +78,5 @@ const changeEditDialogTrue = (category) => {
 </template>
  
 <style>
+
 </style>

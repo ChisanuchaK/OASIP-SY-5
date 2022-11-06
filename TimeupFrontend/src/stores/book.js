@@ -22,6 +22,7 @@ export const bookStore = defineStore("book", () => {
       bookings.value.sort(
         (a, b) => new Date(b.eventStartTime) - new Date(a.eventStartTime)
       );
+      console.log(bookings.value);
       // return res;
     } else if (res.status === 401) {
       if (await store.getRefreshToken()) {
@@ -46,6 +47,7 @@ export const bookStore = defineStore("book", () => {
       await store.getRefreshToken();
       const response = await res.json();
       bookingById.value = response;
+      console.log(bookingById.value);
       return response;
     } else if (res.status === 401) {
       if (await store.getRefreshToken()) {
@@ -80,6 +82,7 @@ export const bookStore = defineStore("book", () => {
         user: {
           idUser: localDataInput.userIdInSignIn,
         },
+        fileName: localDataInput.fileData
       }),
     });
     if (res.status === 201) {

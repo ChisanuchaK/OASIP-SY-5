@@ -2,6 +2,7 @@
 import { ref, onBeforeMount, computed } from 'vue'
 import moment from 'moment';
 import BookingDetailDialog from './BookingDetailDialog.vue';
+import { userStore } from '../../stores/user.js';
 import { bookStore } from '../../stores/book.js';
 import { categoryStore } from '../../stores/category.js';
 import DeleteBookingDialog from './DeleteBookingDialog.vue';
@@ -21,6 +22,9 @@ const props = defineProps({
 
 const bookRes = bookStore();
 const categoryRes = categoryStore();
+const userSignInRes = userStore();
+
+const userSignInRole = computed(() => userSignInRes.signInUserData.userRole);
 
 categoryRes.getEventCategory();
 
@@ -104,16 +108,16 @@ onBeforeMount(async () => {
                         <div class="grid grid-flow-row grid-cols-12 flex py-3 text-center px-2">
 
                             <div class="row-start-1 col-start-1 col-end-3 p-1 mb-1.5 rounded-lg ">{{
-                            moment(booking.eventStartTime).local().format("DD MMMM YYYY")
+                                    moment(booking.eventStartTime).local().format("DD MMMM YYYY")
                             }}</div>
 
                             <div class="row-start-1 col-start-3 col-end-5 p-1 mb-1.5 rounded-lg ">{{
-                            moment(booking.eventStartTime).local().format('hh:mm A')
+                                    moment(booking.eventStartTime).local().format('hh:mm A')
                             }}
                                 -
                                 {{
-                                moment(booking.eventStartTime).local().add(booking.eventDuration, 'm')
-                                .format('hh:mm A')
+                                        moment(booking.eventStartTime).local().add(booking.eventDuration, 'm')
+                                            .format('hh:mm A')
                                 }}
                             </div>
 
@@ -122,7 +126,7 @@ onBeforeMount(async () => {
                                 }} </div>
 
                             <div class="row-start-1 col-start-7 col-end-9 p-1 mb-1.5 rounded-lg ">{{
-                            booking.eventDuration
+                                    booking.eventDuration
                             }} minute </div>
 
                             <div class="row-start-1 col-start-9 col-end-11 p-1 mb-1.5 rounded-lg ">
@@ -134,10 +138,15 @@ onBeforeMount(async () => {
                                 </p>
                             </div>
 
-                            <button
+                            <button v-if="userSignInRole != 'lecturer'"
                                 class="row-start-1 col-start-11 bg-[#50ABCB] text-white p-1 rounded-lg uppercase w-11/12 h-full m-auto"
                                 @click="showSeeDetailsDialog(booking)">Detail</button>
-                            <button
+
+                            <button v-else
+                                class="row-start-1 col-start-11 col-span-2 bg-[#50ABCB] text-white p-1 rounded-lg uppercase w-8/12 h-full m-auto"
+                                @click="showSeeDetailsDialog(booking)">Detail</button>
+
+                            <button v-if="userSignInRole != 'lecturer'"
                                 class="row-start-1 col-start-12 bg-[#F24052] text-white rounded-lg uppercase w-11/12 h-full m-auto"
                                 @click="changeDeleteDialog(booking)">delete</button>
 

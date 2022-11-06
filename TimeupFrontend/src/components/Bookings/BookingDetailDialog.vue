@@ -1,6 +1,7 @@
 <script setup>
 import { ref, onBeforeMount, computed } from "vue";
 import { bookStore } from "../../stores/book.js";
+import { userStore } from '../../stores/user.js';
 // import { getBookingId, removeBooking } from "../stores/book.js";
 import DeleteBookingDialog from './DeleteBookingDialog.vue';
 import EditBookingDialog from "./EditBookingDialog.vue";
@@ -22,8 +23,10 @@ const props = defineProps({
   },
 });
 
-
+const userSignInRes = userStore();
 const bookRes = bookStore();
+
+const userSignInRole = computed(() => userSignInRes.signInUserData.userRole);
 
 // booking form for-loop and fetch to get detail from id
 bookRes.getBookingId(props.bookingDetailById.idBooking);
@@ -171,7 +174,7 @@ onBeforeMount(async () => {
           </div>
 
           <div class="row-start-9 mt-5 col-start-1">
-            <button
+            <button v-if="userSignInRole != 'lecturer'"
               class="bg-[#F24052] text-white rounded-lg w-6/12 h-full m-auto py-2"
               @click="changeDeleteDialog(bookingDetail)"
             >
@@ -179,7 +182,7 @@ onBeforeMount(async () => {
             </button>
           </div>
           <div class="row-start-9 mt-5 col-start-2">
-            <button
+            <button v-if="userSignInRole != 'lecturer'"
               class="bg-[#00A28B] text-white rounded-lg w-6/12 h-full m-auto py-2"
               @click="showEditDialog(bookingDetail)"
             >

@@ -71,6 +71,9 @@ let localData = reactive({
   eventDuration: "",
   eventNotes: "",
   userIdInSignIn: "",
+  fileName: null,
+  fileSize: 0,
+  fileSizeUnit: "",
 });
 
 // const getEmail = () => {
@@ -169,6 +172,43 @@ const changeConfirmDialog = () => {
   }
   console.log("not overlap and isInvalid " + isInvalid.value);
 };
+
+const fileOnInput = ($event) => {
+  console.log($event.target.files);
+  // let fileCurrentSelectData = $event.target.files[0].name
+  // console.log(fileCurrentSelectData);
+  localData.fileName = $event.target.files[0].name
+  // localData.fileSize = `${($event.target.files[0].size/102400).toFixed(2)} MB`
+
+  // localData.fileSize = fileSize($event.target.files[0].size)
+  fileSize($event.target.files[0].size)
+}
+
+const fileSize = (sizeOfFile) => {
+  // console.log(sizeOfFile);
+  // console.log(Math.pow(1024, 2));
+  // console.log(sizeOfFile / Math.pow(1024, 2));
+
+  //  localData.fileSize = (sizeOfFile / Math.pow(1024, 2)).toFixed(2);
+  // localData.fileSizeUnit = "KB";
+  // console.log(localData.fileSize);
+
+  // if (sizeOfFile < Math.pow(1024, 1)) {
+  //   localData.fileSize = (sizeOfFile / Math.pow(1024, 1)).toFixed(2);
+  //   localData.fileSizeUnit = "Bytes";
+
+  if (sizeOfFile < Math.pow(1024, 2)) {
+    localData.fileSize = (sizeOfFile / Math.pow(1024, 1)).toFixed(2);
+    console.log(localData.fileSize);
+    localData.fileSizeUnit = "KB";
+  } else if (sizeOfFile < Math.pow(1024, 3)) {
+    localData.fileSize = (sizeOfFile / Math.pow(1024, 2)).toFixed(2);
+    console.log(localData.fileSize);
+    localData.fileSizeUnit = "MB";
+  } else {
+    return;
+  }
+}
 
 const isInputName = computed(() => {
   return isInvalid.value && localData.bookingName.trim() == "";
@@ -272,12 +312,9 @@ const createBookingEvent = async (localDataInput) => {
   const res = await bookRes.createBooking(localDataInput);
   if (res.status === 201) {
     alert(
-      `Create successfully \n Category ID :  ${
-        localData.eventCategory.eventCategoryId
-      } \n CategoryName : ${
-        categoryList.value[categoryIndexSelect.value].eventCategoryName
-      } \n Date : ${localData.eventStartTime} \n Booking name :  ${
-        localData.bookingName
+      `Create successfully \n Category ID :  ${localData.eventCategory.eventCategoryId
+      } \n CategoryName : ${categoryList.value[categoryIndexSelect.value].eventCategoryName
+      } \n Date : ${localData.eventStartTime} \n Booking name :  ${localData.bookingName
       }`
     );
     console.log(
@@ -328,129 +365,91 @@ onBeforeMount(async () => {
 <template>
   <div>
     <div
-      class="mt-24 mb-8 uppercase w-3/4 m-auto text-center text-4xl font-bold text-black underline decoration-[#50ABCB]"
-    >
+      class="mt-24 mb-8 uppercase w-3/4 m-auto text-center text-4xl font-bold text-black underline decoration-[#50ABCB]">
       select scheduled
     </div>
     <div class="w-[80%] m-auto h-auto mb-24">
       <div class="bg-white text-xl rounded-xl font-bold">
         <div class="m-auto w-1/2 text-center pt-5">Enter Your Details</div>
-        <div class="grid grid-flow-row grid-cols-9 p-5 gap-3">
-          <div class="row-start-1 col-start-1 col-span-3">
-            Scheduled Category :
-          </div>
-          <div class="row-start-2 col-start-1 col-end-4 col-span-3">
-            <select
-              class="bg-gray-200 rounded w-full border"
-              v-model="categoryIndexSelect"
-              :style="{ 'border-color': isInputCategory ? 'red' : 'white' }"
-              @change="handleCategorySelect()"
-            >
-              <option
-                v-for="(res, indexs) in categoryList"
-                :value="indexs"
-                v-bind:key="indexs"
-              >
-                {{ res.eventCategoryName }}
-              </option>
-            </select>
-            <label class="text-red-500" v-if="isInputCategory">
-              *Please choose category
-            </label>
-          </div>
-          <div class="row-start-1 col-start-7 col-span-1">Name :</div>
-          <div
-            class="row-start-1 col-start-9 col-span-1 text-right text-gray-400"
-          >
-            {{ localData.bookingName.length }}/100
-          </div>
-          <div class="row-start-2 col-start-7 col-end-10 col-span-3">
-            <input
-              class="bg-gray-200 rounded w-full pb-0.5 pl-1 border disabled:text-gray-400"
-              type="text"
-              v-model="localData.bookingName"
-              :style="{
-                'border-color':
-                  isInputName || isInputNameOver ? 'red' : 'white',
-              }"
-            />
-            <label class="text-red-500" v-if="isInputName">
-              *Please enter name
-            </label>
-            <label class="text-red-500" v-if="isInputNameOver">
-              *over limit of input name
-            </label>
-          </div>
-          <div class="row-start-3 col-start-1 col-span-1">Time :</div>
-          <div class="row-start-4 col-start-1 col-end-4 col-span-3">
-            <form action="">
-              <input
-                class="bg-gray-200 rounded w-full border"
-                :max="maxdateIndexSelect"
-                :min="localPresentTime"
-                @change="handleTime()"
-                type="datetime-local"
-                :style="{
+        <div class="grid grid-flow-row">
+          <div class="grid grid-flow-row grid-cols-9 px-5 pb-3 gap-3">
+            <div class="row-start-1 col-start-1 col-span-3">
+              Scheduled Category :
+            </div>
+            <div class="row-start-2 col-start-1 col-end-4 col-span-3">
+              <select class="bg-gray-200 rounded w-full border" v-model="categoryIndexSelect"
+                :style="{ 'border-color': isInputCategory ? 'red' : 'white' }" @change="handleCategorySelect()">
+                <option v-for="(res, indexs) in categoryList" :value="indexs" v-bind:key="indexs">
+                  {{ res.eventCategoryName }}
+                </option>
+              </select>
+              <label class="text-red-500" v-if="isInputCategory">
+                *Please choose category
+              </label>
+            </div>
+            <div class="row-start-1 col-start-7 col-span-1">Name :</div>
+            <div class="row-start-1 col-start-9 col-span-1 text-right text-gray-400">
+              {{ localData.bookingName.length }}/100
+            </div>
+            <div class="row-start-2 col-start-7 col-end-10 col-span-3">
+              <input class="bg-gray-200 rounded w-full pb-0.5 pl-1 border disabled:text-gray-400" type="text"
+                v-model="localData.bookingName" :style="{
                   'border-color':
-                    isInputTime || isInputTimeOld || statusCreateUser == 400
-                      ? 'red'
-                      : 'white',
-                }"
-                v-model="dateIndexSelect"
-              />
-            </form>
-            <label
-              class="text-red-500"
-              v-if="isInputTime || statusCreateUser == 400"
-            >
-              *overlap
-            </label>
-            <label class="text-red-500" v-if="isInputTimeOld">
-              *Please select time is future than present
-            </label>
-          </div>
+                    isInputName || isInputNameOver ? 'red' : 'white',
+                }" />
+              <label class="text-red-500" v-if="isInputName">
+                *Please enter name
+              </label>
+              <label class="text-red-500" v-if="isInputNameOver">
+                *over limit of input name
+              </label>
+            </div>
+            <div class="row-start-3 col-start-1 col-span-1">Time :</div>
+            <div class="row-start-4 col-start-1 col-end-4 col-span-3">
+              <form action="">
+                <input class="bg-gray-200 rounded w-full border" :max="maxdateIndexSelect" :min="localPresentTime"
+                  @change="handleTime()" type="datetime-local" :style="{
+                    'border-color':
+                      isInputTime || isInputTimeOld || statusCreateUser == 400
+                        ? 'red'
+                        : 'white',
+                  }" v-model="dateIndexSelect" />
+              </form>
+              <label class="text-red-500" v-if="isInputTime || statusCreateUser == 400">
+                *overlap
+              </label>
+              <label class="text-red-500" v-if="isInputTimeOld">
+                *Please select time is future than present
+              </label>
+            </div>
 
-          <div class="row-start-3 col-start-4 col-span-1 text-center">
-            Duration
-          </div>
-          <div class="row-start-4 col-start-4 col-span-1">
-            <input
-              class="bg-gray-300 rounded w-full pb-0.5 pl-1 text-center"
-              readonly
-              type="text"
-              v-model="localData.eventDuration"
-            />
-          </div>
-          <div class="row-start-3 col-start-7 col-span-1">Email :</div>
-          <div
-            class="row-start-3 col-start-9 col-span-1 text-right text-gray-400"
-          >
-            {{ localData.bookingEmail.length }}/100
-          </div>
+            <div class="row-start-3 col-start-4 col-span-1 text-center">
+              Duration
+            </div>
+            <div class="row-start-4 col-start-4 col-span-1">
+              <input class="bg-gray-300 rounded w-full pb-0.5 pl-1 text-center" readonly type="text"
+                v-model="localData.eventDuration" />
+            </div>
+            <div class="row-start-3 col-start-7 col-span-1">Email :</div>
+            <div class="row-start-3 col-start-9 col-span-1 text-right text-gray-400">
+              {{ localData.bookingEmail.length }}/100
+            </div>
 
-          <div class="row-start-4 col-start-7 col-end-10 col-span-3">
-            <!-- <input class="bg-gray-200 rounded w-full pb-0.5 pl-1 border disabled:text-gray-400"
+            <div class="row-start-4 col-start-7 col-end-10 col-span-3">
+              <!-- <input class="bg-gray-200 rounded w-full pb-0.5 pl-1 border disabled:text-gray-400"
                                 type="email" v-model="localData.bookingEmail" /> -->
 
-            <select
-              v-if="userSignInRole == 'admin'"
-              v-model="bookingEmailIndexSelect"
-              @change="handleBookingEmailSelect()"
-              class="bg-gray-200 rounded-md w-full pb-0.5 pl-1 border border-solid disabled:text-gray-400 border-[#D9D9D9] hover:bg-[#F2F2F2] transition delay-75 text-center"
-              name=""
-              id=""
-            >
-              <!-- <option value="" selected hidden>role</option> -->
-              <option
-                v-for="(user, index) in userList"
-                :key="index"
-                :value="index"
-              >
-                {{ user.emailUser }}
-              </option>
-            </select>
+              <select v-if="userSignInRole == 'admin'" v-model="bookingEmailIndexSelect"
+                @change="handleBookingEmailSelect()"
+                class="bg-gray-200 rounded-md w-full pb-0.5 pl-1 border border-solid disabled:text-gray-400 border-[#D9D9D9] hover:bg-[#F2F2F2] transition delay-75 text-center"
+                name="" id="">
+                <!-- <option value="" selected hidden>role</option> -->
+                <option v-for="(user, index) in userList" :key="index" :value="index">
+                  {{ user.emailUser }}
+                </option>
+              </select>
 
-            <!--                     <select class="bg-gray-200 rounded w-full border" v-model="categoryIndexSelect"
+              <!--                     <select class="bg-gray-200 rounded w-full border" v-model="categoryIndexSelect"
                                 :style="{ 'border-color': isInputCategory ? 'red' : 'white' }"
                                 @change="handleCategorySelect()">
                                 <option v-for="(res, index) in categoryList" :value="index" v-bind:key="index">{{
@@ -458,74 +457,80 @@ onBeforeMount(async () => {
                                 }}</option>
                             </select> -->
 
-            <input
-              v-else
-              :disabled="
+              <input v-else :disabled="
                 userSignInRole == 'student' || userSignInRole == 'lecturer'
-              "
-              class="bg-gray-200 rounded w-full pb-0.5 pl-1 border disabled:text-gray-400"
-              type="email"
-              v-model="localData.bookingEmail"
-              :style="{
-                'border-color':
-                  isInputEmail || isInputEmailOver || isInputEmailVaild
-                    ? 'red'
-                    : 'white',
-              }"
-            />
+              " class="bg-gray-200 rounded w-full pb-0.5 pl-1 border disabled:text-gray-400" type="email"
+                v-model="localData.bookingEmail" :style="{
+                  'border-color':
+                    isInputEmail || isInputEmailOver || isInputEmailVaild
+                      ? 'red'
+                      : 'white',
+                }" />
 
-            <label class="text-red-500" v-if="isInputEmail">
-              *Please enter email
-            </label>
-            <label class="text-red-500" v-if="isInputEmailOver">
-              *over limit of input email
-            </label>
-            <label class="text-red-500" v-if="isInputEmailVaild">
-              *input email is invalid
-            </label>
-          </div>
-          <div class="row-start-5 col-start-1 col-span-1">Notes :</div>
-          <div
-            class="row-start-5 col-start-9 col-span-1 text-right text-gray-400"
-          >
-            {{ localData.eventNotes.length }}/500
-          </div>
-          <div class="row-start-6 col-start-1 col-end-10 span-9">
-            <textarea
-              class="bg-gray-200 w-full resize-none rounded border"
-              name=""
-              id=""
-              cols="100"
-              rows="5"
-              placeholder="enter your message(limit 500 text)"
-              v-model="localData.eventNotes"
-              :style="{ 'border-color': isInputNotes ? 'red' : 'white' }"
-            ></textarea>
-            <label class="text-red-500" v-if="isInputNotes">
-              *over limit of input message
-            </label>
-          </div>
+              <label class="text-red-500" v-if="isInputEmail">
+                *Please enter email
+              </label>
+              <label class="text-red-500" v-if="isInputEmailOver">
+                *over limit of input email
+              </label>
+              <label class="text-red-500" v-if="isInputEmailVaild">
+                *input email is invalid
+              </label>
+            </div>
+            <div class="row-start-5 col-start-1 col-span-1">Notes :</div>
+            <div class="row-start-5 col-start-9 col-span-1 text-right text-gray-400">
+              {{ localData.eventNotes.length }}/500
+            </div>
+            <div class="row-start-6 col-start-1 col-end-10 span-9">
+              <textarea class="bg-gray-200 w-full resize-none rounded border" name="" id="" cols="100" rows="5"
+                placeholder="enter your message(limit 500 text)" v-model="localData.eventNotes"
+                :style="{ 'border-color': isInputNotes ? 'red' : 'white' }"></textarea>
+              <label class="text-red-500" v-if="isInputNotes">
+                *over limit of input message
+              </label>
+            </div>
 
-          <div class="row-start-7 col-start-8 col-span-1">
-            <button
-              @click="changeCancelDialogTrue"
-              class="w-full h-full m-auto py-2 bg-[#F24052] text-white rounded-lg"
-            >
-              cancel
-            </button>
-          </div>
+            <div class="row-start-7 col-start-1 col-span-1">Upload File :</div>
+            <div class="grid row-start-8 col-start-1 col-end-4 col-span-3 content-center">
+              <input id="file" name="file"
+                class="bg-gray-200 rounded w-[100%] border disabled:text-gray-400" type="file"
+                @change="fileOnInput" />
+            </div>
+            
+            <div class="grid row-start-9 col-start-1 col-span-5">
+              <label class="text-red-500">
+                *Please choose file maximum 10 MB
+              </label>
+            </div>
 
-          <div class="row-start-7 col-start-9 col-span-1">
-            <button
-              @click="changeConfirmDialog"
-              class="w-full h-full m-auto bg-[#00A28B] text-white rounded-lg"
-            >
-              create
-            </button>
-          </div>
-          <div
-            class="row-start-8 col-start-8 py-2 col-span-2 text-red-500 text-center"
-            v-show="
+            <div class="grid row-start-8 col-start-4 col-end-5 col-span-1 content-center">
+              <p class="text-left h-full">{{ localData.fileSize == 100 ? "" : localData.fileSize }} {{
+                  localData.fileSizeUnit
+              }}</p>
+            </div>
+
+            <div class="grid row-start-8 col-start-5 col-end-6 col-span-7 justify-items-start">
+              <button @click="" class="w-[50%] py-1 bg-[#F24052] text-white rounded-lg">
+                <svg class="hover:text-[#F24052] m-auto" width="1.5em" height="1.5em" viewBox="0 0 24 24">
+                  <path fill="currentColor"
+                    d="M6 19a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2V7H6v12m2.46-7.12l1.41-1.41L12 12.59l2.12-2.12l1.41 1.41L13.41 14l2.12 2.12l-1.41 1.41L12 15.41l-2.12 2.12l-1.41-1.41L10.59 14l-2.13-2.12M15.5 4l-1-1h-5l-1 1H5v2h14V4h-3.5Z">
+                  </path>
+                </svg>
+              </button>
+            </div>
+            <!-- <div class="row-start-7 col-start-8 col-span-1">
+              <button @click="changeCancelDialogTrue"
+                class="w-full h-full m-auto py-2 bg-[#F24052] text-white rounded-lg">
+                cancel
+              </button>
+            </div>
+
+            <div class="row-start-7 col-start-9 col-span-1">
+              <button @click="changeConfirmDialog" class="w-full h-full m-auto bg-[#00A28B] text-white rounded-lg">
+                create
+              </button>
+            </div>
+            <div class="row-start-8 col-start-8 py-2 col-span-2 text-red-500 text-center" v-show="
               isInputName ||
               isInputNameOver ||
               isInputEmail ||
@@ -535,25 +540,51 @@ onBeforeMount(async () => {
               isInputNotes ||
               isInputTime ||
               isInputTimeOld
-            "
-          >
-            *some input is invalid
+            ">
+              *some input is invalid
+            </div> -->
+          </div>
+          <div class="grid grid-flow-row grid-cols-9 px-5 pb-3 gap-3">
+
+            <div class="row-start-1 col-start-8 col-span-1">
+              <button @click="changeCancelDialogTrue"
+                class="w-full h-full m-auto py-2 bg-[#F24052] text-white rounded-lg">
+                cancel
+              </button>
+            </div>
+
+            <div class="row-start-1 col-start-9 col-span-1">
+              <button @click="changeConfirmDialog" class="w-full h-full m-auto bg-[#00A28B] text-white rounded-lg">
+                create
+              </button>
+            </div>
+            <div class="row-start-2 col-start-8 py-2 col-span-2 text-red-500 text-center" v-show="
+              isInputName ||
+              isInputNameOver ||
+              isInputEmail ||
+              isInputEmailVaild ||
+              isInputEmailOver ||
+              isInputCategory ||
+              isInputNotes ||
+              isInputTime ||
+              isInputTimeOld
+            ">
+              *some input is invalid
+            </div>
+
           </div>
         </div>
-        <Cancel
-          v-if="cancelDialog"
-          @onClickCancelNo="changeCancelDialogFalse"
-          @onClickCancelYes="reset"
-        />
+        <Cancel v-if="cancelDialog" @onClickCancelNo="changeCancelDialogFalse" @onClickCancelYes="reset" />
 
-        <Confirm
-          v-if="createDialog"
-          @onClickConfirmNo="closeConfirmDialog"
-          @onClickConfirmYes="createBookingEvent(localData)"
-        />
+        <Confirm v-if="createDialog" @onClickConfirmNo="closeConfirmDialog"
+          @onClickConfirmYes="createBookingEvent(localData)" />
       </div>
     </div>
   </div>
 </template>
 
-<style></style>
+<style scoped>
+.row-start-8 {
+  grid-row-start: 8;
+}
+</style>
