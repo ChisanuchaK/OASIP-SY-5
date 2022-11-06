@@ -17,7 +17,10 @@ import org.springframework.web.server.ResponseStatusException;
 import sit.int221.TimeUpBackend.config.CookieUtil;
 import sit.int221.TimeUpBackend.config.JwtTokenUtil;
 import sit.int221.TimeUpBackend.dtos.*;
+import sit.int221.TimeUpBackend.entities.EventCategory;
 import sit.int221.TimeUpBackend.entities.User;
+import sit.int221.TimeUpBackend.repositories.EventCategoryOwnerRepository;
+import sit.int221.TimeUpBackend.repositories.EventCategoryRepository;
 import sit.int221.TimeUpBackend.repositories.UserRepository;
 import java.util.*;
 import java.util.stream.Collectors;
@@ -48,6 +51,7 @@ public class UserService {
 
     @Autowired
     private AuthenticationManager authenticationManager;
+
 
     //get
     public List<UserGetDto> getUserByName(String nameUser) {
@@ -131,13 +135,13 @@ public class UserService {
                  userRepository.saveAndFlush(user);
                 return ResponseEntity.status(201).body("Create user Successfully");
             } else {
-                user.setNameUser(userDTOPOST.getNameUser().trim());
-                user.setEmailUser(userDTOPOST.getEmailUser().trim());
-                user.setRoleUser(userDTOPOST.getRoleUser());
-                user.setPassword(encodePassword);
-                emailService.sendSimpleMail(userDTOPOST);
-                userRepository.saveAndFlush(user);
-                return ResponseEntity.status(201).body("Create user Successfully");
+                    user.setNameUser(userDTOPOST.getNameUser().trim());
+                    user.setEmailUser(userDTOPOST.getEmailUser().trim());
+                    user.setRoleUser(userDTOPOST.getRoleUser());
+                    user.setPassword(encodePassword);
+                    emailService.sendSimpleMail(userDTOPOST);
+                    userRepository.saveAndFlush(user);
+                    return ResponseEntity.status(201).body("Create user Successfully");
             }
         }
     }

@@ -1,5 +1,6 @@
 package sit.int221.TimeUpBackend.service;
 
+import lombok.SneakyThrows;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -8,14 +9,17 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.server.ResponseStatusException;
 import sit.int221.TimeUpBackend.dtos.*;
 import sit.int221.TimeUpBackend.entities.*;
+import sit.int221.TimeUpBackend.messages.ResponseMessage;
 import sit.int221.TimeUpBackend.repositories.EventCategoryOwnerRepository;
 import sit.int221.TimeUpBackend.repositories.EventRepository;
 import sit.int221.TimeUpBackend.repositories.EventCategoryRepository;
 import sit.int221.TimeUpBackend.repositories.UserRepository;
 
+import java.io.IOException;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -37,7 +41,12 @@ public class EventService{
     @Autowired
     private EventCategoryOwnerRepository eventCategoryOwnerRepository;
 
+    @Autowired
+    FilesStorageServiceImpl storageService;
+
     private ModelMapper modelMapper = new ModelMapper();
+
+    private static  int number;
     //    get
     public List<EventDto> getAllEvent(){
         UserDetails getCurrentAuthentication = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
@@ -50,13 +59,17 @@ public class EventService{
                 List<Event> bookingsFromRoleUser = eventRepository.findAllByBookingEmail(getCurrentAuthentication.getUsername());
                 return bookingsFromRoleUser.stream().map(e -> modelMapper.map(e, EventDto.class)).collect(Collectors.toList());
         } else if (user.getRoleUser().equals("lecturer")) {
-            EventCategoryOwner eventCategoryOwner = eventCategoryOwnerRepository.findByUserIduser(user);
-            List<Event> bookingFromLecturerOwner = eventRepository.findAllByEventCategoryEventCategoryId(eventCategoryOwner.getEventcategoryEventcategory().getEventCategoryId());
-            return bookingFromLecturerOwner.stream().map(e -> modelMapper.map(e, EventDto.class)).collect(Collectors.toList());
+            ArrayList<Event> bookingFromLecturerOwner = new ArrayList<>();
+            List<EventCategoryOwner> eventCategoryOwner = eventCategoryOwnerRepository.findAllByUserIduser(user);
+            for(int i = 0 ; i < eventCategoryOwner.size() ; i ++){
+                bookingFromLecturerOwner.addAll(eventRepository.findAllByEventCategoryEventCategoryId(eventCategoryOwner.get(i).getEventcategoryEventcategory().getEventCategoryId()));
+            }
+          return bookingFromLecturerOwner.stream().map(e -> modelMapper.map(e, EventDto.class)).collect(Collectors.toList());
         }
 
         throw  new ResponseStatusException(HttpStatus.BAD_REQUEST , "That the booking email must be the same as student's email");
     }
+
 
     public EventMoreDetailDto getEventDetailDTOById(Integer id){
         UserDetails getCurrentAuthentication = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
@@ -76,19 +89,23 @@ public class EventService{
             }
         }
         else if (user.getRoleUser().equals("lecturer")){
-            EventCategoryOwner eventCategoryOwner = eventCategoryOwnerRepository.findByUserIduser(user);
-            if(eventCategoryOwner.getEventcategoryEventcategory().getEventCategoryId() == event.getEventCategory().getEventCategoryId()){
-                Event bookings= eventRepository.findById(id).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
-                return modelMapper.map(bookings , EventMoreDetailDto.class);
+            List<EventCategoryOwner> eventCategoryOwner = eventCategoryOwnerRepository.findAllByUserIduser(user);
+            ArrayList<Integer> arrayIdCategory = new ArrayList<>();
+            for (int i = 0 ; i < eventCategoryOwner.size() ; i ++){
+                arrayIdCategory.add(eventCategoryOwner.get(i).getEventcategoryEventcategory().getEventCategoryId());
             }
-            else{
-                throw  new ResponseStatusException(HttpStatus.FORBIDDEN , "email is not the same as student's email");
+            if(arrayIdCategory.indexOf(event.getEventCategory().getEventCategoryId()) != -1){
+                Event eventDetail = eventRepository.findById(id).orElseThrow(()-> new ResponseStatusException(HttpStatus.NOT_FOUND));
+                return modelMapper.map(eventDetail , EventMoreDetailDto.class);
             }
+            }
+         throw new ResponseStatusException(HttpStatus.FORBIDDEN);
         }
-        throw new ResponseStatusException(HttpStatus.BAD_REQUEST , "This email permission denied");
-    }
 
-    public ResponseEntity create( EventPostDto eventPostDto) {
+
+
+
+    public ResponseEntity create( EventPostDto eventPostDto  , MultipartFile file) {
         User checkUserByEmail = userRepository.findByEmailUser(eventPostDto.getBookingEmail());
         Event booking = modelMapper.map(eventPostDto, Event.class);
         EventCategory eventCategory = eventCategoryRepository.findById(eventPostDto.getEventCategory().getEventCategoryId()).orElseThrow(()
@@ -101,10 +118,10 @@ public class EventService{
                 if (!checkTimeOverLap(checkCompare, booking)) {
                     eventRepository.save(booking);
                     emailService.sendMailWithAttachment(eventPostDto);
-                    return ResponseEntity.status(201).body("Inserted Successfully");
                 } else {
                     throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "overlapped with other events");
                 }
+                return CreateEventAttribute(eventPostDto, file, booking, checkCompare);
             }
         }
         else {
@@ -115,32 +132,62 @@ public class EventService{
                     booking.setEventDuration(eventCategory.getEventDuration());
                     booking.setBookingEmail(eventPostDto.getBookingEmail());
                     booking.setUserIduser(checkUserByEmail);
+                    if (!checkTimeOverLap(checkCompare, booking)) {
+                        eventRepository.save(booking);
+                        emailService.sendMailWithAttachment(eventPostDto);
+                    } else {
+                        throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "overlapped with other events");
+                    }
 
                 } else {
                     throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "email not register");
                 }
-                if (!checkTimeOverLap(checkCompare, booking)) {
-                    eventRepository.save(booking);
-                    emailService.sendMailWithAttachment(eventPostDto);
-                    return ResponseEntity.status(201).body("Inserted Successfully");
-                } else {
-                    throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "overlapped with other events");
-                }
+                return CreateEventAttribute(eventPostDto, file, booking, checkCompare);
             } else if (user.getRoleUser().equals("student") && user.getEmailUser().equals(checkUserByEmail.getEmailUser())) {
-                booking.setEventDuration(eventCategory.getEventDuration());
-                booking.setBookingEmail(checkUserByEmail.getEmailUser());
-                booking.setUserIduser(checkUserByEmail);
-                if (!checkTimeOverLap(checkCompare, booking)) {
-                    eventRepository.save(booking);
-                    emailService.sendMailWithAttachment(eventPostDto);
-                    return ResponseEntity.status(201).body("Inserted Successfully");
-                } else {
-                    throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "overlapped with other events");
+                if (checkUserByEmail != null) {
+                    booking.setEventDuration(eventCategory.getEventDuration());
+                    booking.setBookingEmail(checkUserByEmail.getEmailUser());
+                    booking.setUserIduser(checkUserByEmail);
+                    if (!checkTimeOverLap(checkCompare, booking)) {
+                        eventRepository.save(booking);
+                        emailService.sendMailWithAttachment(eventPostDto);
+                    } else {
+                        throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "overlapped with other events");
+                    }
+                }else {
+                    throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "email not register");
                 }
+
+                return CreateEventAttribute(eventPostDto, file, booking, checkCompare);
             }
         }
         throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "booking email must be the same as the student's email");
     }
+
+    private ResponseEntity CreateEventAttribute(EventPostDto eventPostDto, MultipartFile file, Event booking, List<Event> checkCompare) {
+        Event event = eventRepository.findByFileName(file.getOriginalFilename());
+        number = booking.getIdBooking();
+        if (!checkTimeOverLap(checkCompare, booking)) {
+            String message = "";
+                if(event == null){
+                    storageService.save(file , number);
+                    eventRepository.save(booking);
+                    emailService.sendMailWithAttachment(eventPostDto);
+                    message = "Uploaded the file and create event successfully: " + file.getOriginalFilename();
+                }
+                else{
+                    storageService.save(file , number);
+                    eventRepository.save(booking);
+                    emailService.sendMailWithAttachment(eventPostDto);
+                    message = "Uploaded the file and create event successfully: " + "(" + number + ")" + file.getResource().getFilename();
+                }
+
+                return ResponseEntity.status(HttpStatus.OK).body(new ResponseMessage(message));
+        } else {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "overlapped with other events");
+        }
+    }
+
     public boolean checkTimeOverLap(List<Event> allEvent, Event event ) {
 
         for (Event book : allEvent) {
@@ -184,7 +231,8 @@ public class EventService{
     }
 
     //put
-    public ResponseEntity editEvent(EventPutDto editEventPutDTO, int id) {
+    @SneakyThrows
+    public ResponseEntity editEvent(EventPutDto editEventPutDTO, MultipartFile multipartFile , Integer id ) {
         UserDetails getCurrentAuthentication = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         User user = userRepository.findByEmailUser(getCurrentAuthentication.getUsername());
         Event event = eventRepository.findById(id).orElseThrow( ()->{
@@ -204,22 +252,37 @@ public class EventService{
 
         if ((!checkTimeOverLap(checkCompare , event))){
                  if(user.getRoleUser().equals("admin")){
-                     eventRepository.saveAndFlush(event);
+                     if(multipartFile == null){
+                         eventRepository.saveAndFlush(event);
+                     }
+                     else {
+                         storageService.save(multipartFile , id);
+                         eventRepository.saveAndFlush(event);
+                     }
                      return ResponseEntity.status(200).body("Edited Successfully");
                  }
-                 else if (user.getRoleUser().equals("student")){
+                 else if (user.getRoleUser().equals("student") && event.getBookingEmail().equals(getCurrentAuthentication.getUsername())){
                      if(!(event.getBookingEmail().equals(user.getEmailUser()))){
                          throw  new ResponseStatusException(HttpStatus.FORBIDDEN , "email is not the same as student's email");
                      }
                      else{
-                         eventRepository.saveAndFlush(event);
-                         return ResponseEntity.status(200).body("Edited Successfully");
+                            if(event.getFileName() == null){
+                                storageService.save(multipartFile , id);
+                                eventRepository.saveAndFlush(event);
+                                return ResponseEntity.status(200).body("Edited Successfully");
+                            }
+                           else {
+                                storageService.deleteById(id);
+                                storageService.save(multipartFile , id);
+                                eventRepository.saveAndFlush(event);
+                                return ResponseEntity.status(200).body("Edited Successfully");
+                            }
                      }
                  }
         }
         else {
             throw  new ResponseStatusException(HttpStatus.BAD_REQUEST , "overlapped with other events");
         }
-        throw  new ResponseStatusException(HttpStatus.BAD_REQUEST , "This email permission denied");
+        throw  new ResponseStatusException(HttpStatus.FORBIDDEN , "This email permission denied");
     }
 }

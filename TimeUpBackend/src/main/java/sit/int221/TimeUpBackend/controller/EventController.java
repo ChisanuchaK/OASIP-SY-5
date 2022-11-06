@@ -1,6 +1,8 @@
 package sit.int221.TimeUpBackend.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.Resource;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -8,12 +10,16 @@ import org.springframework.security.config.annotation.method.configuration.Enabl
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.server.ResponseStatusException;
 import sit.int221.TimeUpBackend.dtos.*;
-import sit.int221.TimeUpBackend.service.EmailService;
-import sit.int221.TimeUpBackend.service.EmailServiceImpl;
-import sit.int221.TimeUpBackend.service.EventService;
+import sit.int221.TimeUpBackend.entities.Event;
+import sit.int221.TimeUpBackend.messages.ResponseMessage;
+import sit.int221.TimeUpBackend.repositories.EventRepository;
+import sit.int221.TimeUpBackend.service.*;
 
 import javax.validation.Valid;
+import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 
@@ -28,8 +34,18 @@ public class EventController {
     @Autowired
     private EventService eventService;
 
-//    @Autowired
-//    private EmailServiceImpl emailService;
+    @Autowired
+    private EventRepository eventRepository;
+    @Autowired
+    private FilesStorageServiceImpl storageService;
+    @GetMapping("/file/{id}")
+    @PreAuthorize("hasAnyAuthority('admin' , 'student' , 'lecturer')")
+    @ResponseBody
+    public ResponseEntity<Resource> getFile(@PathVariable Integer id) {
+        Resource file = storageService.load(id);
+        return ResponseEntity.ok().header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + file.getFilename() + "\"").body(file);
+    }
+
 
     @GetMapping("")
     @PreAuthorize("hasAnyAuthority('admin' , 'student' , 'lecturer')")
@@ -46,8 +62,8 @@ public class EventController {
 
     @PostMapping("")
     @ResponseStatus(HttpStatus.CREATED)
-    public ResponseEntity createEvent(@Valid @RequestBody EventPostDto newBooking){
-        return eventService.create(newBooking);
+    public ResponseEntity createEvent(@Valid @RequestPart("content") EventPostDto newBooking , @RequestParam("file") MultipartFile file){
+        return eventService.create(newBooking , file);
     }
 
     @DeleteMapping("/{id}")
@@ -56,10 +72,16 @@ public class EventController {
         eventService.delete(id);
     }
 
+    @DeleteMapping("/file/{id}")
+    @PreAuthorize("hasAnyAuthority('admin' , 'student')")
+    public ResponseEntity deleteFile(@PathVariable Integer id) throws IOException {
+        storageService.deleteById(id);
+        return ResponseEntity.ok().body("Delete file success");
+    }
     @PutMapping("/{id}")
     @PreAuthorize("hasAnyAuthority('admin' , 'student')")
-    public ResponseEntity editEvent(@Valid @RequestBody EventPutDto editBooking , @PathVariable int id ){
-        return eventService.editEvent(editBooking , id);
+    public ResponseEntity editEvent(@Valid @RequestPart("content") EventPutDto editBooking , @RequestParam("file") MultipartFile multipartFile  , @PathVariable Integer id ) throws IOException {
+        return eventService.editEvent(editBooking , multipartFile , id);
     }
 
     @ResponseStatus(HttpStatus.BAD_REQUEST)

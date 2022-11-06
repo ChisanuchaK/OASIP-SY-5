@@ -5,7 +5,11 @@ import sit.int221.TimeUpBackend.entities.EventCategoryOwner;
 import sit.int221.TimeUpBackend.entities.EventCategoryOwnerId;
 import sit.int221.TimeUpBackend.entities.User;
 
+import java.util.List;
+
 public interface EventCategoryOwnerRepository extends JpaRepository<EventCategoryOwner, EventCategoryOwnerId> {
 
     EventCategoryOwner findByUserIduser(User user);
+    List<EventCategoryOwner> findAllByUserIduser(User user);
+
 }

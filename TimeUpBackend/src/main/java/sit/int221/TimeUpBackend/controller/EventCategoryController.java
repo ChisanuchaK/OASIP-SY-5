@@ -9,6 +9,7 @@ import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.*;
 import sit.int221.TimeUpBackend.dtos.EventCategoryDto;
 import sit.int221.TimeUpBackend.entities.EventCategory;
+import sit.int221.TimeUpBackend.entities.EventCategoryOwner;
 import sit.int221.TimeUpBackend.service.EventCategoryService;
 
 import javax.validation.Valid;
@@ -33,6 +34,14 @@ public class EventCategoryController {
     public EventCategory createEventCategory(@Valid  @RequestBody EventCategory newEventCategory){
         return  eventCategoryService.create(newEventCategory);
     }
+
+//    @PostMapping("/category-owner")
+//    @PreAuthorize("hasAnyAuthority('admin')")
+//    @ResponseStatus(HttpStatus.CREATED)
+//    public EventCategoryOwner addEventCategoryOwner(@RequestBody EventCategoryOwner categoryOwner){
+//        return eventCategoryService.addEventCategoryOwner(categoryOwner);
+//    }
+
     @PutMapping("/{id}")
     @PreAuthorize("hasAuthority('admin')")
     public ResponseEntity editEventCategory(@Valid  @RequestBody EventCategoryDto editEventCategory , @PathVariable Integer id){

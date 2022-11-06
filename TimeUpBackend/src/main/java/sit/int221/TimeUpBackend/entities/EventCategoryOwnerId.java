@@ -20,6 +20,7 @@ public class EventCategoryOwnerId implements Serializable {
     @Column(name = "user_iduser", nullable = false)
     private Integer userIduser;
 
+
     @Override
     public int hashCode() {
         return Objects.hash(userIduser, eventcategoryEventcategoryid);
