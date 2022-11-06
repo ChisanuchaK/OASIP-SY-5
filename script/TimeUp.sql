@@ -43,6 +43,7 @@ CREATE TABLE IF NOT EXISTS `TimeUp`.`booking` (
   `eventNotes` VARCHAR(500) NULL,
   `eventCategory` INT NOT NULL,
   `user_iduser` INT NULL ,
+  `file` VARCHAR(250) NULL,
   PRIMARY KEY (`idbooking`),
   INDEX `fk_booking_eventCategory_idx` (`eventCategory` ASC) VISIBLE,
   CONSTRAINT `fk_booking_eventCategory`
