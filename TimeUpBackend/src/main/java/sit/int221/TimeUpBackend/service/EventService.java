@@ -116,8 +116,8 @@ public class EventService{
                 booking.setEventDuration(eventCategory.getEventDuration());
                 booking.setBookingEmail(eventPostDto.getBookingEmail());
                 if (!checkTimeOverLap(checkCompare, booking)) {
-                    eventRepository.save(booking);
                     emailService.sendMailWithAttachment(eventPostDto);
+                    eventRepository.save(booking);
                 } else {
                     throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "overlapped with other events");
                 }
@@ -133,8 +133,8 @@ public class EventService{
                     booking.setBookingEmail(eventPostDto.getBookingEmail());
                     booking.setUserIduser(checkUserByEmail);
                     if (!checkTimeOverLap(checkCompare, booking)) {
-                        eventRepository.save(booking);
                         emailService.sendMailWithAttachment(eventPostDto);
+                        eventRepository.save(booking);
                     } else {
                         throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "overlapped with other events");
                     }
@@ -149,8 +149,8 @@ public class EventService{
                     booking.setBookingEmail(checkUserByEmail.getEmailUser());
                     booking.setUserIduser(checkUserByEmail);
                     if (!checkTimeOverLap(checkCompare, booking)) {
-                        eventRepository.save(booking);
                         emailService.sendMailWithAttachment(eventPostDto);
+                        eventRepository.save(booking);
                     } else {
                         throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "overlapped with other events");
                     }
@@ -169,19 +169,17 @@ public class EventService{
         number = booking.getIdBooking();
         if (!checkTimeOverLap(checkCompare, booking)) {
             String message = "";
-                if(event == null){
+//                if(event == null){
+//                    storageService.save(file , number);
+//                    eventRepository.save(booking);
+//                    emailService.sendMailWithAttachment(eventPostDto);
+//                    message = "Uploaded the file and create event successfully: " + file.getOriginalFilename();
+//                }
                     storageService.save(file , number);
-                    eventRepository.save(booking);
                     emailService.sendMailWithAttachment(eventPostDto);
-                    message = "Uploaded the file and create event successfully: " + file.getOriginalFilename();
-                }
-                else{
-                    storageService.save(file , number);
                     eventRepository.save(booking);
-                    emailService.sendMailWithAttachment(eventPostDto);
-                    message = "Uploaded the file and create event successfully: " + "(" + number + ")" + file.getResource().getFilename();
-                }
 
+                    message = "Uploaded the file and create event successfully: " + "(" + number + ")" + file.getResource().getFilename();
                 return ResponseEntity.status(HttpStatus.OK).body(new ResponseMessage(message));
         } else {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "overlapped with other events");
