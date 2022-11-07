@@ -107,6 +107,7 @@ public class EventService{
 
     public ResponseEntity create( EventPostDto eventPostDto  , MultipartFile file) {
         double mb = Math.floor((file.getSize() / Math.pow(1024 , 2)));
+        double kb = Math.floor((file.getSize()));
         User checkUserByEmail = userRepository.findByEmailUser(eventPostDto.getBookingEmail());
         Event booking = modelMapper.map(eventPostDto, Event.class);
         EventCategory eventCategory = eventCategoryRepository.findById(eventPostDto.getEventCategory().getEventCategoryId()).orElseThrow(()
