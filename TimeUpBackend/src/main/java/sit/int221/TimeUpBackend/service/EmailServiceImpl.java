@@ -40,6 +40,7 @@ public class EmailServiceImpl implements EmailService {
     private String sender;
     private static final String PATTERN_FORMAT = "EEE, d MMM yyyy HH:mm Z";
     String messageSubjectEvent = "Accepted: meeting Event ";
+    System.out.println(messageSubjectEvent);
     String messageSubjectUser = "Thank you registration K.";
     DateTimeFormatter formatter = DateTimeFormatter.ofPattern(PATTERN_FORMAT).withZone(ZoneId.systemDefault());
     // Method 1
