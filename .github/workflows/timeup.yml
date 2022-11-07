@@ -30,4 +30,4 @@ jobs:
     - run: docker push quay.io/chisanuchakim/oasip-sy-5-fontend
     - run: docker-compose up -d backend frontend reverse_proxy
     - run: docker cp ../uploads backend:./
-    - run: rm -r ./uploads
+    - run: rm -r ../uploads
