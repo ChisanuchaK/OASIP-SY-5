@@ -58,8 +58,14 @@ public class FilesStorageServiceImpl implements FilesStorageService{
         Event event = eventRepository.findByFileName(file.getOriginalFilename());
         Event eventId = eventRepository.findById(number).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
         try {
-               Files.copy(file.getInputStream(), this.root.resolve(file.getOriginalFilename()));
+           if(event == null){
+               Files.copy(file.getInputStream() , this.root.resolve("(" + number + ")" + file.getOriginalFilename()));
                eventId.setFileName("(" + number + ")" + file.getOriginalFilename());
+           }
+           else {
+               Files.copy(file.getInputStream() , this.root.resolve("(" + number + ")" + file.getOriginalFilename()));
+               eventId.setFileName("(" + number + ")" + file.getOriginalFilename());
+           }
         } catch (Exception e) {
             file = null;
         }
