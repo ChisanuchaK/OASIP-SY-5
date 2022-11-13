@@ -36,6 +36,7 @@ public class EventMoreDetailDto {
         }
     }
     private String file;
+    private int fileSize;
     public String  getEventCategoryName(){
         return eventCategory.getEventCategoryName();
     }
