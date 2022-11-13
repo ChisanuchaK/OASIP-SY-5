@@ -21,6 +21,8 @@ import sit.int221.TimeUpBackend.repositories.UserRepository;
 
 import java.io.IOException;
 import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -229,6 +231,11 @@ public class EventService{
         Event event = eventRepository.findById(id).orElseThrow(()-> new ResponseStatusException(HttpStatus.NOT_FOUND , "Event not found"));
 
         if(user.getRoleUser().equals("admin")){
+            try {
+                storageService.deleteById(id);
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
             eventRepository.deleteById(id);
             throw new ResponseStatusException(HttpStatus.OK , "Delete" + " " + id +  " " + user.getEmailUser() + " "  +"successful");
         }
@@ -237,6 +244,11 @@ public class EventService{
                 throw  new ResponseStatusException(HttpStatus.FORBIDDEN , "email is not the same as student's email");
             }
             else{
+                try {
+                    storageService.deleteById(id);
+                } catch (IOException e) {
+                    throw new RuntimeException(e);
+                }
                 eventRepository.deleteById(id);
                 throw new ResponseStatusException(HttpStatus.OK , "Delete" + " " + id +  " " + user.getEmailUser() + " "  +"successful");
             }
@@ -258,6 +270,7 @@ public class EventService{
         Event event = eventRepository.findById(id).orElseThrow( ()->{
             return new ResponseStatusException(HttpStatus.NOT_FOUND);
         });
+
         List<Event> checkCompare = eventRepository.findAllByEventCategoryEventCategoryId(event.getEventCategory().getEventCategoryId());
         int i = 0;
         int index = 0;
@@ -273,15 +286,23 @@ public class EventService{
         if ((!checkTimeOverLap(checkCompare , event))){
                  if(user.getRoleUser().equals("admin")){
                      if(event.getFileName() == null){
-                         storageService.save(multipartFile , id);
-                         event.setFileSize(sizeByte);
-                         eventRepository.saveAndFlush(event);
+                         System.out.println(1);
+                             storageService.save(multipartFile , id);
+                             event.setFileSize(sizeByte);
+                             eventRepository.saveAndFlush(event);
                      }
                      else {
-                         storageService.deleteById(id);
-                         storageService.save(multipartFile , id);
-                         event.setFileSize(sizeByte);
-                         eventRepository.saveAndFlush(event);
+                         if(editEventPutDTO.getFileName().equals(event.getFileName()) && multipartFile == null){
+                             System.out.println(2);
+                             eventRepository.saveAndFlush(event);
+                         }
+                         else {
+                             System.out.println(3);
+                             storageService.deleteById(id);
+                             storageService.save(multipartFile , id);
+                             event.setFileSize(sizeByte);
+                             eventRepository.saveAndFlush(event);
+                         }
                      }
                      return ResponseEntity.status(200).body("Edited Successfully");
                  }

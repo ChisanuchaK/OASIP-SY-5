@@ -17,7 +17,5 @@ public interface FilesStorageService {
 
     public ResponseEntity deleteById(Integer id) throws IOException;
 
-    public Stream<Path> loadAll();
-
 
 }

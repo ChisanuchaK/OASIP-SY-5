@@ -39,7 +39,6 @@ public class EventController {
     @Autowired
     private FilesStorageServiceImpl storageService;
     @GetMapping("/file/{id}")
-    @PreAuthorize("hasAnyAuthority('admin' , 'student' , 'lecturer')")
     @ResponseBody
     public ResponseEntity<Resource> getFile(@PathVariable Integer id) {
         Resource file = storageService.load(id);

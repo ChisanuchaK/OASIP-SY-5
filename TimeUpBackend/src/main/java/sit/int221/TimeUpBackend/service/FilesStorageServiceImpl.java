@@ -74,11 +74,8 @@ public class FilesStorageServiceImpl implements FilesStorageService{
 
     @Override
     public Resource load(Integer id) {
-        UserDetails getCurrentAuthentication = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        User user = userRepository.findByEmailUser(getCurrentAuthentication.getUsername());
         Event event = eventRepository.findById(id).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
         try {
-            if (user.getRoleUser().equals("admin")) {
                 Path file = root.resolve(event.getFileName());
                 Resource resource = new UrlResource(file.toUri());
                 if (resource.exists() || resource.isReadable()) {
@@ -86,39 +83,10 @@ public class FilesStorageServiceImpl implements FilesStorageService{
                 } else {
                     throw new RuntimeException("Could not read the file!");
                 }
-            } else if (user.getRoleUser().equals("student") && event.getBookingEmail().equals(getCurrentAuthentication.getUsername())) {
-                Path file = root.resolve(event.getFileName());
-                    Resource resource = new UrlResource(file.toUri());
-                    if (resource.exists() || resource.isReadable()) {
-                        return resource;
-                    } else {
-                        throw new RuntimeException("Could not read the file!");
-                    }
-
-            } else if (user.getRoleUser().equals("lecturer")) {
-                List<EventCategoryOwner> eventCategoryOwner = eventCategoryOwnerRepository.findAllByUserIduser(user);
-                ArrayList<Integer> arrayIdCategory = new ArrayList<>();
-                for (int i = 0 ; i < eventCategoryOwner.size() ; i ++){
-                    arrayIdCategory.add(eventCategoryOwner.get(i).getEventcategoryEventcategory().getEventCategoryId());
-                }
-                if(arrayIdCategory.indexOf(event.getEventCategory().getEventCategoryId()) != -1){
-                    Event bookings = eventRepository.findById(id).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
-                    Path file = root.resolve(bookings.getFileName());
-                    Resource resource = new UrlResource(file.toUri());
-                    if (resource.exists() || resource.isReadable()) {
-                        return resource;
-                    } else {
-                        throw new RuntimeException("Could not read the file!");
-                    }
-                } else {
-                    throw new ResponseStatusException(HttpStatus.FORBIDDEN, "email is not the same as student's email");
-                }
-            }
 
         } catch (MalformedURLException e) {
             throw new RuntimeException("Error: " + e.getMessage());
         }
-        throw new ResponseStatusException(HttpStatus.FORBIDDEN, "email is not the same as student's email");
     }
 
     @Override
@@ -150,13 +118,5 @@ public class FilesStorageServiceImpl implements FilesStorageService{
 
     }
 
-    @Override
-    public Stream<Path> loadAll() {
-        try {
-            return Files.walk(this.root, 1).filter(path -> !path.equals(this.root)).map(this.root::relativize);
-        } catch (IOException e) {
-            throw new RuntimeException("Could not load the files!");
-        }
-    }
 
 }
