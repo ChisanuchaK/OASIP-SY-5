@@ -249,6 +249,10 @@ public class EventService{
     //put
     @SneakyThrows
     public ResponseEntity editEvent(EventPutDto editEventPutDTO, MultipartFile multipartFile , Integer id ) {
+        int sizeByte = 0;
+        if(multipartFile != null){
+            sizeByte =  (int)Math.floor(multipartFile.getSize()) ;
+        }
         UserDetails getCurrentAuthentication = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         User user = userRepository.findByEmailUser(getCurrentAuthentication.getUsername());
         Event event = eventRepository.findById(id).orElseThrow( ()->{
@@ -268,11 +272,15 @@ public class EventService{
 
         if ((!checkTimeOverLap(checkCompare , event))){
                  if(user.getRoleUser().equals("admin")){
-                     if(multipartFile == null){
+                     if(event.getFileName() == null){
+                         storageService.save(multipartFile , id);
+                         event.setFileSize(sizeByte);
                          eventRepository.saveAndFlush(event);
                      }
                      else {
+                         storageService.deleteById(id);
                          storageService.save(multipartFile , id);
+                         event.setFileSize(sizeByte);
                          eventRepository.saveAndFlush(event);
                      }
                      return ResponseEntity.status(200).body("Edited Successfully");
@@ -284,12 +292,14 @@ public class EventService{
                      else{
                             if(event.getFileName() == null){
                                 storageService.save(multipartFile , id);
+                                event.setFileSize(sizeByte);
                                 eventRepository.saveAndFlush(event);
                                 return ResponseEntity.status(200).body("Edited Successfully");
                             }
                            else {
                                 storageService.deleteById(id);
                                 storageService.save(multipartFile , id);
+                                event.setFileSize(sizeByte);
                                 eventRepository.saveAndFlush(event);
                                 return ResponseEntity.status(200).body("Edited Successfully");
                             }

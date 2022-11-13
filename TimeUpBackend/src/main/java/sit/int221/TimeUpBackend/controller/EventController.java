@@ -80,7 +80,7 @@ public class EventController {
     }
     @PutMapping("/{id}")
     @PreAuthorize("hasAnyAuthority('admin' , 'student')")
-    public ResponseEntity editEvent(@Valid @RequestPart("content") EventPutDto editBooking , @RequestParam("file") MultipartFile multipartFile  , @PathVariable Integer id ) throws IOException {
+    public ResponseEntity editEvent(@Valid @RequestPart("content") EventPutDto editBooking , @RequestParam(value = "file" , required = false) MultipartFile multipartFile  , @PathVariable Integer id ) throws IOException {
         return eventService.editEvent(editBooking , multipartFile , id);
     }
 
