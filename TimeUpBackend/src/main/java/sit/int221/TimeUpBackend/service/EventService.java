@@ -20,6 +20,7 @@ import sit.int221.TimeUpBackend.repositories.EventCategoryRepository;
 import sit.int221.TimeUpBackend.repositories.UserRepository;
 
 import java.io.IOException;
+import java.nio.file.Files;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -105,9 +106,11 @@ public class EventService{
 
 
 
-    public ResponseEntity create( EventPostDto eventPostDto  , MultipartFile file) {
-        double mb = Math.floor((file.getSize() / Math.pow(1024 , 2)));
-        double kb = Math.floor((file.getSize()));
+    public ResponseEntity create( EventPostDto eventPostDto  ,  MultipartFile file ) {
+        int sizeByte = 0;
+        if(file != null){
+             sizeByte =  (int)Math.floor(file.getSize()) ;
+        }
         User checkUserByEmail = userRepository.findByEmailUser(eventPostDto.getBookingEmail());
         Event booking = modelMapper.map(eventPostDto, Event.class);
         EventCategory eventCategory = eventCategoryRepository.findById(eventPostDto.getEventCategory().getEventCategoryId()).orElseThrow(()
@@ -117,9 +120,13 @@ public class EventService{
             if (checkUserByEmail == null) {
                 booking.setEventDuration(eventCategory.getEventDuration());
                 booking.setBookingEmail(eventPostDto.getBookingEmail());
+                booking.setFileSize(sizeByte);
                 if (!checkTimeOverLap(checkCompare, booking)) {
-                    emailService.sendMailWithAttachment(eventPostDto);
                     eventRepository.save(booking);
+                    Thread t = new Thread(()->{
+                        emailService.sendMailWithAttachment(eventPostDto);
+                    });
+                    t.start();
                 } else {
                     throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "overlapped with other events");
                 }
@@ -131,12 +138,16 @@ public class EventService{
             User user = userRepository.findByEmailUser(getCurrentAuthentication.getUsername());
             if (user.getRoleUser().equals("admin")) {
                 if (checkUserByEmail != null) {
+                    booking.setFileSize(sizeByte);
                     booking.setEventDuration(eventCategory.getEventDuration());
                     booking.setBookingEmail(eventPostDto.getBookingEmail());
                     booking.setUserIduser(checkUserByEmail);
                     if (!checkTimeOverLap(checkCompare, booking)) {
-                        emailService.sendMailWithAttachment(eventPostDto);
                         eventRepository.save(booking);
+                        Thread t = new Thread(()->{
+                            emailService.sendMailWithAttachment(eventPostDto);
+                        });
+                        t.start();
                     } else {
                         throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "overlapped with other events");
                     }
@@ -147,12 +158,16 @@ public class EventService{
                 return CreateEventAttribute(eventPostDto, file, booking, checkCompare);
             } else if (user.getRoleUser().equals("student") && user.getEmailUser().equals(checkUserByEmail.getEmailUser())) {
                 if (checkUserByEmail != null) {
+                    booking.setFileSize(sizeByte);
                     booking.setEventDuration(eventCategory.getEventDuration());
                     booking.setBookingEmail(checkUserByEmail.getEmailUser());
                     booking.setUserIduser(checkUserByEmail);
                     if (!checkTimeOverLap(checkCompare, booking)) {
-                        emailService.sendMailWithAttachment(eventPostDto);
                         eventRepository.save(booking);
+                        Thread t = new Thread(()->{
+                            emailService.sendMailWithAttachment(eventPostDto);
+                        });
+                        t.start();
                     } else {
                         throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "overlapped with other events");
                     }
@@ -167,26 +182,27 @@ public class EventService{
     }
 
     private ResponseEntity CreateEventAttribute(EventPostDto eventPostDto, MultipartFile file, Event booking, List<Event> checkCompare) {
-        Event event = eventRepository.findByFileName(file.getOriginalFilename());
-        number = booking.getIdBooking();
-        if (!checkTimeOverLap(checkCompare, booking)) {
-            String message = "";
+
+            number = booking.getIdBooking();
+            if (!checkTimeOverLap(checkCompare, booking)) {
+                String message = "";
 //                if(event == null){
 //                    storageService.save(file , number);
 //                    eventRepository.save(booking);
 //                    emailService.sendMailWithAttachment(eventPostDto);
 //                    message = "Uploaded the file and create event successfully: " + file.getOriginalFilename();
 //                }
-                    storageService.save(file , number);
-                    emailService.sendMailWithAttachment(eventPostDto);
-                    eventRepository.save(booking);
+                storageService.save(file, number);
+                emailService.sendMailWithAttachment(eventPostDto);
+                eventRepository.save(booking);
+                    message = "Booking successful ";
 
-                    message = "Uploaded the file and create event successfully: " + "(" + number + ")" + file.getResource().getFilename();
-                return ResponseEntity.status(HttpStatus.OK).body(new ResponseMessage(message));
-        } else {
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "overlapped with other events");
+                return ResponseEntity.status(HttpStatus.CREATED).body(new ResponseMessage(message));
+            } else {
+                throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "overlapped with other events");
+            }
         }
-    }
+
 
     public boolean checkTimeOverLap(List<Event> allEvent, Event event ) {
 

@@ -62,7 +62,7 @@ public class EventController {
 
     @PostMapping("")
     @ResponseStatus(HttpStatus.CREATED)
-    public ResponseEntity createEvent(@Valid @RequestPart("content") EventPostDto newBooking , @RequestParam("file") MultipartFile file){
+    public ResponseEntity createEvent(@Valid @RequestPart("content") EventPostDto newBooking , @RequestParam(value = "file" , required = false) MultipartFile file){
         return eventService.create(newBooking , file);
     }
 

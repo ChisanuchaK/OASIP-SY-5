@@ -35,6 +35,9 @@ public class Event {
     @Column(name = "file" , length = 250)
     private String fileName;
 
+    @Column(name = "fileSize" , nullable = true)
+    private int fileSize;
+
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "eventCategory", nullable = false)
     private EventCategory eventCategory;

@@ -55,12 +55,15 @@ public class FilesStorageServiceImpl implements FilesStorageService{
 
     @Override
     public void save(MultipartFile file , Integer number) {
-        Event event = eventRepository.findByFileName(file.getOriginalFilename());
+        Event event = null;
+        if(file != null){
+             event = eventRepository.findByFileName(file.getOriginalFilename());
+        }
         Event eventId = eventRepository.findById(number).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
         try {
            if(event == null){
-               Files.copy(file.getInputStream() , this.root.resolve("(" + number + ")" + file.getOriginalFilename()));
-               eventId.setFileName("(" + number + ")" + file.getOriginalFilename());
+               Files.copy(file.getInputStream() , this.root.resolve( file.getOriginalFilename()));
+               eventId.setFileName(file.getOriginalFilename());
            }
            else {
                Files.copy(file.getInputStream() , this.root.resolve("(" + number + ")" + file.getOriginalFilename()));
