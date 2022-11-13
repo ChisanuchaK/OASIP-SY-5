@@ -63,6 +63,14 @@ const categoryIndexSelect = ref();
 const localPresentTime = moment.utc().local().format("YYYY-MM-DDTHH:mm");
 const dateIndexSelect = ref(localPresentTime);
 
+const fileSelected = ref();
+
+let fileDetail = reactive({
+  fileName: null,
+  fileSize: 0,
+  fileSizeUnit: "",
+});
+
 let localData = reactive({
   bookingName: "",
   bookingEmail: "",
@@ -71,9 +79,6 @@ let localData = reactive({
   eventDuration: "",
   eventNotes: "",
   userIdInSignIn: "",
-  fileName: null,
-  fileSize: 0,
-  fileSizeUnit: "",
 });
 
 // const getEmail = () => {
@@ -160,7 +165,8 @@ const changeConfirmDialog = () => {
     !localData.bookingEmail.match(regexEmail) ||
     categoryIndexSelect.value == undefined ||
     localData.eventNotes.length > 500 ||
-    new Date(dateIndexSelect.value).toISOString() < new Date().toISOString()
+    new Date(dateIndexSelect.value).toISOString() < new Date().toISOString() || 
+    fileDetail.fileSize > 10 && fileDetail.fileSizeUnit == "MB"
   ) {
     isInvalid.value = true;
   } else {
@@ -173,16 +179,30 @@ const changeConfirmDialog = () => {
   console.log("not overlap and isInvalid " + isInvalid.value);
 };
 
-const fileOnInput = ($event) => {
-  console.log($event.target.files);
-  // let fileCurrentSelectData = $event.target.files[0].name
-  // console.log(fileCurrentSelectData);
-  localData.fileName = $event.target.files[0].name
-  // localData.fileSize = `${($event.target.files[0].size/102400).toFixed(2)} MB`
+const deleteFile = () => {
+  fileSelected.value = null;
+  fileDetail.fileName = null;
+  fileDetail.fileSize = 0;
+  fileDetail.fileSizeUnit = "";
+};
 
-  // localData.fileSize = fileSize($event.target.files[0].size)
-  fileSize($event.target.files[0].size)
-}
+const fileOnInput = ($event) => {
+  console.log("1");
+  console.log(fileSelected.value);
+  console.log($event.target.files.length);
+  console.log("before in func");
+  if ($event.target.files.length != 0) {
+    fileSelected.value = $event.target.files[0];
+    // console.log(fileSelected.value);
+    fileDetail.fileName = fileSelected.value.name;
+    fileSize($event.target.files[0].size);
+  }
+  console.log("2");
+  console.log(fileSelected.value);
+  console.log($event.target.files.length);
+  console.log("after in func");
+  // console.log(fileSelected.value);
+};
 
 const fileSize = (sizeOfFile) => {
   // console.log(sizeOfFile);
@@ -198,20 +218,28 @@ const fileSize = (sizeOfFile) => {
   //   localData.fileSizeUnit = "Bytes";
 
   if (sizeOfFile < Math.pow(1024, 2)) {
-    localData.fileSize = (sizeOfFile / Math.pow(1024, 1)).toFixed(2);
-    console.log(localData.fileSize);
-    localData.fileSizeUnit = "KB";
+    fileDetail.fileSize = parseFloat(sizeOfFile / Math.pow(1024, 1));
+    console.log(fileDetail.fileSize);
+    fileDetail.fileSizeUnit = "KB";
   } else if (sizeOfFile < Math.pow(1024, 3)) {
-    localData.fileSize = (sizeOfFile / Math.pow(1024, 2)).toFixed(2);
-    console.log(localData.fileSize);
-    localData.fileSizeUnit = "MB";
+    fileDetail.fileSize = parseFloat(sizeOfFile / Math.pow(1024, 2));
+    console.log(fileDetail.fileSize);
+    fileDetail.fileSizeUnit = "MB";
   } else {
     return;
   }
-}
+};
+
+const IsFileSelected = computed(() => {
+  return fileSelected.value != undefined ||  fileSelected.value != null;
+});
+
+const isFileSizeNotOver = computed(() => {
+  return isInvalid.value && (fileDetail.fileSize > 10 && fileDetail.fileSizeUnit == "MB");
+});
 
 const isInputName = computed(() => {
-  return isInvalid.value && localData.bookingName.trim() == "";
+  return isInvalid.value && localData.bookingName.trim() == "MB";
 });
 const isInputNameOver = computed(() => {
   return isInvalid.value && localData.bookingName.length > 100;
@@ -247,7 +275,7 @@ const isInputTimeOld = computed(() => {
 });
 
 //check overlap
-const isInputTime = computed(() => {
+const isInputTime = computed(() => { 
   // if (userSignInRole.value == 'admin') {
   //     console.log("i am admin");
   // const localEndTime = `${moment.utc(localData.eventStartTime).add(localData.eventDuration, 'm').format("YYYY-MM-DDTHH:mm:ss")}Z`;
@@ -287,7 +315,8 @@ const reset = () => {
     dateIndexSelect.value = localPresentTime;
     localData.eventNotes = "";
     cancelDialog.value = !cancelDialog.value;
-  } else {
+    deleteFile();
+  } else if (userSignInRes.signInUserData.userRole == "admin") {
     localData.bookingName = "";
     bookingEmailIndexSelect.value = undefined;
     categoryIndexSelect.value = undefined;
@@ -295,11 +324,21 @@ const reset = () => {
     dateIndexSelect.value = localPresentTime;
     localData.eventNotes = "";
     cancelDialog.value = !cancelDialog.value;
+    deleteFile();
+  } else {
+    localData.bookingName = "";
+    localData.bookingEmail = "";
+    categoryIndexSelect.value = undefined;
+    localData.eventDuration = "";
+    dateIndexSelect.value = localPresentTime;
+    localData.eventNotes = "";
+    cancelDialog.value = !cancelDialog.value;
+    deleteFile();
   }
 };
 
 //create new booking event
-const createBookingEvent = async (localDataInput) => {
+const createBookingEvent = async (localDataInput, fileSelected) => {
   // if(userSignInRes.signInUserData.userRole == 'admin'){
   //     localData.bookingEmail.trim();
   //     for(let user of userList.value){
@@ -309,7 +348,11 @@ const createBookingEvent = async (localDataInput) => {
   //         console.log(user.emailUser);
   //     }
   // }
-  const res = await bookRes.createBooking(localDataInput);
+
+  if(fileSelected == undefined || fileSelected == ""){
+    fileSelected = null;
+  } 
+  const res = await bookRes.createBooking(localDataInput, fileSelected);
   if (res.status === 201) {
     alert(
       `Create successfully \n Category ID :  ${localData.eventCategory.eventCategoryId
@@ -334,13 +377,23 @@ const createBookingEvent = async (localDataInput) => {
       localData.eventDuration = "";
       dateIndexSelect.value = localPresentTime;
       localData.eventNotes = "";
-    } else {
+      deleteFile();
+    } else if (userSignInRes.signInUserData.userRole == "admin") {
       localData.bookingName = "";
       bookingEmailIndexSelect.value = undefined;
       categoryIndexSelect.value = undefined;
       localData.eventDuration = "";
       dateIndexSelect.value = localPresentTime;
       localData.eventNotes = "";
+      deleteFile();
+    } else {
+      localData.bookingName = "";
+      localData.bookingEmail = "";
+      categoryIndexSelect.value = undefined;
+      localData.eventDuration = "";
+      dateIndexSelect.value = localPresentTime;
+      localData.eventNotes = "";
+      deleteFile();
     }
   } else {
     statusCreateUser.value = res.status;
@@ -491,26 +544,33 @@ onBeforeMount(async () => {
             </div>
 
             <div class="row-start-7 col-start-1 col-span-1">Upload File :</div>
-            <div class="grid row-start-8 col-start-1 col-end-4 col-span-3 content-center">
-              <input id="file" name="file"
-                class="bg-gray-200 rounded w-[100%] border disabled:text-gray-400" type="file"
-                @change="fileOnInput" />
+            <div class="grid row-start-8 col-start-1 col-end-2 col-span-1 content-center">
+              <input id="file1" name="file1" class="hidden bg-gray-200 rounded w-[100%] border disabled:text-gray-400"
+                type="file" @change="fileOnInput" />
+              <label for="file1" class="p-1 bg-gray-200 rounded border text-center">file choose</label>
             </div>
-            
-            <div class="grid row-start-9 col-start-1 col-span-5">
+
+            <div class="grid row-start-8 col-start-2 col-end-4 col-span-2 w-[95%] content-center">
+              <p class="truncate text-center">{{ fileDetail.fileName }}</p>
+            </div>
+
+            <div v-if="isFileSizeNotOver" class="grid row-start-9 col-start-1 col-span-5">
               <label class="text-red-500">
-                *Please choose file maximum 10 MB
+                *The file size cannot be be larger than 10 MB
               </label>
             </div>
 
             <div class="grid row-start-8 col-start-4 col-end-5 col-span-1 content-center">
-              <p class="text-left h-full">{{ localData.fileSize == 100 ? "" : localData.fileSize }} {{
-                  localData.fileSizeUnit
-              }}</p>
+              <p class="text-left h-full">
+                {{
+                    fileDetail.fileSize == 0 ? "" : fileDetail.fileSize.toFixed(2)
+                }}
+                {{ fileDetail.fileSizeUnit }}
+              </p>
             </div>
 
-            <div class="grid row-start-8 col-start-5 col-end-6 col-span-7 justify-items-start">
-              <button @click="" class="w-[50%] py-1 bg-[#F24052] text-white rounded-lg">
+            <div v-if="IsFileSelected" class="grid row-start-8 col-start-5 col-end-6 col-span-1 justify-items-start">
+              <button @click="deleteFile" class="w-[50%] py-1 bg-[#F24052] text-white rounded-lg">
                 <svg class="hover:text-[#F24052] m-auto" width="1.5em" height="1.5em" viewBox="0 0 24 24">
                   <path fill="currentColor"
                     d="M6 19a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2V7H6v12m2.46-7.12l1.41-1.41L12 12.59l2.12-2.12l1.41 1.41L13.41 14l2.12 2.12l-1.41 1.41L12 15.41l-2.12 2.12l-1.41-1.41L10.59 14l-2.13-2.12M15.5 4l-1-1h-5l-1 1H5v2h14V4h-3.5Z">
@@ -545,7 +605,6 @@ onBeforeMount(async () => {
             </div> -->
           </div>
           <div class="grid grid-flow-row grid-cols-9 px-5 pb-3 gap-3">
-
             <div class="row-start-1 col-start-8 col-span-1">
               <button @click="changeCancelDialogTrue"
                 class="w-full h-full m-auto py-2 bg-[#F24052] text-white rounded-lg">
@@ -567,17 +626,17 @@ onBeforeMount(async () => {
               isInputCategory ||
               isInputNotes ||
               isInputTime ||
-              isInputTimeOld
+              isInputTimeOld ||
+              isFileSizeNotOver
             ">
               *some input is invalid
             </div>
-
           </div>
         </div>
         <Cancel v-if="cancelDialog" @onClickCancelNo="changeCancelDialogFalse" @onClickCancelYes="reset" />
 
         <Confirm v-if="createDialog" @onClickConfirmNo="closeConfirmDialog"
-          @onClickConfirmYes="createBookingEvent(localData)" />
+          @onClickConfirmYes="createBookingEvent(localData, fileSelected)" />
       </div>
     </div>
   </div>
