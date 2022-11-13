@@ -130,6 +130,7 @@ public class FilesStorageServiceImpl implements FilesStorageService{
         if(user.getRoleUser().equals("admin")){
             FileSystemUtils.deleteRecursively(root.resolve(event.getFileName()));
             event.setFileName(null);
+            event.setFileSize(0);
             eventRepository.saveAndFlush(event);
             return ResponseEntity.ok().body("Delete file success");
         }
@@ -137,6 +138,7 @@ public class FilesStorageServiceImpl implements FilesStorageService{
           if(event.getFileName() != null){
               FileSystemUtils.deleteRecursively(root.resolve(event.getFileName()));
               event.setFileName(null);
+              event.setFileSize(0);
               eventRepository.saveAndFlush(event);
               return ResponseEntity.ok().body("Delete file success");
           }
