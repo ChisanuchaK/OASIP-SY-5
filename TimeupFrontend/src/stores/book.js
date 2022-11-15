@@ -63,29 +63,95 @@ export const bookStore = defineStore("book", () => {
     }
   };
 
-  // create Booking
-  const createBooking = async (localDataInput) => {
-    console.log(localDataInput);
+  // // create Booking
+  // const createBooking = async (localDataInput) => {
+  //   console.log(localDataInput);
+  //   const res = await fetch(`${import.meta.env.VITE_HTTPS_URL}/event`, {
+  //     method: "POST",
+  //     headers: {
+  //       "content-type": "application/json",
+  //     },
+  //     body: JSON.stringify({
+  //       bookingName: localDataInput.bookingName,
+  //       bookingEmail: localDataInput.bookingEmail,
+  //       eventCategory: {
+  //         eventCategoryId: localDataInput.eventCategory.eventCategoryId,
+  //       },
+  //       eventStartTime: localDataInput.eventStartTime,
+  //       eventNotes: localDataInput.eventNotes,
+  //       user: {
+  //         idUser: localDataInput.userIdInSignIn,
+  //       },
+  //       fileName: localDataInput.fileData
+  //     }),
+  //   });
+  //   if (res.status === 201) {
+  //     await store.getRefreshToken();
+  //     console.log("create successfully");
+  //     // const response = await res.json();
+  //     // return createResponse(res.status, response);
+  //     return res;
+  //   } else if (res.status === 401) {
+  //     if (await store.getRefreshToken()) {
+  //       console.log("can use refreshToken");
+  //       return createBooking(localDataInput);
+  //     } else {
+  //       console.log("please SignIn");
+  //     }
+  //   } else {
+  //     console.log("error to getBooking");
+  //     return res;
+  //   }
+  // };
+
+  // create Booking with file
+  const createBooking = async (localDataInput, fileSelected) => {
+    // console.log(localDataInput);
+    const dataToCreate = new Blob(
+      [
+        JSON.stringify({
+          bookingName: localDataInput.bookingName,
+          bookingEmail: localDataInput.bookingEmail,
+          eventCategory: {
+            eventCategoryId: localDataInput.eventCategory.eventCategoryId,
+          },
+          eventStartTime: localDataInput.eventStartTime,
+          eventNotes: localDataInput.eventNotes,
+          // user: {
+          //   idUser: localDataInput.userIdInSignIn,
+          // },
+        }),
+      ],
+      { type: "application/json" }
+    );
+    console.log(dataToCreate);
+    console.log(fileSelected);
+
+    // let a = new File([],{type: "text/plain",});
+    // console.log(a);
+    // if (fileSelected == null) {
+    //   fileSelected = new File([], { type: "text/plain" });
+    // }
+
+    const formData = new FormData();
+    formData.append("content", dataToCreate);
+    // formData.append("file", fileSelected);
+    if (fileSelected) {
+      formData.append("file", fileSelected);
+    }
+    // console.log(formData.getAll('content'));
+    // console.log(formData.getAll('file'));
+
     const res = await fetch(`${import.meta.env.VITE_HTTPS_URL}/event`, {
       method: "POST",
-      headers: {
-        "content-type": "application/json",
-      },
-      body: JSON.stringify({
-        bookingName: localDataInput.bookingName,
-        bookingEmail: localDataInput.bookingEmail,
-        eventCategory: {
-          eventCategoryId: localDataInput.eventCategory.eventCategoryId,
-        },
-        eventStartTime: localDataInput.eventStartTime,
-        eventNotes: localDataInput.eventNotes,
-        user: {
-          idUser: localDataInput.userIdInSignIn,
-        },
-        fileName: localDataInput.fileData
-      }),
+      // headers: {
+      //   "Content-Type": "multipart/form-data ",
+      // },
+      body: formData,
     });
     if (res.status === 201) {
+    // if (res.status === 200) {
+      console.log(res.status);
       await store.getRefreshToken();
       console.log("create successfully");
       // const response = await res.json();
@@ -105,18 +171,31 @@ export const bookStore = defineStore("book", () => {
   };
 
   // edit booking
-  const editBooking = async (editData, bookingEdit, loopEdit) => {
+  const editBooking = async (editData, bookingEdit, loopEdit, fileSelected) => {
+    const dataToUpdate = new Blob(
+      [
+        JSON.stringify({
+          eventStartTime: editData.eventStartTime,
+          eventNotes: editData.eventNotes,
+          fileName: editData.fileName
+        }),
+      ],
+      { type: "application/json" }
+    );
+    const formData = new FormData();
+    formData.append("content", dataToUpdate);
+    // formData.append("file", fileSelected);
+    if (fileSelected) {
+      formData.append("file", fileSelected);
+    }
     const res = await fetch(
       `${import.meta.env.VITE_HTTPS_URL}/event/${editData.idBooking}`,
       {
         method: "PUT",
-        headers: {
-          "content-type": "application/json",
-        },
-        body: JSON.stringify({
-          eventStartTime: editData.eventStartTime,
-          eventNotes: editData.eventNotes,
-        }),
+        // headers: {
+        //   "content-type": "application/json",
+        // },
+        body: formData,
       }
     );
     if (res.status === 200) {
