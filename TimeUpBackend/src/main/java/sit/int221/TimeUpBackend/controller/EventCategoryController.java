@@ -7,6 +7,7 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.*;
+import sit.int221.TimeUpBackend.dtos.CategoryOwnerDto;
 import sit.int221.TimeUpBackend.dtos.EventCategoryDto;
 import sit.int221.TimeUpBackend.entities.EventCategory;
 import sit.int221.TimeUpBackend.entities.EventCategoryOwner;
@@ -35,13 +36,12 @@ public class EventCategoryController {
         return  eventCategoryService.create(newEventCategory);
     }
 
-//    @PostMapping("/category-owner")
-//    @PreAuthorize("hasAnyAuthority('admin')")
-//    @ResponseStatus(HttpStatus.CREATED)
-//    public EventCategoryOwner addEventCategoryOwner(@RequestBody EventCategoryOwner categoryOwner){
-//        return eventCategoryService.addEventCategoryOwner(categoryOwner);
-//    }
-
+    @PostMapping("/category-owner")
+    @PreAuthorize("hasAnyAuthority('admin')")
+    @ResponseStatus(HttpStatus.CREATED)
+    public ResponseEntity addEventCategoryOwner(@RequestBody CategoryOwnerDto categoryOwnerDto){
+        return eventCategoryService.addEventCategoryOwner(categoryOwnerDto);
+    }
     @PutMapping("/{id}")
     @PreAuthorize("hasAuthority('admin')")
     public ResponseEntity editEventCategory(@Valid  @RequestBody EventCategoryDto editEventCategory , @PathVariable Integer id){

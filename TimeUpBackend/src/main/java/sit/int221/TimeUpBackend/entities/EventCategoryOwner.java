@@ -10,15 +10,16 @@ import javax.persistence.*;
 @Entity
 @Table(name = "eventCategoryOwner")
 public class EventCategoryOwner {
-    @EmbeddedId
-    private EventCategoryOwnerId eventCategoryOwnerId;
 
-    @MapsId("eventcategoryEventcategoryid")
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "idEventCategoryOwner", nullable = false)
+    private Integer idEventCategoryOwner;
+
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "eventCategory_eventCategoryId", nullable = false)
     private EventCategory eventcategoryEventcategory;
 
-    @MapsId("userIduser")
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "user_iduser", nullable = false)
     private User userIduser;

@@ -81,9 +81,10 @@ ENGINE = InnoDB;
 -- Table `TimeUp`.`event_category_owner`
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `TimeUp`.`eventCategoryOwner` (
+  `idEventCategoryOwner` INT NOT NULL AUTO_INCREMENT,
   `eventCategory_eventCategoryId` INT NOT NULL,
   `user_iduser` INT NOT NULL,
-  PRIMARY KEY (`eventCategory_eventCategoryId`, `user_iduser`),
+  PRIMARY KEY (`idEventCategoryOwner`),
   INDEX `fk_user_id` (`user_iduser` ASC) VISIBLE,
   INDEX `fk_eventCategory_id` (`eventCategory_eventCategoryId` ASC) VISIBLE,
   CONSTRAINT `fk_eventCategory_id`
