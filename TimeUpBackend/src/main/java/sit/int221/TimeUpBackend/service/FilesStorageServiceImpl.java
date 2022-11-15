@@ -95,28 +95,20 @@ public class FilesStorageServiceImpl implements FilesStorageService{
         User user = userRepository.findByEmailUser(getCurrentAuthentication.getUsername());
         Event event = eventRepository.findById(id).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
 
-        if(user.getRoleUser().equals("admin")){
-            FileSystemUtils.deleteRecursively(root.resolve(event.getFileName()));
-            event.setFileName(null);
-            event.setFileSize(0);
-            eventRepository.saveAndFlush(event);
-            return ResponseEntity.ok().body("Delete file success");
+        if(user.getRoleUser().equals("admin") || (user.getRoleUser().equals("student") && event.getBookingEmail().equals(getCurrentAuthentication.getUsername()))){
+            if(event.getFileName() != null){
+                FileSystemUtils.deleteRecursively(root.resolve(event.getFileName()));
+                event.setFileName(null);
+                event.setFileSize(0);
+                eventRepository.saveAndFlush(event);
+                return ResponseEntity.ok().body("Delete file success");
+            }
+            else {
+                return ResponseEntity.ok().body("Delete file success");
+            }
         }
-        else if(user.getRoleUser().equals("student") && event.getBookingEmail().equals(getCurrentAuthentication.getUsername())){
-          if(event.getFileName() != null){
-              FileSystemUtils.deleteRecursively(root.resolve(event.getFileName()));
-              event.setFileName(null);
-              event.setFileSize(0);
-              eventRepository.saveAndFlush(event);
-              return ResponseEntity.ok().body("Delete file success");
-          }
           else {
-              throw new ResponseStatusException(HttpStatus.BAD_REQUEST , " don't has no file in this event");
+              throw new ResponseStatusException(HttpStatus.FORBIDDEN , " permission denied");
           }
         }
-        throw new ResponseStatusException(HttpStatus.FORBIDDEN);
-
     }
-
-
-}
