@@ -10,5 +10,5 @@ public interface EventCategoryOwnerRepository extends JpaRepository<EventCategor
 
     EventCategoryOwner findByUserIduser(User user);
     List<EventCategoryOwner> findAllByUserIduser(User user);
-
+    EventCategoryOwner deleteByIdEventCategoryOwner(Integer id);
 }

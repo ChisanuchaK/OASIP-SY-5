@@ -66,7 +66,7 @@ public class EventController {
     }
 
     @DeleteMapping("/{id}")
-    @PreAuthorize("hasAnyAuthority('admin' , 'student')")
+    @PreAuthorize("hasAnyAuthority('admin' , 'student' , 'lecturer')")
     public void deleteEventById(@PathVariable Integer id){
         eventService.delete(id);
     }

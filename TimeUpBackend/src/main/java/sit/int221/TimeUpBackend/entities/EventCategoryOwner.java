@@ -1,9 +1,12 @@
 package sit.int221.TimeUpBackend.entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.Getter;
 import lombok.Setter;
 
 import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
 
 @Setter
 @Getter
@@ -23,6 +26,5 @@ public class EventCategoryOwner {
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "user_iduser", nullable = false)
     private User userIduser;
-
 
 }

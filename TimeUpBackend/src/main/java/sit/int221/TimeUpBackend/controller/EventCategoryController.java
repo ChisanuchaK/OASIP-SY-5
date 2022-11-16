@@ -29,6 +29,7 @@ public class EventCategoryController {
     public List<EventCategory> getAllCategory(){
         return eventCategoryService.getAllCategory();
     }
+
     @PostMapping("")
     @PreAuthorize("hasAnyAuthority('admin' , 'student')")
     @ResponseStatus(HttpStatus.CREATED)
@@ -40,14 +41,13 @@ public class EventCategoryController {
     @PreAuthorize("hasAnyAuthority('admin')")
     @ResponseStatus(HttpStatus.CREATED)
     public ResponseEntity addEventCategoryOwner(@RequestBody CategoryOwnerDto categoryOwnerDto){
-        return eventCategoryService.addEventCategoryOwner(categoryOwnerDto);
+        return eventCategoryService.addCategoryOwner(categoryOwnerDto);
     }
     @PutMapping("/{id}")
     @PreAuthorize("hasAuthority('admin')")
     public ResponseEntity editEventCategory(@Valid  @RequestBody EventCategoryDto editEventCategory , @PathVariable Integer id){
         return eventCategoryService.editEventCategory(editEventCategory , id);
     }
-
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     @ExceptionHandler(MethodArgumentNotValidException.class)
     public Map<String, String> handleValidationExceptions(

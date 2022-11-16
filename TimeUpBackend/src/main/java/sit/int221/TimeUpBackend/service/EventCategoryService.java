@@ -10,6 +10,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 import sit.int221.TimeUpBackend.dtos.CategoryOwnerDto;
 import sit.int221.TimeUpBackend.dtos.EventCategoryDto;
+import sit.int221.TimeUpBackend.dtos.EventDto;
+import sit.int221.TimeUpBackend.entities.Event;
 import sit.int221.TimeUpBackend.entities.EventCategory;
 import sit.int221.TimeUpBackend.entities.EventCategoryOwner;
 import sit.int221.TimeUpBackend.entities.User;
@@ -18,6 +20,7 @@ import sit.int221.TimeUpBackend.repositories.EventCategoryRepository;
 import sit.int221.TimeUpBackend.repositories.UserRepository;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class EventCategoryService {
@@ -37,7 +40,7 @@ public class EventCategoryService {
     public EventCategory create(EventCategory newEventCategory){
         return eventCategoryRepository.saveAndFlush(newEventCategory);
     }
-    public ResponseEntity addEventCategoryOwner(CategoryOwnerDto categoryOwnerDto){
+    public ResponseEntity addCategoryOwner(CategoryOwnerDto categoryOwnerDto){
         UserDetails userDetails = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         User user = userRepository.findByEmailUser(userDetails.getUsername());
         if(user.getRoleUser().equals("admin")){
