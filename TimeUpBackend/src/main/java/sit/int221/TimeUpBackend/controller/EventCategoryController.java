@@ -45,7 +45,7 @@ public class EventCategoryController {
         return eventCategoryService.addCategoryOwner(categoryOwnerDto);
     }
     @PutMapping("/{id}")
-    @PreAuthorize("hasAuthority('admin')")
+    @PreAuthorize("hasAnyAuthority('admin' , 'lecturer')")
     public ResponseEntity editEventCategory(@Valid  @RequestBody EventCategoryDto editEventCategory , @PathVariable Integer id){
         return eventCategoryService.editEventCategory(editEventCategory , id);
     }

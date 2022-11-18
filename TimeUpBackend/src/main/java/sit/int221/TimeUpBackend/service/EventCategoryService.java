@@ -78,10 +78,20 @@ public class EventCategoryService {
             eventCategoryRepository.saveAndFlush(eventCategory);
             return ResponseEntity.status(200).body("Edited Successfully");
         }
-        else if (userDetails.getUsername().equals("student")){
-            throw  new ResponseStatusException(HttpStatus.BAD_GATEWAY , "this email permission denied");
+        else if (user.getRoleUser().equals("lecturer")){
+            List<EventCategoryOwner> eventCategoryOwner = eventCategoryOwnerRepository.findAllByUserIduser(user);
+            for (int i = 0 ; i < eventCategoryOwner.size() ; i++){
+                if(id == eventCategoryOwner.get(i).getEventcategoryEventcategory().getEventCategoryId()){
+                    EventCategory eventCategory = eventCategoryRepository.findById(id).orElseThrow(
+                            ()-> new ResponseStatusException(HttpStatus.NOT_FOUND , "id not found"));
+
+                    modelMapper.map(editEventCategory , eventCategory);
+                    eventCategoryRepository.saveAndFlush(eventCategory);
+                    return ResponseEntity.status(200).body("Edited Successfully");
+                }
+            }
         }
-        throw  new ResponseStatusException(HttpStatus.BAD_GATEWAY , "this email permission denied");
+        throw  new ResponseStatusException(HttpStatus.FORBIDDEN, "this email permission denied");
         }
 
     }
