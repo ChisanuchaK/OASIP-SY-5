@@ -19,6 +19,7 @@ import sit.int221.TimeUpBackend.repositories.EventCategoryOwnerRepository;
 import sit.int221.TimeUpBackend.repositories.EventCategoryRepository;
 import sit.int221.TimeUpBackend.repositories.UserRepository;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -34,7 +35,20 @@ public class EventCategoryService {
     private EventCategoryOwnerRepository eventCategoryOwnerRepository;
 
     public  List<EventCategory> getAllCategory(){
-        return eventCategoryRepository.findAll();
+        UserDetails userDetails = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        User user = userRepository.findByEmailUser(userDetails.getUsername());
+        if(user.getRoleUser().equals("admin") || user.getRoleUser().equals("student")){
+            return eventCategoryRepository.findAll();
+        }
+        else if (user.getRoleUser().equals("lecturer")) {
+            ArrayList<EventCategory> eventArrayList = new ArrayList<>();
+            List<EventCategoryOwner> eventCategoryOwner = eventCategoryOwnerRepository.findAllByUserIduser(user);
+            for(int i = 0 ; i < eventCategoryOwner.size() ; i ++){
+               eventArrayList.add(eventCategoryRepository.findByEventCategoryId(eventCategoryOwner.get(i).getEventcategoryEventcategory().getEventCategoryId()));
+            }
+            return eventArrayList.stream().map(e -> modelMapper.map(e, EventCategory.class)).collect(Collectors.toList());
+        }
+        throw  new ResponseStatusException(HttpStatus.UNAUTHORIZED);
     }
 
     public EventCategory create(EventCategory newEventCategory){

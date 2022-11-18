@@ -1,5 +1,6 @@
 package sit.int221.TimeUpBackend.entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
@@ -13,6 +14,7 @@ import javax.persistence.Table;
 @Getter
 @Entity
 @Table(name = "eventCategory")
+@JsonIgnoreProperties({"hibernateLazyInitializer"})
 public class EventCategory {
     @Id
     @Column(name = "eventCategoryId", nullable = false)
