@@ -66,6 +66,11 @@ public class EventCategoryService {
         return ResponseEntity.status(201).body("crate event category owner successfully");
     }
 
+    public ResponseEntity deleteCategoryOwner(Integer id){
+        eventCategoryOwnerRepository.deleteById(id);
+        return  ResponseEntity.ok().body("delete category owner id : " + id +" " +  "success");
+    }
+
 
     public ResponseEntity editEventCategory(EventCategoryDto editEventCategory , Integer id){
         UserDetails userDetails = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();

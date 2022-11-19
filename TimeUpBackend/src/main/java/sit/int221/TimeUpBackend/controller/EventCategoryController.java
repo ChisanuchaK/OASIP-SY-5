@@ -56,6 +56,12 @@ public class EventCategoryController {
         return getStringStringMap(ex);
     }
 
+    @DeleteMapping("/{id}")
+    @PreAuthorize("hasAnyAuthority('admin')")
+    public ResponseEntity deleteCategoryOwner(@PathVariable Integer id){
+        return eventCategoryService.deleteCategoryOwner(id);
+    }
+
     static Map<String, String> getStringStringMap(MethodArgumentNotValidException ex) {
         Map<String, String> errors = new HashMap<>();
         ex.getBindingResult().getAllErrors().forEach((error) -> {
