@@ -35,8 +35,13 @@ public class EventCategoryService {
     private EventCategoryOwnerRepository eventCategoryOwnerRepository;
 
     public  List<EventCategory> getAllCategory(){
-        UserDetails userDetails = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        User user = userRepository.findByEmailUser(userDetails.getUsername());
+        if(SecurityContextHolder.getContext().getAuthentication().getPrincipal() == "anonymousUser"){
+            return eventCategoryRepository.findAll();
+        }
+        else {
+            UserDetails userDetails = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+            User user = userRepository.findByEmailUser(userDetails.getUsername());
+
         if(user.getRoleUser().equals("admin") || user.getRoleUser().equals("student")){
             return eventCategoryRepository.findAll();
         }
@@ -47,6 +52,7 @@ public class EventCategoryService {
                eventArrayList.add(eventCategoryRepository.findByEventCategoryId(eventCategoryOwner.get(i).getEventcategoryEventcategory().getEventCategoryId()));
             }
             return eventArrayList.stream().map(e -> modelMapper.map(e, EventCategory.class)).collect(Collectors.toList());
+        }
         }
         throw  new ResponseStatusException(HttpStatus.UNAUTHORIZED);
     }

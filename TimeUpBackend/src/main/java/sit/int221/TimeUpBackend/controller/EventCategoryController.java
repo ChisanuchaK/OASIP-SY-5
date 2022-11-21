@@ -26,7 +26,6 @@ public class EventCategoryController {
     private EventCategoryService eventCategoryService;
 
     @GetMapping("")
-    @PreAuthorize("hasAnyAuthority('admin' , 'student' , 'lecturer')")
     public List<EventCategory> getAllCategory(){
         return eventCategoryService.getAllCategory();
     }
