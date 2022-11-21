@@ -72,7 +72,7 @@ const deleteFile = () => {
 const fileOnInput = ($event) => {
     // console.log(fileSelected.value);
     // console.log($event.target.files.length);
-    if ($event.target.files.length != 0) {
+    if ($event.target.files.length != 0  && $event.target.files[0].size <= 10485760) {
         fileSelected.value = $event.target.files[0];
         console.log(fileSelected.value);
         fileDetail.fileName = fileSelected.value.name;
@@ -324,7 +324,13 @@ onBeforeMount(async () => {
                                 <p class="truncate text-center">{{ fileDetail.fileName }}</p>
                             </div>
 
-                            <div v-if="isFileSizeNotOver" class="grid row-start-2 col-start-2 col-end-6 col-span-4">
+                            <!-- <div v-if="isFileSizeNotOver" class="grid row-start-2 col-start-2 col-end-6 col-span-4">
+                                <label class="text-red-500 text-center">
+                                    * Please choose file maximum 10 MB
+                                </label>
+                            </div> -->
+
+                            <div class="grid row-start-2 col-start-2 col-end-6 col-span-4">
                                 <label class="text-red-500 text-center">
                                     * Please choose file maximum 10 MB
                                 </label>
