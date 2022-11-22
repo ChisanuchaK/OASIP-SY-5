@@ -287,6 +287,7 @@ public class EventService{
                  if(user.getRoleUser().equals("admin")){
                      if(event.getFileName() == null || event.getFileName().length() == 0){
                          System.out.println(1);
+                         storageService.deleteById(id);
                              storageService.save(multipartFile , id);
                              event.setFileSize(sizeByte);
                              eventRepository.saveAndFlush(event);
@@ -311,8 +312,9 @@ public class EventService{
                          throw  new ResponseStatusException(HttpStatus.FORBIDDEN , "email is not the same as student's email");
                      }
                      else{
-                            if(event.getFileName() == null){
+                            if(event.getFileName() == null || event.getFileName().length() == 0){
                                 System.out.println(1);
+                                storageService.deleteById(id);
                                 storageService.save(multipartFile , id);
                                 event.setFileSize(sizeByte);
                                 eventRepository.saveAndFlush(event);
