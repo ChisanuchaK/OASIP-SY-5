@@ -104,6 +104,9 @@ public class FilesStorageServiceImpl implements FilesStorageService{
                 return ResponseEntity.ok().body("Delete file success");
             }
             else {
+                FileSystemUtils.deleteRecursively(root.resolve(event.getFileName()));
+                event.setFileName(null);
+                event.setFileSize(0);
                 eventRepository.saveAndFlush(event);
                 return ResponseEntity.ok().body("Delete file success");
             }
