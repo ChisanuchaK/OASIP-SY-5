@@ -287,7 +287,6 @@ public class EventService{
                  if(user.getRoleUser().equals("admin")){
                      if(event.getFileName() == null || event.getFileName().length() == 0){
                          System.out.println(1);
-                         storageService.deleteById(id);
                              storageService.save(multipartFile , id);
                              event.setFileSize(sizeByte);
                              eventRepository.saveAndFlush(event);
@@ -297,7 +296,7 @@ public class EventService{
                              System.out.println(2);
                              eventRepository.saveAndFlush(event);
                          }
-                         else {
+                         if(editEventPutDTO.getFileName() == null) {
                              System.out.println(3);
                              storageService.deleteById(id);
                              storageService.save(multipartFile , id);
