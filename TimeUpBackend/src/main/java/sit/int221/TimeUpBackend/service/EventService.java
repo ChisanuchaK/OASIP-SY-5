@@ -267,9 +267,7 @@ public class EventService{
         }
         UserDetails getCurrentAuthentication = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         User user = userRepository.findByEmailUser(getCurrentAuthentication.getUsername());
-        Event event = eventRepository.findById(id).orElseThrow( ()->{
-            return new ResponseStatusException(HttpStatus.NOT_FOUND);
-        });
+        Event event = eventRepository.findById(id).orElseThrow(()-> new ResponseStatusException(HttpStatus.NOT_FOUND));
 
         List<Event> checkCompare = eventRepository.findAllByEventCategoryEventCategoryId(event.getEventCategory().getEventCategoryId());
         int i = 0;
@@ -285,18 +283,20 @@ public class EventService{
 
         if ((!checkTimeOverLap(checkCompare , event))){
                  if(user.getRoleUser().equals("admin")){
-                     if(event.getFileName() == null || event.getFileName().length() == 0){
-                         System.out.println(1);
+                     System.out.println(event.getFileName());
+                     System.out.println(event.getBookingEmail());
+                     if(event.getFileName() == null){
+                             System.out.println(1);
                              storageService.save(multipartFile , id);
                              event.setFileSize(sizeByte);
                              eventRepository.saveAndFlush(event);
                      }
                      else {
-                         if(editEventPutDTO.getFileName().equals(event.getFileName()) && multipartFile == null){
+                         if(multipartFile == null){
                              System.out.println(2);
                              eventRepository.saveAndFlush(event);
                          }
-                         if(editEventPutDTO.getFileName() == null) {
+                         else {
                              System.out.println(3);
                              storageService.deleteById(id);
                              storageService.save(multipartFile , id);
@@ -318,7 +318,7 @@ public class EventService{
                                 event.setFileSize(sizeByte);
                                 eventRepository.saveAndFlush(event);
                                 return ResponseEntity.status(200).body("Edited Successfully");
-                            } else if (editEventPutDTO.getFileName().equals(event.getFileName()) && multipartFile == null) {
+                            } else if (multipartFile == null) {
                                 System.out.println(2);
                                 eventRepository.saveAndFlush(event);
                             } else {
