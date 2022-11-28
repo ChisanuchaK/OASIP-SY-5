@@ -321,7 +321,7 @@ public class EventService{
                             } else if (multipartFile == null) {
                                 System.out.println(2);
                                 eventRepository.saveAndFlush(event);
-                            } else {
+                            } else if (multipartFile == null && event.getFileName() != null) {
                                 System.out.println(3);
                                 storageService.deleteById(id);
                                 storageService.save(multipartFile , id);
