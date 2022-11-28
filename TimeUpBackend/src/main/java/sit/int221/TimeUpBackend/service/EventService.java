@@ -285,14 +285,14 @@ public class EventService{
                  if(user.getRoleUser().equals("admin")){
                      System.out.println(event.getFileName());
                      System.out.println(event.getBookingEmail());
-                     return conditionEditEvent(multipartFile, id, sizeByte, event);
+                     return conditionEditEvent(editEventPutDTO ,multipartFile, id, sizeByte, event);
                  }
                  else if (user.getRoleUser().equals("student") && event.getBookingEmail().equals(getCurrentAuthentication.getUsername())){
                      if(!(event.getBookingEmail().equals(user.getEmailUser()))){
                          throw  new ResponseStatusException(HttpStatus.FORBIDDEN , "email is not the same as student's email");
                      }
                      else{
-                         return conditionEditEvent(multipartFile, id, sizeByte, event);
+                         return conditionEditEvent(editEventPutDTO , multipartFile, id, sizeByte, event);
                      }
                  }
         }
