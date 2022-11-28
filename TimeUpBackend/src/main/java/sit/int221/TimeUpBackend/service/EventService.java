@@ -310,7 +310,7 @@ public class EventService{
             eventRepository.saveAndFlush(event);
         }
         else {
-            if(multipartFile == null){
+            if(multipartFile == null && event.getFileName() != null){
                 System.out.println(2);
                 eventRepository.saveAndFlush(event);
             }
