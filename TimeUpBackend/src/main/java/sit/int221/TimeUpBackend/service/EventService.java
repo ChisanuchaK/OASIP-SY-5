@@ -302,7 +302,7 @@ public class EventService{
         throw  new ResponseStatusException(HttpStatus.FORBIDDEN , "This email permission denied");
     }
 
-    private ResponseEntity conditionEditEvent(MultipartFile multipartFile, Integer id, int sizeByte, Event event) throws IOException {
+    private ResponseEntity conditionEditEvent(EventPutDto editEventPutDTO ,MultipartFile multipartFile, Integer id, int sizeByte, Event event) throws IOException {
         if(event.getFileName() == null){
             System.out.println(1);
             storageService.save(multipartFile , id);
@@ -310,7 +310,7 @@ public class EventService{
             eventRepository.saveAndFlush(event);
         }
         else {
-            if(multipartFile == null && event.getFileName() != null){
+            if(multipartFile == null &&  editEventPutDTO.getFileName() != null){
                 System.out.println(2);
                 eventRepository.saveAndFlush(event);
             }
