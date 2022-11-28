@@ -285,50 +285,14 @@ public class EventService{
                  if(user.getRoleUser().equals("admin")){
                      System.out.println(event.getFileName());
                      System.out.println(event.getBookingEmail());
-                     if(event.getFileName() == null){
-                             System.out.println(1);
-                             storageService.save(multipartFile , id);
-                             event.setFileSize(sizeByte);
-                             eventRepository.saveAndFlush(event);
-                     }
-                     else {
-                         if(multipartFile == null){
-                             System.out.println(2);
-                             eventRepository.saveAndFlush(event);
-                         }
-                         else {
-                             System.out.println(3);
-                             storageService.deleteById(id);
-                             storageService.save(multipartFile , id);
-                             event.setFileSize(sizeByte);
-                             eventRepository.saveAndFlush(event);
-                         }
-                     }
-                     return ResponseEntity.status(200).body("Edited Successfully");
+                     return conditionEditEvent(multipartFile, id, sizeByte, event);
                  }
                  else if (user.getRoleUser().equals("student") && event.getBookingEmail().equals(getCurrentAuthentication.getUsername())){
                      if(!(event.getBookingEmail().equals(user.getEmailUser()))){
                          throw  new ResponseStatusException(HttpStatus.FORBIDDEN , "email is not the same as student's email");
                      }
                      else{
-                            if(event.getFileName() == null || event.getFileName().length() == 0){
-                                System.out.println(1);
-                                storageService.deleteById(id);
-                                storageService.save(multipartFile , id);
-                                event.setFileSize(sizeByte);
-                                eventRepository.saveAndFlush(event);
-                                return ResponseEntity.status(200).body("Edited Successfully");
-                            } else if (multipartFile == null) {
-                                System.out.println(2);
-                                eventRepository.saveAndFlush(event);
-                            } else if (multipartFile == null && event.getFileName() != null) {
-                                System.out.println(3);
-                                storageService.deleteById(id);
-                                storageService.save(multipartFile , id);
-                                event.setFileSize(sizeByte);
-                                eventRepository.saveAndFlush(event);
-                                return ResponseEntity.status(200).body("Edited Successfully");
-                            }
+                         return conditionEditEvent(multipartFile, id, sizeByte, event);
                      }
                  }
         }
@@ -336,5 +300,28 @@ public class EventService{
             throw  new ResponseStatusException(HttpStatus.BAD_REQUEST , "overlapped with other events");
         }
         throw  new ResponseStatusException(HttpStatus.FORBIDDEN , "This email permission denied");
+    }
+
+    private ResponseEntity conditionEditEvent(MultipartFile multipartFile, Integer id, int sizeByte, Event event) throws IOException {
+        if(event.getFileName() == null){
+            System.out.println(1);
+            storageService.save(multipartFile , id);
+            event.setFileSize(sizeByte);
+            eventRepository.saveAndFlush(event);
+        }
+        else {
+            if(multipartFile == null){
+                System.out.println(2);
+                eventRepository.saveAndFlush(event);
+            }
+            else {
+                System.out.println(3);
+                storageService.deleteById(id);
+                storageService.save(multipartFile , id);
+                event.setFileSize(sizeByte);
+                eventRepository.saveAndFlush(event);
+            }
+        }
+        return ResponseEntity.status(200).body("Edited Successfully");
     }
 }
