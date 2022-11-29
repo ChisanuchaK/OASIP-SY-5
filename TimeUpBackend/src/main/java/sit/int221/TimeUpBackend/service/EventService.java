@@ -294,14 +294,20 @@ public class EventService {
     }
 
     private void editEventParam(EventPutDto editEventPutDTO, MultipartFile multipartFile, Integer id, int sizeByte, Event event) throws IOException {
-        if (event.getFileName() == null && multipartFile != null) {
-            System.out.println(1);
-            storageService.save(multipartFile, id);
-            event.setFileSize(sizeByte);
-            eventRepository.saveAndFlush(event);
+        if (multipartFile != null) {
+           if(!(event.getFileName().equals(null))){
+               storageService.deleteById(id);
+               storageService.save(multipartFile , id);
+               event.setFileSize(sizeByte);
+               eventRepository.saveAndFlush(event);
+           }
+           else {
+               storageService.save(multipartFile , id);
+               event.setFileSize(sizeByte);
+               eventRepository.saveAndFlush(event);
+           }
         } else {
             if (editEventPutDTO.getFileName().equals(event.getFileName()) && multipartFile == null) {
-                System.out.println(2);
                 eventRepository.saveAndFlush(event);
             } else if (multipartFile == null) {
                 System.out.println(3);
