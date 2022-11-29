@@ -285,14 +285,14 @@ public class EventService{
                  if(user.getRoleUser().equals("admin")){
                      System.out.println(event.getFileName());
                      System.out.println(event.getBookingEmail());
-                     return conditionEditEvent(editEventPutDTO , multipartFile, id, sizeByte, event);
+                     return conditionEditEvent(multipartFile, id, sizeByte, event);
                  }
                  else if (user.getRoleUser().equals("student") && event.getBookingEmail().equals(getCurrentAuthentication.getUsername())){
                      if(!(event.getBookingEmail().equals(user.getEmailUser()))){
                          throw  new ResponseStatusException(HttpStatus.FORBIDDEN , "email is not the same as student's email");
                      }
                      else{
-                         return conditionEditEvent(editEventPutDTO , multipartFile, id, sizeByte, event);
+                         return conditionEditEvent(multipartFile, id, sizeByte, event);
                      }
                  }
         }
@@ -302,15 +302,15 @@ public class EventService{
         throw  new ResponseStatusException(HttpStatus.FORBIDDEN , "This email permission denied");
     }
 
-    private ResponseEntity conditionEditEvent(EventPutDto editEventPutDTO , MultipartFile multipartFile, Integer id, int sizeByte, Event event) throws IOException {
-        if(multipartFile != null && event.getBookingEmail() == null){
+    private ResponseEntity conditionEditEvent(MultipartFile multipartFile, Integer id, int sizeByte, Event event) throws IOException {
+        if(event.getFileName() == null){
             System.out.println(1);
             storageService.save(multipartFile , id);
             event.setFileSize(sizeByte);
             eventRepository.saveAndFlush(event);
         }
         else {
-            if(multipartFile == null && editEventPutDTO.getFileName().equals(event.getFileName())){
+            if(multipartFile == null && event.getFileName() != null){
                 System.out.println(2);
                 eventRepository.saveAndFlush(event);
             }
