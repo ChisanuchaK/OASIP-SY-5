@@ -319,10 +319,10 @@ public class EventService{
         } else if (multipartFile == null && editEventPutDTO.getFileName() != null) {
             System.out.println(3);
             eventRepository.saveAndFlush(event);
-        } else if (multipartFile == null) {
+        } else if (multipartFile == null && event.getFileName() != null) {
             System.out.println(4);
             storageService.deleteById(id);
-            event.setFileSize(0);
+            event.setFileSize(sizeByte);
             eventRepository.saveAndFlush(event);
         }
         return ResponseEntity.status(200).body("Edited Successfully");
