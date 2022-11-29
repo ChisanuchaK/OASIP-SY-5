@@ -311,7 +311,7 @@ public class EventService{
         }
         else {
             if(multipartFile == null){
-                if(editEventPutDTO.getFileName() != null){
+                if(editEventPutDTO.getFileName() == null){
                     System.out.println(2);
                     storageService.deleteById(id);
                     eventRepository.saveAndFlush(event);
