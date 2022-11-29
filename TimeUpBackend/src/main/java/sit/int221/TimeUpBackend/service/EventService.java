@@ -311,7 +311,7 @@ public class EventService{
         }
         else {
             if(multipartFile == null){
-                if(event.getFileName() == null){
+                if(event.getFileName() != null){
                     System.out.println(4);
                     storageService.deleteById(id);
                     event.setFileSize(0);
