@@ -26,5 +26,4 @@ public class EventPutDto {
 
     private String fileName;
 
-    private int fileSize;
 }

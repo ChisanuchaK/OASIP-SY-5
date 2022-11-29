@@ -295,33 +295,22 @@ public class EventService {
     }
 
     private ResponseEntity conditionEditEvent( EventPutDto editEventPutDTO ,MultipartFile multipartFile, Integer id, int sizeByte, Event event) throws IOException {
-        if(event.getFileName() == null){
-            System.out.println(1);
+        Event event1 = eventRepository.findById(id).orElseThrow(()-> new ResponseStatusException(HttpStatus.NOT_FOUND));
+        if((multipartFile == null && event.getFileName() == null) || ((multipartFile == null && event1.getFileName().equals(editEventPutDTO.getFileName())))){
+            eventRepository.saveAndFlush(event);
+        } else if (multipartFile == null && !(event1.getFileName().equals(editEventPutDTO.getFileName()))) {
+            storageService.deleteById(id);
+        } else if (multipartFile != null && event.getFileName() != null) {
+            storageService.deleteById(id);
             storageService.save(multipartFile , id);
             event.setFileSize(sizeByte);
             eventRepository.saveAndFlush(event);
         }
         else {
-            if(multipartFile == null){
-                if(!(editEventPutDTO.getFileName().equals(event.getFileName())) ){
-                    storageService.deleteById(id);
-                    storageService.save(null , id);
-                    event.setFileSize(sizeByte);
-                    eventRepository.saveAndFlush(event);
-                }
-                else {
-                    System.out.println(2);
-                    eventRepository.saveAndFlush(event);
-                }
-            }
-            else {
-                System.out.println(3);
-                storageService.deleteById(id);
-                storageService.save(multipartFile , id);
-                event.setFileSize(sizeByte);
-                eventRepository.saveAndFlush(event);
-            }
+            storageService.save(multipartFile , id);
+            event.setFileSize(sizeByte);
+            eventRepository.saveAndFlush(event);
         }
-        return ResponseEntity.status(200).body("Edited Successfully");
+        return  ResponseEntity.ok().body("Edit success");
     }
 }
