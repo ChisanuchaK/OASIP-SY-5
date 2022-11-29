@@ -297,15 +297,10 @@ public class EventService {
         if (multipartFile != null) {
            if(!(event.getFileName().equals(null))){
                storageService.deleteById(id);
-               storageService.save(multipartFile , id);
-               event.setFileSize(sizeByte);
-               eventRepository.saveAndFlush(event);
            }
-           else {
-               storageService.save(multipartFile , id);
-               event.setFileSize(sizeByte);
-               eventRepository.saveAndFlush(event);
-           }
+            storageService.save(multipartFile , id);
+            event.setFileSize(sizeByte);
+            eventRepository.saveAndFlush(event);
         } else {
             if (editEventPutDTO.getFileName().equals(event.getFileName()) && multipartFile == null) {
                 eventRepository.saveAndFlush(event);
