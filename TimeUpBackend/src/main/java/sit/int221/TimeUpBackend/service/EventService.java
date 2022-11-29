@@ -298,8 +298,10 @@ public class EventService {
         Event event1 = eventRepository.findById(id).orElseThrow(()-> new ResponseStatusException(HttpStatus.NOT_FOUND));
         if((multipartFile == null && event.getFileName() == null) || ((multipartFile == null && event1.getFileName().equals(editEventPutDTO.getFileName())))){
             eventRepository.saveAndFlush(event);
-        } else if (multipartFile == null && !(event1.getFileName().equals(editEventPutDTO.getFileName()))) {
+        } else if (multipartFile == null && editEventPutDTO.getFileName() == null) {
             storageService.deleteById(id);
+            event.setFileSize(0);
+            eventRepository.saveAndFlush(event);
         } else if (multipartFile != null && event.getFileName() != null) {
             storageService.deleteById(id);
             storageService.save(multipartFile , id);
@@ -307,6 +309,7 @@ public class EventService {
             eventRepository.saveAndFlush(event);
         }
         else {
+            storageService.deleteById(id);
             storageService.save(multipartFile , id);
             event.setFileSize(sizeByte);
             eventRepository.saveAndFlush(event);
