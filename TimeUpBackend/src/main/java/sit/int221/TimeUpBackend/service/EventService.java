@@ -267,7 +267,9 @@ public class EventService{
         }
         UserDetails getCurrentAuthentication = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         User user = userRepository.findByEmailUser(getCurrentAuthentication.getUsername());
-        Event event = eventRepository.findById(id).orElseThrow(()-> new ResponseStatusException(HttpStatus.NOT_FOUND));
+        Event event = eventRepository.findById(id).orElseThrow( ()->{
+            return new ResponseStatusException(HttpStatus.NOT_FOUND);
+        });
 
         List<Event> checkCompare = eventRepository.findAllByEventCategoryEventCategoryId(event.getEventCategory().getEventCategoryId());
         int i = 0;
@@ -279,50 +281,60 @@ public class EventService{
             i++;
         }
         checkCompare.remove(index);
-                modelMapper.map(editEventPutDTO , event);
+        modelMapper.map(editEventPutDTO , event);
 
         if ((!checkTimeOverLap(checkCompare , event))){
-                 if(user.getRoleUser().equals("admin")){
-                     System.out.println(event.getFileName());
-                     System.out.println(event.getBookingEmail());
-                     return conditionEditEvent(editEventPutDTO , multipartFile, id, sizeByte, event);
-                 }
-                 else if (user.getRoleUser().equals("student") && event.getBookingEmail().equals(getCurrentAuthentication.getUsername())){
-                     if(!(event.getBookingEmail().equals(user.getEmailUser()))){
-                         throw  new ResponseStatusException(HttpStatus.FORBIDDEN , "email is not the same as student's email");
-                     }
-                     else{
-                         return conditionEditEvent(editEventPutDTO , multipartFile, id, sizeByte, event);
-                     }
-                 }
+            if(user.getRoleUser().equals("admin")){
+                if(event.getFileName() == null || event.getFileName().length() == 0){
+                    System.out.println(1);
+                    storageService.save(multipartFile , id);
+                    event.setFileSize(sizeByte);
+                    eventRepository.saveAndFlush(event);
+                }
+                else {
+                    if(editEventPutDTO.getFileName().equals(event.getFileName()) && multipartFile == null){
+                        System.out.println(2);
+                        eventRepository.saveAndFlush(event);
+                    }
+                    else {
+                        System.out.println(3);
+                        storageService.deleteById(id);
+                        storageService.save(multipartFile , id);
+                        event.setFileSize(sizeByte);
+                        eventRepository.saveAndFlush(event);
+                    }
+                }
+                return ResponseEntity.status(200).body("Edited Successfully");
+            }
+            else if (user.getRoleUser().equals("student") && event.getBookingEmail().equals(getCurrentAuthentication.getUsername())){
+                if(!(event.getBookingEmail().equals(user.getEmailUser()))){
+                    throw  new ResponseStatusException(HttpStatus.FORBIDDEN , "email is not the same as student's email");
+                }
+                else{
+                    if(event.getFileName() == null || event.getFileName().length() == 0){
+                        System.out.println(1);
+                        storageService.deleteById(id);
+                        storageService.save(multipartFile , id);
+                        event.setFileSize(sizeByte);
+                        eventRepository.saveAndFlush(event);
+                        return ResponseEntity.status(200).body("Edited Successfully");
+                    } else if (editEventPutDTO.getFileName().equals(event.getFileName()) && multipartFile == null) {
+                        System.out.println(2);
+                        eventRepository.saveAndFlush(event);
+                    } else {
+                        System.out.println(3);
+                        storageService.deleteById(id);
+                        storageService.save(multipartFile , id);
+                        event.setFileSize(sizeByte);
+                        eventRepository.saveAndFlush(event);
+                        return ResponseEntity.status(200).body("Edited Successfully");
+                    }
+                }
+            }
         }
         else {
             throw  new ResponseStatusException(HttpStatus.BAD_REQUEST , "overlapped with other events");
         }
         throw  new ResponseStatusException(HttpStatus.FORBIDDEN , "This email permission denied");
-    }
-
-    private ResponseEntity conditionEditEvent(EventPutDto editEventPutDTO ,  MultipartFile multipartFile, Integer id, int sizeByte, Event event) throws IOException {
-        System.out.println(editEventPutDTO.getFileName());
-//        Event checkFileByEvent = eventRepository.findByFileName(editEventPutDTO.getFileName());
-        if(multipartFile == null && event.getFileName() != null){
-            System.out.println(1);
-            storageService.deleteById(id);
-        } else if (multipartFile == null && event.getFileName() == null) {
-            System.out.println(2);
-            eventRepository.saveAndFlush(event);
-        } else if (multipartFile != null && event.getFileName() == null) {
-            System.out.println(3);
-            storageService.save(multipartFile , id);
-            event.setFileSize(sizeByte);
-            eventRepository.saveAndFlush(event);
-        } else if (multipartFile != null && event.getFileName() != null) {
-            System.out.println(4);
-            storageService.deleteById(id);
-            storageService.save(multipartFile , id);
-            event.setFileSize(sizeByte);
-            eventRepository.saveAndFlush(event);
-        }
-        return ResponseEntity.status(200).body("Edited Successfully");
     }
 }
