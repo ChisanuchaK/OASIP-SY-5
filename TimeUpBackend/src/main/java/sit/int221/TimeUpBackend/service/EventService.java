@@ -301,7 +301,7 @@ public class EventService {
         }
         else {
             Event checkEvent = eventRepository.findByFileName(event.getFileName());
-            if(multipartFile == null && checkEvent == null){
+            if(multipartFile == null && checkEvent != null){
                 System.out.println(2);
                 eventRepository.saveAndFlush(event);
             }
