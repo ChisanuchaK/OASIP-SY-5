@@ -294,7 +294,7 @@ public class EventService {
     }
 
     private void editEventParam(EventPutDto editEventPutDTO, MultipartFile multipartFile, Integer id, int sizeByte, Event event) throws IOException {
-        if (event.getFileName() == null) {
+        if (event.getFileName() == null && multipartFile != null) {
             System.out.println(1);
             storageService.save(multipartFile, id);
             event.setFileSize(sizeByte);
