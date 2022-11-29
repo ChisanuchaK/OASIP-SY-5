@@ -96,7 +96,7 @@ public class FilesStorageServiceImpl implements FilesStorageService{
         Event event = eventRepository.findById(id).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
 
         if(user.getRoleUser().equals("admin") || (user.getRoleUser().equals("student") && event.getBookingEmail().equals(getCurrentAuthentication.getUsername()))){
-            if(event.getFileName() != null){
+            if(event.getFileName() == null || event.getFileName() != null){
                 FileSystemUtils.deleteRecursively(root.resolve(event.getFileName()));
                 event.setFileName(null);
                 event.setFileSize(0);
