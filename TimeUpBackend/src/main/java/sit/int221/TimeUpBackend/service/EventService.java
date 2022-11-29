@@ -303,7 +303,7 @@ public class EventService{
     }
 
     private ResponseEntity conditionEditEvent(EventPutDto editEventPutDTO , MultipartFile multipartFile, Integer id, int sizeByte, Event event) throws IOException {
-        if(event.getFileName() == null){
+        if(multipartFile != null && event.getFileName() == null){
             System.out.println(1);
             storageService.save(multipartFile , id);
             event.setFileSize(sizeByte);
