@@ -310,16 +310,15 @@ public class EventService{
             eventRepository.saveAndFlush(event);
         }
         else {
-            if(multipartFile == null ){
+            if(multipartFile == null && editEventPutDTO.getFileName().equals(event.getFileName()) ){
                 System.out.println(2);
                 eventRepository.saveAndFlush(event);
-            }
-            if(multipartFile == null && editEventPutDTO.getFileName() == null ){
+            } else if (multipartFile == null && editEventPutDTO.getFileName() == null) {
                 storageService.deleteById(id);
                 event.setFileSize(0);
                 eventRepository.saveAndFlush(event);
-            }
-            if (multipartFile != null) {
+
+            } else if (multipartFile != null){
                 System.out.println(3);
                 storageService.deleteById(id);
                 storageService.save(multipartFile , id);
