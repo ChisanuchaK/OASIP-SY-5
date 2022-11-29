@@ -306,6 +306,8 @@ public class EventService {
                 if(!(editEventPutDTO.getFileName().equals(event.getFileName())) ){
                     storageService.deleteById(id);
                     storageService.save(null , id);
+                    event.setFileSize(sizeByte);
+                    eventRepository.saveAndFlush(event);
                 }
                 else {
                     System.out.println(2);
@@ -316,6 +318,8 @@ public class EventService {
                 System.out.println(3);
                 storageService.deleteById(id);
                 storageService.save(multipartFile , id);
+                event.setFileSize(sizeByte);
+                eventRepository.saveAndFlush(event);
             }
         }
         return ResponseEntity.status(200).body("Edited Successfully");
