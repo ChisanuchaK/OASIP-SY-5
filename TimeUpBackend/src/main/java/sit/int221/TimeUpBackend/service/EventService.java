@@ -311,10 +311,12 @@ public class EventService{
         }
         else {
             if(multipartFile == null){
-                System.out.println(2);
                 if(event.getFileName() == null){
+                    System.out.println(4);
                     storageService.deleteById(id);
+                    event.setFileSize(0);
                 }
+                System.out.println(2);
                 eventRepository.saveAndFlush(event);
             }
             else {
