@@ -278,18 +278,19 @@ public class EventService {
         if ((!checkTimeOverLap(checkCompare, event))) {
             if (user.getRoleUser().equals("admin")) {
                 editEventParam(editEventPutDTO, multipartFile, id, sizeByte, event);
+                return ResponseEntity.status(200).body("Edited Successfully");
             } else if (user.getRoleUser().equals("student") && event.getBookingEmail().equals(getCurrentAuthentication.getUsername())) {
                 if (!(event.getBookingEmail().equals(user.getEmailUser()))) {
                     throw new ResponseStatusException(HttpStatus.FORBIDDEN, "email is not the same as student's email");
                 } else {
                     editEventParam(editEventPutDTO, multipartFile, id, sizeByte, event);
+                    return ResponseEntity.status(200).body("Edited Successfully");
                 }
             } else {
                 throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "overlapped with other events");
             }
-            throw new ResponseStatusException(HttpStatus.FORBIDDEN, "This email permission denied");
         }
-        return ResponseEntity.status(200).body("Edited Successfully");
+        throw new ResponseStatusException(HttpStatus.FORBIDDEN, "This email permission denied");
     }
 
     private void editEventParam(EventPutDto editEventPutDTO, MultipartFile multipartFile, Integer id, int sizeByte, Event event) throws IOException {
