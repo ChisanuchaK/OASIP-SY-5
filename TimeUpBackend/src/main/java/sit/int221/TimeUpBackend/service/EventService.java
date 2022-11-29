@@ -315,6 +315,8 @@ public class EventService{
                     System.out.println(4);
                     storageService.deleteById(id);
                     event.setFileSize(0);
+                    eventRepository.saveAndFlush(event);
+                    return ResponseEntity.status(200).body("Edited Successfully");
                 }
                 System.out.println(2);
                 eventRepository.saveAndFlush(event);
