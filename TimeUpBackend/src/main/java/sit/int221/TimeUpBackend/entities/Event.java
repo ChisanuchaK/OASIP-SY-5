@@ -32,7 +32,7 @@ public class Event {
     @Column(name = "eventNotes", length = 500)
     private String eventNotes;
 
-    @Column(name = "file" , length = 250)
+    @Column(name = "file" , length = 250 , nullable = true)
     private String fileName;
 
     @Column(name = "fileSize" , nullable = true)
