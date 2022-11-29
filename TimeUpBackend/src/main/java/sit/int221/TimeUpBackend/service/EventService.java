@@ -314,6 +314,8 @@ public class EventService{
                 if(editEventPutDTO.getFileName() == null){
                     System.out.println(2);
                     storageService.deleteById(id);
+                    storageService.save(null , id);
+                    event.setFileSize(sizeByte);
                     eventRepository.saveAndFlush(event);
                 }
                 else{
