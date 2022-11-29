@@ -304,8 +304,8 @@ public class EventService{
 
     private ResponseEntity conditionEditEvent(EventPutDto editEventPutDTO ,  MultipartFile multipartFile, Integer id, int sizeByte, Event event) throws IOException {
         System.out.println(editEventPutDTO.getFileName());
-        Event checkFileByEvent = eventRepository.findByFileName(editEventPutDTO.getFileName());
-        if(multipartFile != null && checkFileByEvent== null){
+//        Event checkFileByEvent = eventRepository.findByFileName(editEventPutDTO.getFileName());
+        if(multipartFile != null && event.getFileName() == null){
             System.out.println(1);
             storageService.save(multipartFile , id);
             event.setFileSize(sizeByte);
@@ -322,8 +322,7 @@ public class EventService{
         } else if (multipartFile == null) {
             System.out.println(4);
             storageService.deleteById(id);
-            storageService.save(null , id);
-            event.setFileSize(sizeByte);
+            event.setFileSize(0);
             eventRepository.saveAndFlush(event);
         }
         return ResponseEntity.status(200).body("Edited Successfully");
