@@ -305,23 +305,21 @@ public class EventService{
     private ResponseEntity conditionEditEvent(EventPutDto editEventPutDTO ,  MultipartFile multipartFile, Integer id, int sizeByte, Event event) throws IOException {
         System.out.println(editEventPutDTO.getFileName());
 //        Event checkFileByEvent = eventRepository.findByFileName(editEventPutDTO.getFileName());
-        if(multipartFile != null){
+        if(multipartFile == null && event.getFileName() != null){
             System.out.println(1);
-            storageService.save(multipartFile , id);
-            event.setFileSize(sizeByte);
-            eventRepository.saveAndFlush(event);
-        } else if (multipartFile != null && !(editEventPutDTO.getFileName().equals(event.getFileName()))) {
-            System.out.println(2);
             storageService.deleteById(id);
+        } else if (multipartFile == null && event.getFileName() == null) {
+            System.out.println(2);
+            eventRepository.saveAndFlush(event);
+        } else if (multipartFile != null && event.getFileName() == null) {
+            System.out.println(3);
             storageService.save(multipartFile , id);
             event.setFileSize(sizeByte);
             eventRepository.saveAndFlush(event);
-        } else if (multipartFile == null && editEventPutDTO.getFileName() != null) {
-            System.out.println(3);
-            eventRepository.saveAndFlush(event);
-        } else if (multipartFile == null && event.getFileName() != null) {
+        } else if (multipartFile != null && event.getFileName() != null) {
             System.out.println(4);
             storageService.deleteById(id);
+            storageService.save(multipartFile , id);
             event.setFileSize(sizeByte);
             eventRepository.saveAndFlush(event);
         }
