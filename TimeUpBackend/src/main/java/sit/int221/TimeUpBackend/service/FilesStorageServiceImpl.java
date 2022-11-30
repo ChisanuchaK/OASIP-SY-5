@@ -100,12 +100,16 @@ public class FilesStorageServiceImpl implements FilesStorageService{
                 FileSystemUtils.deleteRecursively(root.resolve(event.getFileName()));
                 event.setFileName(null);
                 event.setFileSize(0);
+                eventRepository.saveAndFlush(event);
+                return ResponseEntity.ok().body("Delete file success");
             }
-            eventRepository.saveAndFlush(event);
-            return ResponseEntity.ok().body("Delete file success");
+            else {
+                eventRepository.saveAndFlush(event);
+                return ResponseEntity.ok().body("Delete file success");
+            }
         }
-          else {
-              throw new ResponseStatusException(HttpStatus.FORBIDDEN , " permission denied");
-          }
+        else {
+            throw new ResponseStatusException(HttpStatus.FORBIDDEN , " permission denied");
         }
+    }
     }
