@@ -295,21 +295,24 @@ public class EventService {
     }
 
     private ResponseEntity conditionEditEvent(EventPutDto editEventPutDTO , MultipartFile multipartFile, Integer id, int sizeByte, Event event) throws IOException {
-        if(multipartFile != null && event.getFileName() == null){
+        if(event.getFileName() == null){
             System.out.println(1);
             storageService.save(multipartFile , id);
             event.setFileSize(sizeByte);
             eventRepository.saveAndFlush(event);
         }
         else {
-            if(multipartFile == null  && event.getFileName().equals(editEventPutDTO.getFileName())){
+            if(multipartFile == null){
                 System.out.println(2);
+                if(editEventPutDTO.getFileName().equals(event.getFileName())){
+                    storageService.deleteById(id);
+                }
                 eventRepository.saveAndFlush(event);
             }
-            else  {
+            else {
                 System.out.println(3);
                 storageService.deleteById(id);
-                storageService.save(null , id);
+                storageService.save(multipartFile , id);
                 event.setFileSize(sizeByte);
                 eventRepository.saveAndFlush(event);
             }
