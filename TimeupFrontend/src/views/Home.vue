@@ -14,13 +14,13 @@ onBeforeMount(async()=>{
       <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px; padding-top: 25px;">
         <button
           class="bg-[#105E99]  border-3 border-sky-500 text-white rounded-full font-bold p-2 hover: transform transition ease-in-out delay-10 hover:-translate-y-3 text-[16px] hover:bg-[#008EDE]">
-          <a href="./Reserve">
+          <a href="./createbooking">
             <p> New Booking</p>
           </a>
         </button>
         <button
           class="bg-[#105E99]  border-3 border-sky-500 text-white rounded-full font-bold p-2 hover: transform transition ease-in-out delay-10 hover:-translate-y-3 text-[16px] hover:bg-[#008EDE]">
-          <a href="./BookingList">
+          <a href="./bookinglists">
             <p> Booking List</p>
           </a>
         </button>
