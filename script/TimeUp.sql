@@ -82,7 +82,7 @@ ENGINE = InnoDB;
 CREATE TABLE IF NOT EXISTS `TimeUp`.`eventCategoryOwner` (
   `idEventCategoryOwner` INT NOT NULL AUTO_INCREMENT,
   `eventCategory_eventCategoryId` INT NOT NULL,
-  `user_iduser` INT NOT NULL,
+  `user_iduser` INT  NULL,
   PRIMARY KEY (`idEventCategoryOwner`),
   INDEX `fk_user_id` (`user_iduser` ASC) VISIBLE,
   INDEX `fk_eventCategory_id` (`eventCategory_eventCategoryId` ASC) VISIBLE,
@@ -92,7 +92,8 @@ CREATE TABLE IF NOT EXISTS `TimeUp`.`eventCategoryOwner` (
     ON UPDATE NO ACTION,
   CONSTRAINT `fk_user_id`
     FOREIGN KEY (`user_iduser`) REFERENCES `TimeUp`.`user` (`iduser`)
-  ON DELETE SET NULL)
+  ON DELETE SET NULL
+  )
 ENGINE = InnoDB;
 
 CREATE user 'admin'@'%' IDENTIFIED  by 'admin123';
