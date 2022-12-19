@@ -6,6 +6,7 @@ export const userStore = defineStore("Users", () => {
   const appRouter = useRouter();
   const users = ref([]);
   const userById = ref([]);
+  let userStudent = ref([])
   const signInUserData = reactive({
     userId: "",
     userName: "",
@@ -13,6 +14,7 @@ export const userStore = defineStore("Users", () => {
     userRole: "",
     userPassword: "",
   });
+  
   // const signInUserData = computed(() => {
   //   return {
   //     userId: "",
@@ -47,11 +49,18 @@ export const userStore = defineStore("Users", () => {
       await getRefreshToken();
       const response = await res.json();
       users.value = response;
+      userStudent.value = []
+      for (let user of users.value) {  
+        if(user.roleUser == 'student')
+        userStudent.value.push(user)
+          // console.log(user.roleUser);
+          // console.log(userStudent.value);
+      }
       return users.value;
       // return res;
     } else if (res.status === 401) {
       if (await getRefreshToken()) {
-        console.log("can use refreshToken");
+        // console.log("can use refreshToken");
         return getAllUsers();
       } else {
         console.log("please SignIn");
@@ -71,13 +80,13 @@ export const userStore = defineStore("Users", () => {
   const getUser = async (idUser) => {
     const res = await fetch(`${import.meta.env.VITE_HTTPS_URL}/user/${idUser}`);
     if (res.status === 200) {
-      console.log("that make a high loop");
+      // console.log("that make a high loop");
       await getRefreshToken();
       const response = await res.json();
       userById.value = response;
     } else if (res.status === 401) {
       if (await getRefreshToken()) {
-        console.log("can use refreshToken");
+        // console.log("can use refreshToken");
         return getUser(idUser);
       } else {
         console.log("please SignIn");
@@ -141,7 +150,7 @@ export const userStore = defineStore("Users", () => {
       return res;
     } else if (res.status === 401) {
       if (await getRefreshToken()) {
-        console.log("can use refreshToken");
+        // console.log("can use refreshToken");
         return createUser(localDataInput);
       } else {
         console.log("please SignIn");
@@ -261,7 +270,7 @@ export const userStore = defineStore("Users", () => {
   const getRefreshToken = async () => {
     const res = await fetch(`${import.meta.env.VITE_HTTPS_URL}/refreshtoken`);
     if (res.status === 200) {
-      console.log("success to get refreshtoken");
+      // console.log("success to get refreshtoken");
       // const response = await res.json();
       signInStatus.value = true;
       const response = await res.json();
@@ -289,6 +298,7 @@ export const userStore = defineStore("Users", () => {
 
   return {
     users,
+    userStudent,
     userById,
     currentUser,
     getAllUsers,

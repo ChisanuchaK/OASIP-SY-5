@@ -36,7 +36,7 @@ categoryRes.getEventCategory();
 const categoryList = computed(() => categoryRes.categorys);
 
 // userSignInRes.getAllUsers();
-const userList = computed(() => userSignInRes.users);
+const userList = computed(() => userSignInRes.userStudent);
 
 // await bookStore.getBookings();
 // const bookingLists = computed(()=> bookStore.bookings);
