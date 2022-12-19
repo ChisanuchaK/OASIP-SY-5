@@ -54,8 +54,7 @@ CREATE TABLE IF NOT EXISTS `TimeUp`.`booking` (
     ON UPDATE NO ACTION,
 CONSTRAINT `fk_booking_user`
     FOREIGN KEY (`user_iduser`) REFERENCES `TimeUp`.`user` (`iduser`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION
+    ON DELETE SET NULL
     )  
 ENGINE = InnoDB;
 
