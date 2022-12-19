@@ -42,7 +42,7 @@ CREATE TABLE IF NOT EXISTS `TimeUp`.`booking` (
   `eventDuration` INT NOT NULL,
   `eventNotes` VARCHAR(500) NULL,
   `eventCategory` INT NOT NULL,
-  `user_iduser` INT NOT NULL ,
+  `user_iduser` INT  NULL ,
   `file` VARCHAR(250) NULL,
   `fileSize` BIGINT NULL ,
   PRIMARY KEY (`idbooking`),
